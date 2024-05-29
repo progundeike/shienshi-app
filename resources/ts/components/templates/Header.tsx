@@ -27,8 +27,9 @@ export const Header: FC = memo(() => {
                     {/* 右メニュー */}
                     {/* {isMobileView ? <MobileMenu /> : <PcMenu />} */}
                     <Flex gap="20px">
-                        <Box>about</Box>
-                        <Box>試験一覧</Box>
+                        <Link to="/about">about</Link>
+                        <Link to="/exams">exam</Link>
+                        <Link to="/exams_list">試験一覧</Link>
                         <Box>ユーザー登録</Box>
                     </Flex>
                 </Flex>

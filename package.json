@@ -27,7 +27,8 @@
     },
     "dependencies": {
         "react-hook-form": "^7.51.5",
-        "react-pdf": "^8.0.2"
+        "react-pdf": "^8.0.2",
+        "react-split": "^2.0.14"
     },
     "overrides": {
         "pdfjs-dist": "4.2.67"
