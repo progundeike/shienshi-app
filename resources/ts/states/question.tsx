@@ -1,4 +1,5 @@
 export type Question = {
+    subQuestionId: number;
     type: "radio" | "textarea";
     text: string;
     options?: { label: string; value: string }[]; // ラジオボタンの選択肢
@@ -6,15 +7,16 @@ export type Question = {
 };
 
 export type QuestionList = {
-    id: number;
+    questionId: number;
     questions: Question[];
 };
 
 export const questionData: QuestionList[] = [
     {
-        id: 1,
+        questionId: 1,
         questions: [
             {
+                subQuestionId: 1,
                 type: "radio",
                 text: "(1) XSS脆弱性の種類を解答群の中から選び, 記号で答えよ。",
                 options: [
@@ -25,6 +27,7 @@ export const questionData: QuestionList[] = [
                 maxLength: 0,
             },
             {
+                subQuestionId: 2,
                 type: "textarea",
                 text: "(2) WebアプリQにおける対策を, 30字以内で答えよ。",
                 maxLength: 30,
@@ -32,9 +35,10 @@ export const questionData: QuestionList[] = [
         ],
     },
     {
-        id: 2,
+        questionId: 2,
         questions: [
             {
+                subQuestionId: 1,
                 type: "textarea",
                 text: "図3について, 入力文字数制限を超える長さのスクリプトが実行されるようにした方法を, 50字以内で答えよ。",
                 maxLength: 50,
