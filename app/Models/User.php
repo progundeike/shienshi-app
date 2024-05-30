@@ -17,9 +17,13 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'id',
+        'username',
+        'nickname',
         'password',
+        'email',
+        'auth_provider',
+        'auth_id',
     ];
 
     /**
@@ -43,5 +47,23 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // ユーザー登録時にランダムなIDを生成
+        static::creating(function ($user) {
+            do {
+                $user->id = $user->random();
+            } while (User::find($user->id) || $user->id == 0);
+        });
+    }
+
+    // ユーザーIDをランダムに生成
+    private function random($length = 8)
+    {
+        return substr(str_shuffle('1234567890'), 0, $length);
     }
 }
