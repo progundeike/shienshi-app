@@ -28,7 +28,6 @@ import { SubmitButton } from "../../atoms/SubmitButton";
 
 const MIN_USERNAME_LENGTH = 8;
 const MAX_USERNAME_LENGTH = 50;
-const MAX_NICKNAME_LENGTH = 15;
 
 const PASSWORD_MIN_LENGTH = 8;
 
@@ -43,7 +42,6 @@ export const RegisterPage: FC = memo(() => {
     } = useForm<RegisterFormInput>();
     const [isLoading, setIsLoading] = useRecoilState(loadingAtom);
     const usernameLength = watch("username")?.length || 0;
-    const nicknameLength = watch("nickname")?.length || 0;
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -57,7 +55,7 @@ export const RegisterPage: FC = memo(() => {
             for (const [field, message] of Object.entries(
                 errorResponse.errors
             )) {
-                if (["username", "nickname", "password"].includes(field)) {
+                if (["username", "password"].includes(field)) {
                     // バリデーションエラー
                     setError(field as keyof RegisterFormInput, {
                         type: "manual",
@@ -126,52 +124,6 @@ export const RegisterPage: FC = memo(() => {
                         </InputGroup>
                         <FormErrorMessage>
                             {errors.username && errors.username.message}
-                        </FormErrorMessage>
-                    </FormControl>
-
-                    <FormControl mb={3} isInvalid={Boolean(errors.nickname)}>
-                        <FormLabel htmlFor="nickname">ニックネーム</FormLabel>
-                        <Text color="gray.600">
-                            投稿時に表示されます。後から変更できます。
-                        </Text>
-                        <InputGroup>
-                            <Input
-                                type="text"
-                                id="nickname"
-                                autoComplete="off"
-                                placeholder={`${MAX_NICKNAME_LENGTH}文字以内`}
-                                {...register("nickname", {
-                                    required: "入力が必要です",
-                                    validate: (value: string) => {
-                                        if (
-                                            value.length > MAX_NICKNAME_LENGTH
-                                        ) {
-                                            return `${MAX_NICKNAME_LENGTH}文字以内で入力してください`;
-                                        }
-                                    },
-                                })}
-                            />
-                            <InputRightElement
-                                mr="10px"
-                                children={
-                                    <Text
-                                        color={
-                                            nicknameLength > MAX_NICKNAME_LENGTH
-                                                ? "red"
-                                                : "gray.600"
-                                        }
-                                    >
-                                        {nicknameLength > 0
-                                            ? nicknameLength +
-                                              "/" +
-                                              MAX_NICKNAME_LENGTH
-                                            : ""}
-                                    </Text>
-                                }
-                            />
-                        </InputGroup>
-                        <FormErrorMessage>
-                            {errors.nickname && errors.nickname.message}
                         </FormErrorMessage>
                     </FormControl>
 

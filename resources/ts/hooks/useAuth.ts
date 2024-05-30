@@ -71,11 +71,10 @@ export const useAuth = () => {
     const registerUser = async (
         props: RegisterFormInput
     ): Promise<ErrorResponse | null> => {
-        const { username, nickname, password } = props;
+        const { username, password } = props;
         try {
             const response = await axiosInstance.post<User>("/api/register", {
                 username: username,
-                nickname: nickname,
                 password: password,
             });
             setUser(response.data);
@@ -128,32 +127,6 @@ export const useAuth = () => {
         } finally {
             setIsLoading(false);
         }
-    };
-
-    const updateNickname = async (
-        nickname: string
-    ): Promise<{ nickname: string } | null> => {
-        const response = axios
-            .put("api/user/profile-information", {
-                nickname: nickname,
-            })
-            .then((response) => {
-                return response.data;
-            })
-            .catch((error) => {
-                console.log(error);
-                toast({
-                    title: "プロフィールの更新に失敗しました",
-                    description:
-                        "サーバーに不具合が発生しています。しばらく経ってから再度お試しください",
-                    status: "error",
-                    duration: 9000,
-                    isClosable: true,
-                    position: "bottom-right",
-                });
-                return null;
-            });
-        return response;
     };
 
     const resetPassword = async (data: PasswordResetFormInput) => {
@@ -226,7 +199,6 @@ export const useAuth = () => {
         logout,
         getUser,
         registerUser,
-        updateNickname,
         resetPassword,
         forgotPassword,
         deleteUser,
