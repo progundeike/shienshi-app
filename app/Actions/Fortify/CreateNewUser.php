@@ -29,17 +29,11 @@ class CreateNewUser implements CreatesNewUsers
                 'regex:/^[A-Za-z_0-9]+$/',
                 Rule::unique(User::class)
             ],
-            'nickname' => [
-                'required',
-                'string',
-                'max:15'
-            ],
             'password' => $this->passwordRules(),
         ])->validate();
 
         return User::create([
             'username' => (string) Str::of($input['username'])->trim(),
-            'nickname' => (string) Str::of($input['nickname'])->trim(),
             'password' => Hash::make($input['password']),
             'auth_provider' => 'password'
         ]);

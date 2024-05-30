@@ -4,6 +4,7 @@ namespace App\Http\Responses;
 
 use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\UserResource;
 
 class RegisterResponse implements RegisterResponseContract
 {
@@ -15,11 +16,8 @@ class RegisterResponse implements RegisterResponseContract
      */
     public function toResponse($request)
     {
-        return $request->wantsJson()
-            ? response()->json([
-                'userId' => Auth::user()->id,
-                'userName' => Auth::user()->name
-            ], 201)
-            : response()->json('登録に失敗しました', 400);
+        $user = Auth::user();
+        $request->session()->regenerate();
+        return response()->json(new UserResource($user), 201);
     }
 }
