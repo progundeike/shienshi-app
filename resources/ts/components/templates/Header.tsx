@@ -30,7 +30,8 @@ export const Header: FC = memo(() => {
                         <Link to="/about">about</Link>
                         <Link to="/exams">exam</Link>
                         <Link to="/exams_list">試験一覧</Link>
-                        <Box>ユーザー登録</Box>
+                        <Link to="/login">ログイン</Link>
+                        <Link to="/register">ユーザー登録</Link>
                     </Flex>
                 </Flex>
             </Box>

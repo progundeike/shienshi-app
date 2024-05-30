@@ -10,12 +10,11 @@ import {
 } from "@chakra-ui/react";
 import { FC, memo } from "react";
 import { questionData } from "../../states/question";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { RadioForm } from "../molecules/RadioForm";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type Inputs = {
     answer: {
-        [questionId: string]: string;
+        [id: string]: string;
     };
 };
 
@@ -71,6 +70,16 @@ export const QuestionAndAnswerForm: FC = memo(() => {
                                                 `answer.${questionsList.questionId}-${question.subQuestionId}`
                                             )}
                                         />
+                                        {question.maxLength && (
+                                            <Box textAlign="right">
+                                                (
+                                                {watch(
+                                                    `answer.${questionsList.questionId}-${question.subQuestionId}`,
+                                                    ""
+                                                ).length || 0}
+                                                /{question.maxLength})
+                                            </Box>
+                                        )}
                                     </>
                                 )}
                             </Box>
