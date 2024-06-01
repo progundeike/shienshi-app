@@ -11,6 +11,7 @@ Route::get('/pdf/{filename}', function ($filename) {
     return response()->filename($path);
 });
 
-Route::get('/{any}', function () {
+// apiプレフィックスを除く全てのルートに対して、indexビューを返す
+Route::get('/{any?}', function () {
     return view('index');
-})->where('any', '.*');
+})->where('any', '(?!api).+');
