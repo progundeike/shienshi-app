@@ -47,22 +47,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        // ユーザー登録時にランダムなIDを生成
-        static::creating(function ($user) {
-            do {
-                $user->id = $user->random();
-            } while (User::find($user->id) || $user->id == 0);
-        });
-    }
-
-    // ユーザーIDをランダムに生成
-    private function random($length = 8)
-    {
-        return substr(str_shuffle('1234567890'), 0, $length);
-    }
 }

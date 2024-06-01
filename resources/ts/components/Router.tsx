@@ -1,5 +1,6 @@
-import { FC, memo } from "react";
+import { FC, memo, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 
 import { TopPage } from "./pages/TopPage";
 import { Page404 } from "./pages/Page404";
@@ -11,8 +12,22 @@ import { ExamsListPage } from "./pages/ExamsListPage";
 import { RegisterPage } from "./pages/auth/RegisterPage";
 import { LoginPage } from "./pages/auth/LoginPage";
 import { TermsPage } from "./pages/TermsPage";
+import { PrivateRoutes } from "./templates/PrivateRoutes";
+import { MyPage } from "./pages/MyPage";
+import { useAuth } from "../hooks/useAuth";
+import { userAtom } from "../states/userAtom";
 
 export const Router: FC = memo(() => {
+    const { getUser } = useAuth();
+    const user = useRecoilValue(userAtom);
+
+    const fetchUser = async () => {
+        await getUser();
+    };
+
+    useEffect(() => {
+        fetchUser();
+    }, []);
     return (
         <Layout>
             <Routes>
@@ -26,22 +41,18 @@ export const Router: FC = memo(() => {
                 <Route path="/terms" element={<TermsPage />} />
 
                 {/* ログイン後 */}
-                {/* <Route element={<PrivateRoutes />}>
+                <Route element={<PrivateRoutes />}>
                     <Route path="/my-page" element={<MyPage />} />
-                    <Route path="/update-email" element={<UpdateEmailPage />} />
+                    {/* <Route path="/update-email" element={<UpdateEmailPage />} />
                     <Route
                         path="/register-email"
                         element={<RegisterEmailPage />}
                     />
                     <Route
-                        path="/review/create"
-                        element={<CreateReviewPage />}
-                    />
-                    <Route
                         path="/delete-account"
                         element={<DeleteAccountPage />}
-                    />
-                </Route> */}
+                    /> */}
+                </Route>
 
                 {/* 認証 */}
                 <Route path="/register" element={<RegisterPage />} />

@@ -25,6 +25,8 @@ import { userAtom } from "../../../states/userAtom";
 import { LoginFormInput } from "../../../types/form";
 import { loadingAtom } from "../../../states/loadingAtom";
 import { LoadingPage } from "../LoadingPage";
+import { Card } from "../../templates/Card";
+import { SubmitButton } from "../../atoms/SubmitButton";
 
 export const LoginPage: FC = memo(() => {
     const [searchParams] = useSearchParams();
@@ -81,9 +83,9 @@ export const LoginPage: FC = memo(() => {
 
     return (
         <>
-            {/* <Center my="10px">
+            <Center my="10px">
                 <Heading size="sm">
-                    投稿にはログインが必要です。登録がお済みでない場合は、
+                    学習履歴の管理にはログインが必要です。登録がお済みでない場合は、
                     <Box as="span" textDecoration="underline" color="blue.600">
                         <Link to="/register">ユーザー登録</Link>
                     </Box>
@@ -165,7 +167,7 @@ export const LoginPage: FC = memo(() => {
                         </Button>
                     </Link>
                 </form>
-            </Card> */}
+            </Card>
         </>
     );
 });
