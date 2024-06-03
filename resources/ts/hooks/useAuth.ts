@@ -99,9 +99,10 @@ export const useAuth = () => {
         axios
             .get<User>("/api/user")
             .then((response) => {
-                if (response.data.id) {
+                if (response.data.username) {
                     setUser(response.data);
                 }
+                console.log(response.data)
             })
             .catch((error) => console.log(error))
             .finally(() => {

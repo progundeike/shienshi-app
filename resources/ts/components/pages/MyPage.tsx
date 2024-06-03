@@ -1,6 +1,12 @@
 import { FC, memo } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
+import { LogoutButton } from "../atoms/LogoutButton";
 
 export const MyPage: FC = memo(() => {
-    return <Box>ここがマイページ</Box>;
+    return (
+        <Box>
+            ここがマイページ
+            <LogoutButton />
+        </Box>
+    );
 });

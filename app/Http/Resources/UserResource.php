@@ -15,10 +15,9 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->resource->id,
             'username' => $this->resource->username,
             'emailVerified' => $this->resource->hasVerifiedEmail(),
-            'auth_provider' => $this->resource->auth_provider,
+            // 'auth_provider' => $this->resource->auth_provider,
         ];
     }
 }
