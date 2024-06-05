@@ -70,16 +70,6 @@ export const LoginPage: FC = memo(() => {
         }
     });
 
-    useEffect(() => {
-        console.log(user);
-        setEmailVerifyQuery(searchParams.toString());
-        if (user) {
-            navigate(
-                "/my-page" + (emailVerifyQuery ? "?" + emailVerifyQuery : "")
-            );
-        }
-    }, [user]) ;
-
     if (isLoading) return <LoadingPage />;
 
     return (

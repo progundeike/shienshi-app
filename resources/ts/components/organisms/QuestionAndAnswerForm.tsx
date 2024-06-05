@@ -11,8 +11,9 @@ import {
 import { FC, memo } from "react";
 import { questionData } from "../../states/question";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useAnswer } from "../../hooks/useAnswer";
 
-type Inputs = {
+export type AnswerInputs = {
     answer: {
         [id: string]: string;
     };
@@ -25,10 +26,17 @@ export const QuestionAndAnswerForm: FC = memo(() => {
         control,
         watch,
         formState: { errors },
-    } = useForm<Inputs>();
+    } = useForm<AnswerInputs>();
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log(data);
+    const { submitAnswer } = useAnswer();
+
+    const onSubmit: SubmitHandler<AnswerInputs> = (data) => {
+        console.log(questionData);
+        submitAnswer(
+            data,
+            questionData[0].examYear,
+            questionData[0].examSeason
+        );
     };
 
     return (
