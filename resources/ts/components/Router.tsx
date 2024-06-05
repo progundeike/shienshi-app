@@ -16,6 +16,7 @@ import { PrivateRoutes } from "./templates/PrivateRoutes";
 import { MyPage } from "./pages/MyPage";
 import { useAuth } from "../hooks/useAuth";
 import { userAtom } from "../states/userAtom";
+import { PreAuthRoutes } from "./templates/PreAuthRoutes";
 
 export const Router: FC = memo(() => {
     const { getUser } = useAuth();
@@ -33,12 +34,18 @@ export const Router: FC = memo(() => {
             <Routes>
                 <Route path="/" element={<TopPage />} />
 
-                <Route path="/exams" element={<ExamPage />} />
+                <Route path="/exams/:year" element={<ExamPage />} />
                 <Route path="/exams_list" element={<ExamsListPage />} />
                 <Route path="/sample" element={<ExamsPageSample />} />
 
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/terms" element={<TermsPage />} />
+
+                {/* ログイン前 */}
+                <Route element={<PreAuthRoutes />}>
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                </Route>
 
                 {/* ログイン後 */}
                 <Route element={<PrivateRoutes />}>
@@ -54,9 +61,6 @@ export const Router: FC = memo(() => {
                     /> */}
                 </Route>
 
-                {/* 認証 */}
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/login" element={<LoginPage />} />
                 {/* <Route
                     path="/forgot-password"
                     element={<ForgotPasswordPage />}

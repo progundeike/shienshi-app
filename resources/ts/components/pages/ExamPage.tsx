@@ -26,11 +26,13 @@ import Split from "react-split";
 
 import { QuestionAndAnswerForm } from "../organisms/QuestionAndAnswerForm";
 import { ExamHeader } from "../molecules/ExamHeader";
+import { useParams } from "react-router-dom";
 
 export const ExamPage: FC = memo(() => {
     const [numPages, setNumPages] = useState(1);
     const [leftPanelWidth, setLeftPanelWidth] = useState(0);
     const leftPanelRef = useRef<HTMLDivElement | null>(null);
+    const { year } = useParams();
 
     // Workerのパスを設定　現在はCDNを使用
     pdfjs.GlobalWorkerOptions.workerSrc =
@@ -46,6 +48,7 @@ export const ExamPage: FC = memo(() => {
     }
 
     useEffect(() => {
+        console.log(year);
         if (leftPanelRef.current) {
             const handleResize = () => {
                 setLeftPanelWidth(leftPanelRef.current?.clientWidth || 0);

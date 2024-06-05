@@ -7,12 +7,16 @@ export type Question = {
 };
 
 export type QuestionList = {
+    examYear: number;
+    examSeason: "spring" | "autumn";
     questionId: number;
     questions: Question[];
 };
 
 export const questionData: QuestionList[] = [
     {
+        examYear: 2023,
+        examSeason: "autumn",
         questionId: 1,
         questions: [
             {
@@ -35,6 +39,8 @@ export const questionData: QuestionList[] = [
         ],
     },
     {
+        examYear: 2023,
+        examSeason: "autumn",
         questionId: 2,
         questions: [
             {

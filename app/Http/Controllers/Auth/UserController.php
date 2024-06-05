@@ -12,7 +12,6 @@ class UserController extends Controller
 {
     public function getUserInfo(Request $request)
     {
-        Log::debug('getUserInfo');
         $user = Auth::user();
         if ($user) {
             return response()->json(new UserResource($user));
