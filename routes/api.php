@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\ExamController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [UserController::class, 'getUserInfo']);
@@ -11,3 +12,5 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::post('/answer', [AnswerController::class, 'storeAnswerInput']);
+
+Route::get('/questions/{examYear}-{examSeason}-{examId}', [ExamController::class, 'getQuestions']);

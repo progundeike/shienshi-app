@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 return new class extends Migration
 {
@@ -37,6 +39,17 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        // 初期データの挿入
+        // DB::table('users')->insert([
+        //     'username' => env('MODEL_ANSWER_USER_NAME'),
+        //     'password' => Hash::make(env('MODEL_ANSWER_USER_PASS')),
+        //     'auth_provider' => 'password',
+        //     'email_verified_at' => null,
+        //     'auth_id' => null,
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
     }
 
     /**

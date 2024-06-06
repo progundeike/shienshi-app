@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AnswerRequest;
 use Illuminate\Http\Request;
 use App\Models\Answer;
-use App\Models\AnswerSubmit;
+use App\Models\UserAnswer;
 use Illuminate\Support\Facades\Log;
 
 class AnswerController extends Controller
@@ -14,7 +14,7 @@ class AnswerController extends Controller
     {
         $data = $request->validated();
 
-        $answerSubmit = AnswerSubmit::create(
+        $userAnswer = UserAnswer::create(
             [
                 'user_id' => $data['userId'],
             ]
@@ -23,7 +23,7 @@ class AnswerController extends Controller
         $answers = $data['answers'];
         foreach ($answers as $answer) {
             Answer::create([
-                'submit_id' => $answerSubmit->id,
+                'submit_id' => $userAnswer->id,
                 'exam_year' => $data['examYear'],
                 'exam_season' => $data['examSeason'],
                 'question_id' => $answer['questionId'],
