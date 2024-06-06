@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('answers', function (Blueprint $table) {
+        Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('submit_id')->references('id')->on('user_answers')->onDelete('cascade');
             $table->string('exam_year');
             $table->enum('exam_season', ['haru', 'aki']);
+            $table->unsignedBigInteger('exam_id');
             $table->unsignedBigInteger('question_id');
             $table->unsignedBigInteger('sub_question_id');
-            $table->text('text')->nullable();
+            $table->text('text');
+            $table->string('type');
+            $table->json('options')->nullable();
+            $table->integer('max_length')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('answers');
+        Schema::dropIfExists('questions');
     }
 };

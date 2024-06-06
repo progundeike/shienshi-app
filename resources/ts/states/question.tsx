@@ -8,7 +8,7 @@ export type Question = {
 
 export type QuestionList = {
     examYear: number;
-    examSeason: "spring" | "autumn";
+    examSeason: "haru" | "aki";
     questionId: number;
     questions: Question[];
 };
@@ -16,7 +16,7 @@ export type QuestionList = {
 export const questionData: QuestionList[] = [
     {
         examYear: 2023,
-        examSeason: "autumn",
+        examSeason: "aki",
         questionId: 1,
         questions: [
             {
@@ -40,7 +40,7 @@ export const questionData: QuestionList[] = [
     },
     {
         examYear: 2023,
-        examSeason: "autumn",
+        examSeason: "aki",
         questionId: 2,
         questions: [
             {

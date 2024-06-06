@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('answers', function (Blueprint $table) {
+        Schema::create('model_answers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('submit_id')->references('id')->on('user_answers')->onDelete('cascade');
             $table->string('exam_year');
             $table->enum('exam_season', ['haru', 'aki']);
             $table->unsignedBigInteger('question_id');
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('answers');
+        Schema::dropIfExists('model_answers');
     }
 };
