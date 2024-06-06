@@ -1,15 +1,4 @@
-import {
-    Box,
-    Flex,
-    Input,
-    Text,
-    VStack,
-    RadioGroup,
-    Radio,
-    Stack,
-    Button,
-    Heading,
-} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import {
     FC,
     memo,
@@ -48,7 +37,6 @@ export const ExamPage: FC = memo(() => {
     }
 
     useEffect(() => {
-        console.log(year);
         if (leftPanelRef.current) {
             const handleResize = () => {
                 setLeftPanelWidth(leftPanelRef.current?.clientWidth || 0);
