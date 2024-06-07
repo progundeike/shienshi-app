@@ -41,15 +41,15 @@ return new class extends Migration
         });
 
         // 初期データの挿入
-        // DB::table('users')->insert([
-        //     'username' => env('MODEL_ANSWER_USER_NAME'),
-        //     'password' => Hash::make(env('MODEL_ANSWER_USER_PASS')),
-        //     'auth_provider' => 'password',
-        //     'email_verified_at' => null,
-        //     'auth_id' => null,
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
+        DB::table('users')->insert([
+            'username' => env('TEST_USER_NAME'),
+            'password' => Hash::make(env('TEST_USER_PASS')),
+            'auth_provider' => 'password',
+            'email_verified_at' => null,
+            'auth_id' => null,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 
     /**

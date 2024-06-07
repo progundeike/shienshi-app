@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class AnswerRequest extends FormRequest
 {
@@ -35,8 +36,8 @@ class AnswerRequest extends FormRequest
 
     protected function prepareForValidation()
     {
-        // ログイン前のユーザーの場合にエラーを回避してnullを返す
-        $userId = optional($this->user())->id;
+        // 答案提出はログインユーザーのみ許可
+        $userId = Auth::id();
 
         $answers = $this->input('answerInputs')['answer'];
         // answersの配列を回して、idを振り直す

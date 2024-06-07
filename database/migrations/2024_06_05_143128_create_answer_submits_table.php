@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exam_sentences', function (Blueprint $table) {
+        Schema::create('answer_submits', function (Blueprint $table) {
             $table->id();
-            $table->integer('exam_year');
-            $table->enum('exam_season', ['haru', 'aki']);
-            $table->unsignedBigInteger('exam_id');
-            $table->text('sentence');
-            $table->text('purpose')->nullable();
-            $table->text('review_comment')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exam_sentences');
+        Schema::dropIfExists('answer_submits');
     }
 };

@@ -29,12 +29,27 @@ export const useAnswer = () => {
             })
             .then((response) => {
                 console.log(response.data);
+
+                // 答案を提出して、レスポンスを処理する
+
+                return null;
             })
             .catch((error) => {
                 console.log(error);
-                // バリデーションエラー
-                if (error.response.status === 422) {
-                    return error.response.data;
+
+                // 認証エラー
+                if (error.response.status === 401) {
+                    toast({
+                        title: "認証エラー",
+                        description:
+                            "答案の提出にはログインが必要です。",
+                        status: "error",
+                        duration: 10000,
+                        isClosable: true,
+                        position: "bottom-right",
+                    });
+
+                    return null
                 }
 
                 // その他のエラー

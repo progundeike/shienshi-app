@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('exam_year');
             $table->enum('exam_season', ['haru', 'aki']);
+            $table->unsignedBigInteger('exam_id');
             $table->unsignedBigInteger('question_id');
             $table->unsignedBigInteger('sub_question_id');
             $table->text('text')->nullable();
