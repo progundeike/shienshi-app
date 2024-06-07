@@ -19,6 +19,8 @@ class ExamSentence extends Model
         'exam_year',
         'exam_season',
         'exam_id',
+        'sentence',
         'purpose',
+        'review_comment',
     ];
 }

@@ -9,8 +9,8 @@ use App\Http\Controllers\ExamController;
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [UserController::class, 'getUserInfo']);
     // Route::delete('/user', [UserController::class, 'deleteUser']);
+    Route::post('/answer', [AnswerController::class, 'run']);
 });
 
-Route::post('/answer', [AnswerController::class, 'storeAnswerInput']);
 
 Route::get('/questions/{examYear}-{examSeason}-{examId}', [ExamController::class, 'getQuestions']);
