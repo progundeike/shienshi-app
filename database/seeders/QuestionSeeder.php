@@ -22,9 +22,11 @@ class QuestionSeeder extends Seeder
                 'question_id' => 1,
                 'sub_question_id' => 1,
                 'type' => 'radio',
-                'text' => 'この攻撃で使われた XSS 脆弱性について答えよ。
+                'text' => <<<EOF
+                この攻撃で使われた XSS 脆弱性について答えよ。
 
-                (1) XSS脆弱性の種類を解答群の中から選び, 記号で答えよ。',
+                (1) XSS脆弱性の種類を解答群の中から選び, 記号で答えよ
+                EOF,
                 'options' => json_encode([
                     ['label' => 'ア DOM Based XSS', 'value' => 'ア'],
                     ['label' => 'イ 格納型 XSS', 'value' => 'イ'],
@@ -59,9 +61,11 @@ class QuestionSeeder extends Seeder
                 'question_id' => 3,
                 'sub_question_id' => 1,
                 'type' => 'textarea',
-                'text' => '図4のスクリプトについて答えよ。
+                'text' => <<<EOF
+                図4のスクリプトについて答えよ。
                 
-                (1) 図4の6~20行目の処理の内容を, 60字以内で答えよ。',
+                (1) 図4の6~20行目の処理の内容を, 60字以内で答えよ。
+                EOF,
                 'max_length' => 60,
             ],
             [
@@ -71,8 +75,7 @@ class QuestionSeeder extends Seeder
                 'question_id' => 3,
                 'sub_question_id' => 2,
                 'type' => 'textarea',
-                'text' => '(2) 攻撃者は, 図4のスクリプトによってアップロードされた情報をどのようにして取得できるか。取得する方法を, 50字以内で答えよ。
-                ',
+                'text' => '(2) 攻撃者は, 図4のスクリプトによってアップロードされた情報をどのようにして取得できるか。取得する方法を, 50字以内で答えよ。',
                 'max_length' => 50,
             ],
             [
