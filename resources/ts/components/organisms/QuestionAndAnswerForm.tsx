@@ -18,6 +18,7 @@ import { useAnswer } from "../../hooks/useAnswer";
 import { FetchedQuestion, Option, useExam } from "../../hooks/useExam";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "../../states/userAtom";
+import { Link } from "react-router-dom";
 
 export type AnswerInputs = {
     answer: {
@@ -139,18 +140,16 @@ export const QuestionAndAnswerForm: FC = memo(() => {
                                     </Text>
                                 </Box>
                                 <Flex justifyContent="center" gap="20px">
-                                    <Button
-                                        type="submit"
-                                        backgroundColor="green.200"
-                                    >
-                                        ログイン
-                                    </Button>
-                                    <Button
-                                        type="submit"
-                                        backgroundColor="blue.200"
-                                    >
-                                        ユーザー登録
-                                    </Button>
+                                    <Link to="/login">
+                                        <Button backgroundColor="green.200">
+                                            ログイン
+                                        </Button>
+                                    </Link>
+                                    <Link to="/register">
+                                        <Button backgroundColor="blue.200">
+                                            ユーザー登録
+                                        </Button>
+                                    </Link>
                                 </Flex>
                             </>
                         )}

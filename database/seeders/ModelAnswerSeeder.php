@@ -36,7 +36,7 @@ class ModelAnswerSeeder extends Seeder
                 'exam_season' => 'aki',
                 'exam_id' => 1,
                 'question_id' => 2,
-                'sub_question_id' => 1,
+                'sub_question_id' => 0,
                 'text' => 'HTMLがコメントアウトされ一つのスクリプトになるような投稿を複数回に分けて行った。',
             ],
             [
@@ -68,7 +68,7 @@ class ModelAnswerSeeder extends Seeder
                 'exam_season' => 'aki',
                 'exam_id' => 1,
                 'question_id' => 4,
-                'sub_question_id' => 1,
+                'sub_question_id' => 0,
                 'text' => 'スクリプトから別ドメインのURLに対してcookieが送られない仕組み',
             ],
         ];
