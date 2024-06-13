@@ -15,8 +15,9 @@ class AnswerController extends Controller
         $userAnswers = $this->storeAnswerInput($request);
 
         $controller = new AIcontroller($userAnswers);
-        $result = $controller->run();
-        // Log::debug(print_r($result, true));
+        $aiResponse = $controller->run();
+
+        return response()->json($aiResponse, 200);
     }
 
     private function storeAnswerInput(AnswerRequest $request): array
