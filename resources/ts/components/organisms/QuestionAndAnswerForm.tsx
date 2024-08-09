@@ -19,6 +19,8 @@ import { FetchedQuestion, Option, useExam } from "../../hooks/useExam";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "../../states/userAtom";
 import { Link } from "react-router-dom";
+import { DisplayAiResponse } from "./DisplayAiResponse";
+import { AskToAiArea } from "./AskToAiArea";
 
 export type AnswerInputs = {
     answer: {
@@ -26,8 +28,67 @@ export type AnswerInputs = {
     };
 };
 
+export type AiResponse = {
+    questionId: number;
+    subQuestionId: number;
+    rating: string;
+    comment: string;
+};
+
+const testResponse = [
+    {
+        questionId: 1,
+        subQuestionId: 1,
+        rating: "◯",
+        comment: "正解です。XSS脆弱性の種類は格納型 XSSです。",
+    },
+    {
+        questionId: 1,
+        subQuestionId: 2,
+        rating: "×",
+        comment:
+            "未回答のため、模範解答を提示します。「レビュータイトルを出力する前にエスケープ処理を施す。」",
+    },
+    {
+        questionId: 2,
+        subQuestionId: 0,
+        rating: "×",
+        comment:
+            "未回答のため、模範解答を提示します。「HTMLがコメントアウトされ一つのスクリプトになるような投稿を複数回に分けて行った。」",
+    },
+    {
+        questionId: 3,
+        subQuestionId: 1,
+        rating: "×",
+        comment:
+            "未回答のため、模範解答を提示します。「XHRのレスポンスから取得したトークンとともに、アイコン画像としてセッションIDをアップロードする。」",
+    },
+    {
+        questionId: 3,
+        subQuestionId: 2,
+        rating: "×",
+        comment:
+            "未回答のため、模範解答を提示します。「会員のアイコン画像をダウンロードして、そこからセッションIDの文字列を取り出す。」",
+    },
+    {
+        questionId: 3,
+        subQuestionId: 3,
+        rating: "×",
+        comment:
+            "未回答のため、模範解答を提示します。「ページVにアクセスした会員になりすまして、WebアプリQの機能を使う。」",
+    },
+    {
+        questionId: 4,
+        subQuestionId: 0,
+        rating: "×",
+        comment:
+            "未回答のため、模範解答を提示します。「スクリプトから別ドメインのURLに対してcookieが送られない仕組み」",
+    },
+];
+
 export const QuestionAndAnswerForm: FC = memo(() => {
     const [questions, setQuestions] = useState<FetchedQuestion[] | null>(null);
+    const [aiResponse, setAiResponse] = useState<AiResponse[] | null>(null);
     const user = useRecoilValue(userAtom);
     const {
         register,
@@ -39,9 +100,23 @@ export const QuestionAndAnswerForm: FC = memo(() => {
     const { fetchQuestions } = useExam();
     const { submitAnswer } = useAnswer();
 
-    const onSubmit: SubmitHandler<AnswerInputs> = (data) => {
-        console.log(questions);
-        submitAnswer(data, questions![0].examYear, questions![0].examSeason);
+    const onSubmit: SubmitHandler<AnswerInputs> = async (data) => {
+        try {
+            const response = await submitAnswer(
+                data,
+                questions![0].examYear,
+                questions![0].examSeason
+            );
+
+            // const response = testResponse;
+            if (response) {
+                setAiResponse(response);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+
+        return;
     };
 
     useEffect(() => {
@@ -68,7 +143,8 @@ export const QuestionAndAnswerForm: FC = memo(() => {
                     {questions &&
                         questions.map((question, index) => (
                             <Fragment key={index}>
-                                {question.subQuestionId == 1 && (
+                                {(question.subQuestionId == 1 ||
+                                    question.subQuestionId == 0) && (
                                     <Text>設問{question.questionId}</Text>
                                 )}
 
@@ -123,6 +199,26 @@ export const QuestionAndAnswerForm: FC = memo(() => {
                                         </>
                                     )}
                                 </Box>
+
+                                {/* 添削結果 */}
+                                {aiResponse && (
+                                    <>
+                                        <DisplayAiResponse
+                                            questionId={question.questionId}
+                                            subQuestionId={
+                                                question.subQuestionId
+                                            }
+                                            aiResponse={aiResponse}
+                                        ></DisplayAiResponse>
+
+                                        <AskToAiArea
+                                            questionId={question.questionId}
+                                            subQuestionId={
+                                                question.subQuestionId
+                                            }
+                                        />
+                                    </>
+                                )}
                             </Fragment>
                         ))}
 

@@ -20,13 +20,10 @@ export default defineConfig({
         tsconfigPaths(),
     ],
     server: {
-        // https: {
-        //     key: fs.readFileSync('/var/www/html/ssl/live/favorite-item.com/privkey.pem'),
-        //     cert: fs.readFileSync('/var/www/html/ssl/live/favorite-item.com/fullchain.pem'),
-        // },
         host: true,
         hmr: {
-            host: 'localhost',
+            host: '127.0.0.4',
+            // host: 'localhost',
         },
         mimeTypes: {
             'application/javascript': ['mjs'],

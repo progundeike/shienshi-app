@@ -13,7 +13,8 @@ class AIcontroller extends Controller
 {
     const USD_TO_JPY = 156.0;
     // protected $model = 'gpt-4o';
-    protected $model = 'gpt-3.5-turbo-0125';
+    // protected $model = 'gpt-3.5-turbo-0125';
+    protected $model = 'gpt-4o-mini';
 
     protected $examYear;
     protected $examSeason;
@@ -31,13 +32,60 @@ class AIcontroller extends Controller
 
     public function run()
     {
-        Log::debug('AIcontroller run');
         // プロンプトは <SystemPrompt> <Question> <UserAnswer> の3つから構成される
         $systemPrompt = $this->getSystemPrompt();
         $questionPrompt = $this->buildQuestionPrompt();
         $userAnswerPrompt = $this->buildUserAnswerPrompt();
         $prompt = array_merge($systemPrompt, $questionPrompt, $userAnswerPrompt);
         Log::debug(print_r($prompt, true));
+
+        // APIのコストを抑えるために、デバック中はいったんここでリターン
+        return [
+            [
+                'questionId' => 1,
+                'subQuestionId' => 1,
+                'rating' => '×',
+                'comment' => '選択肢の中で正しいのはイ（格納型 XSS）であり、ア（DOM Based XSS）は誤りである。'
+            ],
+            [
+                'questionId' => 1,
+                'subQuestionId' => 2,
+                'rating' => '×',
+                'comment' => 'この問いは未回答であり、模範解答は「レビュータイトルを出力する前にエスケープ処理を施す。」である。'
+            ],
+            [
+                'questionId' => 2,
+                'subQuestionId' => 0,
+                'rating' => '×',
+                'comment' => '設問2が未回答であり、模範解答は「HTMLがコメントアウトされ一つのスクリプトになるような投稿を複数回に分けて行った。」である。'
+
+            ],
+            [
+                'questionId' => 3,
+                'subQuestionId' => 1,
+                'rating' => '×',
+                'comment' => '未回答であり、模範解答は「XHRのレスポンスから取得したトークンとともに, アイコン画像としてセッションIDをアップロードする。」である。'
+            ],
+            [
+                'questionId' => 3,
+                'subQuestionId' => 2,
+                'rating' => '×',
+                'comment' => '未回答であり、模範解答は「会員のアイコン画像をダウンロードして, そこからセッションIDの文字列を取り出す。」である。'
+
+            ],
+            [
+                'questionId' => 3,
+                'subQuestionId' => 3,
+                'rating' => '×',
+                'comment' => '未回答であり、模範解答は「ページVにアクセスした会員になりすまして, WebアプリQの機能を使う。」である。'
+            ],
+            [
+                'questionId' => 4,
+                'subQuestionId' => 0,
+                'rating' => '×',
+                'comment' => '未回答であり、模範解答は「スクリプトから別ドメインのURLに対してcookieが送られない仕組み」である。'
+            ]
+        ];
 
         $sampleParameters = [
             'type' => 'object',
@@ -53,7 +101,7 @@ class AIcontroller extends Controller
                             ],
                             'subQuestionId' => [
                                 'type' => 'integer',
-                                'description' => '設問に複数の小問がある場合の小問番号。(1), (2)など',
+                                'description' => '設問に複数の小問がある場合の小問番号。(1), (2)など。ない場合は0をセット',
                             ],
                             'rating' => [
                                 'type' => 'string',
@@ -64,27 +112,39 @@ class AIcontroller extends Controller
                                 'description' => '採点根拠を簡潔に記述する',
                             ],
                         ],
+                        'required' => ['questionId', 'subQuestionId', 'rating', 'comment'],
                     ]
                 ],
             ],
-            'required' => ['questionId', 'subQuestionId', 'rating', 'comment'],
+            'required' => ['evaluations'],
         ];
 
-        $result = OpenAI::chat()->create([
-            'model' => $this->model,
-            'messages' => $prompt,
-            'functions' => [
-                [
-                    'name' => 'reviewUserAnswer',
-                    'description' => 'AIによる採点とコメントの生成をJson形式で返す。未回答に対しては模範解答を提示する。',
-                    'parameters' => $sampleParameters,
-                ]
-            ],
-            'function_call' => 'auto',
-        ]);
-        Log::debug(print_r($result, true));
+        $retryCount = 0;
+        $maxRetries = 3;
+        $result = null;
 
-        // 例外処理
+        do {
+            $result = OpenAI::chat()->create([
+                'model' => $this->model,
+                'messages' => $prompt,
+                'functions' => [
+                    [
+                        'name' => 'reviewUserAnswer',
+                        'description' => 'AIによる採点とコメントの生成をJson形式で返す。未回答に対しては模範解答を提示する。',
+                        'parameters' => $sampleParameters,
+                    ]
+                ],
+                'function_call' => 'auto',
+            ]);
+            Log::debug(print_r($result, true));
+
+            $retryCount++;
+        } while ($result->choices[0]->finishReason !== 'function_call' && $retryCount < $maxRetries);
+
+        if ($result->choices[0]->finishReason !== 'function_call') {
+            Log::error('Failed to call function');
+            return [];
+        }
 
         $arguments = json_decode($result->choices[0]->message->functionCall->arguments, true);
         $evaluations = $arguments['evaluations'];
@@ -105,6 +165,8 @@ class AIcontroller extends Controller
         }
 
         $this->debugTokenCosts($result->usage->promptTokens, $result->usage->completionTokens);
+
+        Log::debug(print_r($aiResponse, true));
 
         return $aiResponse;
     }
@@ -246,6 +308,9 @@ class AIcontroller extends Controller
         } elseif ($this->model === 'gpt-4o') {
             $promptCostPerMillion = 5;
             $completionCostPerMillion = 15;
+        } elseif ($this->model === 'gpt-4o-mini') {
+            $promptCostPerMillion = 0.15;
+            $completionCostPerMillion = 0.6;
         } else {
             return;
         }
