@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserAnswer extends Model
+class UserAiDialogue extends Model
 {
     use HasFactory;
 
@@ -16,14 +16,9 @@ class UserAnswer extends Model
      */
     protected $fillable = [
         'id',
-        'user_id',
-        'year',
-        'season',
-        'section',
         'question_number',
         'sub_question_number',
-        'user_text',
-        'ai_rating',
-        'ai_text',
+        'user_question',
+        'ai_answer',
     ];
 }

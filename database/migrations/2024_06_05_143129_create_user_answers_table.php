@@ -13,12 +13,16 @@ return new class extends Migration
     {
         Schema::create('user_answers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('submit_id')->references('id')->on('answer_submits')->onDelete('cascade');
-            $table->string('exam_year');
-            $table->enum('exam_season', ['haru', 'aki']);
-            $table->unsignedBigInteger('question_id');
-            $table->unsignedBigInteger('sub_question_id');
-            $table->text('text')->nullable();
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('year');
+            $table->enum('season', ['haru', 'aki']);
+            $table->unsignedBigInteger('section');
+            $table->unsignedBigInteger('question_number');
+            $table->unsignedBigInteger('sub_question_number');
+
+            $table->text('user_text')->nullable();
+            $table->text('ai_rating')->nullable();
+            $table->text('ai_text')->nullable();
             $table->timestamps();
         });
     }

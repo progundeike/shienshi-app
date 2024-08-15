@@ -34,7 +34,10 @@ export const Router: FC = memo(() => {
             <Routes>
                 <Route path="/" element={<TopPage />} />
 
-                <Route path="/exams/:year" element={<ExamPage />} />
+                <Route
+                    path="/exams/:year/:season/:section"
+                    element={<ExamPage />}
+                />
                 <Route path="/exams_list" element={<ExamsListPage />} />
                 <Route path="/sample" element={<ExamsPageSample />} />
 

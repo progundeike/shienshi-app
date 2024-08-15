@@ -3,21 +3,22 @@ import { FC, memo } from "react";
 
 type Props = {
     aiResponse: {
-        questionId: number;
-        subQuestionId: number;
+        questionNumber: number;
+        subQuestionNumber: number;
         rating: string;
         comment: string;
     }[];
-    questionId: number;
-    subQuestionId: number;
+    questionNumber: number;
+    subQuestionNumber: number;
 };
 
 export const DisplayAiResponse: FC<Props> = memo((Props) => {
-    const { aiResponse, questionId, subQuestionId } = Props;
+    const { aiResponse, questionNumber, subQuestionNumber } = Props;
 
     const response = aiResponse.find(
         (res: any) =>
-            res.questionId === questionId && res.subQuestionId === subQuestionId
+            res.questionNumber === questionNumber &&
+            res.subQuestionNumber === subQuestionNumber
     );
 
     if (!response) return null;

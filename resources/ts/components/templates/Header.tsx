@@ -48,7 +48,7 @@ export const Header: FC = memo(() => {
                                 <Text fontSize={fontSize}>ABOUT</Text>
                             </VStack>
                         </Link>
-                        <Link to="/exams/2023">exam</Link>
+                        <Link to="/exams/2023/haru/1">exam</Link>
                         <Link to="/exams_list">試験一覧</Link>
 
                         {user ? (

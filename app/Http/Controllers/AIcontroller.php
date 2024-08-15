@@ -6,86 +6,94 @@ use Illuminate\Http\Request;
 use OpenAI\Laravel\Facades\OpenAI;
 use Illuminate\Support\Facades\Log;
 use App\Models\ExamSentence;
+use App\Models\UserAnswer;
 use App\Models\ModelAnswer;
 use App\Models\Question;
+use App\Http\Controllers\ExamController;
+use Illuminate\Support\Facades\Auth;
 
-class AIcontroller extends Controller
+class AiController extends Controller
 {
     const USD_TO_JPY = 156.0;
     // protected $model = 'gpt-4o';
     // protected $model = 'gpt-3.5-turbo-0125';
     protected $model = 'gpt-4o-mini';
 
-    protected $examYear;
-    protected $examSeason;
-    protected $examId;
+    protected $year;
+    protected $season;
+    protected $section;
     protected $userAnswers;
+    protected $examController;
 
+    protected $dummyResponse = [
+        [
+            'questionNumber' => 1,
+            'subQuestionNumber' => 1,
+            'rating' => '×',
+            'comment' => '選択肢の中で正しいのはイ（格納型 XSS）であり、ア（DOM Based XSS）は誤りである。'
+        ],
+        [
+            'questionNumber' => 1,
+            'subQuestionNumber' => 2,
+            'rating' => '×',
+            'comment' => 'この問いは未回答であり、模範解答は「レビュータイトルを出力する前にエスケープ処理を施す。」である。'
+        ],
+        [
+            'questionNumber' => 2,
+            'subQuestionNumber' => 0,
+            'rating' => '×',
+            'comment' => '設問2が未回答であり、模範解答は「HTMLがコメントアウトされ一つのスクリプトになるような投稿を複数回に分けて行った。」である。'
+
+        ],
+        [
+            'questionNumber' => 3,
+            'subQuestionNumber' => 1,
+            'rating' => '×',
+            'comment' => '未回答であり、模範解答は「XHRのレスポンスから取得したトークンとともに, アイコン画像としてセッションIDをアップロードする。」である。'
+        ],
+        [
+            'questionNumber' => 3,
+            'subQuestionNumber' => 2,
+            'rating' => '×',
+            'comment' => '未回答であり、模範解答は「会員のアイコン画像をダウンロードして, そこからセッションIDの文字列を取り出す。」である。'
+
+        ],
+        [
+            'questionNumber' => 3,
+            'subQuestionNumber' => 3,
+            'rating' => '×',
+            'comment' => '未回答であり、模範解答は「ページVにアクセスした会員になりすまして, WebアプリQの機能を使う。」である。'
+        ],
+        [
+            'questionNumber' => 4,
+            'subQuestionNumber' => 0,
+            'rating' => '×',
+            'comment' => '未回答であり、模範解答は「スクリプトから別ドメインのURLに対してcookieが送られない仕組み」である。'
+        ]
+    ];
 
     public function __construct(array $userAnswers)
     {
-        $this->examYear = $userAnswers[0]['examYear'];
-        $this->examSeason = $userAnswers[0]['examSeason'];
-        $this->examId = $userAnswers[0]['questionId'];
+        $this->year = $userAnswers[0]['year'];
+        $this->season = $userAnswers[0]['season'];
+        $this->section = $userAnswers[0]['questionNumber'];
         $this->userAnswers = $userAnswers;
+
+        $this->examController = new ExamController();
     }
 
     public function run()
     {
+        Log::debug('AiController run');
         // プロンプトは <SystemPrompt> <Question> <UserAnswer> の3つから構成される
         $systemPrompt = $this->getSystemPrompt();
         $questionPrompt = $this->buildQuestionPrompt();
         $userAnswerPrompt = $this->buildUserAnswerPrompt();
         $prompt = array_merge($systemPrompt, $questionPrompt, $userAnswerPrompt);
-        Log::debug(print_r($prompt, true));
+        // Log::debug(print_r($prompt, true));
 
         // APIのコストを抑えるために、デバック中はいったんここでリターン
-        return [
-            [
-                'questionId' => 1,
-                'subQuestionId' => 1,
-                'rating' => '×',
-                'comment' => '選択肢の中で正しいのはイ（格納型 XSS）であり、ア（DOM Based XSS）は誤りである。'
-            ],
-            [
-                'questionId' => 1,
-                'subQuestionId' => 2,
-                'rating' => '×',
-                'comment' => 'この問いは未回答であり、模範解答は「レビュータイトルを出力する前にエスケープ処理を施す。」である。'
-            ],
-            [
-                'questionId' => 2,
-                'subQuestionId' => 0,
-                'rating' => '×',
-                'comment' => '設問2が未回答であり、模範解答は「HTMLがコメントアウトされ一つのスクリプトになるような投稿を複数回に分けて行った。」である。'
-
-            ],
-            [
-                'questionId' => 3,
-                'subQuestionId' => 1,
-                'rating' => '×',
-                'comment' => '未回答であり、模範解答は「XHRのレスポンスから取得したトークンとともに, アイコン画像としてセッションIDをアップロードする。」である。'
-            ],
-            [
-                'questionId' => 3,
-                'subQuestionId' => 2,
-                'rating' => '×',
-                'comment' => '未回答であり、模範解答は「会員のアイコン画像をダウンロードして, そこからセッションIDの文字列を取り出す。」である。'
-
-            ],
-            [
-                'questionId' => 3,
-                'subQuestionId' => 3,
-                'rating' => '×',
-                'comment' => '未回答であり、模範解答は「ページVにアクセスした会員になりすまして, WebアプリQの機能を使う。」である。'
-            ],
-            [
-                'questionId' => 4,
-                'subQuestionId' => 0,
-                'rating' => '×',
-                'comment' => '未回答であり、模範解答は「スクリプトから別ドメインのURLに対してcookieが送られない仕組み」である。'
-            ]
-        ];
+        // return $this->dummyResponse;
 
         $sampleParameters = [
             'type' => 'object',
@@ -95,11 +103,11 @@ class AIcontroller extends Controller
                     'items' => [
                         'type' => 'object',
                         'properties' => [
-                            'questionId' => [
+                            'questionNumber' => [
                                 'type' => 'integer',
                                 'description' => '設問番号',
                             ],
-                            'subQuestionId' => [
+                            'subQuestionNumber' => [
                                 'type' => 'integer',
                                 'description' => '設問に複数の小問がある場合の小問番号。(1), (2)など。ない場合は0をセット',
                             ],
@@ -112,7 +120,7 @@ class AIcontroller extends Controller
                                 'description' => '採点根拠を簡潔に記述する',
                             ],
                         ],
-                        'required' => ['questionId', 'subQuestionId', 'rating', 'comment'],
+                        'required' => ['questionNumber', 'subQuestionNumber', 'rating', 'comment'],
                     ]
                 ],
             ],
@@ -152,16 +160,31 @@ class AIcontroller extends Controller
         $aiResponse = [];
         foreach ($evaluations as $evaluation) {
 
-            // subQuestionIdがない場合は0をセット
-            if (!isset($evaluation['subQuestionId'])) {
-                $evaluation['subQuestionId'] = 0;
+            // subQuestionNumberがない場合は0をセット
+            if (!isset($evaluation['subQuestionNumber'])) {
+                $evaluation['subQuestionNumber'] = 0;
             }
             $aiResponse[] = [
-                'questionId' => $evaluation['questionId'],
-                'subQuestionId' => $evaluation['subQuestionId'],
+                'questionNumber' => $evaluation['questionNumber'],
+                'subQuestionNumber' => $evaluation['subQuestionNumber'],
                 'rating' => $evaluation['rating'],
                 'comment' => $evaluation['comment'],
             ];
+        }
+
+        // AIの回答をDBに保存　将来的にキューを使って非同期で保存したほうが良いかも
+        $userId = Auth::id();
+        foreach ($aiResponse as $response) {
+            UserAnswer::where([
+                'user_id' => $userId,
+                'year' => $this->year,
+                'season' => $this->season,
+                'question_number' => $response['questionNumber'],
+                'sub_question_number' => $response['subQuestionNumber'],
+            ])->update([
+                'ai_rating' => $response['rating'],
+                'ai_text' => $response['comment'],
+            ]);
         }
 
         $this->debugTokenCosts($result->usage->promptTokens, $result->usage->completionTokens);
@@ -171,64 +194,30 @@ class AIcontroller extends Controller
         return $aiResponse;
     }
 
-    private function fetchExamSentences(): array
-    {
-        $examData = ExamSentence::where('exam_year', $this->examYear)
-            ->where('exam_season', $this->examSeason)
-            ->where('exam_id', $this->examId)
-            ->first();
+    // ユーザーからの質問に回答するために、指定された設問を取得する
+    // private function fetchSingleQuestion(int $questionNumber, int $subQuestionNumber)
+    // {
+    //     $result = Question::where('year', $this->year)
+    //         ->where('season', $this->season)
+    //         ->where('section', $this->section)
+    //         ->where('question_number', $questionNumber)
+    //         ->where('sub_question_number', $subQuestionNumber)
+    //         ->first();
 
-        return [
-            'sentence' => $examData->sentence,
-            'purpose' => $examData->purpose,
-            'review_comment' => $examData->review_comment,
-        ];
-    }
-
-    private function fetchQuestions()
-    {
-        $result = Question::where('exam_year', $this->examYear)
-            ->where('exam_season', $this->examSeason)
-            ->where('exam_id', $this->examId)
-            ->get();
-
-        $questions = $result->map(function ($question) {
-            $text = $question->text;
-
-            // 選択肢の問題の場合は選択肢をデコードする
-            if ($question->type === 'radio') {
-                $options = json_decode($question->options);
-
-                $labels = array_map(function ($option) {
-                    return $option->label;
-                }, $options);
-
-                $commaSeparatedLabels = implode(', ', $labels);
-
-                $text = $text . '解答群[' . $commaSeparatedLabels . ']';
-            }
-
-            return [
-                'questionId' => $question->question_id,
-                'subQuestionId' => $question->sub_question_id,
-                'text' => $text,
-            ];
-        });
-
-        return $questions;
-    }
+    //     return $result;
+    // }
 
     private function fetchModelAnswer()
     {
-        $result = ModelAnswer::where('exam_year', $this->examYear)
-            ->where('exam_season', $this->examSeason)
-            ->where('exam_id', $this->examId)
+        $result = ModelAnswer::where('year', $this->year)
+            ->where('season', $this->season)
+            ->where('section', $this->section)
             ->get();
 
         $modelAnswer = $result->map(function ($answer) {
             return [
-                'questionId' => $answer->question_id,
-                'subQuestionId' => $answer->sub_question_id,
+                'questionNumber' => $answer->question_number,
+                'subQuestionNumber' => $answer->sub_question_number,
                 'text' => $answer->text,
             ];
         });
@@ -238,18 +227,18 @@ class AIcontroller extends Controller
 
     private function buildQuestionPrompt()
     {
-        $examData = $this->fetchExamSentences();
+        $examData = $this->examController->fetchExamSentences($this->year, $this->season, $this->section);
         $sentence = $examData['sentence']; // 問題文
 
         // 各設問と解答を連結
-        $questionsArray = $this->fetchQuestions();
+        $questionsArray = $this->examController->fetchExamQuestions($this->year, $this->season, $this->section);
         $modelAnswerArray = $this->fetchModelAnswer();
 
         $length = count($questionsArray);
         $questionAndAnswerText = '';
         for ($i = 0; $i < $length; $i++) {
-            if ($questionsArray[$i]['subQuestionId'] === 1) {
-                $questionAndAnswerText .= '設問' . $questionsArray[$i]['questionId'] . ' ';
+            if ($questionsArray[$i]['subQuestionNumber'] === 1) {
+                $questionAndAnswerText .= '設問' . $questionsArray[$i]['questionNumber'] . ' ';
             }
             $questionAndAnswerText .= $questionsArray[$i]['text'] . PHP_EOL;
             $questionAndAnswerText .= '[模範解答:' . $modelAnswerArray[$i]['text'] . ']' . PHP_EOL . PHP_EOL;
@@ -278,13 +267,13 @@ class AIcontroller extends Controller
 
         $userAnswerText = '';
         for ($i = 0; $i < $length; $i++) {
-            $userAnswerText .= '設問' . $this->userAnswers[$i]['questionId'] . ' ';
-            if ($this->userAnswers[$i]['subQuestionId'] !== 0) {
-                $userAnswerText .= '(' . $this->userAnswers[$i]['subQuestionId'] . ') ';
+            $userAnswerText .= '設問' . $this->userAnswers[$i]['questionNumber'] . ' ';
+            if ($this->userAnswers[$i]['subQuestionNumber'] !== 0) {
+                $userAnswerText .= '(' . $this->userAnswers[$i]['subQuestionNumber'] . ') ';
             }
 
-            if ($this->userAnswers[$i]['text']) {
-                $userAnswerText .= $this->userAnswers[$i]['text'] . PHP_EOL;
+            if ($this->userAnswers[$i]['user_text']) {
+                $userAnswerText .= $this->userAnswers[$i]['user_text'] . PHP_EOL;
             } else {
                 $userAnswerText .= '未回答' . PHP_EOL;
             };

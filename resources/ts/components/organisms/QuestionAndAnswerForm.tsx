@@ -29,57 +29,57 @@ export type AnswerInputs = {
 };
 
 export type AiResponse = {
-    questionId: number;
-    subQuestionId: number;
+    questionNumber: number;
+    subQuestionNumber: number;
     rating: string;
     comment: string;
 };
 
 const testResponse = [
     {
-        questionId: 1,
-        subQuestionId: 1,
+        questionNumber: 1,
+        subQuestionNumber: 1,
         rating: "◯",
         comment: "正解です。XSS脆弱性の種類は格納型 XSSです。",
     },
     {
-        questionId: 1,
-        subQuestionId: 2,
+        questionNumber: 1,
+        subQuestionNumber: 2,
         rating: "×",
         comment:
             "未回答のため、模範解答を提示します。「レビュータイトルを出力する前にエスケープ処理を施す。」",
     },
     {
-        questionId: 2,
-        subQuestionId: 0,
+        questionNumber: 2,
+        subQuestionNumber: 0,
         rating: "×",
         comment:
             "未回答のため、模範解答を提示します。「HTMLがコメントアウトされ一つのスクリプトになるような投稿を複数回に分けて行った。」",
     },
     {
-        questionId: 3,
-        subQuestionId: 1,
+        questionNumber: 3,
+        subQuestionNumber: 1,
         rating: "×",
         comment:
             "未回答のため、模範解答を提示します。「XHRのレスポンスから取得したトークンとともに、アイコン画像としてセッションIDをアップロードする。」",
     },
     {
-        questionId: 3,
-        subQuestionId: 2,
+        questionNumber: 3,
+        subQuestionNumber: 2,
         rating: "×",
         comment:
             "未回答のため、模範解答を提示します。「会員のアイコン画像をダウンロードして、そこからセッションIDの文字列を取り出す。」",
     },
     {
-        questionId: 3,
-        subQuestionId: 3,
+        questionNumber: 3,
+        subQuestionNumber: 3,
         rating: "×",
         comment:
             "未回答のため、模範解答を提示します。「ページVにアクセスした会員になりすまして、WebアプリQの機能を使う。」",
     },
     {
-        questionId: 4,
-        subQuestionId: 0,
+        questionNumber: 4,
+        subQuestionNumber: 0,
         rating: "×",
         comment:
             "未回答のため、模範解答を提示します。「スクリプトから別ドメインのURLに対してcookieが送られない仕組み」",
@@ -104,8 +104,9 @@ export const QuestionAndAnswerForm: FC = memo(() => {
         try {
             const response = await submitAnswer(
                 data,
-                questions![0].examYear,
-                questions![0].examSeason
+                questions![0].year,
+                questions![0].season,
+                questions![0].section
             );
 
             // const response = testResponse;
@@ -143,9 +144,9 @@ export const QuestionAndAnswerForm: FC = memo(() => {
                     {questions &&
                         questions.map((question, index) => (
                             <Fragment key={index}>
-                                {(question.subQuestionId == 1 ||
-                                    question.subQuestionId == 0) && (
-                                    <Text>設問{question.questionId}</Text>
+                                {(question.subQuestionNumber == 1 ||
+                                    question.subQuestionNumber == 0) && (
+                                    <Text>設問{question.questionNumber}</Text>
                                 )}
 
                                 <Box>
@@ -170,7 +171,7 @@ export const QuestionAndAnswerForm: FC = memo(() => {
                                                                     option.value
                                                                 }
                                                                 {...register(
-                                                                    `answer.${question.questionId}-${question.subQuestionId}`
+                                                                    `answer.${question.questionNumber}-${question.subQuestionNumber}`
                                                                 )}
                                                             >
                                                                 {option.label}
@@ -183,14 +184,14 @@ export const QuestionAndAnswerForm: FC = memo(() => {
                                         <>
                                             <Textarea
                                                 {...register(
-                                                    `answer.${question.questionId}-${question.subQuestionId}`
+                                                    `answer.${question.questionNumber}-${question.subQuestionNumber}`
                                                 )}
                                             />
                                             {question.maxLength && (
                                                 <Box textAlign="right">
                                                     (
                                                     {watch(
-                                                        `answer.${question.questionId}-${question.subQuestionId}`,
+                                                        `answer.${question.questionNumber}-${question.subQuestionNumber}`,
                                                         ""
                                                     ).length || 0}
                                                     /{question.maxLength}字)
@@ -204,17 +205,21 @@ export const QuestionAndAnswerForm: FC = memo(() => {
                                 {aiResponse && (
                                     <>
                                         <DisplayAiResponse
-                                            questionId={question.questionId}
-                                            subQuestionId={
-                                                question.subQuestionId
+                                            questionNumber={
+                                                question.questionNumber
+                                            }
+                                            subQuestionNumber={
+                                                question.subQuestionNumber
                                             }
                                             aiResponse={aiResponse}
                                         ></DisplayAiResponse>
 
                                         <AskToAiArea
-                                            questionId={question.questionId}
-                                            subQuestionId={
-                                                question.subQuestionId
+                                            questionNumber={
+                                                question.questionNumber
+                                            }
+                                            subQuestionNumber={
+                                                question.subQuestionNumber
                                             }
                                         />
                                     </>

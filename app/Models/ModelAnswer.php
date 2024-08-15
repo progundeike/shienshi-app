@@ -16,11 +16,11 @@ class ModelAnswer extends Model
      */
     protected $fillable = [
         'id',
-        'exam_year',
-        'exam_season',
-        'exam_id',
-        'question_id',
-        'sub_question_id',
+        'year',
+        'season',
+        'section',
+        'question_number',
+        'sub_question_number',
         'text',
     ];
 }

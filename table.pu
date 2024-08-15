@@ -1,0 +1,82 @@
+@startuml お気に入り品投稿サイトのER図
+'hide the spot
+hide circle
+' 斜めの線を無くす
+skinparam linetype ortho
+
+entity "users"  {
+  id
+  --
+  username
+  password
+  email
+  auth_provider
+  auth_id
+}
+
+entity "answer_submits"  {
+  id
+  --
+  user_id
+}
+
+entity "exam_sentences" {
+  id
+  --
+  year
+  season
+  section
+  sentence
+  purpose
+  review_comment
+}
+
+entity "model_answers" {
+  id
+  --
+  year
+  season
+  section
+  question_number
+  sub_question_number
+  text
+}
+
+entity "questions" {
+  id
+  --
+  year
+  season
+  section
+  question_number
+  sub_question_number
+  type
+  text
+  options
+  max_length
+}
+
+entity "user_ai_dialogues" {
+  id
+  --
+  question_number
+  sub_question_number
+  user_question
+  ai_answer
+}
+
+entity "user_answers" {
+  id
+  --
+  year
+  season
+  question_number
+  sub_question_number
+  text
+}
+
+
+' リレーション
+
+
+@enduml

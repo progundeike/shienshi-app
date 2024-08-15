@@ -16,9 +16,9 @@ class ExamSentence extends Model
      */
     protected $fillable = [
         'id',
-        'exam_year',
-        'exam_season',
-        'exam_id',
+        'year',
+        'season',
+        'section',
         'sentence',
         'purpose',
         'review_comment',
