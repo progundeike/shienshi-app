@@ -7,9 +7,6 @@ import {
 import { axiosInstance } from "./axiosInstance";
 import { loadingAtom } from "../states/loadingAtom";
 import { AiResponse, AnswerInputs } from "../components/organisms/QuestionAndAnswerForm";
-import { set } from "react-hook-form";
-
-
 
 export const useAnswer = () => {
     const [isLoading, setIsLoading] = useRecoilState(loadingAtom);
@@ -19,22 +16,23 @@ export const useAnswer = () => {
         answerInputs: AnswerInputs,
         year: number,
         season: string,
+        section: number,
     ): Promise<AiResponse[] | null> => {
         setIsLoading(true);
-        // console.log(answerInputs);
+
+        console.log(answerInputs);
 
         try {
             const response = await axiosInstance
             .post<ErrorResponse | AiResponse[] | null>("/api/answer", {
                 answerInputs,
                 year,
-                season
+                season,
+                section,
             })
 
-            console.log(response);
-
             // 成功
-            if (response.data && Array.isArray(response.data) && response.data[0].questionId) {
+            if (response.data && Array.isArray(response.data) && response.data[0].questionNumber) {
                 return response.data as AiResponse[];
             }
 

@@ -24,38 +24,34 @@ class AnswerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'userId' => 'integer|nullable',
-            'examYear' => 'required|integer',
-            'examSeason' => 'required|string',
+            'year' => 'required|integer',
+            'season' => 'required|string',
+            'section' => 'required|integer',
             'answers' => 'required|array',
-            'answers.*.questionId' => 'required|integer',
-            'answers.*.subQuestionId' => 'required|integer',
-            'answers.*.text' => 'string|nullable',
+            'answers.*.questionNumber' => 'required|integer',
+            'answers.*.subQuestionNumber' => 'required|integer',
+            'answers.*.user_text' => 'string|nullable',
         ];
     }
 
     protected function prepareForValidation()
     {
-        // 答案提出はログインユーザーのみ許可
-        $userId = Auth::id();
-
         $answers = $this->input('answerInputs')['answer'];
         // answersの配列を回して、idを振り直す
         $formattedAnswers = [];
         foreach ($answers as $answerId => $text) {
             // answerIdは'1-2'のような形式で送られてくる
-            list($questionId, $subQuestionId) = explode('-', $answerId);
+            list($questionNumber, $subQuestionNumber) = explode('-', $answerId);
             $formattedAnswers[] = [
-                'questionId' => (int) $questionId,
-                'subQuestionId' => (int) $subQuestionId,
-                'text' => $text,
+                'questionNumber' => (int) $questionNumber,
+                'subQuestionNumber' => (int) $subQuestionNumber,
+                'user_text' => $text,
             ];
         };
 
         $this->merge([
-            'userId' => $userId,
-            'examYear' => $this->input('year'),
-            'examSeason' => $this->input('season'),
+            'year' => $this->input('year'),
+            'season' => $this->input('season'),
             'answers' => $formattedAnswers,
         ]);
     }

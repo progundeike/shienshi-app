@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\UserAnswer;
 use App\Models\AnswerSubmit;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class AnswerController extends Controller
 {
@@ -23,34 +24,37 @@ class AnswerController extends Controller
     private function storeAnswerInput(AnswerRequest $request): array
     {
         $data = $request->validated();
-
-        $answerSubmit = AnswerSubmit::create(
-            [
-                'user_id' => $data['userId'],
-            ]
-        );
+        $userId = Auth::id();
 
         $answers = $data['answers'];
         $createdAnswers = [];
 
         foreach ($answers as $answer) {
+            // ユーザーの回答を保存、更新する。AIの評価と回答はnullで初期化
             $createdAnswer =
-                UserAnswer::create([
-                    'submit_id' => $answerSubmit->id,
-                    'exam_year' => $data['examYear'],
-                    'exam_season' => $data['examSeason'],
-                    'question_id' => $answer['questionId'],
-                    'sub_question_id' => $answer['subQuestionId'],
-                    'text' => $answer['text'],
-                ]);
+                UserAnswer::updateOrCreate(
+                    [
+                        'user_id' => $userId,
+                        'year' => $data['year'],
+                        'season' => $data['season'],
+                        'section' => $data['section'],
+                        'question_number' => $answer['questionNumber'],
+                        'sub_question_number' => $answer['subQuestionNumber'],
+                    ],
+                    [
+                        'user_text' => $answer['user_text'],
+                        'ai_rating' => null,
+                        'ai_text' => null,
+                    ]
+                );
 
             $createdAnswers[] = [
-                'submitId' => $createdAnswer->submit_id,
-                'examYear' => $createdAnswer->exam_year,
-                'examSeason' => $createdAnswer->exam_season,
-                'questionId' => $createdAnswer->question_id,
-                'subQuestionId' => $createdAnswer->sub_question_id,
-                'text' => $createdAnswer->text,
+                'year' => $createdAnswer->year,
+                'season' => $createdAnswer->season,
+                'section' => $createdAnswer->section,
+                'questionNumber' => $createdAnswer->question_number,
+                'subQuestionNumber' => $createdAnswer->sub_question_number,
+                'user_text' => $createdAnswer->user_text,
             ];
         }
 

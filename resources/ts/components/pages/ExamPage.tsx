@@ -21,7 +21,7 @@ export const ExamPage: FC = memo(() => {
     const [numPages, setNumPages] = useState(1);
     const [leftPanelWidth, setLeftPanelWidth] = useState(0);
     const leftPanelRef = useRef<HTMLDivElement | null>(null);
-    const { year } = useParams();
+    const { year, season } = useParams();
 
     // Workerのパスを設定　現在はCDNを使用
     pdfjs.GlobalWorkerOptions.workerSrc =

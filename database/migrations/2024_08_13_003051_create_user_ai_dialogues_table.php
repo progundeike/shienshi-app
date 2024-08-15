@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exam_sentences', function (Blueprint $table) {
+        Schema::create('user_ai_dialogues', function (Blueprint $table) {
             $table->id();
-            $table->integer('year');
-            $table->enum('season', ['haru', 'aki']);
-            $table->unsignedBigInteger('section');
-            $table->text('sentence');
-            $table->text('purpose')->nullable();
-            $table->text('review_comment')->nullable();
+            $table->unsignedBigInteger('question_number');
+            $table->unsignedBigInteger('sub_question_number');
+            $table->text('user_question');
+            $table->text('ai_answer');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exam_sentences');
+        Schema::dropIfExists('user_ai_dialogues');
     }
 };

@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('model_answers', function (Blueprint $table) {
             $table->id();
-            $table->string('exam_year');
-            $table->enum('exam_season', ['haru', 'aki']);
-            $table->unsignedBigInteger('exam_id');
-            $table->unsignedBigInteger('question_id');
-            $table->unsignedBigInteger('sub_question_id');
+            $table->string('year');
+            $table->enum('season', ['haru', 'aki']);
+            $table->unsignedBigInteger('section');
+            $table->unsignedBigInteger('question_number');
+            $table->unsignedBigInteger('sub_question_number');
             $table->text('text')->nullable();
             $table->timestamps();
         });

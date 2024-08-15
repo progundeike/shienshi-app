@@ -8,11 +8,11 @@ import { axiosInstance } from "./axiosInstance";
 import { loadingAtom } from "../states/loadingAtom";
 
 export type FetchedQuestion = {
-    examYear: number;
-    examSeason: string;
-    examId: number;
-    questionId: number;
-    subQuestionId: number;
+    year: number;
+    season: string;
+    section: number;
+    questionNumber: number;
+    subQuestionNumber: number;
     type: string;
     text: string;
     options: Option[] | null; // JSON文字列
@@ -29,13 +29,13 @@ export const useExam = () => {
     const toast = useToast();
 
     const fetchQuestions = async (
-        examYear: number,
-        examSeason: string,
-        examId: number
+        year: number,
+        season: string,
+        section: number
     ): Promise<FetchedQuestion[] | null> => {
         setIsLoading(true);
         return await axiosInstance
-            .get(`/api/questions/${examYear}-${examSeason}-${examId}`)
+            .get(`/api/questions/${year}-${season}-${section}`)
             .then((response) => {
                 return response.data;
             })
