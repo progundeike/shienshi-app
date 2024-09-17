@@ -27,7 +27,7 @@ class QuestionRequest extends FormRequest
             'section' => 'required|integer',
             'questionNumber' => 'required|integer',
             'subQuestionNumber' => 'required|integer',
-            'question' => 'required|string',
+            'message' => 'required|string',
         ];
     }
 }

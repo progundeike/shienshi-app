@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('user_ai_dialogues', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('year');
+            $table->enum('season', ['haru', 'aki']);
+            $table->unsignedBigInteger('section');
             $table->unsignedBigInteger('question_number');
             $table->unsignedBigInteger('sub_question_number');
             $table->text('user_question');

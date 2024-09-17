@@ -12,7 +12,7 @@ type Props = {
     subQuestionNumber: number;
 };
 
-export const DisplayAiResponse: FC<Props> = memo((Props) => {
+export const DisplayAIResponse: FC<Props> = memo((Props) => {
     const { aiResponse, questionNumber, subQuestionNumber } = Props;
 
     const response = aiResponse.find(

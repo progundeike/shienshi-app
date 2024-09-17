@@ -9,13 +9,6 @@ import { loadingAtom } from "../states/loadingAtom";
 import { AnswerInputs } from "../components/organisms/QuestionAndAnswerForm";
 import { set } from "react-hook-form";
 
-type AIResponse = {
-    questionNumber: number;
-    subQuestionNumber: number;
-    rating: string;
-    comment: string;
-};
-
 export const useQuestion = () => {
     const [isLoading, setIsLoading] = useRecoilState(loadingAtom);
     const toast = useToast();
@@ -26,27 +19,29 @@ export const useQuestion = () => {
         section: number,
         questionNumber: number,
         subQuestionNumber: number,
-        question: string,
-    ): Promise<AIResponse[] | null> => {
+        message: string,
+    ): Promise<string> => {
         setIsLoading(true);
 
         try {
             const response = await axiosInstance
-            .post<ErrorResponse | AIResponse[] | null>("/api/question", {
+            .post<ErrorResponse | string | null>("/api/question", {
                 year: year,
                 season: season,
                 section: section,
                 questionNumber: questionNumber,
                 subQuestionNumber: subQuestionNumber,
-                question: question,
+                message: message,
             })
 
             console.log(response);
 
             // 成功
-
+            if (response.status === 200 && typeof response.data === "string") {
+                return response.data;
+            }
             // 失敗
-            return null;
+            return '';
         } catch (error) {
             console.log(error);
 
@@ -59,7 +54,7 @@ export const useQuestion = () => {
                 isClosable: true,
                 position: "bottom-right",
             });
-            return null;
+            return '';
         } finally {
                 setIsLoading(false);
         }
