@@ -18,9 +18,9 @@ import { useAnswer } from "../../hooks/useAnswer";
 import { FetchedQuestion, Option, useExam } from "../../hooks/useExam";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "../../states/userAtom";
-import { Link } from "react-router-dom";
-import { DisplayAiResponse } from "./DisplayAiResponse";
-import { AskToAiArea } from "./AskToAiArea";
+import { Link, useParams } from "react-router-dom";
+import { DisplayAIResponse } from "./DisplayAIResponse";
+import { AskToAIArea } from "./AskToAIArea";
 
 export type AnswerInputs = {
     answer: {
@@ -99,6 +99,7 @@ export const QuestionAndAnswerForm: FC = memo(() => {
     } = useForm<AnswerInputs>();
     const { fetchQuestions } = useExam();
     const { submitAnswer } = useAnswer();
+    const { year, season, section } = useParams();
 
     const onSubmit: SubmitHandler<AnswerInputs> = async (data) => {
         try {
@@ -121,12 +122,24 @@ export const QuestionAndAnswerForm: FC = memo(() => {
     };
 
     useEffect(() => {
-        fetchQuestions(2023, "aki", 1).then((data) => {
-            if (data) {
-                setQuestions(data);
-            }
-        });
+        if (year && season && section) {
+            fetchQuestions(parseInt(year), season, parseInt(section)).then(
+                (data) => {
+                    if (data) {
+                        setQuestions(data);
+                    }
+                }
+            );
+        }
     }, []);
+
+    if (!questions) {
+        return (
+            <Box>
+                設問が取得できませんでした。しばらく経ってから再度お試しください
+            </Box>
+        );
+    }
 
     return (
         <>
@@ -204,7 +217,7 @@ export const QuestionAndAnswerForm: FC = memo(() => {
                                 {/* 添削結果 */}
                                 {aiResponse && (
                                     <>
-                                        <DisplayAiResponse
+                                        <DisplayAIResponse
                                             questionNumber={
                                                 question.questionNumber
                                             }
@@ -212,9 +225,9 @@ export const QuestionAndAnswerForm: FC = memo(() => {
                                                 question.subQuestionNumber
                                             }
                                             aiResponse={aiResponse}
-                                        ></DisplayAiResponse>
+                                        ></DisplayAIResponse>
 
-                                        <AskToAiArea
+                                        <AskToAIArea
                                             questionNumber={
                                                 question.questionNumber
                                             }

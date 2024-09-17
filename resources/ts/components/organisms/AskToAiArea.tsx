@@ -1,8 +1,10 @@
 import { Box, Button, Text, Textarea, Flex, Card } from "@chakra-ui/react";
 import { FC, memo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { useQuestion } from "../../hooks/useQuestion";
 import { useParams } from "react-router-dom";
+import { DialogueBox } from "../atoms/DialogueBox";
+import { Dialogue } from "../../types/form";
 
 type Props = {
     questionNumber: number;
@@ -10,21 +12,26 @@ type Props = {
 };
 
 type Input = {
-    question: string;
+    message: string;
 };
 
-export const AskToAiArea: FC<Props> = memo((props) => {
+export const AskToAIArea: FC<Props> = memo((props) => {
     const { questionNumber, subQuestionNumber } = props;
     const [isOpen, setIsOpen] = useState(false);
     const { submitQuestion } = useQuestion();
     const { year, season, section } = useParams();
-
-    const { register, handleSubmit } = useForm<Input>();
+    const [dialogues, setDialogues] = useState<Dialogue[]>([]);
+    const { register, handleSubmit, reset } = useForm<Input>();
 
     const onSubmit = async (data: Input) => {
         if (!year || !season || !section) {
             return;
         }
+
+        setDialogues((prevDialogues) => [
+            ...prevDialogues,
+            { role: "user", message: data.message },
+        ]);
 
         const response = await submitQuestion(
             parseInt(year),
@@ -32,11 +39,25 @@ export const AskToAiArea: FC<Props> = memo((props) => {
             parseInt(section),
             questionNumber,
             subQuestionNumber,
-            data.question
+            data.message
         );
 
-        console.log(response);
+        reset();
+
+        if (!response) {
+            return;
+        }
+
+        setDialogues((prevDialogues) => [
+            ...prevDialogues,
+            {
+                role: "assistant",
+                message: response,
+            },
+        ]);
     };
+
+    console.log(dialogues);
 
     return (
         <>
@@ -57,7 +78,12 @@ export const AskToAiArea: FC<Props> = memo((props) => {
                                 </Button>
                             </Flex>
 
-                            <Textarea {...register("question")} />
+                            {/* 会話履歴を表示する */}
+                            {dialogues.map((dialogue, index) => (
+                                <DialogueBox key={index} dialogue={dialogue} />
+                            ))}
+
+                            <Textarea {...register("message")} />
                             <Flex justifyContent="flex-end">
                                 <Button onClick={handleSubmit(onSubmit)}>
                                     質問を送信

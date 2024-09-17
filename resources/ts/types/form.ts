@@ -28,3 +28,8 @@ export type ErrorResponse = {
         [key: string]: string[];
     };
 };
+
+export type Dialogue = {
+    role: "user" | "assistant";
+    message: string;
+};
