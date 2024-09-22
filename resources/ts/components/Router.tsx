@@ -1,6 +1,5 @@
 import { FC, memo, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import { useRecoilValue } from "recoil";
 
 import { TopPage } from "./pages/TopPage";
 import { Page404 } from "./pages/Page404";
@@ -15,12 +14,10 @@ import { TermsPage } from "./pages/TermsPage";
 import { PrivateRoutes } from "./templates/PrivateRoutes";
 import { MyPage } from "./pages/MyPage";
 import { useAuth } from "../hooks/useAuth";
-import { userAtom } from "../states/userAtom";
 import { PreAuthRoutes } from "./templates/PreAuthRoutes";
 
 export const Router: FC = memo(() => {
     const { getUser } = useAuth();
-    const user = useRecoilValue(userAtom);
 
     const fetchUser = async () => {
         await getUser();

@@ -1,12 +1,12 @@
 import { Outlet, Navigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
 import { userAtom } from "../../states/userAtom";
 import { loadingAtom } from "../../states/loadingAtom";
 import { LoadingPage } from "../pages/LoadingPage";
+import { useAtomValue } from "jotai";
 
 export const PreAuthRoutes = () => {
-    const user = useRecoilValue(userAtom);
-    const isLoading = useRecoilValue(loadingAtom);
+    const user = useAtomValue(userAtom);
+    const isLoading = useAtomValue(loadingAtom);
 
     if (isLoading) {
         return <LoadingPage />;

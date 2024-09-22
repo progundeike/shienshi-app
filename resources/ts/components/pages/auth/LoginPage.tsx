@@ -16,9 +16,9 @@ import {
 } from "@chakra-ui/react";
 import { memo, FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
 import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
 import { useNavigate, Link, useSearchParams } from "react-router-dom";
+import { useAtomValue } from "jotai";
 
 import { useAuth } from "../../../hooks/useAuth";
 import { userAtom } from "../../../states/userAtom";
@@ -30,11 +30,12 @@ import { SubmitButton } from "../../atoms/SubmitButton";
 
 export const LoginPage: FC = memo(() => {
     const [searchParams] = useSearchParams();
-    const [user] = useRecoilState(userAtom);
+    const user = useAtomValue(userAtom);
+
     const navigate = useNavigate();
     const [emailVerifyQuery, setEmailVerifyQuery] = useState("");
     const { login } = useAuth();
-    const [isLoading, setIsLoading] = useRecoilState(loadingAtom);
+    const isLoading = useAtomValue(loadingAtom);
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const {

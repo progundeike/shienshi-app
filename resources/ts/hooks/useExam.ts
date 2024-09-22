@@ -1,5 +1,5 @@
 import { useToast } from "@chakra-ui/react";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 
 import {
     ErrorResponse,
@@ -25,7 +25,7 @@ export type Option = {
 }
 
 export const useExam = () => {
-    const [isLoading, setIsLoading] = useRecoilState(loadingAtom);
+    const [isLoading, setIsLoading] = useAtom(loadingAtom);
     const toast = useToast();
 
     const fetchQuestions = async (

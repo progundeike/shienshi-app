@@ -1,16 +1,16 @@
 import { Box, Flex, Heading, Icon, Text, VStack } from "@chakra-ui/react";
 import { FC, memo } from "react";
 import { Link } from "react-router-dom";
-import { useRecoilValue } from "recoil";
 import { GrCircleInformation } from "react-icons/gr";
 import { FaUserCircle } from "react-icons/fa";
 import { AiOutlineUser } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
+import { useAtomValue } from "jotai";
 
 import { userAtom } from "../../states/userAtom";
 
 export const Header: FC = memo(() => {
-    const user = useRecoilValue(userAtom);
+    const user = useAtomValue(userAtom);
     const iconSize = "30px";
     const fontSize = "14px";
 

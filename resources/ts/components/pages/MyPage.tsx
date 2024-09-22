@@ -1,12 +1,13 @@
 import { FC, memo } from "react";
 import { Box, Button } from "@chakra-ui/react";
 import { LogoutButton } from "../atoms/LogoutButton";
-import { useRecoilValue } from "recoil";
 import { userAtom } from "../../states/userAtom";
 import { useNavigate } from "react-router-dom";
+import { useAtomValue } from "jotai";
 
 export const MyPage: FC = memo(() => {
-    const user = useRecoilValue(userAtom);
+    const user = useAtomValue(userAtom);
+
     const navigate = useNavigate();
 
     if (!user) {
