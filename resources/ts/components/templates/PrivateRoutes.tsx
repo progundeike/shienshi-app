@@ -1,13 +1,13 @@
 import { Outlet, Navigate, useLocation } from "react-router-dom";
-import { useRecoilValue } from "recoil";
 import { userAtom } from "../../states/userAtom";
 import { loadingAtom } from "../../states/loadingAtom";
 import { LoadingPage } from "../pages/LoadingPage";
+import { useAtomValue } from "jotai";
 
 export const PrivateRoutes = () => {
-    const user = useRecoilValue(userAtom);
+    const user = useAtomValue(userAtom);
     const location = useLocation();
-    const isLoading = useRecoilValue(loadingAtom);
+    const isLoading = useAtomValue(loadingAtom);
 
     if (isLoading) {
         return <LoadingPage />;

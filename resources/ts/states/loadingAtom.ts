@@ -1,6 +1,3 @@
-import { atom } from "recoil";
+import { atom } from 'jotai';
 
-export const loadingAtom = atom<boolean>({
-    key: "loadingAtom",
-    default: true,
-});
+export const loadingAtom = atom<boolean>(false);

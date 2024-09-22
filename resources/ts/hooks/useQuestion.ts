@@ -1,5 +1,5 @@
 import { useToast } from "@chakra-ui/react";
-import { useRecoilState } from "recoil";
+import { useAtom } from "jotai";
 
 import {
     ErrorResponse,
@@ -10,7 +10,7 @@ import { AnswerInputs } from "../components/organisms/QuestionAndAnswerForm";
 import { set } from "react-hook-form";
 
 export const useQuestion = () => {
-    const [isLoading, setIsLoading] = useRecoilState(loadingAtom);
+    const [isLoading, setIsLoading] = useAtom(loadingAtom);
     const toast = useToast();
 
     const submitQuestion = async (

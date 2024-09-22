@@ -1,7 +1,4 @@
-import { atom } from "recoil";
-import { User } from "../types/user";
+import { atom } from 'jotai';
+import { User } from '../types/user';
 
-export const userAtom = atom<User | null>({
-    key: "userAtom",
-    default: null,
-});
+export const userAtom = atom<User | null>(null);

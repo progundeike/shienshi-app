@@ -8,17 +8,15 @@ import {
     Text,
     Textarea,
     Flex,
-    HStack,
-    Center,
 } from "@chakra-ui/react";
 import { FC, memo, useEffect, useState, Fragment } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { Link, useParams } from "react-router-dom";
+import { useAtomValue } from "jotai";
 
+import { userAtom } from "../../states/userAtom";
 import { useAnswer } from "../../hooks/useAnswer";
 import { FetchedQuestion, Option, useExam } from "../../hooks/useExam";
-import { useRecoilValue } from "recoil";
-import { userAtom } from "../../states/userAtom";
-import { Link, useParams } from "react-router-dom";
 import { DisplayAIResponse } from "./DisplayAIResponse";
 import { AskToAIArea } from "./AskToAIArea";
 
@@ -33,6 +31,7 @@ export type AiResponse = {
     subQuestionNumber: number;
     rating: string;
     comment: string;
+    user_text: string;
 };
 
 const testResponse = [
@@ -41,6 +40,7 @@ const testResponse = [
         subQuestionNumber: 1,
         rating: "◯",
         comment: "正解です。XSS脆弱性の種類は格納型 XSSです。",
+        user_text: "イ",
     },
     {
         questionNumber: 1,
@@ -48,6 +48,7 @@ const testResponse = [
         rating: "×",
         comment:
             "未回答のため、模範解答を提示します。「レビュータイトルを出力する前にエスケープ処理を施す。」",
+        user_text: "",
     },
     {
         questionNumber: 2,
@@ -55,6 +56,7 @@ const testResponse = [
         rating: "×",
         comment:
             "未回答のため、模範解答を提示します。「HTMLがコメントアウトされ一つのスクリプトになるような投稿を複数回に分けて行った。」",
+        user_text: "",
     },
     {
         questionNumber: 3,
@@ -62,6 +64,7 @@ const testResponse = [
         rating: "×",
         comment:
             "未回答のため、模範解答を提示します。「XHRのレスポンスから取得したトークンとともに、アイコン画像としてセッションIDをアップロードする。」",
+        user_text: "",
     },
     {
         questionNumber: 3,
@@ -69,6 +72,7 @@ const testResponse = [
         rating: "×",
         comment:
             "未回答のため、模範解答を提示します。「会員のアイコン画像をダウンロードして、そこからセッションIDの文字列を取り出す。」",
+        user_text: "",
     },
     {
         questionNumber: 3,
@@ -76,6 +80,7 @@ const testResponse = [
         rating: "×",
         comment:
             "未回答のため、模範解答を提示します。「ページVにアクセスした会員になりすまして、WebアプリQの機能を使う。」",
+        user_text: "",
     },
     {
         questionNumber: 4,
@@ -83,13 +88,15 @@ const testResponse = [
         rating: "×",
         comment:
             "未回答のため、模範解答を提示します。「スクリプトから別ドメインのURLに対してcookieが送られない仕組み」",
+        user_text: "",
     },
 ];
 
 export const QuestionAndAnswerForm: FC = memo(() => {
     const [questions, setQuestions] = useState<FetchedQuestion[] | null>(null);
     const [aiResponse, setAiResponse] = useState<AiResponse[] | null>(null);
-    const user = useRecoilValue(userAtom);
+    const user = useAtomValue(userAtom);
+
     const {
         register,
         handleSubmit,
@@ -103,14 +110,14 @@ export const QuestionAndAnswerForm: FC = memo(() => {
 
     const onSubmit: SubmitHandler<AnswerInputs> = async (data) => {
         try {
-            const response = await submitAnswer(
-                data,
-                questions![0].year,
-                questions![0].season,
-                questions![0].section
-            );
+            // const response = await submitAnswer(
+            //     data,
+            //     questions![0].year,
+            //     questions![0].season,
+            //     questions![0].section
+            // );
 
-            // const response = testResponse;
+            const response = testResponse;
             if (response) {
                 setAiResponse(response);
             }
@@ -195,20 +202,31 @@ export const QuestionAndAnswerForm: FC = memo(() => {
                                         </RadioGroup>
                                     ) : (
                                         <>
-                                            <Textarea
-                                                {...register(
-                                                    `answer.${question.questionNumber}-${question.subQuestionNumber}`
-                                                )}
-                                            />
-                                            {question.maxLength && (
-                                                <Box textAlign="right">
-                                                    (
-                                                    {watch(
-                                                        `answer.${question.questionNumber}-${question.subQuestionNumber}`,
-                                                        ""
-                                                    ).length || 0}
-                                                    /{question.maxLength}字)
-                                                </Box>
+                                            {!aiResponse && (
+                                                <>
+                                                    <Textarea
+                                                        {...register(
+                                                            `answer.${question.questionNumber}-${question.subQuestionNumber}`
+                                                        )}
+                                                        readOnly={
+                                                            aiResponse
+                                                                ? true
+                                                                : false
+                                                        }
+                                                    />
+                                                    {question.maxLength && (
+                                                        <Box textAlign="right">
+                                                            (
+                                                            {watch(
+                                                                `answer.${question.questionNumber}-${question.subQuestionNumber}`,
+                                                                ""
+                                                            ).length || 0}
+                                                            /
+                                                            {question.maxLength}
+                                                            字)
+                                                        </Box>
+                                                    )}
+                                                </>
                                             )}
                                         </>
                                     )}
@@ -217,6 +235,8 @@ export const QuestionAndAnswerForm: FC = memo(() => {
                                 {/* 添削結果 */}
                                 {aiResponse && (
                                     <>
+                                        {/* <DisplayUserAnswer /> */}
+
                                         <DisplayAIResponse
                                             questionNumber={
                                                 question.questionNumber

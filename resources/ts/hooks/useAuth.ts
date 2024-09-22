@@ -1,9 +1,10 @@
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { atom, useAtom } from "jotai";
+import { loadingAtom } from "../states/loadingAtom";
 
-import { userAtom } from "../states/userAtom";
+// import { userAtom } from "../states/userAtom";
 import {
     ErrorResponse,
     PasswordResetFormInput,
@@ -11,11 +12,14 @@ import {
 } from "../types/form";
 import { User } from "../types/user";
 import { axiosInstance } from "./axiosInstance";
-import { loadingAtom } from "../states/loadingAtom";
+// import { loadingAtom } from "../states/loadingAtom";
+import { userAtom } from "../states/userAtom";
 
 export const useAuth = () => {
-    const [isLoading, setIsLoading] = useRecoilState(loadingAtom);
-    const [user, setUser] = useRecoilState(userAtom);
+    const [isLoading, setIsLoading] = useAtom(loadingAtom);
+
+    const [user, setUser] = useAtom(userAtom);
+
     const navigate = useNavigate();
     const toast = useToast();
 
@@ -95,7 +99,7 @@ export const useAuth = () => {
     };
 
     const getUser = async () => {
-        setIsLoading(true);
+        // setIsLoading(true);
         axios
             .get<User>("/api/user")
             .then((response) => {
@@ -106,13 +110,13 @@ export const useAuth = () => {
             })
             .catch((error) => console.log(error))
             .finally(() => {
-                setIsLoading(false);
+                // setIsLoading(false);
             });
     };
 
     const deleteUser = async () => {
         try {
-            setIsLoading(true);
+            // setIsLoading(true);
             await axios.delete("/api/user");
             setUser(null);
             toast({
@@ -126,7 +130,7 @@ export const useAuth = () => {
         } catch (error: any) {
             console.log(error);
         } finally {
-            setIsLoading(false);
+            // setIsLoading(false);
         }
     };
 

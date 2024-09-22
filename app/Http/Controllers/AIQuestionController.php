@@ -49,28 +49,7 @@ class AIQuestionController extends Controller
         $userAnswerContent = $examController->convertUserAnswerToText([$userAnswer]);
 
         // これまでの質問とその回答を取得
-        $results = UserAiDialogue::where('user_id', $userId)
-            ->where('year', $year)
-            ->where('season', $season)
-            ->where('section', $section)
-            ->where('question_number', $questionNumber)
-            ->where('sub_question_number', $subQuestionNumber)
-            ->get();
-
-        if ($results->isEmpty()) {
-            $dialogues = [];
-        } else {
-            foreach ($results as $result) {
-                $dialogues[] = [
-                    'role' => 'user',
-                    'content' => $result->user_question,
-                ];
-                $dialogues[] = [
-                    'role' => 'assistant',
-                    'content' => $result->ai_answer,
-                ];
-            }
-        }
+        $dialogues = $this->fetchDialogues($year, $season, $section, $questionNumber, $subQuestionNumber, $userId);
 
         // これまでの質問とその回答に新しい質問を追加してAIに投げる
         $dialogues[] = [
@@ -94,7 +73,7 @@ class AIQuestionController extends Controller
         // dialoguesをpromptに追加
         $prompt = array_merge($prompt, $dialogues);
 
-        Log::debug($prompt);
+        // Log::debug($prompt);
 
         // AIに投げる
         // $controller = new AIcontroller();
@@ -124,6 +103,35 @@ class AIQuestionController extends Controller
 
         // AIの回答を返す
         return response()->json($aiMessage, 200);
+    }
+
+    // これまでの対話履歴を取得する
+    public function fetchDialogues(int $year, string $season, int $section, int $questionNumber, int $subQuestionNumber, int $userId)
+    {
+        $results = UserAiDialogue::where('user_id', $userId)
+            ->where('year', $year)
+            ->where('season', $season)
+            ->where('section', $section)
+            ->where('question_number', $questionNumber)
+            ->where('sub_question_number', $subQuestionNumber)
+            ->get();
+
+        if ($results->isEmpty()) {
+            $dialogues = [];
+        } else {
+            foreach ($results as $result) {
+                $dialogues[] = [
+                    'role' => 'user',
+                    'content' => $result->user_question,
+                ];
+                $dialogues[] = [
+                    'role' => 'assistant',
+                    'content' => $result->ai_answer,
+                ];
+            }
+        }
+
+        return $dialogues;
     }
 
     // 質問用の設問は１つだけ渡される前提

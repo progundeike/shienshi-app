@@ -18,11 +18,11 @@ import { memo, FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
+import { useAtom } from "jotai";
 
 import { useAuth } from "../../../hooks/useAuth";
 import { RegisterFormInput } from "../../../types/form";
 import { loadingAtom } from "../../../states/loadingAtom";
-import { useRecoilState } from "recoil";
 import { Card } from "../../templates/Card";
 import { SubmitButton } from "../../atoms/SubmitButton";
 
@@ -30,6 +30,8 @@ const MIN_USERNAME_LENGTH = 8;
 const MAX_USERNAME_LENGTH = 50;
 
 const PASSWORD_MIN_LENGTH = 8;
+
+// TODO: loadingの処理を追加する
 
 export const RegisterPage: FC = memo(() => {
     const { registerUser } = useAuth();
@@ -40,7 +42,7 @@ export const RegisterPage: FC = memo(() => {
         watch,
         formState: { errors },
     } = useForm<RegisterFormInput>();
-    const [isLoading, setIsLoading] = useRecoilState(loadingAtom);
+    const [isLoading, setIsLoading] = useAtom(loadingAtom);
     const usernameLength = watch("username")?.length || 0;
 
     const [showPassword, setShowPassword] = useState(false);

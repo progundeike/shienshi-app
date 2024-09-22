@@ -1,13 +1,10 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { FC, memo } from "react";
 
+import { AiResponse } from "./QuestionAndAnswerForm";
+
 type Props = {
-    aiResponse: {
-        questionNumber: number;
-        subQuestionNumber: number;
-        rating: string;
-        comment: string;
-    }[];
+    aiResponse: AiResponse[];
     questionNumber: number;
     subQuestionNumber: number;
 };
@@ -24,9 +21,18 @@ export const DisplayAIResponse: FC<Props> = memo((Props) => {
     if (!response) return null;
 
     return (
-        <Box backgroundColor="yellow.200" mb="10px" p="5px">
-            <Box>評価: {response.rating}</Box>
-            <Box>{response.comment}</Box>
+        <Box>
+            <Box>
+                <Text>
+                    あなたの解答:{" "}
+                    {response.user_text ? response.user_text : "提出なし"}
+                </Text>
+                <Text></Text>
+            </Box>
+            <Box backgroundColor="yellow.200" mb="10px" p="5px">
+                <Box>評価: {response.rating}</Box>
+                <Box>{response.comment}</Box>
+            </Box>
         </Box>
     );
 });

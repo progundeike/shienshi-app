@@ -32,7 +32,7 @@ class AnswerController extends Controller
         //     ],
         // ]
         $userAnswers = $this->storeAnswerInput($request);
-        $userAnswerContent = $examController->convertUserAnswerToText($userAnswers);
+        $userAnswerText = $examController->convertUserAnswerToText($userAnswers);
 
         // 問題文を取得
         $examSentence = $examController->fetchExamSentences($year, $season, $section);
@@ -51,7 +51,7 @@ class AnswerController extends Controller
             ],
             [
                 'role' => 'user',
-                'content' => '<UserAnswer>' . $userAnswerContent . '</UserAnswer>',
+                'content' => '<UserAnswer>' . $userAnswerText . '</UserAnswer>',
             ],
         ];
 
@@ -83,21 +83,65 @@ class AnswerController extends Controller
 
         // AIの回答をDBに保存　将来的にキューを使って非同期で保存したほうが良いかも
         $userId = Auth::id();
+
+        $userAnswersAndCorrections = [];
         foreach ($aiResponse as $response) {
-            UserAnswer::where([
+            // 更新する行の特定
+            $query = UserAnswer::where([
                 'user_id' => $userId,
                 'year' => $year,
                 'season' => $season,
                 'question_number' => $response['questionNumber'],
                 'sub_question_number' => $response['subQuestionNumber'],
-            ])->update([
+            ]);
+
+            // データを更新
+            $query->update([
                 'ai_rating' => $response['rating'],
                 'ai_text' => $response['comment'],
             ]);
+
+            // 更新されたデータを取得
+            $updatedAnswer = $query->first();
+
+            $userAnswersAndCorrections[] = [
+                'year' => $updatedAnswer->year,
+                'season' => $updatedAnswer->season,
+                'section' => $updatedAnswer->section,
+                'questionNumber' => $updatedAnswer->question_number,
+                'subQuestionNumber' => $updatedAnswer->sub_question_number,
+                'user_text' => $updatedAnswer->user_text,
+                'ai_rating' => $updatedAnswer->ai_rating,
+                'ai_text' => $updatedAnswer->ai_text,
+            ];
         }
 
         // AIの回答を返す
-        return response()->json($aiResponse, 200);
+        return response()->json($userAnswersAndCorrections, 200);
+    }
+
+    // ユーザーの回答とAIの添削を取得する
+    public function fetchAnswerAndCorrection(int $year, string $season, int $section)
+    {
+        $userId = Auth::id();
+
+        $userAnswers = UserAnswer::where('user_id', $userId)
+            ->where('year', $year)
+            ->where('season', $season)
+            ->where('section', $section)
+            ->get();
+
+        $answers = $userAnswers->map(function ($answer) {
+            return [
+                'questionNumber' => $answer->question_number,
+                'subQuestionNumber' => $answer->sub_question_number,
+                'user_text' => $answer->user_text,
+                'ai_rating' => $answer->ai_rating,
+                'ai_text' => $answer->ai_text,
+            ];
+        });
+
+        return $answers->toArray();
     }
 
     // ユーザーの回答を保存、更新する
@@ -107,7 +151,7 @@ class AnswerController extends Controller
         $userId = Auth::id();
 
         $answers = $data['answers'];
-        $createdAnswers = [];
+        $userAnswers = [];
 
         foreach ($answers as $answer) {
             // ユーザーの回答を保存、更新する。AIの評価と回答はnullで初期化
@@ -128,7 +172,7 @@ class AnswerController extends Controller
                     ]
                 );
 
-            $createdAnswers[] = [
+            $userAnswers[] = [
                 'year' => $createdAnswer->year,
                 'season' => $createdAnswer->season,
                 'section' => $createdAnswer->section,
@@ -138,7 +182,7 @@ class AnswerController extends Controller
             ];
         }
 
-        return $createdAnswers;
+        return $userAnswers;
     }
 
     private function buildQuestionPrompt(array $examSentence, array $examQuestions, array $modelAnswers): string
