@@ -121,15 +121,24 @@ class AnswerController extends Controller
     }
 
     // ユーザーの回答とAIの添削を取得する
-    public function fetchAnswerAndCorrection(int $year, string $season, int $section)
+    public function fetchCorrection(int $year, string $season, int $section)
     {
         $userId = Auth::id();
+
+        // ユーザーがログインしていない場合はエラーを返す
+        if (!$userId) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
 
         $userAnswers = UserAnswer::where('user_id', $userId)
             ->where('year', $year)
             ->where('season', $season)
             ->where('section', $section)
             ->get();
+
+        if ($userAnswers->isEmpty()) {
+            return response()->json([], 200);
+        }
 
         $answers = $userAnswers->map(function ($answer) {
             return [
@@ -141,7 +150,9 @@ class AnswerController extends Controller
             ];
         });
 
-        return $answers->toArray();
+        Log::debug($answers);
+
+        return response()->json($answers, 200);
     }
 
     // ユーザーの回答を保存、更新する
@@ -183,6 +194,30 @@ class AnswerController extends Controller
         }
 
         return $userAnswers;
+    }
+
+    public function deleteSubmittedAnswer(Request $request)
+    {
+        $userId = Auth::id();
+        $year = (int) $request->year;
+        $season = (string) $request->season;
+        $section = (int) $request->section;
+
+        try {
+            $results = UserAnswer::where('user_id', $userId)
+                ->where('year', $year)
+                ->where('season', $season)
+                ->where('section', $section)
+                ->delete();
+
+            if ($results === 0) {
+                return response()->json(['message' => 'No records found to delete'], 404);
+            } else {
+                return response()->json(['message' => 'Deleted'], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to delete'], 500);
+        }
     }
 
     private function buildQuestionPrompt(array $examSentence, array $examQuestions, array $modelAnswers): string

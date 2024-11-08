@@ -6,8 +6,9 @@ import {
     Flex,
     Card,
     IconButton,
+    Spinner,
 } from "@chakra-ui/react";
-import { FC, memo, useState } from "react";
+import { FC, memo, useEffect, useState } from "react";
 import { set, useForm } from "react-hook-form";
 import { useQuestion } from "../../hooks/useQuestion";
 import { useParams } from "react-router-dom";
@@ -28,11 +29,28 @@ type Input = {
 
 export const AskToAIArea: FC<Props> = memo((props) => {
     const { questionNumber, subQuestionNumber } = props;
+
     const [isOpen, setIsOpen] = useState(false);
-    const { submitQuestion } = useQuestion();
+    const [isLoading, setIsLoading] = useState(false);
+    const { submitQuestion, fetchDialogues, deleteDialogues } = useQuestion();
     const { year, season, section } = useParams();
     const [dialogues, setDialogues] = useState<Dialogue[]>([]);
     const { register, handleSubmit, reset } = useForm<Input>();
+
+    const onClickDeleteDialogues = () => {
+        if (!year || !season || !section) {
+            return;
+        }
+
+        deleteDialogues(
+            parseInt(year),
+            season,
+            parseInt(section),
+            questionNumber,
+            subQuestionNumber
+        );
+        setDialogues([]);
+    };
 
     const onSubmit = async (data: Input) => {
         if (!year || !season || !section) {
@@ -41,7 +59,7 @@ export const AskToAIArea: FC<Props> = memo((props) => {
 
         setDialogues((prevDialogues) => [
             ...prevDialogues,
-            { role: "user", message: data.message },
+            { role: "user", content: data.message },
         ]);
 
         const response = await submitQuestion(
@@ -63,17 +81,39 @@ export const AskToAIArea: FC<Props> = memo((props) => {
             ...prevDialogues,
             {
                 role: "assistant",
-                message: response,
+                content: response,
             },
         ]);
     };
 
-    console.log(dialogues);
+    useEffect(() => {
+        if (isOpen && year && season && section) {
+            setIsLoading(true);
+
+            fetchDialogues(
+                parseInt(year),
+                season,
+                parseInt(section),
+                questionNumber,
+                subQuestionNumber
+            )
+                .then((data) => {
+                    if (data) {
+                        setDialogues(data);
+                    }
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        }
+    }, [isOpen, year, season, section, questionNumber, subQuestionNumber]);
 
     return (
         <>
-            {isOpen ? (
-                <Card p="10px" backgroundColor="yellow.50" mb="10px">
+            {/* {isLoading && <Spinner size="xl" />} */}
+
+            {!isLoading && isOpen ? (
+                <Card px="10px" pb="10px" backgroundColor="yellow.50" mb="10px">
                     <Box>
                         <Flex direction="column" gap="5px">
                             <Box ml="auto">
@@ -81,7 +121,8 @@ export const AskToAIArea: FC<Props> = memo((props) => {
                                     aria-label="Close"
                                     icon={<RiCloseLargeFill />}
                                     onClick={() => setIsOpen(false)}
-                                    // borderRadius="50%"
+                                    borderRadius="100px"
+                                    bg="transparent"
                                 />
                             </Box>
 
@@ -97,9 +138,7 @@ export const AskToAIArea: FC<Props> = memo((props) => {
                             <Flex>
                                 {dialogues.length > 0 && (
                                     <Button
-                                        onClick={() => {
-                                            setDialogues([]);
-                                        }}
+                                        onClick={onClickDeleteDialogues}
                                         mr="10px"
                                     >
                                         質問履歴を削除
@@ -110,34 +149,41 @@ export const AskToAIArea: FC<Props> = memo((props) => {
                                     rightIcon={<LuSend size="1.5rem" />}
                                     onClick={handleSubmit(onSubmit)}
                                     ml="auto"
+                                    borderRadius="100px"
                                 >
                                     質問を送信
                                 </Button>
-                                {/* <IconButton
-                                    aria-label="Send"
-                                    icon={<LuSend size="1.5rem" />}
-                                    onClick={handleSubmit(onSubmit)}
-                                    borderRadius="50%"
-                                    bgColor={"transparent"}
-                                    color={"blue"}
-                                /> */}
-                                {/* <LuSend /> */}
                             </Flex>
                         </Flex>
                     </Box>
                 </Card>
             ) : (
-                <Box>
-                    <Button
-                        onClick={() => setIsOpen(true)}
-                        w="100%"
-                        mb="20px"
-                        borderRadius="100px"
-                    >
-                        この問題についてAIに質問する
-                    </Button>
-                </Box>
+                // <Box>
+                //     <Button
+                //         onClick={() => setIsOpen(true)}
+                //         w="100%"
+                //         mb="20px"
+                //         borderRadius="100px"
+                //     >
+                //         この問題についてAIに質問する
+                //     </Button>
+                // </Box>
+                <DisplayAskToAICard />
             )}
         </>
     );
 });
+
+export const DisplayAskToAICard: FC = () => {
+    const onClick = () => {
+        console.log("clicked");
+    };
+
+    return (
+        <Box>
+            <Button onClick={onClick} w="100%" mb="20px" borderRadius="100px">
+                この問題についてAIに質問する
+            </Button>
+        </Box>
+    );
+};

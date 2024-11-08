@@ -31,5 +31,5 @@ export type ErrorResponse = {
 
 export type Dialogue = {
     role: "user" | "assistant";
-    message: string;
+    content: string;
 };

@@ -16,12 +16,13 @@ import Split from "react-split";
 import { QuestionAndAnswerForm } from "../organisms/QuestionAndAnswerForm";
 import { ExamHeader } from "../molecules/ExamHeader";
 import { useParams } from "react-router-dom";
+import { Page404 } from "./Page404";
 
 export const ExamPage: FC = memo(() => {
     const [numPages, setNumPages] = useState(1);
     const [leftPanelWidth, setLeftPanelWidth] = useState(0);
     const leftPanelRef = useRef<HTMLDivElement | null>(null);
-    const { year, season } = useParams();
+    const { year, season, section } = useParams();
 
     // Workerのパスを設定　現在はCDNを使用
     pdfjs.GlobalWorkerOptions.workerSrc =
@@ -53,6 +54,10 @@ export const ExamPage: FC = memo(() => {
             };
         }
     }, [leftPanelRef]);
+
+    if (!year || !season || !section) {
+        return <Page404 />;
+    }
 
     return (
         <Box minH="100vh">
@@ -102,7 +107,11 @@ export const ExamPage: FC = memo(() => {
                     backgroundColor="white"
                     p="20px"
                 >
-                    <QuestionAndAnswerForm />
+                    <QuestionAndAnswerForm
+                        year={parseInt(year)}
+                        season={season}
+                        section={parseInt(section)}
+                    />
                 </Box>
             </Split>
         </Box>

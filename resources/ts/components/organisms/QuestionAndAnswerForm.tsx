@@ -7,18 +7,20 @@ import {
     Box,
     Text,
     Textarea,
-    Flex,
+    Spinner,
+    Center,
 } from "@chakra-ui/react";
 import { FC, memo, useEffect, useState, Fragment } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useParams } from "react-router-dom";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 
 import { userAtom } from "../../states/userAtom";
 import { useAnswer } from "../../hooks/useAnswer";
 import { FetchedQuestion, Option, useExam } from "../../hooks/useExam";
 import { DisplayAIResponse } from "./DisplayAIResponse";
-import { AskToAIArea } from "./AskToAIArea";
+import { loadingAtom } from "../../states/loadingAtom";
+import { NeedRegister } from "../molecules/NeedRegister";
+import { DisplayAskToAICard } from "../molecules/DisplayAskToAICard";
 
 export type AnswerInputs = {
     answer: {
@@ -26,7 +28,7 @@ export type AnswerInputs = {
     };
 };
 
-export type AiResponse = {
+export type Correction = {
     questionNumber: number;
     subQuestionNumber: number;
     rating: string;
@@ -34,7 +36,7 @@ export type AiResponse = {
     user_text: string;
 };
 
-const testResponse = [
+export const testResponse = [
     {
         questionNumber: 1,
         subQuestionNumber: 1,
@@ -92,34 +94,44 @@ const testResponse = [
     },
 ];
 
-export const QuestionAndAnswerForm: FC = memo(() => {
+type Props = {
+    year: number;
+    season: string;
+    section: number;
+};
+
+export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
+    const { year, season, section } = props;
     const [questions, setQuestions] = useState<FetchedQuestion[] | null>(null);
-    const [aiResponse, setAiResponse] = useState<AiResponse[] | null>(null);
+    const [aiResponse, setCorrection] = useState<Correction[] | null>(null);
     const user = useAtomValue(userAtom);
+    const [isLoading, setIsLoading] = useAtom(loadingAtom);
 
     const {
         register,
         handleSubmit,
-        control,
         watch,
         formState: { errors },
+        reset,
     } = useForm<AnswerInputs>();
+
     const { fetchQuestions } = useExam();
-    const { submitAnswer } = useAnswer();
-    const { year, season, section } = useParams();
+    const { submitAnswer, fetchCorrection, deleteSubmittedAnswer } =
+        useAnswer();
 
     const onSubmit: SubmitHandler<AnswerInputs> = async (data) => {
         try {
-            // const response = await submitAnswer(
-            //     data,
-            //     questions![0].year,
-            //     questions![0].season,
-            //     questions![0].section
-            // );
+            const response = await submitAnswer(
+                data,
+                questions![0].year,
+                questions![0].season,
+                questions![0].section
+            );
 
-            const response = testResponse;
+            // const response = testResponse;
+
             if (response) {
-                setAiResponse(response);
+                setCorrection(response);
             }
         } catch (e) {
             console.error(e);
@@ -128,17 +140,41 @@ export const QuestionAndAnswerForm: FC = memo(() => {
         return;
     };
 
+    const onReset = () => {
+        setCorrection(null);
+        deleteSubmittedAnswer(year, season, section);
+        reset();
+    };
+
     useEffect(() => {
-        if (year && season && section) {
-            fetchQuestions(parseInt(year), season, parseInt(section)).then(
-                (data) => {
-                    if (data) {
-                        setQuestions(data);
-                    }
+        console.log("render");
+        if (!year || !season || !section) return;
+
+        fetchQuestions(year, season, section).then((data) => {
+            if (data) {
+                setQuestions(data);
+            }
+        });
+
+        // ログイン済みの場合は、提出済み答案と添削結果を取得
+        if (user) {
+            fetchCorrection(year, season, section).then((data) => {
+                console.log(data);
+
+                if (data) {
+                    setCorrection(data);
                 }
-            );
+            });
         }
-    }, []);
+    }, [year, season, section, user]);
+
+    if (isLoading) {
+        return (
+            <Center mt="20px">
+                <Spinner size="xl" />
+            </Center>
+        );
+    }
 
     if (!questions) {
         return (
@@ -247,45 +283,49 @@ export const QuestionAndAnswerForm: FC = memo(() => {
                                             aiResponse={aiResponse}
                                         ></DisplayAIResponse>
 
-                                        <AskToAIArea
+                                        <DisplayAskToAICard
                                             questionNumber={
                                                 question.questionNumber
                                             }
                                             subQuestionNumber={
                                                 question.subQuestionNumber
                                             }
+                                            year={question.year}
+                                            season={question.season}
+                                            section={question.section}
                                         />
                                     </>
                                 )}
                             </Fragment>
                         ))}
 
-                    {/* 提出ボタン */}
                     <Box textAlign="center" mt="20px">
-                        {user ? (
-                            <Button type="submit" backgroundColor="green.200">
-                                答え合わせ
-                            </Button>
-                        ) : (
-                            <>
-                                <Box mb="10px">
-                                    <Text>
-                                        答え合わせにはログインが必要です
-                                    </Text>
-                                </Box>
-                                <Flex justifyContent="center" gap="20px">
-                                    <Link to="/login">
-                                        <Button backgroundColor="green.200">
-                                            ログイン
-                                        </Button>
-                                    </Link>
-                                    <Link to="/register">
-                                        <Button backgroundColor="blue.200">
-                                            ユーザー登録
-                                        </Button>
-                                    </Link>
-                                </Flex>
-                            </>
+                        {/* ログイン前 */}
+                        {!user && <NeedRegister />}
+
+                        {/* ログイン後 提出 or リセットボタン */}
+                        {user && (
+                            <Box>
+                                {aiResponse ? (
+                                    <Button
+                                        backgroundColor="green.200"
+                                        borderRadius="100px"
+                                        w="80%"
+                                        onClick={onReset}
+                                    >
+                                        解き直す
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        type="submit"
+                                        backgroundColor="green.200"
+                                        borderRadius="100px"
+                                        w="80%"
+                                    >
+                                        答え合わせ
+                                    </Button>
+                                )}
+                            </Box>
                         )}
                     </Box>
                 </VStack>

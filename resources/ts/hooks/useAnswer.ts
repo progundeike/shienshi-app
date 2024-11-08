@@ -4,9 +4,9 @@ import { useAtom } from "jotai";
 import {
     ErrorResponse,
 } from "../types/form";
-import { axiosInstance } from "./axiosInstance";
+import { axiosInstance, otherServerErrorToast } from "./axiosInstance";
 import { loadingAtom } from "../states/loadingAtom";
-import { AiResponse, AnswerInputs } from "../components/organisms/QuestionAndAnswerForm";
+import { Correction, AnswerInputs } from "../components/organisms/QuestionAndAnswerForm";
 
 export const useAnswer = () => {
     const [isLoading, setIsLoading] = useAtom(loadingAtom);
@@ -17,14 +17,14 @@ export const useAnswer = () => {
         year: number,
         season: string,
         section: number,
-    ): Promise<AiResponse[] | null> => {
+    ): Promise<Correction[] | null> => {
         setIsLoading(true);
 
         console.log(answerInputs);
 
         try {
             const response = await axiosInstance
-            .post<ErrorResponse | AiResponse[] | null>("/api/answer", {
+            .post<ErrorResponse | Correction[] | null>("/api/answer", {
                 answerInputs,
                 year,
                 season,
@@ -33,7 +33,7 @@ export const useAnswer = () => {
 
             // 成功
             if (response.data && Array.isArray(response.data) && response.data[0].questionNumber) {
-                return response.data as AiResponse[];
+                return response.data as Correction[];
             }
 
             return null;
@@ -55,22 +55,70 @@ export const useAnswer = () => {
             //     return null
             // }
 
-            // その他のエラー
-            toast({
-                title: "サーバーエラー",
-                description:
-                    "サーバーに不具合が発生しています。しばらく経ってから再度お試しください",
-                status: "error",
-                duration: 6000,
-                isClosable: true,
-                position: "bottom-right",
-            });
+            otherServerErrorToast(toast);
+
             return null;
         } finally {
                 setIsLoading(false);
         }
     };
 
+    // 提出ずみの答案と添削結果を取得
+    const fetchCorrection = async (
+        year: number,
+        season: string,
+        section: number
+    ): Promise<Correction[] | null> => {
+        setIsLoading(true);
 
-    return { submitAnswer };
+        try {
+            const response = await axiosInstance
+            .get<ErrorResponse | Correction[]>(`/api/corrections/${year}-${season}-${section}`)
+
+            // 未提出の場合
+            if (Array.isArray(response.data) && response.data.length === 0) {
+                return null;
+            }
+
+            // 成功
+            if (Array.isArray(response.data) && response.data[0].questionNumber) {
+                return response.data as Correction[];
+            }
+
+            return null;
+        } catch (error) {
+            console.log(error);
+
+            otherServerErrorToast(toast);
+
+            return null;
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    const deleteSubmittedAnswer = async (
+        year: number,
+        season: string,
+        section: number
+    ): Promise<void> => {
+        setIsLoading(true);
+
+        try {
+            const response = await axiosInstance
+            .delete(`/api/answer/${year}-${season}-${section}`)
+            // 成功
+            if (response.status === 200) {
+                console.log("reset success");
+            }
+        } catch (error) {
+            console.log(error);
+            otherServerErrorToast(toast);
+
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    return { submitAnswer, fetchCorrection, deleteSubmittedAnswer };
 };

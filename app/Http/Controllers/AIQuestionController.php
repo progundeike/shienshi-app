@@ -49,7 +49,7 @@ class AIQuestionController extends Controller
         $userAnswerContent = $examController->convertUserAnswerToText([$userAnswer]);
 
         // これまでの質問とその回答を取得
-        $dialogues = $this->fetchDialogues($year, $season, $section, $questionNumber, $subQuestionNumber, $userId);
+        $dialogues = $this->fetchDialogues($year, $season, $section, $questionNumber, $subQuestionNumber);
 
         // これまでの質問とその回答に新しい質問を追加してAIに投げる
         $dialogues[] = [
@@ -105,9 +105,25 @@ class AIQuestionController extends Controller
         return response()->json($aiMessage, 200);
     }
 
-    // これまでの対話履歴を取得する
-    public function fetchDialogues(int $year, string $season, int $section, int $questionNumber, int $subQuestionNumber, int $userId)
+    public function getDialogues(Request $request)
     {
+        $userId = Auth::id();
+        $year = (int) $request->year;
+        $season = (string) $request->season;
+        $section = (int) $request->section;
+        $questionNumber = (int) $request->questionNumber;
+        $subQuestionNumber = (int) $request->subQuestionNumber;
+
+        $dialogues = $this->fetchDialogues($year, $season, $section, $questionNumber, $subQuestionNumber);
+
+        return response()->json($dialogues, 200);
+    }
+
+    // これまでの対話履歴を取得する
+    private function fetchDialogues(int $year, string $season, int $section, int $questionNumber, int $subQuestionNumber)
+    {
+        $userId = Auth::id();
+
         $results = UserAiDialogue::where('user_id', $userId)
             ->where('year', $year)
             ->where('season', $season)
@@ -132,6 +148,36 @@ class AIQuestionController extends Controller
         }
 
         return $dialogues;
+    }
+
+    public function deleteDialogues(Request $request)
+    {
+        $userId = Auth::id();
+
+        $year = (int) $request->year;
+        $season = (string) $request->season;
+        $section = (int) $request->section;
+        $questionNumber = (int) $request->questionNumber;
+        $subQuestionNumber = (int) $request->subQuestionNumber;
+
+        try {
+            $results = UserAiDialogue::where('user_id', $userId)
+                ->where('year', $year)
+                ->where('season', $season)
+                ->where('section', $section)
+                ->where('question_number', $questionNumber)
+                ->where('sub_question_number', $subQuestionNumber)
+                ->delete();
+
+            if ($results === 0) {
+                return response()->json(['message' => 'No records found to delete'], 404);
+            } else {
+                return response()->json(['message' => 'Deleted'], 200);
+            }
+        } catch (\Exception $e) {
+            Log::error($e);
+            return response()->json(['message' => 'Failed to delete'], 500);
+        }
     }
 
     // 質問用の設問は１つだけ渡される前提
