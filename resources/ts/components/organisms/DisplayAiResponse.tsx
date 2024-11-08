@@ -1,10 +1,10 @@
 import { Box, Text } from "@chakra-ui/react";
 import { FC, memo } from "react";
 
-import { AiResponse } from "./QuestionAndAnswerForm";
+import { Correction } from "./QuestionAndAnswerForm";
 
 type Props = {
-    aiResponse: AiResponse[];
+    aiResponse: Correction[];
     questionNumber: number;
     subQuestionNumber: number;
 };

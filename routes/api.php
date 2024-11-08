@@ -11,7 +11,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [UserController::class, 'getUserInfo']);
     // Route::delete('/user', [UserController::class, 'deleteUser']);
     Route::post('/answer', [AnswerController::class, 'run']);
+    Route::delete('answer/{year}-{season}-{section}', [AnswerController::class, 'deleteSubmittedAnswer']);
     Route::post('/question', [AIQuestionController::class, 'run']);
+    Route::get('/dialogues', [AIQuestionController::class, 'getDialogues']);
+    Route::delete('/dialogues/{year}-{season}-{section}-{questionNumber}-{subQuestionNumber}', [AIQuestionController::class, 'deleteDialogues']);
+    Route::get('/corrections/{year}-{season}-{section}', [AnswerController::class, 'fetchCorrection']);
 });
 
 

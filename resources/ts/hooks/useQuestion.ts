@@ -2,15 +2,13 @@ import { useToast } from "@chakra-ui/react";
 import { useAtom } from "jotai";
 
 import {
+    Dialogue,
     ErrorResponse,
 } from "../types/form";
-import { axiosInstance } from "./axiosInstance";
-import { loadingAtom } from "../states/loadingAtom";
+import { axiosInstance, otherServerErrorToast } from "./axiosInstance";
 import { AnswerInputs } from "../components/organisms/QuestionAndAnswerForm";
-import { set } from "react-hook-form";
 
 export const useQuestion = () => {
-    const [isLoading, setIsLoading] = useAtom(loadingAtom);
     const toast = useToast();
 
     const submitQuestion = async (
@@ -21,7 +19,6 @@ export const useQuestion = () => {
         subQuestionNumber: number,
         message: string,
     ): Promise<string> => {
-        setIsLoading(true);
 
         try {
             const response = await axiosInstance
@@ -45,21 +42,61 @@ export const useQuestion = () => {
         } catch (error) {
             console.log(error);
 
-            toast({
-                title: "サーバーエラー",
-                description:
-                    "サーバーに不具合が発生しています。しばらく経ってから再度お試しください",
-                status: "error",
-                duration: 6000,
-                isClosable: true,
-                position: "bottom-right",
-            });
+            otherServerErrorToast(toast);
             return '';
-        } finally {
-                setIsLoading(false);
         }
     };
 
+    const fetchDialogues = async (
+        year: number,
+        season: string,
+        section: number,
+        questionNumber: number,
+        subQuestionNumber: number) => {
+        try {
+            const response = await axiosInstance
+            .get<Dialogue[]>("/api/dialogues", {
+                params: 
+                    {
+                    year: year,
+                    season: season,
+                    section: section,
+                    questionNumber: questionNumber,
+                    subQuestionNumber: subQuestionNumber,
+                }
+            })
 
-    return { submitQuestion };
+            // 成功
+            if (response.status === 200) {
+                return response.data;
+            }
+
+            // 失敗
+            return '';
+        } catch (error) {
+            console.log(error);
+            otherServerErrorToast(toast);
+            return [];
+        }
+    }
+
+    const deleteDialogues = async (
+        year: number,
+        season: string,
+        section: number,
+        questionNumber: number,
+        subQuestionNumber: number) => {
+        console.log("start deleteQuestion");
+        try {
+            const response = await axiosInstance
+            .delete<Dialogue[]>(`/api/dialogues/${year}-${season}-${section}-${questionNumber}-${subQuestionNumber}`)
+
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+            otherServerErrorToast(toast);
+        }
+    }
+
+    return { submitQuestion, fetchDialogues, deleteDialogues };
 };

@@ -14,6 +14,7 @@ use App\Models\UserAnswer;
 class ExamController extends Controller
 {
     // 設問をjson形式で取得して、httpレスポンスを返す
+    // ログイン済みで、答案提出済みの場合は、添削画面を表示する
     public function getExamQuestionsJson(string $year, string $season, string $section)
     {
         $year = (int) $year;
@@ -194,16 +195,16 @@ class ExamController extends Controller
     }
 
     // ユーザーが答案提出済みかどうかを判定する
-    public function isUserAnswerSubmitted(int $userId, int $year, string $season, int $section): bool
-    {
-        $result = UserAnswer::where('user_id', $userId)
-            ->where('year', $year)
-            ->where('season', $season)
-            ->where('section', $section)
-            ->exists();
+    // public function isUserAnswerSubmitted(int $userId, int $year, string $season, int $section): bool
+    // {
+    //     $result = UserAnswer::where('user_id', $userId)
+    //         ->where('year', $year)
+    //         ->where('season', $season)
+    //         ->where('section', $section)
+    //         ->exists();
 
-        return $result;
-    }
+    //     return $result;
+    // }
 
     public function convertUserAnswerToText(array $userAnswers): string
     {
