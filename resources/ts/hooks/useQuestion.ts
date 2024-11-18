@@ -1,5 +1,4 @@
 import { useToast } from "@chakra-ui/react";
-import { useAtom } from "jotai";
 
 import {
     Dialogue,

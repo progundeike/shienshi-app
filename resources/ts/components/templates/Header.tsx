@@ -2,12 +2,12 @@ import { Box, Flex, Heading, Icon, Text, VStack } from "@chakra-ui/react";
 import { FC, memo } from "react";
 import { Link } from "react-router-dom";
 import { GrCircleInformation } from "react-icons/gr";
-import { FaUserCircle } from "react-icons/fa";
 import { AiOutlineUser } from "react-icons/ai";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaList, FaUserCircle } from "react-icons/fa";
 import { useAtomValue } from "jotai";
 
 import { userAtom } from "../../states/userAtom";
+import { IconLink } from "../atoms/IconLink";
 
 export const Header: FC = memo(() => {
     const user = useAtomValue(userAtom);
@@ -38,45 +38,22 @@ export const Header: FC = memo(() => {
                     {/* 右メニュー */}
                     {/* {isMobileView ? <MobileMenu /> : <PcMenu />} */}
                     <Flex gap="20px">
-                        <Link to="/about">
-                            <VStack spacing="0">
-                                <Icon
-                                    as={GrCircleInformation}
-                                    fontSize={iconSize}
-                                    m="0"
-                                />
-                                <Text fontSize={fontSize}>ABOUT</Text>
-                            </VStack>
-                        </Link>
-                        <Link to="/exams/2023/aki/1">exam</Link>
-                        <Link to="/exams_list">試験一覧</Link>
+                        <IconLink url="/about" icon={GrCircleInformation}>
+                            about
+                        </IconLink>
+                        <IconLink url="/exams_list" icon={FaList}>
+                            過去問一覧
+                        </IconLink>
 
                         {user ? (
-                            <Link to="/my-page">
-                                <VStack spacing="0">
-                                    <Icon
-                                        as={FaUserCircle}
-                                        fontSize={iconSize}
-                                        m="0"
-                                    />
-                                    <Text fontSize={fontSize}>MyPage</Text>
-                                </VStack>
-                            </Link>
+                            <IconLink url="/my-page" icon={FaUserCircle}>
+                                MyPage
+                            </IconLink>
                         ) : (
                             <>
-                                <Link to="/login">
-                                    <VStack spacing="0">
-                                        <Icon
-                                            as={AiOutlineUser}
-                                            fontSize={iconSize}
-                                        />
-                                        <Text fontSize={fontSize}>
-                                            ログイン
-                                        </Text>
-                                    </VStack>
-                                </Link>
-
-                                {/* <Link to="/register">ユーザー登録</Link> */}
+                                <IconLink url="/login" icon={AiOutlineUser}>
+                                    ログイン
+                                </IconLink>
                             </>
                         )}
                     </Flex>

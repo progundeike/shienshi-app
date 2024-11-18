@@ -12,20 +12,7 @@ type Props = {
 
 export const DisplayAskToAICard: FC<Props> = memo((props) => {
     const { questionNumber, subQuestionNumber, year, season, section } = props;
-
     const [isOpen, setIsOpen] = useState(false);
-
-    // const handleCloseCard = () => {
-    //     setIsOpen(false);
-    // };
-
-    useEffect(() => {
-        console.log(isOpen);
-    }, [isOpen]);
-
-    useEffect(() => {
-        console.log("render");
-    }, []);
 
     return (
         <Box>

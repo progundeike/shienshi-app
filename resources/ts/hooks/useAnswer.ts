@@ -20,8 +20,6 @@ export const useAnswer = () => {
     ): Promise<Correction[] | null> => {
         setIsLoading(true);
 
-        console.log(answerInputs);
-
         try {
             const response = await axiosInstance
             .post<ErrorResponse | Correction[] | null>("/api/answer", {

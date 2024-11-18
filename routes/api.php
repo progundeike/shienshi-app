@@ -9,8 +9,9 @@ use App\Http\Controllers\AIQuestionController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [UserController::class, 'getUserInfo']);
+    Route::get('/user/submittedExams', [ExamController::class, 'fetchSubmittedExams']);
     // Route::delete('/user', [UserController::class, 'deleteUser']);
-    Route::post('/answer', [AnswerController::class, 'run']);
+    Route::post('/answer', [AnswerController::class, 'answerSubmit']);
     Route::delete('answer/{year}-{season}-{section}', [AnswerController::class, 'deleteSubmittedAnswer']);
     Route::post('/question', [AIQuestionController::class, 'run']);
     Route::get('/dialogues', [AIQuestionController::class, 'getDialogues']);

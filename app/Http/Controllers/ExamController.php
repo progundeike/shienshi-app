@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Question;
 use App\Models\ExamSentence;
 use App\Models\ModelAnswer;
@@ -205,6 +206,49 @@ class ExamController extends Controller
 
     //     return $result;
     // }
+
+    // 提出済みの試験一覧を取得する
+    public function fetchSubmittedExams()
+    {
+        $userId = Auth::id();
+
+        $submittedAnswers = UserAnswer::where('user_id', $userId)
+            ->select('year', 'season', 'section')
+            ->distinct()
+            ->get();
+
+        $submittedAnswers->each(function ($exam) {
+            // seasonを日本語に変換
+            if ($exam->season === 'haru') {
+                $exam->season = '春期';
+            } elseif ($exam->season === 'aki') {
+                $exam->season = '秋期';
+            } else {
+                // 例外
+                $exam->season = '未登録';
+            }
+
+            // sectionを問いに変換。2023年までは午後I, 午後Ⅱに分ける
+            if ($exam->year >= 2023) {
+                // sectionをそのまま問いに変換
+                $exam->section = '問' . $exam->section;
+            } else {
+                // sectionを午前、午後に分類
+                if ($exam->section < 4) {
+                    $exam->section = '午後I 問' . $exam->section;
+                } elseif ($exam->section === 4) {
+                    $exam->section = '午後Ⅱ 問1';
+                } elseif ($exam->section === 5) {
+                    $exam->section = '午後Ⅱ 問2';
+                } else {
+                    // 例外
+                    $exam->section = '未登録';
+                }
+            }
+        });
+
+        return response()->json($submittedAnswers, 200);
+    }
 
     public function convertUserAnswerToText(array $userAnswers): string
     {

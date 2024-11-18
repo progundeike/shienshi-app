@@ -1,4 +1,5 @@
 import { extendTheme } from "@chakra-ui/react";
+import { Component } from "react";
 
 export const theme = extendTheme({
     styles: {
@@ -22,7 +23,16 @@ export const theme = extendTheme({
             ".gutter.gutter-horizontal": {
                 backgroundImage: "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==')",
                 cursor: "col-resize",
-            }
+            },
+        },
+    },
+    components: {
+        Table: {
+            baseStyle: {
+                td: {
+                    textAlign: "center",
+                },
+            },
         },
     },
 });

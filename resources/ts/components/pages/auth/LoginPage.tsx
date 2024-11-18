@@ -77,7 +77,7 @@ export const LoginPage: FC = memo(() => {
         <>
             <Center my="10px">
                 <Heading size="sm">
-                    学習履歴の管理にはログインが必要です。登録がお済みでない場合は、
+                    AI添削機能にはログインが必要です。登録がお済みでない場合は、
                     <Box as="span" textDecoration="underline" color="blue.600">
                         <Link to="/register">ユーザー登録</Link>
                     </Box>
