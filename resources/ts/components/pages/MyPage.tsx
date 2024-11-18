@@ -1,12 +1,20 @@
-import { FC, memo } from "react";
-import { Box, Button } from "@chakra-ui/react";
+import { FC, memo, useEffect, useState } from "react";
+import { Box, Button, Flex, Icon, Text } from "@chakra-ui/react";
 import { LogoutButton } from "../atoms/LogoutButton";
 import { userAtom } from "../../states/userAtom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAtomValue } from "jotai";
+import {
+    FaExclamation,
+    FaExclamationCircle,
+    FaInfoCircle,
+} from "react-icons/fa";
+import { SubmittedExam, useExam } from "../../hooks/useExam";
 
 export const MyPage: FC = memo(() => {
     const user = useAtomValue(userAtom);
+    const { fetchSubmittedExams } = useExam();
+    const [submittedExams, setSubmittedExams] = useState<SubmittedExam[]>([]);
 
     const navigate = useNavigate();
 
@@ -15,18 +23,62 @@ export const MyPage: FC = memo(() => {
         return;
     }
 
+    useEffect(() => {
+        const getSubmittedExams = async () => {
+            const submittedExams = await fetchSubmittedExams();
+            setSubmittedExams(submittedExams || []);
+        };
+
+        getSubmittedExams();
+    }, []);
+
     return (
-        <Box>
-            <LogoutButton />
+        <Flex flexFlow="column" gap="20px" w="80%" m="auto">
+            <Flex justify={"space-between"} alignItems={"center"}>
+                <Box fontSize={"x-large"}>{user.username}さんの学習履歴</Box>
+                <LogoutButton />
+            </Flex>
 
             {!user.emailVerified && (
-                <Box>
-                    メールアドレスが未登録です。メールアドレスを登録することで、パスワードを忘れてしまっても再設定が可能になります。
+                <Box
+                    outline="0.5px solid"
+                    p="10px"
+                    borderRadius="100px"
+                    backgroundColor="blue.100"
+                >
+                    <Flex alignItems="center">
+                        <FaExclamationCircle size="25px" />
+
+                        <Box ml="10px">
+                            メールアドレスが未登録です。メールアドレスを登録することで、パスワードを忘れてしまっても再設定が可能になります。
+                        </Box>
+                    </Flex>
                 </Box>
             )}
 
-            <Box>{user.username}さんの学習履歴</Box>
-            <Box>ここに学習履歴を表示する</Box>
-        </Box>
+            {/* 学習履歴 */}
+            <Box>
+                <Text>提出済みの答案</Text>
+                {submittedExams.length === 0 ? (
+                    <Box>提出済みの答案はありません。</Box>
+                ) : (
+                    <Box>
+                        {submittedExams.map((exam) => (
+                            <Box
+                                key={`${exam.year}-${exam.season}-${exam.section}`}
+                            >
+                                <Link
+                                    to={`/exams/${exam.year}/${exam.season}/${exam.section}`}
+                                >
+                                    <Button>
+                                        {`${exam.year}年 ${exam.season} ${exam.section}`}
+                                    </Button>
+                                </Link>
+                            </Box>
+                        ))}
+                    </Box>
+                )}
+            </Box>
+        </Flex>
     );
 });

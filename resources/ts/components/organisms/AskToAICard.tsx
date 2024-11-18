@@ -5,6 +5,8 @@ import {
     IconButton,
     Textarea,
     Button,
+    Spinner,
+    Center,
 } from "@chakra-ui/react";
 import { FC, memo, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -37,7 +39,7 @@ export const AskToAICard: FC<Props> = memo((props) => {
         onClose,
     } = props;
 
-    // const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const { submitQuestion, fetchDialogues, deleteDialogues } = useQuestion();
     const [dialogues, setDialogues] = useState<Dialogue[]>([]);
     const { register, handleSubmit, reset } = useForm<Input>();
@@ -85,7 +87,7 @@ export const AskToAICard: FC<Props> = memo((props) => {
     };
 
     useEffect(() => {
-        // setIsLoading(true);
+        setIsLoading(true);
 
         fetchDialogues(year, season, section, questionNumber, subQuestionNumber)
             .then((data) => {
@@ -94,10 +96,10 @@ export const AskToAICard: FC<Props> = memo((props) => {
                 }
             })
             .finally(() => {
-                // setIsLoading(false);
+                setIsLoading(false);
             });
     }, []);
-
+    //
     return (
         <Card px="10px" pb="10px" backgroundColor="yellow.50" mb="10px">
             <Box>
@@ -113,30 +115,40 @@ export const AskToAICard: FC<Props> = memo((props) => {
                     </Box>
 
                     {/* 会話履歴を表示する */}
-                    {dialogues.map((dialogue, index) => (
-                        <DialogueBox key={index} dialogue={dialogue} />
-                    ))}
+                    {isLoading ? (
+                        <Center m="20px">
+                            <Spinner size="xl" />
+                        </Center>
+                    ) : (
+                        <>
+                            {dialogues.map((dialogue, index) => (
+                                <DialogueBox key={index} dialogue={dialogue} />
+                            ))}
+                            <Textarea
+                                {...register("message")}
+                                placeholder="質問を入力してください"
+                            />
+                            <Flex>
+                                {dialogues.length > 0 && (
+                                    <Button
+                                        onClick={onClickDeleteDialogues}
+                                        mr="10px"
+                                    >
+                                        質問履歴を削除
+                                    </Button>
+                                )}
 
-                    <Textarea
-                        {...register("message")}
-                        placeholder="質問を入力してください"
-                    />
-                    <Flex>
-                        {dialogues.length > 0 && (
-                            <Button onClick={onClickDeleteDialogues} mr="10px">
-                                質問履歴を削除
-                            </Button>
-                        )}
-
-                        <Button
-                            rightIcon={<LuSend size="1.5rem" />}
-                            onClick={handleSubmit(onSubmit)}
-                            ml="auto"
-                            borderRadius="100px"
-                        >
-                            質問を送信
-                        </Button>
-                    </Flex>
+                                <Button
+                                    rightIcon={<LuSend size="1.5rem" />}
+                                    onClick={handleSubmit(onSubmit)}
+                                    ml="auto"
+                                    borderRadius="100px"
+                                >
+                                    質問を送信
+                                </Button>
+                            </Flex>
+                        </>
+                    )}
                 </Flex>
             </Box>
         </Card>

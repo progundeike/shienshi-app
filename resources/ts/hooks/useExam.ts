@@ -24,6 +24,12 @@ export type Option = {
     value: string;
 }
 
+export type SubmittedExam = {
+    year: number;
+    season: string;
+    section: number;
+}
+
 export const useExam = () => {
     const [isLoading, setIsLoading] = useAtom(loadingAtom);
     const toast = useToast();
@@ -57,5 +63,27 @@ export const useExam = () => {
             });
     };
 
-    return { fetchQuestions };
+    // 提出済みの試験一覧を取得
+    const fetchSubmittedExams = async (): Promise<SubmittedExam[] | null> => {
+        return await axiosInstance
+            .get("/api/user/submittedExams")
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                // その他のエラー
+                toast({
+                    title: "サーバーエラー",
+                    description:
+                        "サーバーに不具合が発生しています。しばらく経ってから再度お試しください",
+                    status: "error",
+                    duration: 6000,
+                    isClosable: true,
+                    position: "bottom-right",
+                });
+                return null;
+            })
+    }
+
+    return { fetchQuestions, fetchSubmittedExams };
 };

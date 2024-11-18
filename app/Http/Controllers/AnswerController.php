@@ -5,13 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AnswerRequest;
 use Illuminate\Http\Request;
 use App\Models\UserAnswer;
-use App\Models\AnswerSubmit;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 class AnswerController extends Controller
 {
-    public function run(AnswerRequest $request)
+    public function answerSubmit(AnswerRequest $request)
     {
         // 試験回を取得
         $year = $request->year;
@@ -55,6 +54,7 @@ class AnswerController extends Controller
             ],
         ];
 
+        // テスト用のダミーレスポンス
         return response()->json($this->dummyResponse, 200);
 
         Log::debug($prompt);
