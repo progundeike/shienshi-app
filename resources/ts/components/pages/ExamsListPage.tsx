@@ -1,7 +1,6 @@
 import React, { FC, memo } from "react";
 import {
     Box,
-    Button,
     chakra,
     Table,
     TableCaption,
@@ -9,10 +8,10 @@ import {
     Tbody,
     Td,
     Th,
-    Thead,
     Tr,
 } from "@chakra-ui/react";
 import { ExamLinkButton } from "../atoms/ExamLinkButton";
+import { PreReleaseExamLinkButton } from "../atoms/PreReleaseExamLinkButton";
 
 const CustomTh = chakra(Th, {
     baseStyle: {
@@ -30,11 +29,31 @@ export const ExamsListPage: FC = memo(() => {
                     <Tbody>
                         <Tr>
                             <CustomTh>2024年(令和6年) 春期</CustomTh>
-                            <Td>問1</Td>
-                            <Td>問2</Td>
-                            <Td>問3</Td>
-                            <Td>問4</Td>
-                            <Td>問5</Td>
+                            <Td>
+                                <PreReleaseExamLinkButton url="2024/haru/1">
+                                    問1
+                                </PreReleaseExamLinkButton>
+                            </Td>
+                            <Td>
+                                <PreReleaseExamLinkButton url="2024/haru/2">
+                                    問2
+                                </PreReleaseExamLinkButton>
+                            </Td>
+                            <Td>
+                                <PreReleaseExamLinkButton url="2024/haru/3">
+                                    問3
+                                </PreReleaseExamLinkButton>
+                            </Td>
+                            <Td>
+                                <PreReleaseExamLinkButton url="2024/haru/4">
+                                    問4
+                                </PreReleaseExamLinkButton>
+                            </Td>
+                            <Td>
+                                <PreReleaseExamLinkButton url="2024/haru/5">
+                                    問5
+                                </PreReleaseExamLinkButton>
+                            </Td>
                         </Tr>
                         <Tr>
                             <CustomTh>2023年(令和5年) 秋期</CustomTh>
@@ -43,18 +62,54 @@ export const ExamsListPage: FC = memo(() => {
                                     問1
                                 </ExamLinkButton>
                             </Td>
-                            <Td>問2</Td>
-                            <Td>問3</Td>
-                            <Td>問4</Td>
-                            <Td>問5</Td>
+                            <Td>
+                                <PreReleaseExamLinkButton url="2023/aki/2">
+                                    問2
+                                </PreReleaseExamLinkButton>
+                            </Td>
+                            <Td>
+                                <PreReleaseExamLinkButton url="2023/aki/3">
+                                    問3
+                                </PreReleaseExamLinkButton>
+                            </Td>
+                            <Td>
+                                <PreReleaseExamLinkButton url="2023/aki/4">
+                                    問4
+                                </PreReleaseExamLinkButton>
+                            </Td>
+                            <Td>
+                                <PreReleaseExamLinkButton url="2023/aki/5">
+                                    問5
+                                </PreReleaseExamLinkButton>
+                            </Td>
                         </Tr>
                         <Tr>
                             <CustomTh>2023年(令和5年) 春期</CustomTh>
-                            <Td>午後Ⅰ 問1</Td>
-                            <Td>午後I 問2</Td>
-                            <Td>午後I 問3</Td>
-                            <Td>午後Ⅱ 問1</Td>
-                            <Td>午後Ⅱ 問2</Td>
+                            <Td>
+                                <PreReleaseExamLinkButton url="2023/haru/1">
+                                    問1
+                                </PreReleaseExamLinkButton>
+                            </Td>
+                            <Td>
+                                <PreReleaseExamLinkButton url="2023/haru/2">
+                                    問2
+                                </PreReleaseExamLinkButton>
+                            </Td>
+                            <Td>
+                                <PreReleaseExamLinkButton url="2023/haru/3">
+                                    問3
+                                </PreReleaseExamLinkButton>
+                            </Td>
+                            <Td>
+                                <PreReleaseExamLinkButton url="2023/haru/4">
+                                    問4
+                                </PreReleaseExamLinkButton>
+                            </Td>
+                            <Td>
+                                <PreReleaseExamLinkButton url="2023/haru/5">
+                                    問5
+                                </PreReleaseExamLinkButton>
+                            </Td>
                         </Tr>
                     </Tbody>
                 </Table>

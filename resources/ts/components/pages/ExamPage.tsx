@@ -23,13 +23,13 @@ export const ExamPage: FC = memo(() => {
     const [leftPanelWidth, setLeftPanelWidth] = useState(0);
     const leftPanelRef = useRef<HTMLDivElement | null>(null);
     const { year, season, section } = useParams();
-
     // Workerのパスを設定　現在はCDNを使用
     pdfjs.GlobalWorkerOptions.workerSrc =
         "https://unpkg.com/pdfjs-dist@4.2.67/build/pdf.worker.min.mjs";
 
     const url = useMemo(
-        () => `http://${window.location.host}/storage/pdf/test.pdf`,
+        () =>
+            `http://${window.location.host}/storage/pdf/${year}_${season}_${section}.pdf`,
         []
     );
 
@@ -78,7 +78,11 @@ export const ExamPage: FC = memo(() => {
                     ref={leftPanelRef}
                     overflow={"auto"}
                 >
-                    <ExamHeader />
+                    <ExamHeader
+                        year={parseInt(year)}
+                        season={season}
+                        section={parseInt(section)}
+                    />
                     {/* PDF */}
                     <Box flex="3">
                         <Document

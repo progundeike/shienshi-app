@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AnswerRequest;
 use Illuminate\Http\Request;
 use App\Models\UserAnswer;
+use App\Models\SubmittedExam;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
@@ -156,6 +157,7 @@ class AnswerController extends Controller
     }
 
     // ユーザーの回答を保存、更新する
+    // 提出済み試験に追加する
     private function storeAnswerInput(AnswerRequest $request): array
     {
         $data = $request->validated();
@@ -163,6 +165,16 @@ class AnswerController extends Controller
 
         $answers = $data['answers'];
         $userAnswers = [];
+
+        // SubmittedExamsテーブルを更新
+        SubmittedExam::updateOrCreate(
+            [
+                'user_id' => $userId,
+                'year' => $data['year'],
+                'season' => $data['season'],
+                'section' => $data['section'],
+            ]
+        );
 
         foreach ($answers as $answer) {
             // ユーザーの回答を保存、更新する。AIの評価と回答はnullで初期化

@@ -147,7 +147,6 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
     };
 
     useEffect(() => {
-        console.log("render");
         if (!year || !season || !section) return;
 
         fetchQuestions(year, season, section).then((data) => {
@@ -159,8 +158,6 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
         // ログイン済みの場合は、提出済み答案と添削結果を取得
         if (user) {
             fetchCorrection(year, season, section).then((data) => {
-                console.log(data);
-
                 if (data) {
                     setCorrection(data);
                 }
