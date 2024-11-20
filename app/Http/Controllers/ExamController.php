@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Question;
 use App\Models\ExamSentence;
 use App\Models\ModelAnswer;
+use App\Models\SubmittedExam;
 use App\Models\UserAnswer;
 
 // 試験問題に関する情報を提供するコントローラ
@@ -212,9 +213,7 @@ class ExamController extends Controller
     {
         $userId = Auth::id();
 
-        $submittedAnswers = UserAnswer::where('user_id', $userId)
-            ->select('year', 'season', 'section')
-            ->distinct()
+        $submittedAnswers = SubmittedExam::where('user_id', $userId)
             ->get();
 
         $submittedAnswers->each(function ($exam) {

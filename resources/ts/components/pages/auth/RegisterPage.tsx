@@ -1,8 +1,6 @@
 import {
     Box,
     Center,
-    Divider,
-    Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,

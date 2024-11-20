@@ -32,7 +32,6 @@ export const LoginPage: FC = memo(() => {
     const [searchParams] = useSearchParams();
     const user = useAtomValue(userAtom);
 
-    const navigate = useNavigate();
     const [emailVerifyQuery, setEmailVerifyQuery] = useState("");
     const { login } = useAuth();
     const isLoading = useAtomValue(loadingAtom);

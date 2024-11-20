@@ -1,14 +1,10 @@
 import { FC, memo, useEffect, useState } from "react";
-import { Box, Button, Flex, Icon, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { LogoutButton } from "../atoms/LogoutButton";
 import { userAtom } from "../../states/userAtom";
 import { Link, useNavigate } from "react-router-dom";
 import { useAtomValue } from "jotai";
-import {
-    FaExclamation,
-    FaExclamationCircle,
-    FaInfoCircle,
-} from "react-icons/fa";
+import { FaExclamationCircle } from "react-icons/fa";
 import { SubmittedExam, useExam } from "../../hooks/useExam";
 
 export const MyPage: FC = memo(() => {
