@@ -1,8 +1,5 @@
 import {
     VStack,
-    RadioGroup,
-    Stack,
-    Radio,
     Button,
     Box,
     Text,
@@ -17,10 +14,9 @@ import { useAtom, useAtomValue } from "jotai";
 import { userAtom } from "../../states/userAtom";
 import { useAnswer } from "../../hooks/useAnswer";
 import { FetchedQuestion, Option, useExam } from "../../hooks/useExam";
-import { DisplayAIResponse } from "./DisplayAIResponse";
 import { loadingAtom } from "../../states/loadingAtom";
 import { NeedRegister } from "../molecules/NeedRegister";
-import { DisplayAskToAICard } from "../molecules/DisplayAskToAICard";
+import { RadioQuestionForm } from "../molecules/RadioQuestionForm";
 
 export type AnswerInputs = {
     answer: {
@@ -98,12 +94,15 @@ type Props = {
     year: number;
     season: string;
     section: number;
+    questions: FetchedQuestion[];
+    setCorrections: (corrections: Correction[] | null) => void;
 };
 
 export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
-    const { year, season, section } = props;
-    const [questions, setQuestions] = useState<FetchedQuestion[] | null>(null);
-    const [aiResponse, setCorrection] = useState<Correction[] | null>(null);
+    const { year, season, section, questions, setCorrections } = props;
+
+    // const [corrections, setCorrection] = useState<Correction[] | null>(null);
+
     const user = useAtomValue(userAtom);
     const [isLoading, setIsLoading] = useAtom(loadingAtom);
 
@@ -112,26 +111,18 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
         handleSubmit,
         watch,
         formState: { errors },
-        reset,
     } = useForm<AnswerInputs>();
 
-    const { fetchQuestions } = useExam();
-    const { submitAnswer, fetchCorrection, deleteSubmittedAnswer } =
-        useAnswer();
+    const { submitAnswer } = useAnswer();
 
     const onSubmit: SubmitHandler<AnswerInputs> = async (data) => {
         try {
-            const response = await submitAnswer(
-                data,
-                questions![0].year,
-                questions![0].season,
-                questions![0].section
-            );
+            const response = await submitAnswer(data, year, season, section);
 
             // const response = testResponse;
 
             if (response) {
-                setCorrection(response);
+                setCorrections(response);
             }
         } catch (e) {
             console.error(e);
@@ -139,31 +130,6 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
 
         return;
     };
-
-    const onReset = () => {
-        setCorrection(null);
-        deleteSubmittedAnswer(year, season, section);
-        reset();
-    };
-
-    useEffect(() => {
-        if (!year || !season || !section) return;
-
-        fetchQuestions(year, season, section).then((data) => {
-            if (data) {
-                setQuestions(data);
-            }
-        });
-
-        // ログイン済みの場合は、提出済み答案と添削結果を取得
-        if (user) {
-            fetchCorrection(year, season, section).then((data) => {
-                if (data) {
-                    setCorrection(data);
-                }
-            });
-        }
-    }, [year, season, section, user]);
 
     if (isLoading) {
         return (
@@ -173,7 +139,7 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
         );
     }
 
-    if (!questions) {
+    if (!isLoading && !questions) {
         return (
             <Box>
                 設問が取得できませんでした。しばらく経ってから再度お試しください
@@ -210,119 +176,46 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
 
                                     {/* 解答欄 */}
                                     {question.type === "radio" ? (
-                                        <RadioGroup>
-                                            <Stack>
-                                                {question.options &&
-                                                    question.options.map(
-                                                        (
-                                                            option: Option,
-                                                            index: number
-                                                        ) => (
-                                                            <Radio
-                                                                key={index}
-                                                                value={
-                                                                    option.value
-                                                                }
-                                                                {...register(
-                                                                    `answer.${question.questionNumber}-${question.subQuestionNumber}`
-                                                                )}
-                                                            >
-                                                                {option.label}
-                                                            </Radio>
-                                                        )
-                                                    )}
-                                            </Stack>
-                                        </RadioGroup>
+                                        <RadioQuestionForm
+                                            question={question}
+                                            register={register}
+                                        />
                                     ) : (
                                         <>
-                                            {!aiResponse && (
-                                                <>
-                                                    <Textarea
-                                                        {...register(
-                                                            `answer.${question.questionNumber}-${question.subQuestionNumber}`
-                                                        )}
-                                                        readOnly={
-                                                            aiResponse
-                                                                ? true
-                                                                : false
-                                                        }
-                                                    />
-                                                    {question.maxLength && (
-                                                        <Box textAlign="right">
-                                                            (
-                                                            {watch(
-                                                                `answer.${question.questionNumber}-${question.subQuestionNumber}`,
-                                                                ""
-                                                            ).length || 0}
-                                                            /
-                                                            {question.maxLength}
-                                                            字)
-                                                        </Box>
-                                                    )}
-                                                </>
+                                            <Textarea
+                                                {...register(
+                                                    `answer.${question.questionNumber}-${question.subQuestionNumber}`
+                                                )}
+                                            />
+                                            {question.maxLength && (
+                                                <Box textAlign="right">
+                                                    (
+                                                    {watch(
+                                                        `answer.${question.questionNumber}-${question.subQuestionNumber}`,
+                                                        ""
+                                                    ).length || 0}
+                                                    /{question.maxLength}
+                                                    字)
+                                                </Box>
                                             )}
                                         </>
                                     )}
                                 </Box>
-
-                                {/* 添削結果 */}
-                                {aiResponse && (
-                                    <>
-                                        {/* <DisplayUserAnswer /> */}
-
-                                        <DisplayAIResponse
-                                            questionNumber={
-                                                question.questionNumber
-                                            }
-                                            subQuestionNumber={
-                                                question.subQuestionNumber
-                                            }
-                                            aiResponse={aiResponse}
-                                        ></DisplayAIResponse>
-
-                                        <DisplayAskToAICard
-                                            questionNumber={
-                                                question.questionNumber
-                                            }
-                                            subQuestionNumber={
-                                                question.subQuestionNumber
-                                            }
-                                            year={question.year}
-                                            season={question.season}
-                                            section={question.section}
-                                        />
-                                    </>
-                                )}
                             </Fragment>
                         ))}
 
                     <Box textAlign="center" mt="20px">
-                        {/* ログイン前 */}
-                        {!user && <NeedRegister />}
-
-                        {/* ログイン後 提出 or リセットボタン */}
-                        {user && (
-                            <Box>
-                                {aiResponse ? (
-                                    <Button
-                                        backgroundColor="green.200"
-                                        borderRadius="100px"
-                                        w="80%"
-                                        onClick={onReset}
-                                    >
-                                        解き直す
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        type="submit"
-                                        backgroundColor="green.200"
-                                        borderRadius="100px"
-                                        w="80%"
-                                    >
-                                        答え合わせ
-                                    </Button>
-                                )}
-                            </Box>
+                        {user ? (
+                            <Button
+                                type="submit"
+                                backgroundColor="green.200"
+                                borderRadius="100px"
+                                w="80%"
+                            >
+                                答え合わせ
+                            </Button>
+                        ) : (
+                            <NeedRegister />
                         )}
                     </Box>
                 </VStack>

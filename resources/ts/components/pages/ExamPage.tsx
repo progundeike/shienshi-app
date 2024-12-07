@@ -1,14 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import {
-    FC,
-    memo,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-    useRef,
-} from "react";
-import { pdfjs, Document, Page } from "react-pdf";
+import { FC, memo, useEffect, useState, useRef } from "react";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import Split from "react-split";
@@ -17,25 +8,14 @@ import { QuestionAndAnswerForm } from "../organisms/QuestionAndAnswerForm";
 import { ExamHeader } from "../molecules/ExamHeader";
 import { useParams } from "react-router-dom";
 import { Page404 } from "./Page404";
+import { CheckingAnswerArea } from "../organisms/ CheckingAnswerArea";
+import { DisplayExamPdf } from "../organisms/DisplayExamPdf";
+import { AnswerAndCorrectionForm } from "../organisms/AnswerAndCorrectionForm";
 
 export const ExamPage: FC = memo(() => {
-    const [numPages, setNumPages] = useState(1);
     const [leftPanelWidth, setLeftPanelWidth] = useState(0);
     const leftPanelRef = useRef<HTMLDivElement | null>(null);
     const { year, season, section } = useParams();
-    // Workerのパスを設定　現在はCDNを使用
-    pdfjs.GlobalWorkerOptions.workerSrc =
-        "https://unpkg.com/pdfjs-dist@4.2.67/build/pdf.worker.min.mjs";
-
-    const url = useMemo(
-        () =>
-            `http://${window.location.host}/storage/pdf/${year}_${season}_${section}.pdf`,
-        []
-    );
-
-    function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
-        setNumPages(numPages);
-    }
 
     useEffect(() => {
         if (leftPanelRef.current) {
@@ -83,20 +63,8 @@ export const ExamPage: FC = memo(() => {
                         season={season}
                         section={parseInt(section)}
                     />
-                    {/* PDF */}
                     <Box flex="3">
-                        <Document
-                            file={url}
-                            onLoadSuccess={onDocumentLoadSuccess}
-                        >
-                            {Array.from(new Array(numPages), (el, index) => (
-                                <Page
-                                    key={`page_${index + 1}`}
-                                    pageNumber={index + 1}
-                                    width={leftPanelWidth}
-                                />
-                            ))}
-                        </Document>
+                        <DisplayExamPdf leftPanelWidth={leftPanelWidth} />
                     </Box>
                 </Box>
 
@@ -111,7 +79,7 @@ export const ExamPage: FC = memo(() => {
                     backgroundColor="white"
                     p="20px"
                 >
-                    <QuestionAndAnswerForm
+                    <AnswerAndCorrectionForm
                         year={parseInt(year)}
                         season={season}
                         section={parseInt(section)}

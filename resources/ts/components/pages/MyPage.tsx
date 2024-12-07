@@ -67,7 +67,7 @@ export const MyPage: FC = memo(() => {
                                     to={`/exams/${exam.year}/${exam.season}/${exam.section}`}
                                 >
                                     <Button>
-                                        {`${exam.year}年 ${exam.season} ${exam.section}`}
+                                        {`${exam.year}年 ${exam.season_japanese} ${exam.section_converted}`}
                                     </Button>
                                 </Link>
                             </Box>

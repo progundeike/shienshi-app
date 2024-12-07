@@ -216,37 +216,46 @@ class ExamController extends Controller
         $submittedAnswers = SubmittedExam::where('user_id', $userId)
             ->get();
 
-        $submittedAnswers->each(function ($exam) {
+        $updatedAnswers = $submittedAnswers->map(function ($exam) {
+
+            $updatedExam = [
+                'year' => $exam->year,
+                'season' => $exam->season,
+                'section' => $exam->section,
+            ];
+
             // seasonを日本語に変換
             if ($exam->season === 'haru') {
-                $exam->season = '春期';
+                $updatedExam['season_japanese'] = '春期';
             } elseif ($exam->season === 'aki') {
-                $exam->season = '秋期';
+                $updatedExam['season_japanese'] = '秋期';
             } else {
                 // 例外
-                $exam->season = '未登録';
+                $updatedExam['season_japanese'] = '未登録';
             }
 
             // sectionを問いに変換。2023年までは午後I, 午後Ⅱに分ける
             if ($exam->year >= 2023) {
                 // sectionをそのまま問いに変換
-                $exam->section = '問' . $exam->section;
+                $updatedExam['section_converted'] = '問' . $exam->section;
             } else {
                 // sectionを午前、午後に分類
                 if ($exam->section < 4) {
-                    $exam->section = '午後I 問' . $exam->section;
+                    $updatedExam['section_converted'] = '午後I 問' . $exam->section;
                 } elseif ($exam->section === 4) {
-                    $exam->section = '午後Ⅱ 問1';
+                    $updatedExam['section_converted'] = '午後Ⅱ 問1';
                 } elseif ($exam->section === 5) {
-                    $exam->section = '午後Ⅱ 問2';
+                    $updatedExam['section_converted'] = '午後Ⅱ 問2';
                 } else {
                     // 例外
-                    $exam->section = '未登録';
+                    $updatedExam['section_converted'] = '未登録';
                 }
             }
+
+            return $updatedExam;
         });
 
-        return response()->json($submittedAnswers, 200);
+        return response()->json($updatedAnswers, 200);
     }
 
     public function convertUserAnswerToText(array $userAnswers): string

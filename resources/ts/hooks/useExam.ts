@@ -28,6 +28,8 @@ export type SubmittedExam = {
     year: number;
     season: string;
     section: number;
+    season_japanese: string;
+    section_converted: string;
 }
 
 export const useExam = () => {
