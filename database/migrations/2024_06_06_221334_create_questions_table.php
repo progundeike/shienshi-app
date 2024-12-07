@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('question_number');
             $table->unsignedBigInteger('sub_question_number');
             $table->text('text');
-            $table->string('type');
+            $table->enum('type', ['textarea', 'radio', 'input']);
             $table->json('options')->nullable();
             $table->integer('max_length')->nullable();
             $table->timestamps();
