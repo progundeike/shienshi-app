@@ -41,6 +41,10 @@ class AnswerController extends Controller
         $examQuestions = $examController->fetchExamQuestionsArray($year, $season, $section);
         $modelAnswers = $examController->fetchModelAnswer($year, $season, $section);
 
+        if (count($examQuestions) !== count($modelAnswers)) {
+            return response()->json(['message' => 'Failed to get questions and answers'], 500);
+        }
+
         // プロンプトを組み立てる
         // プロンプトは <SystemPrompt> <Question> <UserAnswer> の3つから構成される
         $questionPrompt = $this->buildQuestionPrompt($examSentence, $examQuestions, $modelAnswers);
@@ -55,10 +59,11 @@ class AnswerController extends Controller
             ],
         ];
 
+        // Log::debug($examQuestions, $modelAnswers);
+
         // テスト用のダミーレスポンス
         return response()->json($this->dummyResponse, 200);
 
-        Log::debug($prompt);
         // AIに投げる
         $controller = new AIcontroller();
         $aiResponse = $controller->useFunctionCall($prompt, $this->functionParameter);
@@ -236,14 +241,13 @@ class AnswerController extends Controller
     {
         $sentence = $examSentence['sentence']; // 問題文
 
-        $length = count($examQuestions);
         $questionAndAnswerText = '';
-
-        for ($i = 0; $i < $length; $i++) {
+        for ($i = 0; $i < count($examQuestions); $i++) {
             if ($examQuestions[$i]['subQuestionNumber'] === 1) {
                 $questionAndAnswerText .= '設問' . $examQuestions[$i]['questionNumber'] . ' ';
             }
-            $questionAndAnswerText .= $examQuestions[$i]['text'] . PHP_EOL;
+
+            $questionAndAnswerText .= $this->convertQuestionToString($examQuestions[$i]) . PHP_EOL;
             $questionAndAnswerText .= '[模範解答:' . $modelAnswers[$i]['text'] . ']' . PHP_EOL . PHP_EOL;
         }
 
@@ -251,12 +255,36 @@ class AnswerController extends Controller
         // $purpose = $examData['purpose']; // 出題趣旨
         // $reviewComment = $examData['review_comment']; // 採点講評
 
+        Log::debug($questionAndAnswerText);
+
         return <<<EOF
                 <Question>
-                    <問題>{$sentence}</問題>
-                    <設問と解答>{$questionAndAnswerText}</設問と解答>
+                <問題>{$sentence}</問題>
+                <設問と解答>{$questionAndAnswerText}</設問と解答>
                 </Question>
                 EOF;
+    }
+
+    // 設問を文字列に変換する
+    private function convertQuestionToString(array $questionArray): string
+    {
+        $text = $questionArray['text'];
+
+        Log::debug($questionArray['options']);
+
+        // 選択肢の問題の場合は選択肢をデコードする
+        if ($questionArray['type'] === 'radio') {
+            $options = $questionArray['options'];
+
+            $choices = '';
+            foreach ($options as $option) {
+                $choices .= '(' . $option->value . ') ' . $option->label . ', ';
+            }
+
+            $text .= '[解答群:' . $choices . ']';
+        }
+
+        return $text;
     }
 
     private string $systemPromptContent = <<<EOM

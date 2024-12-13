@@ -37,27 +37,6 @@ class ExamController extends Controller
         }
     }
 
-    // 設問を文字列で取得する。各設問は配列として返す。
-    // public function getExamQuestionString(int $year, string $season, int $section): array
-    // {
-    //     try {
-    //         $questions = $this->fetchExamQuestionsArray($year, $season, $section);
-
-    //         // questionsが取得できない場合は例外を投げる
-    //         if (!$questions) {
-    //             throw new \Exception('Questions not found');
-    //         }
-
-    //         // 各設問を文字列に変換する
-    //         $stringQuestions = $this->convertQuestionsToString($questions);
-
-    //         return $stringQuestions;
-    //     } catch (\Exception $e) {
-    //         Log::error($e->getMessage());
-    //         throw $e;
-    //     }
-    // }
-
     // 大問または設問番号を指定して設問を取得する
     public function fetchExamQuestionsArray(
         int $year,
@@ -105,37 +84,8 @@ class ExamController extends Controller
         return $questions->toArray();
     }
 
-    // 設問を文字列に変換する
-    // public function convertQuestionsToString(array $questionsArray)
-    // {
-    //     $questions = [];
-    //     foreach ($questionsArray as $question) {
-    //         $text = $question['text'];
-
-    //         // 選択肢の問題の場合は選択肢をデコードする
-    //         if ($question['type'] === 'radio') {
-    //             $options = json_decode($question->options);
-
-    //             $labels = array_map(function ($option) {
-    //                 return $option->label;
-    //             }, $options);
-
-    //             $commaSeparatedLabels = implode(', ', $labels);
-
-    //             $text = $text . '解答群[' . $commaSeparatedLabels . ']';
-    //         }
-
-    //         $questions[] =  [
-    //             'questionNumber' => $question->question_number,
-    //             'subQuestionNumber' => $question->sub_question_number,
-    //             'text' => $text,
-    //         ];
-    //     };
-
-    //     return $questions;
-    // }
-
-    //指定した大問の問題文, 出題趣旨、講評を取得する
+    // 指定した大問の問題文, 出題趣旨、講評を取得する
+    // 現在は問題文のみを返す
     public function fetchExamSentences(int $year, string $season, int $section): array
     {
         $examData = ExamSentence::where('year', $year)
@@ -145,8 +95,8 @@ class ExamController extends Controller
 
         return [
             'sentence' => $examData->sentence,
-            'purpose' => $examData->purpose,
-            'review_comment' => $examData->review_comment,
+            // 'purpose' => $examData->purpose,
+            // 'review_comment' => $examData->review_comment,
         ];
     }
 
@@ -178,7 +128,7 @@ class ExamController extends Controller
         return $modelAnswer->toArray();
     }
 
-    // ユーザーの回答を取得する
+    // 指定した問題のユーザーの回答を取得する
     public function fetchUserAnswer(int $userId, int $year, string $season, int $section, int $questionNumber, int $subQuestionNumber): array
     {
         $answer = UserAnswer::where('user_id', $userId)
@@ -195,18 +145,6 @@ class ExamController extends Controller
             'user_text' => $answer->user_text,
         ];
     }
-
-    // ユーザーが答案提出済みかどうかを判定する
-    // public function isUserAnswerSubmitted(int $userId, int $year, string $season, int $section): bool
-    // {
-    //     $result = UserAnswer::where('user_id', $userId)
-    //         ->where('year', $year)
-    //         ->where('season', $season)
-    //         ->where('section', $section)
-    //         ->exists();
-
-    //     return $result;
-    // }
 
     // 提出済みの試験一覧を取得する
     public function fetchSubmittedExams()
