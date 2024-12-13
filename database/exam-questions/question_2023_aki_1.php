@@ -15,9 +15,9 @@ return [
             (1) XSS脆弱性の種類を解答群の中から選び, 記号で答えよ
             EOF,
         'options' => json_encode([
-            ['label' => 'ア DOM Based XSS', 'value' => 'ア'],
-            ['label' => 'イ 格納型 XSS', 'value' => 'イ'],
-            ['label' => 'ウ 反射型 XSS', 'value' => 'ウ'],
+            ['label' => 'DOM Based XSS', 'value' => 'ア'],
+            ['label' => '格納型 XSS', 'value' => 'イ'],
+            ['label' => '反射型 XSS', 'value' => 'ウ'],
         ]),
         'max_length' => null,
     ],

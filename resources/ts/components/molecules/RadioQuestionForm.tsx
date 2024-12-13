@@ -1,4 +1,4 @@
-import { Radio, RadioGroup, Stack } from "@chakra-ui/react";
+import { Box, Flex, Radio, RadioGroup, Stack } from "@chakra-ui/react";
 import { FC, memo } from "react";
 import { FetchedQuestion, Option } from "../../hooks/useExam";
 import { UseFormRegister } from "react-hook-form";
@@ -14,7 +14,7 @@ export const RadioQuestionForm: FC<Props> = memo((props) => {
 
     return (
         <RadioGroup>
-            <Stack>
+            <Stack ml="20px">
                 {question.options!.map((option: Option, index: number) => (
                     <Radio
                         key={index}
@@ -23,7 +23,10 @@ export const RadioQuestionForm: FC<Props> = memo((props) => {
                             `answer.${question.questionNumber}-${question.subQuestionNumber}`
                         )}
                     >
-                        {option.label}
+                        <Flex gap="10px">
+                            <Box>({option.value})</Box>
+                            <Box>{option.label}</Box>
+                        </Flex>
                     </Radio>
                 ))}
             </Stack>

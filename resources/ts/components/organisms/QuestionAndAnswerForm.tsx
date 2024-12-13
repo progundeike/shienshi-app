@@ -6,6 +6,8 @@ import {
     Textarea,
     Spinner,
     Center,
+    Input,
+    Flex,
 } from "@chakra-ui/react";
 import { FC, memo, useEffect, useState, Fragment } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -168,25 +170,45 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
                                     <Text>設問{question.questionNumber}</Text>
                                 )}
 
-                                <Box>
+                                <Box mb="5px">
                                     {/* 質問文 */}
                                     <Text fontSize="md" whiteSpace="pre-line">
                                         {question.text}
                                     </Text>
 
                                     {/* 解答欄 */}
-                                    {question.type === "radio" ? (
+                                    {question.type === "radio" && (
                                         <RadioQuestionForm
                                             question={question}
                                             register={register}
                                         />
-                                    ) : (
-                                        <>
-                                            <Textarea
-                                                {...register(
-                                                    `answer.${question.questionNumber}-${question.subQuestionNumber}`
+                                    )}
+
+                                    {question.type === "textarea" && (
+                                        <Box>
+                                            <Flex
+                                                alignItems="center"
+                                                gap="10px"
+                                            >
+                                                {/* 解答欄の左に表示する記号 [a]等 */}
+                                                {question.options && (
+                                                    <>
+                                                        <Box>
+                                                            {
+                                                                question
+                                                                    .options[0]
+                                                                    .label
+                                                            }
+                                                        </Box>
+                                                    </>
                                                 )}
-                                            />
+                                                <Textarea
+                                                    {...register(
+                                                        `answer.${question.questionNumber}-${question.subQuestionNumber}`
+                                                    )}
+                                                />
+                                            </Flex>
+
                                             {question.maxLength && (
                                                 <Box textAlign="right">
                                                     (
@@ -198,7 +220,39 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
                                                     字)
                                                 </Box>
                                             )}
-                                        </>
+                                        </Box>
+                                    )}
+
+                                    {question.type === "input" && (
+                                        <Box>
+                                            <Flex
+                                                alignItems="center"
+                                                gap="10px"
+                                            >
+                                                {/* 解答欄の左に表示する記号 [a]等 */}
+                                                <Box>
+                                                    {question.options &&
+                                                        question.options[0]
+                                                            .label}
+                                                </Box>
+                                                <Input
+                                                    {...register(
+                                                        `answer.${question.questionNumber}-${question.subQuestionNumber}`
+                                                    )}
+                                                />
+                                            </Flex>
+                                            {question.maxLength && (
+                                                <Box textAlign="right">
+                                                    (
+                                                    {watch(
+                                                        `answer.${question.questionNumber}-${question.subQuestionNumber}`,
+                                                        ""
+                                                    ).length || 0}
+                                                    /{question.maxLength}
+                                                    字)
+                                                </Box>
+                                            )}
+                                        </Box>
                                     )}
                                 </Box>
                             </Fragment>

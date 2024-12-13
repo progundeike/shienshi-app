@@ -8,6 +8,7 @@ return [
         'section' => 2,
         'question_number' => 1,
         'sub_question_number' => 1,
+        'small_question_number' => 1,
         'type' => 'input',
         'text' => <<<EOF
             [社外の攻撃者によるファイルの持出しについてのセキュリティ対策の確認] について答えよ。
@@ -16,6 +17,19 @@ return [
             EOF,
         'options' => json_encode([
             ['label' => '[a]', 'value' => 'a'],
+        ]),
+        'max_length' => null,
+    ],
+    [
+        'year' => 2023,
+        'season' => 'aki',
+        'section' => 2,
+        'question_number' => 1,
+        'sub_question_number' => 1,
+        'small_question_number' => 2,
+        'type' => 'input',
+        'text' => '',
+        'options' => json_encode([
             ['label' => '[b]', 'value' => 'b'],
         ]),
         'max_length' => null,
@@ -26,10 +40,28 @@ return [
         'section' => 2,
         'question_number' => 1,
         'sub_question_number' => 2,
+        'small_question_number' => 1,
         'type' => 'textarea',
         'text' => <<<EOF
             (2) 図2中の[c], [d]に入れる適切な字句を, それぞれ40字以内で答えよ。
             EOF,
+        'options' => json_encode([
+            ['label' => '[c]', 'value' => 'c'],
+        ]),
+        'max_length' => 40,
+    ],
+    [
+        'year' => 2023,
+        'season' => 'aki',
+        'section' => 2,
+        'question_number' => 1,
+        'sub_question_number' => 2,
+        'small_question_number' => 2,
+        'type' => 'textarea',
+        'text' => '',
+        'options' => json_encode([
+            ['label' => '[d]', 'value' => 'd'],
+        ]),
         'max_length' => 40,
     ],
     [
