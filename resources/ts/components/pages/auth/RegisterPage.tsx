@@ -79,7 +79,7 @@ export const RegisterPage: FC = memo(() => {
                     <Box my="20px">
                         <Text>
                             ユーザー登録をすることで、AI添削機能や学習履歴の保存が利用できます。
-                            当サイトの利用に料金はかかりません。
+                            当サイトは無料のサービスです。
                         </Text>
                     </Box>
 

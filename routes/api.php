@@ -21,3 +21,4 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 Route::get('/questions/{year}-{season}-{section}', [ExamController::class, 'getExamQuestionsJson']);
+Route::get('/exam/{year}-{season}-{section}', [ExamController::class, 'checkFileExists']);

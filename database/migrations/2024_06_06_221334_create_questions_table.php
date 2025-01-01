@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('section');
             $table->unsignedBigInteger('question_number');
             $table->unsignedBigInteger('sub_question_number');
-            $table->unsignedBigInteger('small_question_number')->nullable();
+            $table->unsignedBigInteger('small_question_number')->default(0);
             $table->text('text');
             $table->enum('type', ['textarea', 'radio', 'input']);
             $table->json('options')->nullable();

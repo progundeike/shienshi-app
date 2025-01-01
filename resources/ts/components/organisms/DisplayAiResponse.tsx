@@ -4,18 +4,25 @@ import { FC, memo } from "react";
 import { Correction } from "./QuestionAndAnswerForm";
 
 type Props = {
-    aiResponse: Correction[];
+    corrections: Correction[];
     questionNumber: number;
     subQuestionNumber: number;
+    smallQuestionNumber: number;
 };
 
 export const DisplayAIResponse: FC<Props> = memo((Props) => {
-    const { aiResponse, questionNumber, subQuestionNumber } = Props;
+    const {
+        corrections,
+        questionNumber,
+        subQuestionNumber,
+        smallQuestionNumber,
+    } = Props;
 
-    const response = aiResponse.find(
+    const response = corrections.find(
         (res: any) =>
             res.questionNumber === questionNumber &&
-            res.subQuestionNumber === subQuestionNumber
+            res.subQuestionNumber === subQuestionNumber &&
+            res.smallQuestionNumber === smallQuestionNumber
     );
 
     if (!response) return null;
@@ -24,8 +31,9 @@ export const DisplayAIResponse: FC<Props> = memo((Props) => {
         <Box>
             <Box>
                 <Text>
-                    あなたの解答:{" "}
-                    {response.user_text ? response.user_text : "提出なし"}
+                    {`あなたの解答: ${
+                        response.user_text ? response.user_text : "提出なし"
+                    }`}
                 </Text>
                 <Text></Text>
             </Box>

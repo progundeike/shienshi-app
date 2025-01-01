@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('section');
             $table->unsignedBigInteger('question_number');
             $table->unsignedBigInteger('sub_question_number');
+            $table->unsignedBigInteger('small_question_number')->default(0);
             $table->text('text')->nullable();
             $table->timestamps();
         });

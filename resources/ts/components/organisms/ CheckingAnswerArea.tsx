@@ -26,17 +26,18 @@ type Props = {
     section: number;
     questions: FetchedQuestion[];
     corrections: Correction[];
+    setCorrections: (corrections: Correction[] | null) => void;
     user: User;
 };
 
 // 添削結果を表示するコンポーネント
 export const CheckingAnswerArea: FC<Props> = memo((props) => {
-    const { year, season, section, questions, corrections } = props;
+    const { year, season, section, questions, corrections, setCorrections } =
+        props;
     const [isLoading, setIsLoading] = useAtom(loadingAtom);
 
     const {
         register,
-        handleSubmit,
         formState: { errors },
         reset,
     } = useForm<AnswerInputs>();
@@ -44,10 +45,8 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
     const { deleteSubmittedAnswer } = useAnswer();
 
     const onReset = () => {
-        // ToDo: correctionsを初期化
-        // setCorrections(null);
-
         deleteSubmittedAnswer(year, season, section);
+        setCorrections(null);
         reset();
     };
 
@@ -69,16 +68,18 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
 
     return (
         <>
-            <form>
+            <form autoComplete="off">
                 <VStack align="stretch">
                     {/* 設問をループ */}
                     {questions &&
                         questions.map((question, index) => (
                             <Fragment key={index}>
-                                {(question.subQuestionNumber == 1 ||
-                                    question.subQuestionNumber == 0) && (
-                                    <Text>設問{question.questionNumber}</Text>
-                                )}
+                                {question.subQuestionNumber == 1 &&
+                                    question.smallQuestionNumber < 2 && (
+                                        <Text>
+                                            設問{question.questionNumber}
+                                        </Text>
+                                    )}
 
                                 <Box>
                                     {/* 質問文 */}
@@ -94,6 +95,17 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
                                             register={register}
                                         />
                                     )}
+                                    {/* オプションのラベルを表示 */}
+                                    {question.options &&
+                                        question.options.map(
+                                            (option, index) => (
+                                                <Box key={index}>
+                                                    <Text>{option.label}</Text>
+                                                </Box>
+                                            )
+                                        )}
+
+                                    {/* 解答欄 */}
                                 </Box>
 
                                 <DisplayAIResponse
@@ -101,7 +113,10 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
                                     subQuestionNumber={
                                         question.subQuestionNumber
                                     }
-                                    aiResponse={corrections}
+                                    smallQuestionNumber={
+                                        question.smallQuestionNumber
+                                    }
+                                    corrections={corrections}
                                 />
 
                                 <DisplayAskToAICard

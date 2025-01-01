@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -74,6 +75,7 @@ class ExamController extends Controller
                 'section' => $question->section,
                 'questionNumber' => $question->question_number,
                 'subQuestionNumber' => $question->sub_question_number,
+                'smallQuestionNumber' => $question->small_question_number,
                 'type' => $question->type,
                 'text' => $question->text,
                 'options' => $question->options ? json_decode($question->options) : null,
@@ -215,5 +217,20 @@ class ExamController extends Controller
         }
 
         return $userAnswerText;
+    }
+
+    // 試験のPDFファイルの存在確認
+    public function checkFileExists(string $year, string $season, string $section): JsonResponse
+    {
+        $filePath = storage_path('app/public/pdf/' . $year . '_' . $season . '_' . $section . '.pdf');
+
+        if (!file_exists($filePath)) {
+            return response()->json(['error' => 'File not found'], 404);
+        }
+
+        return response()->json([
+            'message' => 'File exists',
+            'url' => url('/storage/exam_pdf/'  . $filePath),
+        ], 200);
     }
 }

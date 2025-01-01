@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
+// TODO: smallQuestionNumberを追加する
+
 class AIQuestionController extends Controller
 {
     public function run(QuestionRequest $request)
