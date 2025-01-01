@@ -28,6 +28,7 @@ class AnswerController extends Controller
         //     'section' => 1,
         //     'questionNumber' => 1,
         //     'subQuestionNumber' => 2,
+        //     'smallQuestionNumber' => 1,
         //     'user_text' => 'ユーザーの回答',
         //     ],
         // ]
@@ -59,7 +60,7 @@ class AnswerController extends Controller
             ],
         ];
 
-        // Log::debug($examQuestions, $modelAnswers);
+        Log::debug($examQuestions, $modelAnswers);
 
         // テスト用のダミーレスポンス
         return response()->json($this->dummyResponse, 200);
@@ -74,14 +75,10 @@ class AnswerController extends Controller
 
         $aiResponse = [];
         foreach ($evaluations as $evaluation) {
-
-            // subQuestionNumberがない場合は0をセット
-            if (!isset($evaluation['subQuestionNumber'])) {
-                $evaluation['subQuestionNumber'] = 0;
-            }
             $aiResponse[] = [
                 'questionNumber' => $evaluation['questionNumber'],
                 'subQuestionNumber' => $evaluation['subQuestionNumber'],
+                'smallQuestionNumber' => $evaluation['smallQuestionNumber'],
                 'rating' => $evaluation['rating'],
                 'comment' => $evaluation['comment'],
             ];
@@ -99,6 +96,7 @@ class AnswerController extends Controller
                 'season' => $season,
                 'question_number' => $response['questionNumber'],
                 'sub_question_number' => $response['subQuestionNumber'],
+                'small_question_number' => $response['smallQuestionNumber'],
             ]);
 
             // データを更新
@@ -116,6 +114,7 @@ class AnswerController extends Controller
                 'section' => $updatedAnswer->section,
                 'questionNumber' => $updatedAnswer->question_number,
                 'subQuestionNumber' => $updatedAnswer->sub_question_number,
+                'smallQuestionNumber' => $updatedAnswer->small_question_number,
                 'user_text' => $updatedAnswer->user_text,
                 'ai_rating' => $updatedAnswer->ai_rating,
                 'ai_text' => $updatedAnswer->ai_text,
@@ -150,6 +149,7 @@ class AnswerController extends Controller
             return [
                 'questionNumber' => $answer->question_number,
                 'subQuestionNumber' => $answer->sub_question_number,
+                'smallQuestionNumber' => $answer->small_question_number,
                 'user_text' => $answer->user_text,
                 'ai_rating' => $answer->ai_rating,
                 'ai_text' => $answer->ai_text,
@@ -192,6 +192,7 @@ class AnswerController extends Controller
                         'section' => $data['section'],
                         'question_number' => $answer['questionNumber'],
                         'sub_question_number' => $answer['subQuestionNumber'],
+                        'small_question_number' => $answer['smallQuestionNumber'],
                     ],
                     [
                         'user_text' => $answer['user_text'],
@@ -206,6 +207,7 @@ class AnswerController extends Controller
                 'section' => $createdAnswer->section,
                 'questionNumber' => $createdAnswer->question_number,
                 'subQuestionNumber' => $createdAnswer->sub_question_number,
+                'smallQuestionNumber' => $createdAnswer->small_question_number,
                 'user_text' => $createdAnswer->user_text,
             ];
         }
@@ -254,8 +256,6 @@ class AnswerController extends Controller
         // 参考情報
         // $purpose = $examData['purpose']; // 出題趣旨
         // $reviewComment = $examData['review_comment']; // 採点講評
-
-        Log::debug($questionAndAnswerText);
 
         return <<<EOF
                 <Question>
@@ -356,7 +356,7 @@ class AnswerController extends Controller
         ],
         [
             'questionNumber' => 2,
-            'subQuestionNumber' => 0,
+            'subQuestionNumber' => 1,
             'rating' => '×',
             'comment' => '設問2が未回答であり、模範解答は「HTMLがコメントアウトされ一つのスクリプトになるような投稿を複数回に分けて行った。」である。'
 
@@ -382,7 +382,7 @@ class AnswerController extends Controller
         ],
         [
             'questionNumber' => 4,
-            'subQuestionNumber' => 0,
+            'subQuestionNumber' => 1,
             'rating' => '×',
             'comment' => '未回答であり、模範解答は「スクリプトから別ドメインのURLに対してcookieが送られない仕組み」である。'
         ]

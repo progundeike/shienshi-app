@@ -1,42 +1,48 @@
 import { Box } from "@chakra-ui/react";
-import { FC, memo, useEffect, useState, useRef } from "react";
+import { FC, memo, useEffect, useState, useRef, useCallback } from "react";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import Split from "react-split";
 
-import { QuestionAndAnswerForm } from "../organisms/QuestionAndAnswerForm";
 import { ExamHeader } from "../molecules/ExamHeader";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Page404 } from "./Page404";
-import { CheckingAnswerArea } from "../organisms/ CheckingAnswerArea";
 import { DisplayExamPdf } from "../organisms/DisplayExamPdf";
 import { AnswerAndCorrectionForm } from "../organisms/AnswerAndCorrectionForm";
+import { useExam } from "../../hooks/useExam";
+import { LoadingPage } from "./LoadingPage";
 
 export const ExamPage: FC = memo(() => {
-    const [leftPanelWidth, setLeftPanelWidth] = useState(0);
-    const leftPanelRef = useRef<HTMLDivElement | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [isPdfExists, setIsPdfExists] = useState<boolean | null>(null);
     const { year, season, section } = useParams();
-
-    useEffect(() => {
-        if (leftPanelRef.current) {
-            const handleResize = () => {
-                setLeftPanelWidth(leftPanelRef.current?.clientWidth || 0);
-            };
-
-            const resizeObserver = new ResizeObserver(handleResize);
-            resizeObserver.observe(leftPanelRef.current);
-
-            // 初期値を設定
-            handleResize();
-
-            return () => {
-                resizeObserver.disconnect();
-            };
-        }
-    }, [leftPanelRef]);
+    const { checkPdfExists } = useExam();
+    const navigate = useNavigate();
 
     if (!year || !season || !section) {
         return <Page404 />;
+    }
+
+    useEffect(() => {
+        // PDFの存在確認
+        const checkPdf = async () => {
+            try {
+                const exists = await checkPdfExists(year, season, section);
+                setIsPdfExists(exists);
+                setLoading(false);
+                if (!exists) {
+                    navigate("/not-found");
+                }
+            } catch (error) {
+                console.error("PDFの存在確認に失敗しました", error);
+                navigate("/not-found");
+            }
+        };
+        checkPdf();
+    }, []);
+
+    if (loading) {
+        return <LoadingPage />;
     }
 
     return (
@@ -55,7 +61,6 @@ export const ExamPage: FC = memo(() => {
                     flexDirection="column"
                     height="100vh"
                     backgroundColor="green.200"
-                    ref={leftPanelRef}
                     overflow={"auto"}
                 >
                     <ExamHeader
@@ -63,14 +68,11 @@ export const ExamPage: FC = memo(() => {
                         season={season}
                         section={parseInt(section)}
                     />
-                    <Box flex="3">
-                        <DisplayExamPdf leftPanelWidth={leftPanelWidth} />
-                    </Box>
+                    <DisplayExamPdf />
                 </Box>
 
                 {/* 右側 */}
                 <Box
-                    flex="1"
                     position="sticky"
                     top="0"
                     padding="2"

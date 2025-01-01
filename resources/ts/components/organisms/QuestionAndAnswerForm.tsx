@@ -103,8 +103,6 @@ type Props = {
 export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
     const { year, season, section, questions, setCorrections } = props;
 
-    // const [corrections, setCorrection] = useState<Correction[] | null>(null);
-
     const user = useAtomValue(userAtom);
     const [isLoading, setIsLoading] = useAtom(loadingAtom);
 
@@ -159,16 +157,18 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
                 </Box>
             )}
 
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                 <VStack align="stretch">
                     {/* 設問をループ */}
                     {questions &&
                         questions.map((question, index) => (
                             <Fragment key={index}>
-                                {(question.subQuestionNumber == 1 ||
-                                    question.subQuestionNumber == 0) && (
-                                    <Text>設問{question.questionNumber}</Text>
-                                )}
+                                {question.subQuestionNumber == 1 &&
+                                    question.smallQuestionNumber < 2 && (
+                                        <Text>
+                                            設問{question.questionNumber}
+                                        </Text>
+                                    )}
 
                                 <Box mb="5px">
                                     {/* 質問文 */}
@@ -204,7 +204,7 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
                                                 )}
                                                 <Textarea
                                                     {...register(
-                                                        `answer.${question.questionNumber}-${question.subQuestionNumber}`
+                                                        `answer.${question.questionNumber}-${question.subQuestionNumber}-${question.smallQuestionNumber}`
                                                     )}
                                                 />
                                             </Flex>
@@ -213,7 +213,7 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
                                                 <Box textAlign="right">
                                                     (
                                                     {watch(
-                                                        `answer.${question.questionNumber}-${question.subQuestionNumber}`,
+                                                        `answer.${question.questionNumber}-${question.subQuestionNumber}-${question.smallQuestionNumber}`,
                                                         ""
                                                     ).length || 0}
                                                     /{question.maxLength}
@@ -231,13 +231,15 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
                                             >
                                                 {/* 解答欄の左に表示する記号 [a]等 */}
                                                 <Box>
-                                                    {question.options &&
-                                                        question.options[0]
-                                                            .label}
+                                                    <Text whiteSpace={"nowrap"}>
+                                                        {question.options &&
+                                                            question.options[0]
+                                                                .label}
+                                                    </Text>
                                                 </Box>
                                                 <Input
                                                     {...register(
-                                                        `answer.${question.questionNumber}-${question.subQuestionNumber}`
+                                                        `answer.${question.questionNumber}-${question.subQuestionNumber}-${question.smallQuestionNumber}`
                                                     )}
                                                 />
                                             </Flex>
@@ -245,7 +247,7 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
                                                 <Box textAlign="right">
                                                     (
                                                     {watch(
-                                                        `answer.${question.questionNumber}-${question.subQuestionNumber}`,
+                                                        `answer.${question.questionNumber}-${question.subQuestionNumber}-${question.smallQuestionNumber}`,
                                                         ""
                                                     ).length || 0}
                                                     /{question.maxLength}

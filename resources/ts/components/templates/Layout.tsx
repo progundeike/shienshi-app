@@ -12,7 +12,6 @@ export const Layout: FC<Props> = memo(({ children }) => {
         <>
             <Header />
             <Box
-                pt="70px"
                 w={{ base: "100%", md: "98%" }}
                 m="auto"
                 maxW="1500px"

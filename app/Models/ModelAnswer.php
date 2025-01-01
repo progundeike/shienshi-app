@@ -21,6 +21,7 @@ class ModelAnswer extends Model
         'section',
         'question_number',
         'sub_question_number',
+        'small_question_number',
         'text',
     ];
 }

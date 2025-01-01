@@ -30,6 +30,7 @@ class AnswerRequest extends FormRequest
             'answers' => 'required|array',
             'answers.*.questionNumber' => 'required|integer',
             'answers.*.subQuestionNumber' => 'required|integer',
+            'answers.*.smallQuestionNumber' => 'required|integer',
             'answers.*.user_text' => 'string|nullable',
         ];
     }
@@ -40,11 +41,12 @@ class AnswerRequest extends FormRequest
         // answersの配列を回して、idを振り直す
         $formattedAnswers = [];
         foreach ($answers as $answerId => $text) {
-            // answerIdは'1-2'のような形式で送られてくる
-            list($questionNumber, $subQuestionNumber) = explode('-', $answerId);
+            // answerIdは'1-2-0'のような形式で送られてくる
+            list($questionNumber, $subQuestionNumber, $smallQuestionNumber) = explode('-', $answerId);
             $formattedAnswers[] = [
                 'questionNumber' => (int) $questionNumber,
                 'subQuestionNumber' => (int) $subQuestionNumber,
+                'smallQuestionNumber' => (int) $smallQuestionNumber,
                 'user_text' => $text,
             ];
         };

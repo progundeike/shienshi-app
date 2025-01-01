@@ -29,52 +29,56 @@ export const MyPage: FC = memo(() => {
     }, []);
 
     return (
-        <Flex flexFlow="column" gap="20px" w="80%" m="auto">
-            <Flex justify={"space-between"} alignItems={"center"}>
-                <Box fontSize={"x-large"}>{user.username}さんの学習履歴</Box>
-                <LogoutButton />
-            </Flex>
+        <Box mt="20px">
+            <Flex flexFlow="column" gap="20px" w="80%" m="auto">
+                <Flex justify={"space-between"} alignItems={"center"}>
+                    <Box fontSize={"x-large"}>
+                        {user.username}さんの学習履歴
+                    </Box>
+                    <LogoutButton />
+                </Flex>
 
-            {!user.emailVerified && (
-                <Box
-                    outline="0.5px solid"
-                    p="10px"
-                    borderRadius="100px"
-                    backgroundColor="blue.100"
-                >
-                    <Flex alignItems="center">
-                        <FaExclamationCircle size="25px" />
+                {!user.emailVerified && (
+                    <Box
+                        outline="0.5px solid"
+                        p="10px"
+                        borderRadius="100px"
+                        backgroundColor="blue.100"
+                    >
+                        <Flex alignItems="center">
+                            <FaExclamationCircle size="25px" />
 
-                        <Box ml="10px">
-                            メールアドレスが未登録です。メールアドレスを登録することで、パスワードを忘れてしまっても再設定が可能になります。
-                        </Box>
-                    </Flex>
-                </Box>
-            )}
-
-            {/* 学習履歴 */}
-            <Box>
-                <Text>提出済みの答案</Text>
-                {submittedExams.length === 0 ? (
-                    <Box>提出済みの答案はありません。</Box>
-                ) : (
-                    <Box>
-                        {submittedExams.map((exam) => (
-                            <Box
-                                key={`${exam.year}-${exam.season}-${exam.section}`}
-                            >
-                                <Link
-                                    to={`/exams/${exam.year}/${exam.season}/${exam.section}`}
-                                >
-                                    <Button>
-                                        {`${exam.year}年 ${exam.season_japanese} ${exam.section_converted}`}
-                                    </Button>
-                                </Link>
+                            <Box ml="10px">
+                                メールアドレスが未登録です。メールアドレスを登録することで、パスワードを忘れてしまっても再設定が可能になります。
                             </Box>
-                        ))}
+                        </Flex>
                     </Box>
                 )}
-            </Box>
-        </Flex>
+
+                {/* 学習履歴 */}
+                <Box>
+                    <Text>提出済みの答案</Text>
+                    {submittedExams.length === 0 ? (
+                        <Box>提出済みの答案はありません。</Box>
+                    ) : (
+                        <Box>
+                            {submittedExams.map((exam) => (
+                                <Box
+                                    key={`${exam.year}-${exam.season}-${exam.section}`}
+                                >
+                                    <Link
+                                        to={`/exams/${exam.year}/${exam.season}/${exam.section}`}
+                                    >
+                                        <Button>
+                                            {`${exam.year}年 ${exam.season_japanese} ${exam.section_converted}`}
+                                        </Button>
+                                    </Link>
+                                </Box>
+                            ))}
+                        </Box>
+                    )}
+                </Box>
+            </Flex>
+        </Box>
     );
 });

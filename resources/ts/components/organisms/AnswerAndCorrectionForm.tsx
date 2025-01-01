@@ -38,7 +38,6 @@ export const AnswerAndCorrectionForm: FC<Props> = memo((props) => {
             fetchCorrection(year, season, section).then((data) => {
                 if (data) {
                     setCorrections(data);
-                    console.log(data);
                 }
             });
         }
@@ -67,6 +66,7 @@ export const AnswerAndCorrectionForm: FC<Props> = memo((props) => {
                         section={section}
                         questions={questions}
                         corrections={corrections}
+                        setCorrections={setCorrections}
                         user={user}
                     />
                 </>

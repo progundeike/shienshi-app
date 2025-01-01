@@ -96,10 +96,13 @@ return [
         'section' => 2,
         'question_number' => 2,
         'sub_question_number' => 2,
-        'type' => 'textarea',
+        'type' => 'input',
         'text' => <<<EOF
             (2) 本文中の[e]に入れる適切な字句を答えよ。
             EOF,
+        'options' => json_encode([
+            ['label' => '[e]', 'value' => 'e'],
+        ]),
         'max_length' => null,
     ],
     [
@@ -122,10 +125,13 @@ return [
         'section' => 2,
         'question_number' => 3,
         'sub_question_number' => 2,
-        'type' => 'textarea',
+        'type' => 'input',
         'text' => <<<EOF
             (2) 本文中の[f]に入れる適切な字句を答えよ。
             EOF,
+        'options' => json_encode([
+            ['label' => '[f]', 'value' => 'f'],
+        ]),
         'max_length' => null,
     ],
     [
@@ -170,10 +176,13 @@ return [
         'section' => 2,
         'question_number' => 3,
         'sub_question_number' => 6,
-        'type' => 'textarea',
+        'type' => 'input',
         'text' => <<<EOF
             (6) 本文中の[h]に入れる適切な字句を答えよ。
             EOF,
+        'options' => json_encode([
+            ['label' => '[h]', 'value' => 'h'],
+        ]),
         'max_length' => null,
     ],
     [
@@ -182,10 +191,28 @@ return [
         'section' => 2,
         'question_number' => 3,
         'sub_question_number' => 7,
-        'type' => 'textarea',
+        'small_question_number' => 1,
+        'type' => 'input',
         'text' => <<<EOF
             (7) 本文中の下線⑥について, 表3及び表4の削除すべき項番を, それぞれ全て答えよ。
             EOF,
+        'options' => json_encode([
+            ['label' => '[表3]', 'value' => '表3'],
+        ]),
+        'max_length' => null,
+    ],
+    [
+        'year' => 2023,
+        'season' => 'aki',
+        'section' => 2,
+        'question_number' => 3,
+        'sub_question_number' => 7,
+        'small_question_number' => 2,
+        'type' => 'input',
+        'text' => '',
+        'options' => json_encode([
+            ['label' => '[表4]', 'value' => '表4'],
+        ]),
         'max_length' => null,
     ],
 ];

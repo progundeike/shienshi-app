@@ -22,6 +22,7 @@ class UserAnswer extends Model
         'section',
         'question_number',
         'sub_question_number',
+        'small_question_number',
         'user_text',
         'ai_rating',
         'ai_text',

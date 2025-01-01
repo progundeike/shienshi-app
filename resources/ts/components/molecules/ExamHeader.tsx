@@ -1,5 +1,6 @@
-import { Flex, Heading, Button, Box } from "@chakra-ui/react";
+import { Flex, Heading, Button, Box, Link } from "@chakra-ui/react";
 import { FC, memo, useEffect } from "react";
+import { IoMdDownload } from "react-icons/io";
 
 type Props = {
     year: number;
@@ -58,9 +59,15 @@ export const ExamHeader: FC<Props> = memo((props) => {
                     )}`}
                 </Heading>
                 <Box>
-                    <Button backgroundColor="green.200">
-                        問題をダウンロード
-                    </Button>
+                    <Link
+                        href={`/pdf/${year}_${season}_${section}.pdf`}
+                        download
+                    >
+                        <Button backgroundColor="blue.300">
+                            問題をダウンロード
+                            <IoMdDownload />
+                        </Button>
+                    </Link>
                 </Box>
             </Flex>
         </Box>

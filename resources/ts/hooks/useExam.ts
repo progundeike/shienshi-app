@@ -13,6 +13,7 @@ export type FetchedQuestion = {
     section: number;
     questionNumber: number;
     subQuestionNumber: number;
+    smallQuestionNumber: number;
     type: string;
     text: string;
     options: Option[] | null; // JSON文字列
@@ -87,5 +88,27 @@ export const useExam = () => {
             })
     }
 
-    return { fetchQuestions, fetchSubmittedExams };
+    const checkPdfExists = async (
+        year: string,
+        season: string,
+        section: string
+    ) => {
+        return await axiosInstance
+            .get(`/api/exam/${year}-${season}-${section}`)
+            .then((response) => {
+                if (response.status === 200) {
+                    return true;
+                } else if(response.status === 404) {
+                    return false;
+                }
+
+                return null;
+            })
+            .catch((error) => {
+                console.error(error);
+                return null;
+            });
+    }
+
+    return { fetchQuestions, fetchSubmittedExams, checkPdfExists };
 };
