@@ -1,5 +1,5 @@
 import { FC, memo, useEffect, useState } from "react";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { LogoutButton } from "../atoms/LogoutButton";
 import { userAtom } from "../../states/userAtom";
 import { Link, useNavigate } from "react-router-dom";
@@ -40,10 +40,11 @@ export const MyPage: FC = memo(() => {
 
                 {!user.emailVerified && (
                     <Box
-                        outline="0.5px solid"
+                        // outline="0.5px solid"
                         p="10px"
-                        borderRadius="100px"
+                        borderRadius="10px"
                         backgroundColor="blue.100"
+                        padding="20px"
                     >
                         <Flex alignItems="center">
                             <FaExclamationCircle size="25px" />
@@ -51,31 +52,42 @@ export const MyPage: FC = memo(() => {
                             <Box ml="10px">
                                 メールアドレスが未登録です。メールアドレスを登録することで、パスワードを忘れてしまっても再設定が可能になります。
                             </Box>
+                            <Box>
+                                <Button
+                                    borderRadius="100px"
+                                    ml="10px"
+                                    outline="0.5px solid"
+                                >
+                                    メールアドレスを登録
+                                </Button>
+                            </Box>
                         </Flex>
                     </Box>
                 )}
 
                 {/* 学習履歴 */}
                 <Box>
-                    <Text>提出済みの答案</Text>
+                    <Box my="10px">
+                        <Heading size="md">提出済みの答案</Heading>
+                    </Box>
                     {submittedExams.length === 0 ? (
                         <Box>提出済みの答案はありません。</Box>
                     ) : (
-                        <Box>
+                        <Flex flexDirection="column" gap="10px">
                             {submittedExams.map((exam) => (
-                                <Box
+                                <Link
                                     key={`${exam.year}-${exam.season}-${exam.section}`}
+                                    to={`/exams/${exam.year}/${exam.season}/${exam.section}`}
                                 >
-                                    <Link
-                                        to={`/exams/${exam.year}/${exam.season}/${exam.section}`}
+                                    <Button
+                                        outline="0.5px solid"
+                                        borderRadius="100px"
                                     >
-                                        <Button>
-                                            {`${exam.year}年 ${exam.season_japanese} ${exam.section_converted}`}
-                                        </Button>
-                                    </Link>
-                                </Box>
+                                        {`${exam.year}年 ${exam.season_japanese} ${exam.section_converted}`}
+                                    </Button>
+                                </Link>
                             ))}
-                        </Box>
+                        </Flex>
                     )}
                 </Box>
             </Flex>

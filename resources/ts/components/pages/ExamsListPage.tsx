@@ -1,4 +1,4 @@
-import React, { FC, memo } from "react";
+import React, { FC, memo, ReactNode } from "react";
 import {
     Box,
     chakra,
@@ -9,6 +9,7 @@ import {
     Td,
     Th,
     Tr,
+    Text,
 } from "@chakra-ui/react";
 import { ExamLinkButton } from "../atoms/ExamLinkButton";
 import { PreReleaseExamLinkButton } from "../atoms/PreReleaseExamLinkButton";
@@ -19,6 +20,20 @@ const CustomTh = chakra(Th, {
         fontSize: "lg",
     },
 });
+
+type TestTitleProps = {
+    children: ReactNode;
+};
+
+const TestTitle: FC<TestTitleProps> = ({ children }) => {
+    return (
+        <Box w="30%">
+            <Text textAlign="center" fontSize="lg" fontWeight="bold">
+                {children}
+            </Text>
+        </Box>
+    );
+};
 
 export const ExamsListPage: FC = memo(() => {
     return (
@@ -49,11 +64,6 @@ export const ExamsListPage: FC = memo(() => {
                                     問4
                                 </PreReleaseExamLinkButton>
                             </Td>
-                            <Td>
-                                <PreReleaseExamLinkButton url="2024/haru/5">
-                                    問5
-                                </PreReleaseExamLinkButton>
-                            </Td>
                         </Tr>
                         <Tr>
                             <CustomTh>2023年(令和5年) 秋期</CustomTh>
@@ -68,19 +78,24 @@ export const ExamsListPage: FC = memo(() => {
                                 </ExamLinkButton>
                             </Td>
                             <Td>
-                                <PreReleaseExamLinkButton url="2023/aki/3">
+                                <ExamLinkButton url="2023/aki/3">
                                     問3
-                                </PreReleaseExamLinkButton>
+                                </ExamLinkButton>
                             </Td>
                             <Td>
-                                <PreReleaseExamLinkButton url="2023/aki/4">
+                                <ExamLinkButton url="2023/aki/4">
                                     問4
-                                </PreReleaseExamLinkButton>
+                                </ExamLinkButton>
                             </Td>
-                            <Td>
-                                <PreReleaseExamLinkButton url="2023/aki/5">
-                                    問5
-                                </PreReleaseExamLinkButton>
+                            <Td></Td>
+                        </Tr>
+                        <Tr>
+                            <Td></Td>
+                            <Td colSpan={3} fontSize="md">
+                                午後1
+                            </Td>
+                            <Td colSpan={2} fontSize="md">
+                                午後2
                             </Td>
                         </Tr>
                         <Tr>
@@ -95,19 +110,19 @@ export const ExamsListPage: FC = memo(() => {
                                     問2
                                 </PreReleaseExamLinkButton>
                             </Td>
-                            <Td>
+                            <Td borderRight={"1px solid black"}>
                                 <PreReleaseExamLinkButton url="2023/haru/3">
                                     問3
                                 </PreReleaseExamLinkButton>
                             </Td>
                             <Td>
                                 <PreReleaseExamLinkButton url="2023/haru/4">
-                                    問4
+                                    問1
                                 </PreReleaseExamLinkButton>
                             </Td>
                             <Td>
                                 <PreReleaseExamLinkButton url="2023/haru/5">
-                                    問5
+                                    問2
                                 </PreReleaseExamLinkButton>
                             </Td>
                         </Tr>

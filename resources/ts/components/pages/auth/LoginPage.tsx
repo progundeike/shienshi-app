@@ -151,8 +151,10 @@ export const LoginPage: FC = memo(() => {
                         <Button
                             w="100%"
                             my="10px"
-                            border="2px solid #96CDF2"
                             borderRadius="full"
+                            backgroundColor="accentColor"
+                            color="accentTextColor"
+                            shadow="md"
                         >
                             ユーザー登録
                         </Button>

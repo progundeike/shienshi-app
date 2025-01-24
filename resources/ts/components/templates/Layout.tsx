@@ -15,7 +15,7 @@ export const Layout: FC<Props> = memo(({ children }) => {
                 w={{ base: "100%", md: "98%" }}
                 m="auto"
                 maxW="1500px"
-                minH="90vh"
+                minH="80vh"
             >
                 {children}
             </Box>

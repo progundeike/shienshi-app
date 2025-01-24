@@ -9,11 +9,12 @@ export const SubmitButton: FC<Props> = memo(({ children }) => {
     return (
         <Button
             type="submit"
-            backgroundColor="green.400"
-            color="white"
+            backgroundColor="baseColor"
+            color="baseTextColor"
             w="100%"
             my="10px"
             borderRadius="full"
+            shadow="md"
         >
             {children}
         </Button>

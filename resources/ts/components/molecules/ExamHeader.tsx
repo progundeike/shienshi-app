@@ -63,7 +63,10 @@ export const ExamHeader: FC<Props> = memo((props) => {
                         href={`/pdf/${year}_${season}_${section}.pdf`}
                         download
                     >
-                        <Button backgroundColor="blue.300">
+                        <Button
+                            backgroundColor="accentColor"
+                            color="accentTextColor"
+                        >
                             問題をダウンロード
                             <IoMdDownload />
                         </Button>

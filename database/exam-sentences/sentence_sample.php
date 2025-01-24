@@ -9,5 +9,5 @@ EOF,
     'purpose' => <<<EOF
 EOF,
     'review_comment' => <<<EOF
-EOF,
+EOF
 ];

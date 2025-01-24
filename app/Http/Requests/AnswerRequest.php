@@ -38,16 +38,23 @@ class AnswerRequest extends FormRequest
     protected function prepareForValidation()
     {
         $answers = $this->input('answerInputs')['answer'];
+
         // answersの配列を回して、idを振り直す
         $formattedAnswers = [];
         foreach ($answers as $answerId => $text) {
             // answerIdは'1-2-0'のような形式で送られてくる
             list($questionNumber, $subQuestionNumber, $smallQuestionNumber) = explode('-', $answerId);
+
+            // $textが配列の場合はカンマ区切りに変換
+            if (is_array($text)) {
+                $text = implode(',', $text);
+            }
+
             $formattedAnswers[] = [
                 'questionNumber' => (int) $questionNumber,
                 'subQuestionNumber' => (int) $subQuestionNumber,
                 'smallQuestionNumber' => (int) $smallQuestionNumber,
-                'user_text' => $text,
+                'user_text' => $text === false ? null : $text, // falseの場合はnullに変換
             ];
         };
 

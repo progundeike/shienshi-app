@@ -60,7 +60,7 @@ export const ExamPage: FC = memo(() => {
                     display="flex"
                     flexDirection="column"
                     height="100vh"
-                    backgroundColor="green.200"
+                    backgroundColor="gray.300"
                     overflow={"auto"}
                 >
                     <ExamHeader
