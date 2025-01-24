@@ -2,10 +2,16 @@ import { extendTheme } from "@chakra-ui/react";
 import { Component } from "react";
 
 export const theme = extendTheme({
+    colors: {
+        baseColor:  '#003366',
+        baseTextColor: 'white',
+        accentColor: '#3CB371',
+        accentTextColor: 'white',
+    },
     styles: {
         global: {
             body: {
-                backgroundColor: "gray.100",
+                backgroundColor: "#F5F5F5",
                 color: "gray.800",
             },
             ".hiddenCanvasElement": {
@@ -16,16 +22,17 @@ export const theme = extendTheme({
                 flexDirection: "row",
             },
             ".gutter": {
-                backgroundColor: "gray.300",
+                cursor: "col-resize",
+                backgroundColor: "#F5F5F5",
                 backgroundRepeat: "no-repeat",
-                backgroundPosition: "50%"
-            },
+                backgroundPosition: "50%",
+                },
             ".gutter.gutter-horizontal": {
                 backgroundImage: "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==')",
-                cursor: "col-resize",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "50%",
             },
         },
-    },
     components: {
         Table: {
             baseStyle: {
@@ -34,5 +41,5 @@ export const theme = extendTheme({
                 },
             },
         },
-    },
+    },}
 });

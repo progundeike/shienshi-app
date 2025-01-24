@@ -1,4 +1,4 @@
-import { Box, Flex, Radio, RadioGroup, Stack } from "@chakra-ui/react";
+import { Box, Checkbox, CheckboxGroup, Flex, Stack } from "@chakra-ui/react";
 import { FC, memo } from "react";
 import { FetchedQuestion, Option } from "../../hooks/useExam";
 import { UseFormRegister, UseFormWatch } from "react-hook-form";
@@ -10,17 +10,17 @@ type Props = {
     watch: UseFormWatch<AnswerInputs>;
 };
 
-export const RadioQuestionForm: FC<Props> = memo((props) => {
+export const CheckboxQuestionForm: FC<Props> = memo((props) => {
     const { question, register, watch } = props;
     const fieldName: `answer.${string}` = `answer.${question.questionNumber}-${question.subQuestionNumber}-${question.smallQuestionNumber}`;
-    const currentValue = watch(fieldName);
+    const currentValue = watch(fieldName) || [];
 
     return (
         <Box ml="20px">
-            <RadioGroup defaultValue={currentValue}>
-                <Flex wrap="wrap" gap="20px" my="10px">
+            <CheckboxGroup defaultValue={currentValue as string[]}>
+                <Flex wrap="wrap" gap="20px">
                     {question.options!.map((option: Option, index: number) => (
-                        <Radio
+                        <Checkbox
                             key={index}
                             value={option.value}
                             {...register(fieldName)}
@@ -28,10 +28,10 @@ export const RadioQuestionForm: FC<Props> = memo((props) => {
                             <Flex gap="10px" alignItems="center">
                                 <Box>{option.label}</Box>
                             </Flex>
-                        </Radio>
+                        </Checkbox>
                     ))}
                 </Flex>
-            </RadioGroup>
+            </CheckboxGroup>
         </Box>
     );
 });

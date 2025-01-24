@@ -78,7 +78,6 @@ package "M社" {
     }
         
     P24 -- "AP-5"
-
     ' セグメント情報
     rectangle "従業員用無線LAN\n(192.168.20.0/24)" as EmployeeLAN
     EmployeeLAN -- "AP-1"

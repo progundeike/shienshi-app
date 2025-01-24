@@ -6,6 +6,11 @@ import {
     Textarea,
     Spinner,
     Center,
+    Flex,
+    Checkbox,
+    CheckboxGroup,
+    Radio,
+    RadioGroup,
 } from "@chakra-ui/react";
 import { FC, memo, useEffect, useState, Fragment } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -19,6 +24,7 @@ import { DisplayAskToAICard } from "../molecules/DisplayAskToAICard";
 import { RadioQuestionForm } from "../molecules/RadioQuestionForm";
 import { AnswerInputs, Correction } from "./QuestionAndAnswerForm";
 import { User } from "../../types/user";
+import { LuBookX } from "react-icons/lu";
 
 type Props = {
     year: number;
@@ -88,24 +94,100 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
                                     </Text>
 
                                     {/* 解答欄 */}
-                                    {/* ラジオボタンの問題は解答後も表示する */}
+                                    {/* ラジオボタン */}
                                     {question.type === "radio" && (
-                                        <RadioQuestionForm
-                                            question={question}
-                                            register={register}
-                                        />
+                                        <RadioGroup>
+                                            <Flex
+                                                wrap="wrap"
+                                                gap="20px"
+                                                my="10px"
+                                            >
+                                                {question.options!.map(
+                                                    (
+                                                        option: Option,
+                                                        index: number
+                                                    ) => (
+                                                        <Radio
+                                                            isReadOnly
+                                                            disabled
+                                                            key={index}
+                                                            value={option.value}
+                                                            style={{
+                                                                pointerEvents:
+                                                                    "none",
+                                                                cursor: "default",
+                                                            }}
+                                                        >
+                                                            <Flex
+                                                                gap="10px"
+                                                                alignItems="center"
+                                                            >
+                                                                <Box>
+                                                                    {
+                                                                        option.label
+                                                                    }
+                                                                </Box>
+                                                            </Flex>
+                                                        </Radio>
+                                                    )
+                                                )}
+                                            </Flex>
+                                        </RadioGroup>
                                     )}
-                                    {/* オプションのラベルを表示 */}
-                                    {question.options &&
-                                        question.options.map(
-                                            (option, index) => (
-                                                <Box key={index}>
-                                                    <Text>{option.label}</Text>
-                                                </Box>
-                                            )
-                                        )}
 
-                                    {/* 解答欄 */}
+                                    {/* チェックボックス */}
+                                    {question.type === "checkbox" && (
+                                        <Box>
+                                            <CheckboxGroup>
+                                                <Flex wrap="wrap" gap="20px">
+                                                    {question.options!.map(
+                                                        (
+                                                            option: Option,
+                                                            index: number
+                                                        ) => (
+                                                            <Checkbox
+                                                                isReadOnly
+                                                                key={index}
+                                                                value={
+                                                                    option.value
+                                                                }
+                                                                style={{
+                                                                    pointerEvents:
+                                                                        "none",
+                                                                    cursor: "default",
+                                                                }}
+                                                            >
+                                                                <Flex
+                                                                    gap="10px"
+                                                                    alignItems="center"
+                                                                >
+                                                                    <Box>
+                                                                        {
+                                                                            option.label
+                                                                        }
+                                                                    </Box>
+                                                                </Flex>
+                                                            </Checkbox>
+                                                        )
+                                                    )}
+                                                </Flex>
+                                            </CheckboxGroup>
+                                        </Box>
+                                    )}
+
+                                    {/* オプションのラベルを表示 */}
+                                    {question.type !== "radio" &&
+                                        question.type !== "checkbox" && (
+                                            <Box>
+                                                {question.options?.map(
+                                                    (option, index) => (
+                                                        <Box key={index}>
+                                                            {option.label}
+                                                        </Box>
+                                                    )
+                                                )}
+                                            </Box>
+                                        )}
                                 </Box>
 
                                 <DisplayAIResponse

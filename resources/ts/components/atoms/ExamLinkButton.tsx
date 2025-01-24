@@ -10,7 +10,11 @@ type Props = {
 export const ExamLinkButton: FC<Props> = memo(({ children, url }) => {
     return (
         <Link to={"/exams/" + url}>
-            <Button backgroundColor="blue.200" w="80%">
+            <Button
+                backgroundColor="accentColor"
+                w="80%"
+                color="accentTextColor"
+            >
                 {children}
             </Button>
         </Link>
