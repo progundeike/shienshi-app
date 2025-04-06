@@ -15,6 +15,9 @@ import { PrivateRoutes } from "./templates/PrivateRoutes";
 import { MyPage } from "./pages/MyPage";
 import { useAuth } from "../hooks/useAuth";
 import { PreAuthRoutes } from "./templates/PreAuthRoutes";
+import { UpdatePasswordPage } from "./pages/auth/UpdatePasswordPage";
+import { RegisterEmailPage } from "./pages/auth/RegisterEmailPage";
+import { ForgotPasswordPage } from "./pages/auth/ForgotPasswordPage";
 
 export const Router: FC = memo(() => {
     const { getUser } = useAuth();
@@ -45,27 +48,29 @@ export const Router: FC = memo(() => {
                 <Route element={<PreAuthRoutes />}>
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/login" element={<LoginPage />} />
+                    <Route
+                        path="/forgot-password"
+                        element={<ForgotPasswordPage />}
+                    />
                 </Route>
 
                 {/* ログイン後 */}
                 <Route element={<PrivateRoutes />}>
                     <Route path="/my-page" element={<MyPage />} />
-                    {/* <Route path="/update-email" element={<UpdateEmailPage />} />
+                    {/* <Route path="/update-email" element={<UpdateEmailPage />} /> */}
                     <Route
                         path="/register-email"
                         element={<RegisterEmailPage />}
                     />
-                    <Route
+                    {/* <Route
                         path="/delete-account"
                         element={<DeleteAccountPage />}
                     /> */}
+                    <Route
+                        path="/update-password"
+                        element={<UpdatePasswordPage />}
+                    />
                 </Route>
-
-                {/* <Route
-                    path="/forgot-password"
-                    element={<ForgotPasswordPage />}
-                /> */}
-                {/* <Route path="/reset-password" element={<ResetPasswordPage />} /> */}
 
                 {/* 404 */}
                 <Route path="/not-found" element={<Page404 />} />

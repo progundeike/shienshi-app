@@ -119,7 +119,7 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
             {!user && (
                 <Box textAlign="center" m="10px">
                     <Text color="red" fontWeight="bold">
-                        答え合わせをするためにはログインが必要です。
+                        答え合わせをするためにはログインが必要です
                     </Text>
                 </Box>
             )}
@@ -192,19 +192,6 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
                         ) : (
                             <NeedRegister />
                         )}
-                    </Box>
-
-                    {/* テスト用入力リセットボタン */}
-                    <Box>
-                        <Button
-                            colorScheme="red"
-                            onClick={() => {
-                                sessionStorage.removeItem(STORAGE_KEY);
-                                reset();
-                            }}
-                        >
-                            解答をリセット
-                        </Button>
                     </Box>
                 </VStack>
             </form>

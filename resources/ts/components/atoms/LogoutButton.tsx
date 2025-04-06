@@ -11,7 +11,8 @@ export const LogoutButton: FC = memo(() => {
                 color="black"
                 borderRadius="full"
                 px="20px"
-                boxShadow="0 0 0 1px gray"
+                shadow="md"
+                outline={"1px solid"}
             >
                 ログアウト
             </Button>

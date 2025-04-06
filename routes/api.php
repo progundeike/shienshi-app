@@ -8,9 +8,12 @@ use App\Http\Controllers\ExamController;
 use App\Http\Controllers\AIQuestionController;
 
 Route::middleware('auth:sanctum')->group(function () {
+    // ユーザー情報
     Route::get('/user', [UserController::class, 'getUserInfo']);
     Route::get('/user/submittedExams', [ExamController::class, 'fetchSubmittedExams']);
-    // Route::delete('/user', [UserController::class, 'deleteUser']);
+    Route::delete('/user', [UserController::class, 'deleteUser']);
+
+    // 解答
     Route::post('/answer', [AnswerController::class, 'answerSubmit']);
     Route::delete('answer/{year}-{season}-{section}', [AnswerController::class, 'deleteSubmittedAnswer']);
     Route::post('/question', [AIQuestionController::class, 'run']);
@@ -18,7 +21,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/dialogues/{year}-{season}-{section}-{questionNumber}-{subQuestionNumber}', [AIQuestionController::class, 'deleteDialogues']);
     Route::get('/corrections/{year}-{season}-{section}', [AnswerController::class, 'fetchCorrection']);
 });
-
 
 Route::get('/questions/{year}-{season}-{section}', [ExamController::class, 'getExamQuestionsJson']);
 Route::get('/exam/{year}-{season}-{section}', [ExamController::class, 'checkFileExists']);
