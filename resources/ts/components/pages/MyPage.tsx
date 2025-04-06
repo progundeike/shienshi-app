@@ -1,11 +1,14 @@
 import { FC, memo, useEffect, useState } from "react";
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Modal, Text } from "@chakra-ui/react";
 import { LogoutButton } from "../atoms/LogoutButton";
 import { userAtom } from "../../states/userAtom";
 import { Link, useNavigate } from "react-router-dom";
 import { useAtomValue } from "jotai";
 import { FaExclamationCircle } from "react-icons/fa";
 import { SubmittedExam, useExam } from "../../hooks/useExam";
+import { UpdatePasswordPage } from "./auth/UpdatePasswordPage";
+import { RiFileExcel2Line } from "react-icons/ri";
+import { AccountDeleteModal } from "../organisms/AccountDeleteModal";
 
 export const MyPage: FC = memo(() => {
     const user = useAtomValue(userAtom);
@@ -32,13 +35,25 @@ export const MyPage: FC = memo(() => {
         <Box mt="20px">
             <Flex flexFlow="column" gap="20px" w="80%" m="auto">
                 <Flex justify={"space-between"} alignItems={"center"}>
-                    <Box fontSize={"x-large"}>
-                        {user.username}さんの学習履歴
-                    </Box>
-                    <LogoutButton />
+                    <Heading size="md">{user.username}さんのマイページ</Heading>
+                    <Flex gap="10px">
+                        <Link to="/update-password">
+                            <Button
+                                borderRadius="full"
+                                shadow="md"
+                                outline={"1px solid"}
+                            >
+                                パスワード変更
+                            </Button>
+                        </Link>
+                        <LogoutButton />
+                    </Flex>
                 </Flex>
 
-                {!user.emailVerified && (
+                {user.emailVerified ? (
+                    // TODO: メールアドレスが登録済みの場合の表示
+                    <Box>メールアドレスが登録済みです</Box>
+                ) : (
                     <Box
                         // outline="0.5px solid"
                         p="10px"
@@ -50,17 +65,18 @@ export const MyPage: FC = memo(() => {
                             <FaExclamationCircle size="25px" />
 
                             <Box ml="10px">
-                                メールアドレスが未登録です。メールアドレスを登録することで、パスワードを忘れてしまっても再設定が可能になります。
+                                メールアドレスが未登録です。メールアドレスを登録することで、パスワードを忘れても再設定が可能になります。
                             </Box>
-                            <Box>
+                            <Link to="/register-email">
                                 <Button
-                                    borderRadius="100px"
+                                    borderRadius="full"
                                     ml="10px"
-                                    outline="0.5px solid"
+                                    outline="1px solid"
+                                    shadow="md"
                                 >
                                     メールアドレスを登録
                                 </Button>
-                            </Box>
+                            </Link>
                         </Flex>
                     </Box>
                 )}
@@ -90,6 +106,8 @@ export const MyPage: FC = memo(() => {
                         </Flex>
                     )}
                 </Box>
+
+                <AccountDeleteModal />
             </Flex>
         </Box>
     );

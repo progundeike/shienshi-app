@@ -116,12 +116,11 @@ export const useAuth = () => {
 
     const deleteUser = async () => {
         try {
-            // setIsLoading(true);
+            setIsLoading(true);
             await axios.delete("/api/user");
             setUser(null);
             toast({
-                title: "ユーザー情報を削除しました。",
-                // description: "",
+                title: "アカウントを削除しました。",
                 status: "success",
                 duration: 6000,
                 isClosable: true,
@@ -129,28 +128,80 @@ export const useAuth = () => {
             });
         } catch (error: any) {
             console.log(error);
+            toast({
+                title: "アカウントの削除に失敗しました",
+                description:
+                    "サーバーに不具合が発生しています。しばらく経ってから再度お試しください",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+                position: "bottom-right",
+            });
         } finally {
-            // setIsLoading(false);
+            setIsLoading(false);
+            navigate("/");
         }
     };
 
-    const resetPassword = async (data: PasswordResetFormInput) => {
-        await axiosInstance
-            .post("/api/reset-password", data)
-            .then((res: any) => {
+    // const resetPassword = async (data: PasswordResetFormInput) => {
+    //     await axiosInstance
+    //         .post("/api/user/reset-password", data)
+    //         .then((res: any) => {
+    //             toast({
+    //                 title: res.data.message,
+    //                 status: "success",
+    //                 duration: 9000,
+    //                 isClosable: true,
+    //                 position: "bottom-right",
+    //             });
+    //             navigate("/login");
+    //         })
+    //         .catch((error: any) => {
+    //             console.log(error);
+    //             toast({
+    //                 title: "パスワードの更新に失敗しました",
+    //                 description:
+    //                     "サーバーに不具合が発生しています。しばらく経ってから再度お試しください",
+    //                 status: "error",
+    //                 duration: 9000,
+    //                 isClosable: true,
+    //                 position: "bottom-right",
+    //             });
+    //         });
+    // };
+
+    const updatePassword = async (
+        current_password: string,
+        new_password: string,
+        new_password_confirmation: string
+    ) => {
+        return await axiosInstance
+            .put("/api/user/password", {
+                current_password,
+                new_password,
+                new_password_confirmation,
+            })
+            .then(() => {
                 toast({
-                    title: res.data.message,
+                    title: "パスワードを変更しました",
                     status: "success",
                     duration: 9000,
                     isClosable: true,
                     position: "bottom-right",
                 });
-                navigate("/login");
+                navigate("/my-page");
             })
             .catch((error: any) => {
                 console.log(error);
+                // バリデーションエラー
+                if (error.response.status === 422) {
+                    console.log(error.response.data)
+                    return error.response.data;
+                }
+
+                // その他のエラー
                 toast({
-                    title: "パスワードの更新に失敗しました",
+                    title: "パスワードの変更に失敗しました",
                     description:
                         "サーバーに不具合が発生しています。しばらく経ってから再度お試しください",
                     status: "error",
@@ -158,8 +209,10 @@ export const useAuth = () => {
                     isClosable: true,
                     position: "bottom-right",
                 });
-            });
-    };
+                return null;
+            }
+        );
+    }
 
     const forgotPassword = async (data: {
         email: string;
@@ -204,7 +257,8 @@ export const useAuth = () => {
         logout,
         getUser,
         registerUser,
-        resetPassword,
+        // resetPassword,
+        updatePassword,
         forgotPassword,
         deleteUser,
     };

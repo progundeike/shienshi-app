@@ -91,10 +91,10 @@ export const ExamsListPage: FC = memo(() => {
                         </Tr>
                         <Tr>
                             <Td></Td>
-                            <Td colSpan={3} fontSize="md">
+                            <Td colSpan={3} fontSize="md" textAlign="center">
                                 午後1
                             </Td>
-                            <Td colSpan={2} fontSize="md">
+                            <Td colSpan={2} fontSize="md" textAlign="center">
                                 午後2
                             </Td>
                         </Tr>

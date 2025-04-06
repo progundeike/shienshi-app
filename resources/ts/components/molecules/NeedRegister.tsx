@@ -6,14 +6,24 @@ export const NeedRegister: FC = memo(() => {
     return (
         <>
             <Box mb="10px">
-                <Text>答え合わせにはログインが必要です</Text>
+                <Text>答え合わせをするためにはログインが必要です</Text>
             </Box>
             <Flex justifyContent="center" gap="20px">
                 <Link to="/login">
-                    <Button backgroundColor="green.200">ログイン</Button>
+                    <Button
+                        backgroundColor={"baseColor"}
+                        color={"baseTextColor"}
+                    >
+                        ログイン
+                    </Button>
                 </Link>
                 <Link to="/register">
-                    <Button backgroundColor="blue.200">ユーザー登録</Button>
+                    <Button
+                        backgroundColor={"accentColor"}
+                        color={"accentTextColor"}
+                    >
+                        ユーザー登録
+                    </Button>
                 </Link>
             </Flex>
         </>

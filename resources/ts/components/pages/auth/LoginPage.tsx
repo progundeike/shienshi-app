@@ -17,7 +17,7 @@ import {
 import { memo, FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
-import { useNavigate, Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAtomValue } from "jotai";
 
 import { useAuth } from "../../../hooks/useAuth";
@@ -29,7 +29,6 @@ import { Card } from "../../templates/Card";
 import { SubmitButton } from "../../atoms/SubmitButton";
 
 export const LoginPage: FC = memo(() => {
-    const [searchParams] = useSearchParams();
     const user = useAtomValue(userAtom);
 
     const [emailVerifyQuery, setEmailVerifyQuery] = useState("");
