@@ -14,7 +14,7 @@ export const DisplayExamPdf: FC = memo(() => {
 
     const url = useMemo(
         () =>
-            `http://${window.location.host}/storage/pdf/${year}_${season}_${section}.pdf`,
+            `http://${window.location.host}/storage/pdf/${year}/${year}_${season}_${section}.pdf`,
         []
     );
 

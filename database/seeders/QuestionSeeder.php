@@ -15,7 +15,7 @@ class QuestionSeeder extends Seeder
     public function run(): void
     {
         $examQuestionsDirectory = database_path('exam-questions');
-        $filePathList = File::files($examQuestionsDirectory);
+        $filePathList = File::allFiles($examQuestionsDirectory);
         foreach ($filePathList as $filePath) {
             $examQuestions = include $filePath->getRealPath();
 

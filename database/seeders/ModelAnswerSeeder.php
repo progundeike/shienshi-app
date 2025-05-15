@@ -15,7 +15,7 @@ class ModelAnswerSeeder extends Seeder
     public function run(): void
     {
         $modelAnswersFilesDirectory = database_path('model-answers');
-        $filePathList = File::files($modelAnswersFilesDirectory);
+        $filePathList = File::allFiles($modelAnswersFilesDirectory);
         foreach ($filePathList as $filePath) {
             $modelAnswers = include $filePath->getRealPath();
 

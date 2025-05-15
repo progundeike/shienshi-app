@@ -1,4 +1,12 @@
-import { VStack, Button, Box, Text, Spinner, Center } from "@chakra-ui/react";
+import {
+    VStack,
+    Button,
+    Box,
+    Text,
+    Spinner,
+    Center,
+    Divider,
+} from "@chakra-ui/react";
 import { FC, memo, useEffect, useState, Fragment } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAtom, useAtomValue } from "jotai";
@@ -132,9 +140,12 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
                             <Fragment key={index}>
                                 {question.subQuestionNumber == 1 &&
                                     question.smallQuestionNumber < 2 && (
-                                        <Text>
-                                            設問{question.questionNumber}
-                                        </Text>
+                                        <Box>
+                                            <Divider my="10px" />
+                                            <Text>
+                                                設問{question.questionNumber}
+                                            </Text>
+                                        </Box>
                                     )}
 
                                 <Box mb="5px">

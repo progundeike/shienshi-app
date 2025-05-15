@@ -1,4 +1,4 @@
-const NEXT_EXAM_DATE = new Date("2025-04-20");
+const NEXT_EXAM_DATE = new Date("2025-10-12");
 // const SECOND_NEXT_EXAM_DATE = '2025-10-##';
 
 export const dateUtils = () => {
