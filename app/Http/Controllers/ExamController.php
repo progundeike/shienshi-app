@@ -222,7 +222,7 @@ class ExamController extends Controller
     // 試験のPDFファイルの存在確認
     public function checkFileExists(string $year, string $season, string $section): JsonResponse
     {
-        $filePath = storage_path('app/public/pdf/' . $year . '_' . $season . '_' . $section . '.pdf');
+        $filePath = storage_path('app/public/pdf/' . $year . '/' . $year . '_' . $season . '_' . $section . '.pdf');
 
         if (!file_exists($filePath)) {
             return response()->json(['error' => 'File not found'], 404);

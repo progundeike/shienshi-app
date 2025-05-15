@@ -15,7 +15,7 @@ class ExamSentenceSeeder extends Seeder
     public function run(): void
     {
         $examSentenceFilesDirectory = database_path('exam-sentences');
-        $filePathList = File::files($examSentenceFilesDirectory);
+        $filePathList = File::allFiles($examSentenceFilesDirectory);
         foreach ($filePathList as $filePath) {
             $examSentence = include $filePath->getRealPath();
             ExamSentence::create($examSentence);
