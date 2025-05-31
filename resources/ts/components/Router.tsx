@@ -18,17 +18,17 @@ import { PreAuthRoutes } from "./templates/PreAuthRoutes";
 import { UpdatePasswordPage } from "./pages/auth/UpdatePasswordPage";
 import { RegisterEmailPage } from "./pages/auth/RegisterEmailPage";
 import { ForgotPasswordPage } from "./pages/auth/ForgotPasswordPage";
+import { AdminPage } from "./pages/AdminPage";
+import { AdminRoutes } from "./templates/AdminRoutes";
+import { EditExamPage } from "./pages/EditExamPage";
 
 export const Router: FC = memo(() => {
     const { getUser } = useAuth();
 
-    const fetchUser = async () => {
-        await getUser();
-    };
-
     useEffect(() => {
-        fetchUser();
+        getUser();
     }, []);
+
     return (
         <Layout>
             <Routes>
@@ -69,6 +69,15 @@ export const Router: FC = memo(() => {
                     <Route
                         path="/update-password"
                         element={<UpdatePasswordPage />}
+                    />
+                </Route>
+
+                {/* 管理者ページ */}
+                <Route element={<AdminRoutes />}>
+                    <Route path="/admin" element={<AdminPage />} />
+                    <Route
+                        path="/admin/edit/:year/:season/:section"
+                        element={<EditExamPage />}
                     />
                 </Route>
 

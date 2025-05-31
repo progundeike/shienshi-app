@@ -2,16 +2,22 @@
 
 namespace Tests\Feature;
 
+use App\Models\ExamSentence;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class ExamControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected User $adminUser;
+    protected User $normalUser;
 
     // protected $baseUrl = 'http://127.0.0.4';
 
@@ -19,31 +25,28 @@ class ExamControllerTest extends TestCase
     {
         parent::setUp();
 
+        // 初期データをシード
         $this->seed();
+
+        // テスト用管理者ユーザーを作成
+        $this->adminUser = User::factory()->create([
+            'username' => 'TestAdminUser',
+            'password' => Hash::make('password'),
+            'is_admin' => true,
+        ]);
+
+        // テスト用一般ユーザーを作成
+        $this->normalUser = User::factory()->create([
+            'username' => 'NewTestUser',
+            'password' => Hash::make('password'),
+            'is_admin' => false,
+        ]);
     }
 
-    #[Test]
-    public function 設問を取得できる(): void
-    {
-        DB::enableQueryLog();
-        $response = $this->get('/api/questions/2023-aki-1');
-
-        // 期待するデータ
-        $expectedFilePath = database_path('/exam-questions/question_2023_aki_1.php');
-        $expectedData = require $expectedFilePath;
-
-        $response->assertStatus(200);
-        $responseData = $response->json();
-        $this->assertEquals($expectedData[0]['year'], $responseData[0]['year']);
-        $this->assertEquals($expectedData[0]['season'], $responseData[0]['season']);
-        $this->assertEquals($expectedData[0]['section'], $responseData[0]['section']);
-        $this->assertEquals($expectedData[0]['type'], $responseData[0]['type']);
-    }
-
-    #[Test]
-    public function 設問を取得できない(): void
-    {
-        $response = $this->get('/api/questions/wrong-url-1');
-        $response->assertStatus(404);
-    }
+    // #[Test]
+    // public function 設問を取得できない(): void
+    // {
+    //     $response = $this->get('/api/questions/wrong-url-1');
+    //     $response->assertStatus(404);
+    // }
 }

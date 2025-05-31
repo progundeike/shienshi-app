@@ -2,9 +2,7 @@ import { useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { atom, useAtom } from "jotai";
-import { loadingAtom } from "../states/loadingAtom";
 
-// import { userAtom } from "../states/userAtom";
 import {
     ErrorResponse,
     PasswordResetFormInput,
@@ -12,7 +10,7 @@ import {
 } from "../types/form";
 import { User } from "../types/user";
 import { axiosInstance } from "./axiosInstance";
-// import { loadingAtom } from "../states/loadingAtom";
+import { loadingAtom } from "../states/loadingAtom";
 import { userAtom } from "../states/userAtom";
 
 export const useAuth = () => {
@@ -35,10 +33,11 @@ export const useAuth = () => {
             })
             .then((response) => {
                 setUser(response.data);
-                navigate(
-                    "/my-page" +
-                        (emailVerifyQuery ? "?" + emailVerifyQuery : "")
-                );
+                console.log(response.data);
+                // navigate(
+                //     "/my-page" +
+                //         (emailVerifyQuery ? "?" + emailVerifyQuery : "")
+                // );
                 return null;
             })
             .catch((error) => {
@@ -99,7 +98,7 @@ export const useAuth = () => {
     };
 
     const getUser = async () => {
-        // setIsLoading(true);
+        setIsLoading(true);
         axios
             .get<User>("/api/user")
             .then((response) => {
@@ -108,9 +107,16 @@ export const useAuth = () => {
                 }
                 console.log(response.data)
             })
-            .catch((error) => console.log(error))
+            .catch((error: any) => {
+                if (error.response.status === 401) {
+                    // 未ログイン状態と判定
+                    setUser(null);
+                } else {
+                    throw error;
+                }
+    })
             .finally(() => {
-                // setIsLoading(false);
+                setIsLoading(false);
             });
     };
 

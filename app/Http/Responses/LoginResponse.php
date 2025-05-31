@@ -19,6 +19,6 @@ class LoginResponse implements LoginResponseContract
 
         $user = Auth::user();
         $request->session()->regenerate();
-        return response()->json(new UserResource($user), 201);
+        return response()->json(new UserResource($user), 200);
     }
 }

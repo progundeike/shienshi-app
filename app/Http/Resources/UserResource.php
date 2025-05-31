@@ -17,6 +17,7 @@ class UserResource extends JsonResource
         return [
             'username' => $this->resource->username,
             'emailVerified' => $this->resource->hasVerifiedEmail(),
+            'isAdmin' => $this->resource->is_admin,
             // 'auth_provider' => $this->resource->auth_provider,
         ];
     }

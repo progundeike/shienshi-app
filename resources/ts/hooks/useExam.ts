@@ -1,4 +1,3 @@
-import { useToast } from "@chakra-ui/react";
 import { useAtom } from "jotai";
 
 import {
@@ -6,6 +5,7 @@ import {
 } from "../types/form";
 import { axiosInstance } from "./axiosInstance";
 import { loadingAtom } from "../states/loadingAtom";
+import { useChakraToast } from "../utils/toastUtils";
 
 export type FetchedQuestion = {
     year: number;
@@ -14,7 +14,7 @@ export type FetchedQuestion = {
     questionNumber: number;
     subQuestionNumber: number;
     smallQuestionNumber: number;
-    type: string;
+    type: "radio" | "checkbox" | "input" | "textarea";
     text: string;
     options: Option[] | null; // JSON文字列
     maxLength: number | null
@@ -33,9 +33,22 @@ export type SubmittedExam = {
     section_converted: string;
 }
 
+export type UpdateQuestionInputs = {
+        year: number;
+        season: string;
+        section: number;
+        questionNumber: number;
+        subQuestionNumber: number;
+        smallQuestionNumber: number | null;
+        type: "radio" | "checkbox" | "input" | "textarea";
+        text: string;
+        options: Option[] | null; // JSON文字列
+        maxLength: number | null;
+    };
+
 export const useExam = () => {
     const [isLoading, setIsLoading] = useAtom(loadingAtom);
-    const toast = useToast();
+    const { unexpectedServerErrorToast, toast } = useChakraToast();
 
     const fetchQuestions = async (
         year: number,
@@ -49,16 +62,7 @@ export const useExam = () => {
                 return response.data;
             })
             .catch((error) => {
-                // その他のエラー
-                toast({
-                    title: "サーバーエラー",
-                    description:
-                        "サーバーに不具合が発生しています。しばらく経ってから再度お試しください",
-                    status: "error",
-                    duration: 6000,
-                    isClosable: true,
-                    position: "bottom-right",
-                });
+                toast(unexpectedServerErrorToast);
                 return null;
             })
             .finally(() => {
@@ -74,24 +78,16 @@ export const useExam = () => {
                 return response.data;
             })
             .catch((error) => {
-                // その他のエラー
-                toast({
-                    title: "サーバーエラー",
-                    description:
-                        "サーバーに不具合が発生しています。しばらく経ってから再度お試しください",
-                    status: "error",
-                    duration: 6000,
-                    isClosable: true,
-                    position: "bottom-right",
-                });
+                toast(unexpectedServerErrorToast);
+                console.error(error);
                 return null;
             })
     }
 
     const checkPdfExists = async (
-        year: string,
+        year: number,
         season: string,
-        section: string
+        section: number
     ) => {
         return await axiosInstance
             .get(`/api/exam/${year}-${season}-${section}`)
@@ -105,10 +101,63 @@ export const useExam = () => {
                 return null;
             })
             .catch((error) => {
+                toast(unexpectedServerErrorToast);
                 console.error(error);
                 return null;
             });
     }
 
-    return { fetchQuestions, fetchSubmittedExams, checkPdfExists };
+    const updateExamQuestion = async (
+        data: UpdateQuestionInputs
+    ) => {
+        console.log(data);
+        // setIsLoading(true);
+        // return await axiosInstance
+        //     .post<ErrorResponse | string | null>("/api/question", data)
+        //     .then((response) => {
+        //         if (response.status === 200) {
+        //             if (typeof response.data === "string") {
+        //                 toast({
+        //                     title: "問題の更新に成功しました",
+        //                     description: response.data,
+        //                     status: "success",
+        //                     duration: 6000,
+        //                     isClosable: true,
+        //                     position: "bottom-right",
+        //                 });
+        //                 return response.data;
+        //             } else {
+        //                 toast({
+        //                     title: "問題の更新に失敗しました",
+        //                     description: "サーバーからの応答が不正です",
+        //                     status: "error",
+        //                     duration: 6000,
+        //                     isClosable: true,
+        //                     position: "bottom-right",
+        //                 });
+        //                 return null;
+        //             }
+        //         } else {
+        //             toast({
+        //                 title: "問題の更新に失敗しました",
+        //                 description: "サーバーからの応答が不正です",
+        //                 status: "error",
+        //                 duration: 6000,
+        //                 isClosable: true,
+        //                 position: "bottom-right",
+        //             });
+        //             return null;
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         console.error(error);
+        //         toast(unexpectedServerErrorToast);
+        //         return null;
+        //     })
+        //     .finally(() => {
+        //         setIsLoading(false);
+        //     });
+    };
+
+    return { fetchQuestions, fetchSubmittedExams, checkPdfExists, updateExamQuestion };
 };

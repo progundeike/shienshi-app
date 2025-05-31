@@ -13,12 +13,7 @@ class UserController extends Controller
 {
     public function getUserInfo(Request $request)
     {
-        $user = Auth::user();
-        if ($user) {
-            return response()->json(new UserResource($user));
-        } else {
-            return response()->json(null);
-        }
+        return response()->json(new UserResource($request->user()));
     }
 
     public function deleteUser(Request $request)

@@ -17,8 +17,12 @@ class ModelAnswerSeeder extends Seeder
         $modelAnswersFilesDirectory = database_path('model-answers');
         $filePathList = File::allFiles($modelAnswersFilesDirectory);
         foreach ($filePathList as $filePath) {
-            $modelAnswers = include $filePath->getRealPath();
+            // ファイル名にsampleが含まれている場合はスキップ
+            if (str_contains($filePath->getFilename(), 'sample')) {
+                continue;
+            }
 
+            $modelAnswers = include $filePath->getRealPath();
             foreach ($modelAnswers as $modelAnswer) {
                 ModelAnswer::create($modelAnswer);
             }

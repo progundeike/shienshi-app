@@ -1,14 +1,11 @@
-import { useToast } from "@chakra-ui/react";
+import { axiosInstance } from "./axiosInstance";
 
-import {
-    Dialogue,
-    ErrorResponse,
-} from "../types/form";
-import { axiosInstance, otherServerErrorToast } from "./axiosInstance";
 import { AnswerInputs } from "../components/organisms/QuestionAndAnswerForm";
+import { useChakraToast } from "../utils/toastUtils";
+import { Dialogue, ErrorResponse } from "../types/form";
 
 export const useQuestion = () => {
-    const toast = useToast();
+    const { unexpectedServerErrorToast, toast } = useChakraToast();
 
     const submitQuestion = async (
         year: number,
@@ -40,8 +37,8 @@ export const useQuestion = () => {
             return '';
         } catch (error) {
             console.log(error);
-
-            otherServerErrorToast(toast);
+            // 予期しないサーバーエラー
+            toast(unexpectedServerErrorToast);
             return '';
         }
     };
@@ -74,7 +71,7 @@ export const useQuestion = () => {
             return '';
         } catch (error) {
             console.log(error);
-            otherServerErrorToast(toast);
+            toast(unexpectedServerErrorToast);
             return [];
         }
     }
@@ -93,7 +90,7 @@ export const useQuestion = () => {
             console.log(response);
         } catch (error) {
             console.log(error);
-            otherServerErrorToast(toast);
+            toast(unexpectedServerErrorToast);
         }
     }
 

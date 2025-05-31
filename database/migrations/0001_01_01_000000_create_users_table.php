@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->boolean('is_admin')->default(false);
             $table->string('username')->nullable();
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
@@ -49,6 +50,7 @@ return new class extends Migration
             'auth_provider' => 'password',
             'email_verified_at' => null,
             'auth_id' => null,
+            'is_admin' => true,
             'created_at' => now(),
             'updated_at' => now(),
         ]);

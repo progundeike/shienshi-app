@@ -5,6 +5,7 @@ import { GrCircleInformation } from "react-icons/gr";
 import { AiOutlineUser } from "react-icons/ai";
 import { FaList, FaUserCircle, FaHome } from "react-icons/fa";
 import { useAtomValue } from "jotai";
+import { TbCircleKey } from "react-icons/tb";
 
 import { userAtom } from "../../states/userAtom";
 import { IconLink } from "../atoms/IconLink";
@@ -62,6 +63,12 @@ export const Header: FC = memo(() => {
                                     ログイン
                                 </IconLink>
                             </>
+                        )}
+
+                        {user?.isAdmin && (
+                            <IconLink url="/admin" icon={TbCircleKey}>
+                                管理ページ
+                            </IconLink>
                         )}
                     </Flex>
                 </Flex>

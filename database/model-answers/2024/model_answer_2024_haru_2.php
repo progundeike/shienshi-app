@@ -1,0 +1,104 @@
+<?php
+
+return [
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 2,
+        'question_number' => 1,
+        'sub_question_number' => 1,
+        'text' => '公開Webサーバ,取引先向けWebサーバを攻撃対象に,HTTP GETリクエストを繰返し送る。',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 2,
+        'question_number' => 1,
+        'sub_question_number' => 2,
+        'text' => '正常な通信を異常として検知してしまう。',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 2,
+        'question_number' => 1,
+        'sub_question_number' => 3,
+        'small_question_number' => 1,
+        'text' => 'DNS-K',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 2,
+        'question_number' => 1,
+        'sub_question_number' => 3,
+        'small_question_number' => 2,
+        'text' => 'DNS-F',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 2,
+        'question_number' => 2,
+        'sub_question_number' => 1,
+        'small_question_number' => 1,
+        'text' => '攻撃者が,正規のVPNダイアログに利用者IDとパスワードを入力すると,正規利用者のスマートフォンにセキュリティコードが送信される。',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 2,
+        'question_number' => 2,
+        'sub_question_number' => 1,
+        'small_question_number' => 2,
+        'text' => '正規利用者が受信したセキュリティコードを,罠のWebサイトに入力すると,攻撃者がそれを読み取り,正規のセキュリティコード入力画面に入力することで認証される。',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 2,
+        'question_number' => 2,
+        'sub_question_number' => 2,
+        'text' => '認証情報の入力は,受信したメール内のURLリンクをクリックして起動した画面には行わず,VPNダイアログにだけ行う。',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 2,
+        'question_number' => 3,
+        'sub_question_number' => 1,
+        'text' => '盗聴したパケットと同じ順番に通信要求を送信する。',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 2,
+        'question_number' => 3,
+        'sub_question_number' => 2,
+        'text' => 'SPAパケットはユニークであり,同じパケットを再利用すると破棄されるから',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 2,
+        'question_number' => 4,
+        'sub_question_number' => 1,
+        'text' => <<<'EOF'
+(解答例1) DDoS対策機能を有するCDNサービス
+(解答例2) クラウド型ファイアウォールサービス
+(解答例3) ISPが提供するDDoS防御サービス
+EOF,
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 2,
+        'question_number' => 4,
+        'sub_question_number' => 2,
+        'text' => <<<'EOF'
+(解答例1) 取引専用PC以外からの通信は取引先向けWebサーバに到達しないから
+(解答例2) UTMの設定変更によって,ボットネットからの通信が遮断されるから
+(解答例3) UTMの設定変更に伴って,外部からの接続対象サーバではなくなったから
+EOF,
+    ],
+];
