@@ -16,10 +16,15 @@ export const ExamPage: FC = memo(() => {
     const [loading, setLoading] = useState(true);
     const [isPdfExists, setIsPdfExists] = useState<boolean | null>(null);
     const { year, season, section } = useParams();
+
+    // year, sectionを10進数でcastする
+    const parsedYear = parseInt(year ?? "", 10);
+    const parsedSection = parseInt(section ?? "", 10);
+
     const { checkPdfExists } = useExam();
     const navigate = useNavigate();
 
-    if (!year || !season || !section) {
+    if (isNaN(parsedYear) || !season || isNaN(parsedSection)) {
         return <Page404 />;
     }
 
@@ -27,7 +32,11 @@ export const ExamPage: FC = memo(() => {
         // PDFの存在確認
         const checkPdf = async () => {
             try {
-                const exists = await checkPdfExists(year, season, section);
+                const exists = await checkPdfExists(
+                    parsedYear,
+                    season,
+                    parsedSection
+                );
                 setIsPdfExists(exists);
                 setLoading(false);
                 if (!exists) {
@@ -40,10 +49,6 @@ export const ExamPage: FC = memo(() => {
         };
         checkPdf();
     }, []);
-
-    if (loading) {
-        return <LoadingPage />;
-    }
 
     return (
         <Box minH="100vh">
@@ -64,9 +69,9 @@ export const ExamPage: FC = memo(() => {
                     overflow={"auto"}
                 >
                     <ExamHeader
-                        year={parseInt(year)}
+                        year={parsedYear}
                         season={season}
-                        section={parseInt(section)}
+                        section={parsedSection}
                     />
                     <DisplayExamPdf />
                 </Box>
@@ -82,9 +87,9 @@ export const ExamPage: FC = memo(() => {
                     p="20px"
                 >
                     <AnswerAndCorrectionForm
-                        year={parseInt(year)}
+                        year={parsedYear}
                         season={season}
-                        section={parseInt(section)}
+                        section={parsedSection}
                     />
                 </Box>
             </Split>

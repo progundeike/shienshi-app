@@ -4,9 +4,10 @@ import { Correction, QuestionAndAnswerForm } from "./QuestionAndAnswerForm";
 import { FetchedQuestion, useExam } from "../../hooks/useExam";
 import { useAtom, useAtomValue } from "jotai";
 import { userAtom } from "../../states/userAtom";
-import { loadingAtom } from "../../states/loadingAtom";
 import { useAnswer } from "../../hooks/useAnswer";
-import { Box, Center, Spinner } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import { LoadingPage } from "../pages/LoadingPage";
+import { loadingAtom } from "../../states/loadingAtom";
 
 type Props = {
     year: number;
@@ -18,14 +19,15 @@ export const AnswerAndCorrectionForm: FC<Props> = memo((props) => {
     const { year, season, section } = props;
     const [corrections, setCorrections] = useState<Correction[] | null>(null);
     const [questions, setQuestions] = useState<FetchedQuestion[] | null>(null);
+    const [loading, setLoading] = useAtom(loadingAtom);
 
     const user = useAtomValue(userAtom);
-    const [isLoading, setIsLoading] = useAtom(loadingAtom);
 
     const { fetchQuestions } = useExam();
     const { fetchCorrection } = useAnswer();
 
     useEffect(() => {
+        setLoading(true);
         // 設問を取得
         fetchQuestions(year, season, section).then((data) => {
             if (data) {
@@ -41,14 +43,10 @@ export const AnswerAndCorrectionForm: FC<Props> = memo((props) => {
                 }
             });
         }
-    }, [user]);
+    }, [user, year, season, section]);
 
-    if (isLoading) {
-        return (
-            <Center mt="20px">
-                <Spinner size="xl" />
-            </Center>
-        );
+    if (loading) {
+        return <LoadingPage />;
     }
 
     if (!questions) {

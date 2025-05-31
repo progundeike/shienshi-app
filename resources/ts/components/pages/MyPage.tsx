@@ -29,6 +29,7 @@ export const MyPage: FC = memo(() => {
         };
 
         getSubmittedExams();
+        console.log(user);
     }, []);
 
     return (

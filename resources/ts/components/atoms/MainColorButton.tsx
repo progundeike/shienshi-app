@@ -3,9 +3,10 @@ import { ReactNode, FC, memo } from "react";
 
 type Props = {
     children: ReactNode;
+    type?: "button" | "submit" | "reset";
 };
 
-export const MainColorButton: FC<Props> = memo(({ children }) => {
+export const MainColorButton: FC<Props> = memo(({ children, type }) => {
     return (
         <Button
             backgroundColor="baseColor"
@@ -14,6 +15,7 @@ export const MainColorButton: FC<Props> = memo(({ children }) => {
             my="10px"
             borderRadius="full"
             shadow="md"
+            type={type}
         >
             {children}
         </Button>

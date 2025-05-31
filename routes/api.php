@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\AIQuestionController;
+use App\Http\Controllers\AdminController;
 
 Route::middleware('auth:sanctum')->group(function () {
     // ユーザー情報
@@ -24,3 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::get('/questions/{year}-{season}-{section}', [ExamController::class, 'getExamQuestionsJson']);
 Route::get('/exam/{year}-{season}-{section}', [ExamController::class, 'checkFileExists']);
+
+Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
+    // 管理者用のルート
+    Route::get('/sentence/{year}-{season}-{section}', [AdminController::class, 'fetchExamSentence']);
+});

@@ -4,13 +4,14 @@ import { useAtom } from "jotai";
 import {
     ErrorResponse,
 } from "../types/form";
-import { axiosInstance, otherServerErrorToast } from "./axiosInstance";
+import { axiosInstance } from "./axiosInstance";
 import { loadingAtom } from "../states/loadingAtom";
 import { Correction, AnswerInputs } from "../components/organisms/QuestionAndAnswerForm";
+import { useChakraToast } from "../utils/toastUtils";
 
 export const useAnswer = () => {
     const [isLoading, setIsLoading] = useAtom(loadingAtom);
-    const toast = useToast();
+    const { unexpectedServerErrorToast, toast } = useChakraToast();
 
     const submitAnswer = async (
         answerInputs: AnswerInputs,
@@ -53,8 +54,8 @@ export const useAnswer = () => {
             //     return null
             // }
 
-            otherServerErrorToast(toast);
-
+            toast(unexpectedServerErrorToast);
+            console.error(error);
             return null;
         } finally {
                 setIsLoading(false);
@@ -85,10 +86,8 @@ export const useAnswer = () => {
 
             return null;
         } catch (error) {
-            console.log(error);
-
-            otherServerErrorToast(toast);
-
+            toast(unexpectedServerErrorToast);
+            console.error(error);
             return null;
         } finally {
             setIsLoading(false);
@@ -110,9 +109,8 @@ export const useAnswer = () => {
                 console.log("reset success");
             }
         } catch (error) {
-            console.log(error);
-            otherServerErrorToast(toast);
-
+            toast(unexpectedServerErrorToast);
+            console.error(error);
         } finally {
             setIsLoading(false);
         }

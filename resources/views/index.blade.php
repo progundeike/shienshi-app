@@ -10,7 +10,7 @@
 
     <!-- Scripts -->
     @viteReactRefresh
-    @vite('resources/ts/App.tsx')
+    @vite('resources/ts/main.tsx')
 
 </head>
 

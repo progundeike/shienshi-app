@@ -1,0 +1,117 @@
+<?php
+
+return [
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 3,
+        'question_number' => 1,
+        'sub_question_number' => 1,
+        'text' => '9',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 3,
+        'question_number' => 1,
+        'sub_question_number' => 2,
+        'text' => '攻撃者がわなリンクを用意し，管理者にそのリンクを踏ませることで管理者権限のcookie を攻撃者の Web サイトに送信させ，その値を読み取って利用する
+ことで管理者としてサイト X にアクセスし，利用者情報を取得する。',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 3,
+        'question_number' => 2,
+        'sub_question_number' => 1,
+        'text' => '攻撃者が自らのアカウントで取得した csrf
+token と一緒に利用者情報をサイ
+_
+ト X に送るように構成したわなフォームに，詐欺メールなどで利用者を誘導
+し，利用者情報を変更させる。',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 3,
+        'question_number' => 2,
+        'sub_question_number' => 2,
+        'small_question_number' => 1,
+        'text' => '×',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 3,
+        'question_number' => 2,
+        'sub_question_number' => 2,
+        'small_question_number' => 2,
+        'text' => '×',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 3,
+        'question_number' => 2,
+        'sub_question_number' => 2,
+        'small_question_number' => 3,
+        'text' => '◯',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 3,
+        'question_number' => 2,
+        'sub_question_number' => 2,
+        'small_question_number' => 4,
+        'text' => '×',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 3,
+        'question_number' => 3,
+        'sub_question_number' => 1,
+        'text' => 'order-codeの下6桁を総当たりで試行する。',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 3,
+        'question_number' => 3,
+        'sub_question_number' => 2,
+        'text' => 'cookieの値で利用者アカウントを特定し,order-codeの値から特定したものと違っていれば,エラーにする。',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 3,
+        'question_number' => 4,
+        'sub_question_number' => 1,
+        'text' => '変更後のURLにPOSTデータは送ることができないから',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 3,
+        'question_number' => 4,
+        'sub_question_number' => 2,
+        'text' => 'パラメータpageの値をIMDSのクレデンシャル情報を返すURLに変更する。',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 3,
+        'question_number' => 4,
+        'sub_question_number' => 3,
+        'text' => 'トークンを発行するURLにPUTメソッドでアクセスしてトークンを入手し,そのトークンをリクエストヘッダに含めて,IMDSのクレデンシャル情報を返すURLにアクセスする。',
+    ],
+    [
+        'year' => 2024,
+        'season' => 'haru',
+        'section' => 3,
+        'question_number' => 4,
+        'sub_question_number' => 4,
+        'text' => 'パラメータpageの値がサイトP以外のURLならエラーにする。',
+    ],
+];
