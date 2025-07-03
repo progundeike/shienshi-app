@@ -16,15 +16,17 @@ use App\Models\UserAnswer;
 // 試験問題に関する情報を提供するコントローラ
 class ExamController extends Controller
 {
+
     // 設問をjson形式で取得して、httpレスポンスを返す
     // ログイン済みで、答案提出済みの場合は、添削画面を表示する
     public function getExamQuestionsJson(string $year, string $season, string $section)
     {
         $year = (int) $year;
         $section = (int) $section;
+        $examCode = $year . '_' . $season . '_' . $section;
 
         try {
-            $questions = $this->fetchExamQuestionsArray($year, $season, $section);
+            $questions = $this->fetchExamQuestionsArray($examCode);
 
             // questionsが取得できない場合は404エラーを返す
             if (!$questions) {
@@ -40,16 +42,11 @@ class ExamController extends Controller
 
     // 大問または設問番号を指定して設問を取得する
     public function fetchExamQuestionsArray(
-        int $year,
-        string $season,
-        int $section,
+        string $examCode,
         ?string $questionNumber = null,
         ?string $subQuestionNumber = null
     ): array | null {
-
-        $query = Question::where('year', $year)
-            ->where('season', $season)
-            ->where('section', $section);
+        $query = Question::where('exam_code', $examCode);
 
         // 特定の設問を取得する場合は条件を追加
         if ($questionNumber) {
@@ -58,7 +55,6 @@ class ExamController extends Controller
         if ($subQuestionNumber) {
             $query->where('sub_question_number', $subQuestionNumber);
         }
-
 
         $result = $query->get();
 
@@ -69,16 +65,16 @@ class ExamController extends Controller
 
         // 必要なデータだけを取り出す
         $questions = $result->map(function ($question) {
+
             return [
-                'year' => $question->year,
-                'season' => $question->season,
-                'section' => $question->section,
+                'examCode' => $question->exam_code,
                 'questionNumber' => $question->question_number,
                 'subQuestionNumber' => $question->sub_question_number,
                 'smallQuestionNumber' => $question->small_question_number,
                 'type' => $question->type,
                 'text' => $question->text,
-                'options' => $question->options ? json_decode($question->options) : null,
+                'options' => $question->options,
+                // 'options' => $question->options ? json_decode($question->options) : null,
                 'maxLength' => $question->max_length,
             ];
         });
@@ -88,11 +84,9 @@ class ExamController extends Controller
 
     // 指定した大問の問題文, 出題趣旨、講評を取得する
     // 現在は問題文のみを返す
-    public function fetchExamSentences(int $year, string $season, int $section): array
+    public function fetchExamSentences(string $examCode): array
     {
-        $examData = ExamSentence::where('year', $year)
-            ->where('season', $season)
-            ->where('section', $section)
+        $examData = ExamSentence::where('exam_code', $examCode)
             ->first();
 
         return [
@@ -105,9 +99,8 @@ class ExamController extends Controller
     // 模範解答を取得する
     public function fetchModelAnswer(int $year, string $season, int $section, $questionNumber = null, $subQuestionNumber = null): array
     {
-        $query = ModelAnswer::where('year', $year)
-            ->where('season', $season)
-            ->where('section', $section);
+        $examCode = $year . '_' . $season . '_' . $section;
+        $query = ModelAnswer::where('exam_code', $examCode);
 
         // 特定の設問を取得する場合は条件を追加
         if ($questionNumber) {
@@ -133,10 +126,10 @@ class ExamController extends Controller
     // 指定した問題のユーザーの回答を取得する
     public function fetchUserAnswer(int $userId, int $year, string $season, int $section, int $questionNumber, int $subQuestionNumber): array
     {
+        $examCode = $year . '_' . $season . '_' . $section;
+
         $answer = UserAnswer::where('user_id', $userId)
-            ->where('year', $year)
-            ->where('season', $season)
-            ->where('section', $section)
+            ->where('exam_code', $examCode)
             ->where('question_number', $questionNumber)
             ->where('sub_question_number', $subQuestionNumber)
             ->first();
@@ -155,6 +148,8 @@ class ExamController extends Controller
 
         $submittedAnswers = SubmittedExam::where('user_id', $userId)
             ->get();
+
+        // TODO: exam_codeを分解する
 
         $updatedAnswers = $submittedAnswers->map(function ($exam) {
 
@@ -222,7 +217,9 @@ class ExamController extends Controller
     // 試験のPDFファイルの存在確認
     public function checkFileExists(string $year, string $season, string $section): JsonResponse
     {
-        $filePath = storage_path('app/public/pdf/' . $year . '/' . $year . '_' . $season . '_' . $section . '.pdf');
+        $examCode = $year . '_' . $season . '_' . $section;
+
+        $filePath = storage_path('app/public/pdf/' . $year . '/' . $examCode . '.pdf');
 
         if (!file_exists($filePath)) {
             return response()->json(['error' => 'File not found'], 404);

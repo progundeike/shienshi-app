@@ -16,10 +16,12 @@ class ExamSentenceFactory extends Factory
      */
     public function definition(): array
     {
+        $year = $this->faker->numberBetween(2000, 2029);
+        $season = $this->faker->randomElement(['haru', 'aki']);
+        $section = $this->faker->numberBetween(1, 4);
+
         return [
-            'year' => $this->faker->numberBetween(2000, 2026),
-            'season' => $this->faker->randomElement(['haru', 'aki']),
-            'section' => $this->faker->numberBetween(1, 3),
+            'exam_code' => $year . '_' . $season . '_' . $section,
             'sentence' => $this->faker->text(200),
             'purpose' => $this->faker->text(100),
             'review_comment' => $this->faker->text(100),

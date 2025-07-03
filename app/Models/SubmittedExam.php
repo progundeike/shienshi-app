@@ -16,9 +16,7 @@ class SubmittedExam extends Model
      */
     protected $fillable = [
         'id',
+        'exam_code',
         'user_id',
-        'year',
-        'season',
-        'section',
     ];
 }

@@ -1,8 +1,12 @@
 import { Box, Button, Heading, Textarea } from "@chakra-ui/react";
 import { FC, memo, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useAdmin } from "../../hooks/useAdmin";
 
 type Props = {
+    year: number;
+    season: string;
+    section: number;
     purpose: string;
 };
 
@@ -11,7 +15,8 @@ type PurposeForm = {
 };
 
 export const EditPurposeForm: FC<Props> = memo((props) => {
-    const { purpose } = props;
+    const { year, season, section, purpose } = props;
+    const { updateExamSentence } = useAdmin();
 
     const { register, handleSubmit, reset } = useForm<PurposeForm>({
         defaultValues: {
@@ -20,8 +25,7 @@ export const EditPurposeForm: FC<Props> = memo((props) => {
     });
 
     const onPurposeSubmit: SubmitHandler<PurposeForm> = async (data) => {
-        // ここでpurposeを保存する処理を実装
-        console.log("保存されたpurpose:", data);
+        updateExamSentence(year, season, section, null, data.purpose, null);
     };
 
     useEffect(() => {

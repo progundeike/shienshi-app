@@ -3,9 +3,7 @@
 // 令和5年秋問1
 return [
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 1,
+        'exam_code' => '2023_aki_1',
         'question_number' => 1,
         'sub_question_number' => 1,
         'type' => 'radio',
@@ -14,17 +12,15 @@ return [
 
             (1) XSS脆弱性の種類を解答群の中から選び, 記号で答えよ
             EOF,
-        'options' => json_encode([
+        'options' => [
             ['label' => '[ア] DOM Based XSS', 'value' => 'ア'],
             ['label' => '[イ] 格納型 XSS', 'value' => 'イ'],
             ['label' => '[ウ] 反射型 XSS', 'value' => 'ウ'],
-        ]),
+        ],
         'max_length' => null,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 1,
+        'exam_code' => '2023_aki_1',
         'question_number' => 1,
         'sub_question_number' => 2,
         'type' => 'textarea',
@@ -32,9 +28,7 @@ return [
         'max_length' => 30,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 1,
+        'exam_code' => '2023_aki_1',
         'question_number' => 2,
         'sub_question_number' => 1,
         'type' => 'textarea',
@@ -42,9 +36,7 @@ return [
         'max_length' => 50,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 1,
+        'exam_code' => '2023_aki_1',
         'question_number' => 3,
         'sub_question_number' => 1,
         'type' => 'textarea',
@@ -56,9 +48,7 @@ return [
         'max_length' => 60,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 1,
+        'exam_code' => '2023_aki_1',
         'question_number' => 3,
         'sub_question_number' => 2,
         'type' => 'textarea',
@@ -66,9 +56,7 @@ return [
         'max_length' => 50,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 1,
+        'exam_code' => '2023_aki_1',
         'question_number' => 3,
         'sub_question_number' => 3,
         'type' => 'textarea',
@@ -76,9 +64,7 @@ return [
         'max_length' => 40,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 1,
+        'exam_code' => '2023_aki_1',
         'question_number' => 4,
         'sub_question_number' => 1,
         'type' => 'textarea',

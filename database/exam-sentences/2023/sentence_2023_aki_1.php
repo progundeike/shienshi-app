@@ -1,9 +1,7 @@
 <?php
 
 return [
-    'year' => 2023,
-    'season' => 'aki',
-    'section' => 1,
+    'exam_code' => '2023_aki_1',
     'sentence' => <<<EOF
 Webアプリケーションプログラムの開発に関する次の記述を読んで,設問に答えよ。
 

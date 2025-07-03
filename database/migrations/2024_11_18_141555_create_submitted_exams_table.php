@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('submitted_exams', function (Blueprint $table) {
             $table->id();
+            $table->string('exam_code');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('year');
-            $table->enum('season', ['haru', 'aki']);
-            $table->unsignedBigInteger('section');
             $table->timestamps();
         });
     }

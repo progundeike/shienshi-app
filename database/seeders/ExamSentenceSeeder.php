@@ -15,17 +15,37 @@ class ExamSentenceSeeder extends Seeder
      */
     public function run(): void
     {
-        $examSentenceFilesDirectory = database_path('exam-sentences');
-        $filePathList = File::allFiles($examSentenceFilesDirectory);
-
-        foreach ($filePathList as $filePath) {
-            // ファイル名にsampleが含まれている場合はスキップ
-            if (str_contains($filePath->getFilename(), 'sample')) {
-                continue;
-            }
-
-            $examSentence = include $filePath->getPathname();
-            ExamSentence::create($examSentence);
+        $path = database_path('seeders/data/exam_sentences.json');
+        if (!file_exists($path)) {
+            $this->command->error("File not found: {$path}");
         }
+
+        $questions = json_decode(file_get_contents($path), true);
+
+        // optionsはJSON文字列へ, idは自動増分なので除外、タイムスタンプも除外
+        $questions = array_map(function ($question) {
+            if (isset($question['options'])) {
+                $question['options'] = json_encode($question['options'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            }
+            unset($question['id'], $question['created_at'], $question['updated_at']);
+            return $question;
+        }, $questions);
+
+        // データベースに挿入
+        ExamSentence::insert($questions);
+        $this->command->info("Inserted " . count($questions) . " records into the database.");
+
+        // $examSentenceFilesDirectory = database_path('exam-sentences');
+        // $filePathList = File::allFiles($examSentenceFilesDirectory);
+
+        // foreach ($filePathList as $filePath) {
+        //     // ファイル名にsampleが含まれている場合はスキップ
+        //     if (str_contains($filePath->getFilename(), 'sample')) {
+        //         continue;
+        //     }
+
+        //     $examSentence = include $filePath->getPathname();
+        //     ExamSentence::create($examSentence);
+        // }
     }
 }

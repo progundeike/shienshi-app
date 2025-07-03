@@ -3,9 +3,7 @@
 // 令和5年秋問2
 return [
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 2,
+        'exam_code' => '2023_aki_2',
         'question_number' => 1,
         'sub_question_number' => 1,
         'small_question_number' => 1,
@@ -15,29 +13,25 @@ return [
 
             (1) 本文中の[a], [b]に入れる適切な字句を答えよ。
             EOF,
-        'options' => json_encode([
+        'options' => [
             ['label' => '[a]', 'value' => 'a'],
-        ]),
+        ],
         'max_length' => null,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 2,
+        'exam_code' => '2023_aki_2',
         'question_number' => 1,
         'sub_question_number' => 1,
         'small_question_number' => 2,
         'type' => 'input',
         'text' => '',
-        'options' => json_encode([
+        'options' => [
             ['label' => '[b]', 'value' => 'b'],
-        ]),
+        ],
         'max_length' => null,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 2,
+        'exam_code' => '2023_aki_2',
         'question_number' => 1,
         'sub_question_number' => 2,
         'small_question_number' => 1,
@@ -45,29 +39,25 @@ return [
         'text' => <<<EOF
             (2) 図2中の[c], [d]に入れる適切な字句を, それぞれ40字以内で答えよ。
             EOF,
-        'options' => json_encode([
+        'options' => [
             ['label' => '[c]', 'value' => 'c'],
-        ]),
+        ],
         'max_length' => 40,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 2,
+        'exam_code' => '2023_aki_2',
         'question_number' => 1,
         'sub_question_number' => 2,
         'small_question_number' => 2,
         'type' => 'textarea',
         'text' => '',
-        'options' => json_encode([
+        'options' => [
             ['label' => '[d]', 'value' => 'd'],
-        ]),
+        ],
         'max_length' => 40,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 2,
+        'exam_code' => '2023_aki_2',
         'question_number' => 1,
         'sub_question_number' => 3,
         'type' => 'textarea',
@@ -77,9 +67,7 @@ return [
         'max_length' => 60,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 2,
+        'exam_code' => '2023_aki_2',
         'question_number' => 2,
         'sub_question_number' => 1,
         'type' => 'textarea',
@@ -91,24 +79,20 @@ return [
         'max_length' => 40,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 2,
+        'exam_code' => '2023_aki_2',
         'question_number' => 2,
         'sub_question_number' => 2,
         'type' => 'input',
         'text' => <<<EOF
             (2) 本文中の[e]に入れる適切な字句を答えよ。
             EOF,
-        'options' => json_encode([
+        'options' => [
             ['label' => '[e]', 'value' => 'e'],
-        ]),
+        ],
         'max_length' => null,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 2,
+        'exam_code' => '2023_aki_2',
         'question_number' => 3,
         'sub_question_number' => 1,
         'type' => 'textarea',
@@ -120,24 +104,20 @@ return [
         'max_length' => null,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 2,
+        'exam_code' => '2023_aki_2',
         'question_number' => 3,
         'sub_question_number' => 2,
         'type' => 'input',
         'text' => <<<EOF
             (2) 本文中の[f]に入れる適切な字句を答えよ。
             EOF,
-        'options' => json_encode([
+        'options' => [
             ['label' => '[f]', 'value' => 'f'],
-        ]),
+        ],
         'max_length' => null,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 2,
+        'exam_code' => '2023_aki_2',
         'question_number' => 3,
         'sub_question_number' => 3,
         'type' => 'textarea',
@@ -147,9 +127,7 @@ return [
         'max_length' => 20,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 2,
+        'exam_code' => '2023_aki_2',
         'question_number' => 3,
         'sub_question_number' => 4,
         'type' => 'textarea',
@@ -159,9 +137,7 @@ return [
         'max_length' => 40,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 2,
+        'exam_code' => '2023_aki_2',
         'question_number' => 3,
         'sub_question_number' => 5,
         'type' => 'textarea',
@@ -171,24 +147,20 @@ return [
         'max_length' => 70,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 2,
+        'exam_code' => '2023_aki_2',
         'question_number' => 3,
         'sub_question_number' => 6,
         'type' => 'input',
         'text' => <<<EOF
             (6) 本文中の[h]に入れる適切な字句を答えよ。
             EOF,
-        'options' => json_encode([
+        'options' => [
             ['label' => '[h]', 'value' => 'h'],
-        ]),
+        ],
         'max_length' => null,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 2,
+        'exam_code' => '2023_aki_2',
         'question_number' => 3,
         'sub_question_number' => 7,
         'small_question_number' => 1,
@@ -196,23 +168,21 @@ return [
         'text' => <<<EOF
             (7) 本文中の下線⑥について, 表3及び表4の削除すべき項番を, それぞれ全て答えよ。
             EOF,
-        'options' => json_encode([
+        'options' => [
             ['label' => '[表3]', 'value' => '表3'],
-        ]),
+        ],
         'max_length' => null,
     ],
     [
-        'year' => 2023,
-        'season' => 'aki',
-        'section' => 2,
+        'exam_code' => '2023_aki_2',
         'question_number' => 3,
         'sub_question_number' => 7,
         'small_question_number' => 2,
         'type' => 'input',
         'text' => '',
-        'options' => json_encode([
+        'options' => [
             ['label' => '[表4]', 'value' => '表4'],
-        ]),
+        ],
         'max_length' => null,
     ],
 ];

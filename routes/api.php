@@ -25,8 +25,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::get('/questions/{year}-{season}-{section}', [ExamController::class, 'getExamQuestionsJson']);
 Route::get('/exam/{year}-{season}-{section}', [ExamController::class, 'checkFileExists']);
+Route::get('/exam-list', [ExamController::class, 'getExamList']);
 
+// 管理者用のルート
 Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
-    // 管理者用のルート
     Route::get('/sentence/{year}-{season}-{section}', [AdminController::class, 'fetchExamSentence']);
+    Route::put('/sentence', [AdminController::class, 'updateExamSentence']);
+    Route::post('/question', [AdminController::class, 'updateExamQuestion']);
+    Route::post('/upload-pdf', [AdminController::class, 'uploadExamPdf']);
 });

@@ -16,10 +16,8 @@ class UserAnswer extends Model
      */
     protected $fillable = [
         'id',
+        'exam_code',
         'user_id',
-        'year',
-        'season',
-        'section',
         'question_number',
         'sub_question_number',
         'small_question_number',

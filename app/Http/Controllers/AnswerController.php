@@ -17,6 +17,7 @@ class AnswerController extends Controller
         $year = $request->year;
         $season = $request->season;
         $section = $request->section;
+        $examCode = $year . '_' . $season . '_' . $section;
 
         $examController = new ExamController();
 
@@ -135,10 +136,10 @@ class AnswerController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
+        $examCode = $year . '_' . $season . '_' . $section;
+
         $userAnswers = UserAnswer::where('user_id', $userId)
-            ->where('year', $year)
-            ->where('season', $season)
-            ->where('section', $section)
+            ->where('exam_code', $examCode)
             ->get();
 
         if ($userAnswers->isEmpty()) {
@@ -155,8 +156,6 @@ class AnswerController extends Controller
                 'ai_text' => $answer->ai_text,
             ];
         });
-
-        Log::debug($answers);
 
         return response()->json($answers, 200);
     }
@@ -269,8 +268,6 @@ class AnswerController extends Controller
     private function convertQuestionToString(array $questionArray): string
     {
         $text = $questionArray['text'];
-
-        Log::debug($questionArray['options']);
 
         // 選択肢の問題の場合は選択肢をデコードする
         if ($questionArray['type'] === 'radio') {

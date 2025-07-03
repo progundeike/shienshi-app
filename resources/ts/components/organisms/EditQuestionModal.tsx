@@ -14,6 +14,8 @@ import {
     ModalCloseButton,
     ModalContent,
     ModalOverlay,
+    Text,
+    FormLabel,
 } from "@chakra-ui/react";
 import { FC, memo, useEffect } from "react";
 import {
@@ -25,19 +27,8 @@ import {
 } from "react-hook-form";
 import { MainColorButton } from "../atoms/MainColorButton";
 import { FetchedQuestion, useExam } from "../../hooks/useExam";
-
-type QuestionFormInputs = {
-    questionNumber: number;
-    subQuestionNumber: number;
-    smallQuestionNumber: number | null;
-    text: string;
-    type: "radio" | "checkbox" | "input" | "textarea";
-    options?: {
-        label: string;
-        value: string;
-    }[];
-    maxLength?: number | null;
-};
+import { useAdmin } from "../../hooks/useAdmin";
+import { QuestionFormInputs } from "../../types/form";
 
 type Props = {
     year: number;
@@ -50,7 +41,7 @@ type Props = {
 
 export const EditQuestionModal: FC<Props> = memo((props) => {
     const { year, season, section, isOpen, onClose, question } = props;
-    const { updateExamQuestion } = useExam();
+    const { updateExamQuestion } = useAdmin();
 
     // 問題編集用フォーム
     const { register, handleSubmit, watch, setValue, reset, control } =
@@ -67,12 +58,12 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
     ) => {
         try {
             updateExamQuestion({
-                year,
+                year: Number(year),
                 season,
-                section,
-                questionNumber: data.questionNumber,
-                subQuestionNumber: data.subQuestionNumber,
-                smallQuestionNumber: data.smallQuestionNumber ?? null,
+                section: Number(section),
+                questionNumber: Number(data.questionNumber),
+                subQuestionNumber: Number(data.subQuestionNumber),
+                smallQuestionNumber: Number(data.smallQuestionNumber) ?? null,
                 text: data.text,
                 type: data.type,
                 options: data.options ?? null,
@@ -87,7 +78,6 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
     };
 
     useEffect(() => {
-        console.log(question);
         if (question) {
             setValue("questionNumber", question.questionNumber);
             setValue("subQuestionNumber", question.subQuestionNumber);
@@ -151,12 +141,14 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
                                                 smallQuestionNumber
                                             </InputLeftAddon>
                                             <Input
-                                                placeholder="(1)などの問題のなかにさらに複数の問題がある場合"
                                                 {...register(
                                                     "smallQuestionNumber"
                                                 )}
                                             />
                                         </InputGroup>
+                                        <Text>
+                                            ((1)等の問題のなかにさらに複数の問題がある場合)
+                                        </Text>
                                     </Box>
 
                                     {/* 問題文 */}

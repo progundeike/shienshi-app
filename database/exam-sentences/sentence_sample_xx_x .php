@@ -1,8 +1,6 @@
 <?php
 return [
-    'year' => 2024,
-    'season' => 'haru',
-    'section' => 3,
+    'exam_code' => '2023_aki_1',
     'sentence' => <<<'EOF'
 EOF,
     'purpose' => '',

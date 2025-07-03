@@ -15,12 +15,13 @@ class ExamSentence extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'id',
-        'year',
-        'season',
-        'section',
+        'exam_code',
         'sentence',
         'purpose',
         'review_comment',
     ];
+
+    protected $primaryKey = 'exam_code';
+    public $incrementing = false;
+    protected $keyType = 'string';
 }

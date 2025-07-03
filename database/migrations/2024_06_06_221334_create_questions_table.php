@@ -13,9 +13,7 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->string('year');
-            $table->enum('season', ['haru', 'aki']);
-            $table->unsignedBigInteger('section');
+            $table->string('exam_code');
             $table->unsignedBigInteger('question_number');
             $table->unsignedBigInteger('sub_question_number');
             $table->unsignedBigInteger('small_question_number')->default(0);
@@ -24,6 +22,7 @@ return new class extends Migration
             $table->json('options')->nullable();
             $table->integer('max_length')->nullable();
             $table->timestamps();
+            $table->unique(['exam_code', 'question_number', 'sub_question_number', 'small_question_number'], 'uq_question_composite');
         });
     }
 

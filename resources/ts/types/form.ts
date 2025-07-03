@@ -33,3 +33,16 @@ export type Dialogue = {
     role: "user" | "assistant";
     content: string;
 };
+
+export type QuestionFormInputs = {
+    questionNumber: number;
+    subQuestionNumber: number;
+    smallQuestionNumber: number | null;
+    text: string;
+    type: "radio" | "checkbox" | "input" | "textarea";
+    options?: {
+        label: string;
+        value: string;
+    }[];
+    maxLength?: number | null;
+};
