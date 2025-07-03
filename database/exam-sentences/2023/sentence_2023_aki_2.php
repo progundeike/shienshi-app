@@ -1,9 +1,7 @@
 <?php
 
 return [
-    'year' => 2023,
-    'season' => 'aki',
-    'section' => 2,
+    'exam_code' => '2023_aki_2',
     'sentence' => <<<EOF
 セキュリティ対策の見直しに関する次の記述を読んで,設問に答えよ。
 

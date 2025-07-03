@@ -1,8 +1,12 @@
 import { Box, Button, Heading, Textarea } from "@chakra-ui/react";
 import { FC, memo, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useAdmin } from "../../hooks/useAdmin";
 
 type Props = {
+    year: number;
+    season: string;
+    section: number;
     reviewComment: string;
 };
 
@@ -11,7 +15,8 @@ type ReviewCommentForm = {
 };
 
 export const EditReviewCommentForm: FC<Props> = memo((props) => {
-    const { reviewComment } = props;
+    const { year, season, section, reviewComment } = props;
+    const { updateExamSentence } = useAdmin();
 
     const { register, handleSubmit, reset } = useForm<ReviewCommentForm>({
         defaultValues: {
@@ -22,8 +27,14 @@ export const EditReviewCommentForm: FC<Props> = memo((props) => {
     const onReviewCommentSubmit: SubmitHandler<ReviewCommentForm> = async (
         data
     ) => {
-        // ここでreviewCommentを保存する処理を実装
-        console.log("保存されたreviewComment:", data);
+        updateExamSentence(
+            year,
+            season,
+            section,
+            null,
+            null,
+            data.reviewComment
+        );
     };
 
     useEffect(() => {

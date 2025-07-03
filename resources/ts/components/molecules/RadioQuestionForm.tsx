@@ -15,6 +15,8 @@ export const RadioQuestionForm: FC<Props> = memo((props) => {
     const fieldName: `answer.${string}` = `answer.${question.questionNumber}-${question.subQuestionNumber}-${question.smallQuestionNumber}`;
     const currentValue = watch(fieldName);
 
+    console.log(question.options);
+
     return (
         <Box ml="20px">
             <RadioGroup defaultValue={currentValue}>

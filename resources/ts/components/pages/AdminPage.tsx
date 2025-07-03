@@ -1,7 +1,12 @@
 import {
     Box,
+    Button,
     chakra,
+    Flex,
     Heading,
+    Input,
+    Radio,
+    RadioGroup,
     Table,
     TableCaption,
     TableContainer,
@@ -14,6 +19,8 @@ import { memo } from "react";
 
 import { ExamLinkButton } from "../atoms/ExamLinkButton";
 import { EditExamLinkButton } from "../atoms/EditExamLinkButton";
+import { useAdmin } from "../../hooks/useAdmin";
+import { useForm, Controller } from "react-hook-form";
 
 const CustomTh = chakra(Th, {
     baseStyle: {
@@ -21,6 +28,12 @@ const CustomTh = chakra(Th, {
         fontSize: "lg",
     },
 });
+
+type UpdateExam = {
+    year: number;
+    season: "haru" | "aki";
+    sectionCount: number;
+};
 
 export const AdminPage = memo(() => {
     return (
@@ -30,8 +43,30 @@ export const AdminPage = memo(() => {
             </Box>
             <TableContainer>
                 <Table variant="simple">
-                    {/* <TableCaption placement="top">過去問一覧</TableCaption> */}
                     <Tbody>
+                        <Tr>
+                            <CustomTh>2099年(令和99年) 春季</CustomTh>
+                            <Td>
+                                <EditExamLinkButton url="2099/haru/1">
+                                    問1
+                                </EditExamLinkButton>
+                            </Td>
+                            <Td>
+                                <EditExamLinkButton url="2099/haru/2">
+                                    問2
+                                </EditExamLinkButton>
+                            </Td>
+                            <Td>
+                                <EditExamLinkButton url="2099/haru/3">
+                                    問3
+                                </EditExamLinkButton>
+                            </Td>
+                            <Td>
+                                <EditExamLinkButton url="2099/haru/4">
+                                    問4
+                                </EditExamLinkButton>
+                            </Td>
+                        </Tr>
                         <Tr>
                             <CustomTh>2024年(令和6年) 秋期</CustomTh>
                             <Td>

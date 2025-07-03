@@ -12,11 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('exam_sentences', function (Blueprint $table) {
-            $table->id();
-            $table->integer('year');
-            $table->enum('season', ['haru', 'aki']);
-            $table->unsignedBigInteger('section');
-            $table->text('sentence');
+            $table->string('exam_code')->primary();
+            $table->text('sentence')->nullable();
             $table->text('purpose')->nullable();
             $table->text('review_comment')->nullable();
             $table->timestamps();

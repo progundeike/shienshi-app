@@ -15,6 +15,7 @@ import { ExamSentenceResponse, useAdmin } from "../../hooks/useAdmin";
 import { EditExamSentenceForm } from "../molecules/EditExamSentenceForm";
 import { EditPurposeForm } from "../molecules/EditPurposeForm";
 import { EditReviewCommentForm } from "../molecules/EditReviewCommentForm";
+import { PDFUploadFrom } from "../organisms/PDFUploadFrom";
 
 export const EditExamPage: FC = memo(() => {
     const [loading, setLoading] = useState(true);
@@ -68,6 +69,7 @@ export const EditExamPage: FC = memo(() => {
         // 初期ロード時にPDFと問題文の存在確認を行う
         checkPdf();
         checkExamSentence();
+        console.log("EditExamPage: useEffect called");
     }, []);
 
     return (
@@ -100,30 +102,34 @@ export const EditExamPage: FC = memo(() => {
                             <DisplayExamPdf />
                         </Box>
                     ) : (
-                        <Box w="80%" mt="20px" mx="auto">
-                            <Flex
-                                direction="column"
-                                gap="20px"
-                                textAlign="center"
-                            >
-                                <Box>PDFは未登録です</Box>
-                                <Button colorScheme="blue">
-                                    問題ファイルを登録する
-                                </Button>
-                            </Flex>
-                        </Box>
+                        <PDFUploadFrom
+                            year={parsedYear}
+                            season={season}
+                            section={parsedSection}
+                        />
                     )}
 
                     {/* テキスト化した問題文(examSentence)を編集するためのフォーム */}
                     <EditExamSentenceForm
-                        examSentence={examData?.sentence ?? ""}
+                        year={parsedYear}
+                        season={season}
+                        section={parsedSection}
+                        sentence={examData?.sentence ?? ""}
                     />
 
-                    {/* 出題趣旨(purpose)を編集するためのコンテナ */}
-                    <EditPurposeForm purpose={examData?.purpose ?? ""} />
+                    {/* 出題趣旨(purpose)を編集するためのフォーム */}
+                    <EditPurposeForm
+                        year={parsedYear}
+                        season={season}
+                        section={parsedSection}
+                        purpose={examData?.purpose ?? ""}
+                    />
 
-                    {/* 採点講評(reviewComment)を編集するためのコンテナ */}
+                    {/* 採点講評(reviewComment)を編集するためのフォーム */}
                     <EditReviewCommentForm
+                        year={parsedYear}
+                        season={season}
+                        section={parsedSection}
                         reviewComment={examData?.reviewComment ?? ""}
                     />
                 </Box>

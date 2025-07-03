@@ -1,10 +1,6 @@
 import { useAtom } from "jotai";
 
-import {
-    ErrorResponse,
-} from "../types/form";
 import { axiosInstance } from "./axiosInstance";
-import { loadingAtom } from "../states/loadingAtom";
 import { useChakraToast } from "../utils/toastUtils";
 
 export type FetchedQuestion = {
@@ -47,27 +43,51 @@ export type UpdateQuestionInputs = {
     };
 
 export const useExam = () => {
-    const [isLoading, setIsLoading] = useAtom(loadingAtom);
     const { unexpectedServerErrorToast, toast } = useChakraToast();
+
+    // const fetchExamList = async () => {
+    //     setIsLoading(true);
+    //     return await axiosInstance
+    //         .get('api/exam-list')
+    //         .then((response) => {
+    //             if (response.status == 200) {
+    //                 return response.data;
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             toast(unexpectedServerErrorToast);
+    //             return null;
+    //         })
+    //         .finally(() =>
+    //          setIsLoading(false));
+    //     }
 
     const fetchQuestions = async (
         year: number,
         season: string,
         section: number
     ): Promise<FetchedQuestion[] | null> => {
-        setIsLoading(true);
         return await axiosInstance
             .get(`/api/questions/${year}-${season}-${section}`)
             .then((response) => {
                 return response.data;
             })
             .catch((error) => {
+                if (error.response && error.response.status === 404) {
+                    toast({
+                        title: "設問が見つかりません",
+                        description: "指定された試験の設問が存在しません。",
+                        status: "error",
+                        duration: 6000,
+                        isClosable: true,
+                        position: "bottom-right",
+                    });
+                    return null;
+                }
+
                 toast(unexpectedServerErrorToast);
                 return null;
             })
-            .finally(() => {
-                setIsLoading(false);
-            });
     };
 
     // 提出済みの試験一覧を取得
@@ -94,70 +114,22 @@ export const useExam = () => {
             .then((response) => {
                 if (response.status === 200) {
                     return true;
-                } else if(response.status === 404) {
-                    return false;
                 }
 
                 return null;
             })
             .catch((error) => {
+                if (error.response && error.response.status === 404) {
+                    return false;
+                }
+
                 toast(unexpectedServerErrorToast);
                 console.error(error);
                 return null;
             });
     }
 
-    const updateExamQuestion = async (
-        data: UpdateQuestionInputs
-    ) => {
-        console.log(data);
-        // setIsLoading(true);
-        // return await axiosInstance
-        //     .post<ErrorResponse | string | null>("/api/question", data)
-        //     .then((response) => {
-        //         if (response.status === 200) {
-        //             if (typeof response.data === "string") {
-        //                 toast({
-        //                     title: "問題の更新に成功しました",
-        //                     description: response.data,
-        //                     status: "success",
-        //                     duration: 6000,
-        //                     isClosable: true,
-        //                     position: "bottom-right",
-        //                 });
-        //                 return response.data;
-        //             } else {
-        //                 toast({
-        //                     title: "問題の更新に失敗しました",
-        //                     description: "サーバーからの応答が不正です",
-        //                     status: "error",
-        //                     duration: 6000,
-        //                     isClosable: true,
-        //                     position: "bottom-right",
-        //                 });
-        //                 return null;
-        //             }
-        //         } else {
-        //             toast({
-        //                 title: "問題の更新に失敗しました",
-        //                 description: "サーバーからの応答が不正です",
-        //                 status: "error",
-        //                 duration: 6000,
-        //                 isClosable: true,
-        //                 position: "bottom-right",
-        //             });
-        //             return null;
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         console.error(error);
-        //         toast(unexpectedServerErrorToast);
-        //         return null;
-        //     })
-        //     .finally(() => {
-        //         setIsLoading(false);
-        //     });
-    };
+    
 
-    return { fetchQuestions, fetchSubmittedExams, checkPdfExists, updateExamQuestion };
+    return { fetchQuestions, fetchSubmittedExams, checkPdfExists };
 };

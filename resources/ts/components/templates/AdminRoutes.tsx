@@ -9,10 +9,10 @@ export const AdminRoutes = () => {
     const location = useLocation();
     const isLoading = useAtomValue(loadingAtom);
 
-    // // user取得前はLoadingPageを表示
-    // if (isLoading || user === undefined) {
-    //     return <LoadingPage />;
-    // }
+    // user取得前はLoadingPageを表示
+    if (isLoading || user === undefined) {
+        return <LoadingPage />;
+    }
 
     if (user === null) {
         return <Navigate to="/login" state={{ from: location }} />;

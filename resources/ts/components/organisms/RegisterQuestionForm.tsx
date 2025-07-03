@@ -39,7 +39,7 @@ import { AiOutlineFieldString } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import { Page404 } from "../pages/Page404";
 import { MainColorButton } from "../atoms/MainColorButton";
-import { EditQuestionModal } from "../molecules/EditQuestionModal";
+import { EditQuestionModal } from "./EditQuestionModal";
 
 type Props = {
     year: number;

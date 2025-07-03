@@ -1,35 +1,38 @@
 import { Box, Button, Heading, Textarea } from "@chakra-ui/react";
 import { FC, memo, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useAdmin } from "../../hooks/useAdmin";
 
 type Props = {
-    examSentence: string;
+    sentence: string;
+    year: number;
+    season: string;
+    section: number;
 };
 
 type ExamSentenceForm = {
-    examSentence: string;
+    sentence: string;
 };
 
 export const EditExamSentenceForm: FC<Props> = memo((props) => {
-    const { examSentence } = props;
+    const { sentence, year, season, section } = props;
+    const { updateExamSentence } = useAdmin();
 
     const { register, handleSubmit, reset } = useForm<ExamSentenceForm>({
         defaultValues: {
-            examSentence: examSentence || "", // examSentenceが未登録の場合は空文字
+            sentence: sentence || "", // examSentenceが未登録の場合は空文字
         },
     });
 
     const onExamSentenceSubmit: SubmitHandler<ExamSentenceForm> = async (
         data
     ) => {
-        // ここでexamSentenceを保存する処理を実装
-        console.log("保存されたexamSentence:", data);
+        updateExamSentence(year, season, section, data.sentence, null, null);
     };
 
     useEffect(() => {
-        // フォームの初期値を更新
-        reset({ examSentence });
-    }, [examSentence]);
+        reset({ sentence });
+    }, [sentence]);
 
     return (
         <Box my="20px">
@@ -41,8 +44,8 @@ export const EditExamSentenceForm: FC<Props> = memo((props) => {
                 </Box>
 
                 <Textarea
-                    defaultValue={examSentence}
-                    {...register("examSentence")}
+                    defaultValue={sentence}
+                    {...register("sentence")}
                     placeholder="examSentenceが未登録です"
                     size="sm"
                     minH="200px"
