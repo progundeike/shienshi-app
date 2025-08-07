@@ -71,6 +71,7 @@ export const useAnswer = () => {
         setIsLoading(true);
 
         try {
+            console.log('fetchCorrection')
             const response = await axiosInstance
             .get<ErrorResponse | Correction[]>(`/api/corrections/${year}-${season}-${section}`)
 
@@ -99,20 +100,12 @@ export const useAnswer = () => {
         season: string,
         section: number
     ): Promise<void> => {
-        setIsLoading(true);
-
         try {
             const response = await axiosInstance
             .delete(`/api/answer/${year}-${season}-${section}`)
-            // 成功
-            if (response.status === 200) {
-                console.log("reset success");
-            }
         } catch (error) {
             toast(unexpectedServerErrorToast);
             console.error(error);
-        } finally {
-            setIsLoading(false);
         }
     }
 

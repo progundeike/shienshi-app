@@ -97,9 +97,8 @@ class ExamController extends Controller
     }
 
     // 模範解答を取得する
-    public function fetchModelAnswer(int $year, string $season, int $section, $questionNumber = null, $subQuestionNumber = null): array
+    public function fetchModelAnswer(string $examCode, $questionNumber = null, $subQuestionNumber = null, $smallQuestionNumber = null): array
     {
-        $examCode = $year . '_' . $season . '_' . $section;
         $query = ModelAnswer::where('exam_code', $examCode);
 
         // 特定の設問を取得する場合は条件を追加
@@ -109,6 +108,9 @@ class ExamController extends Controller
         if ($subQuestionNumber) {
             $query->where('sub_question_number', $subQuestionNumber);
         }
+        if ($smallQuestionNumber) {
+            $query->where('small_question_number', $smallQuestionNumber);
+        }
 
         $result = $query->get();
 
@@ -116,6 +118,7 @@ class ExamController extends Controller
             return [
                 'questionNumber' => $answer->question_number,
                 'subQuestionNumber' => $answer->sub_question_number,
+                'smallQuestionNumber' => $answer->small_question_number,
                 'text' => $answer->text,
             ];
         });
@@ -146,51 +149,55 @@ class ExamController extends Controller
     {
         $userId = Auth::id();
 
-        $submittedAnswers = SubmittedExam::where('user_id', $userId)
+        $fetchedSubmittedAnswers = SubmittedExam::where('user_id', $userId)
             ->get();
 
-        // TODO: exam_codeを分解する
+        $submittedAnswers = $fetchedSubmittedAnswers->map(function ($exam) {
 
-        $updatedAnswers = $submittedAnswers->map(function ($exam) {
+            // TODO: exam_codeを分解する
+            $examCodeParts = explode('_', $exam->exam_code);
+            $year = (int) $examCodeParts[0];
+            $season = $examCodeParts[1];
+            $section = (int) $examCodeParts[2];
 
-            $updatedExam = [
-                'year' => $exam->year,
-                'season' => $exam->season,
-                'section' => $exam->section,
+            $submittedExam = [
+                'year' => $year
             ];
 
             // seasonを日本語に変換
-            if ($exam->season === 'haru') {
-                $updatedExam['season_japanese'] = '春期';
-            } elseif ($exam->season === 'aki') {
-                $updatedExam['season_japanese'] = '秋期';
+            if ($season === 'haru') {
+                $submittedExam['season_japanese'] = '春期';
+            } elseif ($season === 'aki') {
+                $submittedExam['season_japanese'] = '秋期';
             } else {
                 // 例外
-                $updatedExam['season_japanese'] = '未登録';
+                $submittedExam['season_japanese'] = '未登録';
+                Log::error('Unknown season: ' . $submittedExam['season']);
             }
 
             // sectionを問いに変換。2023年までは午後I, 午後Ⅱに分ける
-            if ($exam->year >= 2023) {
+            if ($section >= 2023) {
                 // sectionをそのまま問いに変換
-                $updatedExam['section_converted'] = '問' . $exam->section;
+                $submittedExam['section_converted'] = '問' . $section;
             } else {
                 // sectionを午前、午後に分類
-                if ($exam->section < 4) {
-                    $updatedExam['section_converted'] = '午後I 問' . $exam->section;
-                } elseif ($exam->section === 4) {
-                    $updatedExam['section_converted'] = '午後Ⅱ 問1';
-                } elseif ($exam->section === 5) {
-                    $updatedExam['section_converted'] = '午後Ⅱ 問2';
+                if ($section < 4) {
+                    $submittedExam['section_converted'] = '午後I 問' . $section;
+                } elseif ($section === 4) {
+                    $submittedExam['section_converted'] = '午後Ⅱ 問1';
+                } elseif ($section === 5) {
+                    $submittedExam['section_converted'] = '午後Ⅱ 問2';
                 } else {
                     // 例外
-                    $updatedExam['section_converted'] = '未登録';
+                    $submittedExam['section_converted'] = '未登録';
+                    Log::error('Unknown section: ' . $submittedExam['section']);
                 }
             }
 
-            return $updatedExam;
+            return $submittedExam;
         });
 
-        return response()->json($updatedAnswers, 200);
+        return response()->json($submittedAnswers, 200);
     }
 
     public function convertUserAnswerToText(array $userAnswers): string

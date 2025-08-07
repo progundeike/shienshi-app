@@ -33,4 +33,6 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::put('/sentence', [AdminController::class, 'updateExamSentence']);
     Route::post('/question', [AdminController::class, 'updateExamQuestion']);
     Route::post('/upload-pdf', [AdminController::class, 'uploadExamPdf']);
+    Route::get('/model-answers/{year}-{season}-{section}', [AdminController::class, 'getModelAnswers']);
+    Route::post('/model-answers/{year}-{season}-{section}', [AdminController::class, 'updateModelAnswers']);
 });

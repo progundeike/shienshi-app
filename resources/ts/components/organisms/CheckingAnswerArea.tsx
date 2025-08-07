@@ -32,14 +32,20 @@ type Props = {
     section: number;
     questions: FetchedQuestion[];
     corrections: Correction[];
-    setCorrections: (corrections: Correction[] | null) => void;
+    refetchCollections: () => void;
     user: User;
 };
 
 // 添削結果を表示するコンポーネント
 export const CheckingAnswerArea: FC<Props> = memo((props) => {
-    const { year, season, section, questions, corrections, setCorrections } =
-        props;
+    const {
+        year,
+        season,
+        section,
+        questions,
+        corrections,
+        refetchCollections,
+    } = props;
     const [isLoading, setIsLoading] = useAtom(loadingAtom);
 
     const {
@@ -50,9 +56,9 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
 
     const { deleteSubmittedAnswer } = useAnswer();
 
-    const onReset = () => {
-        deleteSubmittedAnswer(year, season, section);
-        setCorrections(null);
+    const onReset = async () => {
+        await deleteSubmittedAnswer(year, season, section);
+        refetchCollections();
         reset();
     };
 

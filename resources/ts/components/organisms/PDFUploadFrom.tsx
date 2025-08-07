@@ -31,7 +31,7 @@ export const PDFUploadFrom: FC<Props> = memo((props) => {
     };
 
     return (
-        <Box w="80%" m="20px" mx="auto">
+        <Box w="80%" m="20px" mx="auto" textAlign="center">
             <Box position="relative">
                 <Input
                     onChange={onFileInputChange}

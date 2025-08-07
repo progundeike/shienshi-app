@@ -8,7 +8,7 @@ import {
     Divider,
 } from "@chakra-ui/react";
 import { FC, memo, useEffect, useState, Fragment } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { useAtom, useAtomValue } from "jotai";
 
 import { userAtom } from "../../states/userAtom";
@@ -23,16 +23,16 @@ import { TextareaQuestionForm } from "../molecules/TextareaQuestionForm";
 
 export type AnswerInputs = {
     answer: {
-        [id: string]: string;
+        [id: string]: string | string[];
     };
 };
 
 export type Correction = {
     questionNumber: number;
     subQuestionNumber: number;
-    rating: string;
-    comment: string;
-    user_text: string;
+    aiRating: string;
+    aiText: string;
+    userText: string;
 };
 
 type Props = {
@@ -40,11 +40,11 @@ type Props = {
     season: string;
     section: number;
     questions: FetchedQuestion[];
-    setCorrections: (corrections: Correction[] | null) => void;
+    refetchCorrections: () => void;
 };
 
 export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
-    const { year, season, section, questions, setCorrections } = props;
+    const { year, season, section, questions, refetchCorrections } = props;
     const user = useAtomValue(userAtom);
     const [isLoading, setIsLoading] = useAtom(loadingAtom);
     const STORAGE_KEY = `formData-${year}-${season}-${section}`;
@@ -52,11 +52,10 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
     const defaultValues = storedData ? JSON.parse(storedData) : {};
 
     const {
-        register,
         handleSubmit,
-        watch,
         setValue,
         reset,
+        control,
         formState: { errors },
     } = useForm<AnswerInputs>({
         defaultValues: { answer: defaultValues },
@@ -65,26 +64,21 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
     const { submitAnswer } = useAnswer();
 
     // 入力が変更されたらsessionStorageに保存
-    useEffect(() => {
-        const subscription = watch((value) => {
-            // `answer`の値だけを保存
-            if (value.answer) {
-                sessionStorage.setItem(
-                    STORAGE_KEY,
-                    JSON.stringify(value.answer)
-                );
-            }
-        });
+    const answerValues = useWatch({
+        control,
+        name: "answer",
+    });
 
-        return () => subscription.unsubscribe();
-    }, [watch]);
+    useEffect(() => {
+        if (answerValues) {
+            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(answerValues));
+        }
+    }, [answerValues]);
 
     // sessionStorageからデータを復元
     useEffect(() => {
         if (storedData) {
             const parsedData = JSON.parse(storedData);
-            console.log(parsedData);
-
             reset({ answer: parsedData });
         }
     }, [setValue]);
@@ -96,9 +90,7 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
             // sessionStorageをクリア
             sessionStorage.removeItem(STORAGE_KEY);
 
-            if (response) {
-                setCorrections(response);
-            }
+            refetchCorrections();
         } catch (e) {
             console.error(e);
         }
@@ -158,32 +150,28 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
                                     {question.type === "radio" && (
                                         <RadioQuestionForm
                                             question={question}
-                                            register={register}
-                                            watch={watch}
+                                            control={control}
                                         />
                                     )}
 
                                     {question.type === "checkbox" && (
                                         <CheckboxQuestionForm
                                             question={question}
-                                            register={register}
-                                            watch={watch}
+                                            control={control}
                                         />
                                     )}
 
                                     {question.type === "textarea" && (
                                         <TextareaQuestionForm
                                             question={question}
-                                            register={register}
-                                            watch={watch}
+                                            control={control}
                                         />
                                     )}
 
                                     {question.type === "input" && (
                                         <InputQuestionForm
                                             question={question}
-                                            register={register}
-                                            watch={watch}
+                                            control={control}
                                         />
                                     )}
                                 </Box>

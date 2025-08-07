@@ -4,7 +4,11 @@ import { atom, useAtom } from "jotai";
 import { axiosInstance } from "./axiosInstance";
 import { useChakraToast } from "../utils/toastUtils";
 import { UpdateQuestionInputs } from "./useExam";
-import { ErrorResponse } from "../types/form";
+import { ErrorResponse, ModelAnswer } from "../types/form";
+import { get } from "react-hook-form";
+import { IoReturnUpBack } from "react-icons/io5";
+import { AnswerInputs } from "../components/organisms/QuestionAndAnswerForm";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export type ExamSentenceResponse = {
     sentence: string;
@@ -12,7 +16,11 @@ export type ExamSentenceResponse = {
     reviewComment: string;
 }
 
-export const useAdmin = () => {
+export const useAdmin = (
+    year: number,
+    season: string,
+    section: number
+) => {
     // const [isLoading, setIsLoading] = useAtom(loadingAtom);
     const { unexpectedServerErrorToast, toast } = useChakraToast();
 
@@ -98,17 +106,8 @@ export const useAdmin = () => {
         return await axiosInstance
             .post<ErrorResponse | string | null>("/api/admin/question", data)
             .then((response) => {
-                if (response.status === 201) {
-                    toast({
-                            title: "問題の更新に成功しました",
-                            status: "success",
-                            duration: 6000,
-                            isClosable: true,
-                            position: "bottom-right",
-                        });
-                        return response.data;
-                } else {
-                    console.log(response);
+                if (response.status !== 201) {
+                    console.log(response.status);
                     toast({
                         title: "問題の更新に失敗しました",
                         description: "サーバーからの応答が不正です",
@@ -117,13 +116,17 @@ export const useAdmin = () => {
                         isClosable: true,
                         position: "bottom-right",
                     });
-                    return null;
                 }
+                return response;
             })
             .catch((error) => {
-                console.error(error);
-                toast(unexpectedServerErrorToast);
-                return null;
+                if (error.status === 422) {
+                    // バリデーションエラー
+                    return error;
+                } else {
+                    toast(unexpectedServerErrorToast);
+                    return null;
+                }
             })
     };
 
@@ -178,5 +181,60 @@ export const useAdmin = () => {
         }
     };
 
-    return { getExamSentence, updateExamSentence, updateExamQuestion, uploadPDF };
+    const getModelAnswers = async (
+        year: number,
+        season: string,
+        section: number
+    ): Promise<ModelAnswer[] | null> => {
+        return  await axiosInstance.get<ModelAnswer[] | null>(
+            `/api/admin/model-answers/${year}-${season}-${section}`
+        )
+            .then((response) => {
+                if (response.status === 200) {
+                    return response.data;
+                }
+                return null;
+            }
+            )
+            .catch((error) => {
+                if (error.response && error.response.status === 404) {
+                    toast({
+                        title: "模範解答が見つかりません",
+                        description: "指定された試験の模範解答が存在しません。",
+                        status: "error",
+                        duration: 6000,
+                        isClosable: true,
+                        position: "bottom-right",
+                    });
+                    return null;
+                }
+
+                toast(unexpectedServerErrorToast);
+                console.error(error);
+                return null;
+            }
+        );  
+    }
+
+    // 模範解答の更新のMutationフック
+    const updateModelAnswers = useMutation({
+        mutationFn: async (modelAnswer: AnswerInputs) => {
+            await axiosInstance.post(
+                `/api/admin/model-answers/${year}-${season}-${section}`,
+                modelAnswer
+            );
+        },
+        onSuccess: () => {
+            toast({
+                title: "模範解答の更新に成功しました",
+                status: "success",
+                duration: 6000,
+                isClosable: true,
+            });
+        },
+        onError: () => toast(unexpectedServerErrorToast),
+    });
+    
+
+    return { getExamSentence, updateExamSentence, updateExamQuestion, uploadPDF, getModelAnswers, updateModelAnswers };
 }

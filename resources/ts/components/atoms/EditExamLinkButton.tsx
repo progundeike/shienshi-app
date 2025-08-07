@@ -5,14 +5,17 @@ import { Link } from "react-router-dom";
 type Props = {
     children: ReactNode;
     url: string;
+    color: string;
 };
 
-export const EditExamLinkButton: FC<Props> = memo(({ children, url }) => {
-    return (
-        <Link to={"/admin/edit/" + url}>
-            <Button backgroundColor="red.300" w="80%">
-                {children}
-            </Button>
-        </Link>
-    );
-});
+export const EditExamLinkButton: FC<Props> = memo(
+    ({ children, url, color }) => {
+        return (
+            <Link to={"/admin/edit/" + url}>
+                <Button colorScheme={color} w="80%">
+                    {children}
+                </Button>
+            </Link>
+        );
+    }
+);

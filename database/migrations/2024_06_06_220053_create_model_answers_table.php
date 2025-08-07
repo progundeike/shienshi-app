@@ -14,9 +14,7 @@ return new class extends Migration
         Schema::create('model_answers', function (Blueprint $table) {
             $table->id();
             $table->string('exam_code');
-            $table->unsignedBigInteger('question_number');
-            $table->unsignedBigInteger('sub_question_number');
-            $table->unsignedBigInteger('small_question_number')->default(0);
+            $table->string('question_code');
             $table->text('text')->nullable();
             $table->timestamps();
         });

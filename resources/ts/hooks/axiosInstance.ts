@@ -24,8 +24,12 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     async (error: any) => {
-        console.log(error);
         const originalRequest = error.config;
+
+        // 422エラーが発生した場合、バリデーションエラーを処理する
+        if (error.response.status === 422) {
+            return Promise.reject(error.response)
+        }
         
         // 419エラーが発生した場合、トークンを更新してリクエストを再試行する
         if (error.response.status === 419 && !originalRequest._retry) {
@@ -38,17 +42,4 @@ axiosInstance.interceptors.response.use(
         return Promise.reject(error);
     }
 );
-
-// export const otherServerErrorToast = (toast: any) => {
-//     toast({
-//         title: "サーバーエラー",
-//         description:
-//             "サーバーに不具合が発生しています。しばらく経ってから再度お試しください",
-//         status: "error",
-//         duration: 6000,
-//         isClosable: true,
-//         position: "bottom-right",
-//     });
-// }
-
 

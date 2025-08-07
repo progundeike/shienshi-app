@@ -12,6 +12,12 @@ use App\Models\Question;
 use App\Http\Controllers\ExamController;
 use Illuminate\Support\Facades\Auth;
 
+use OpenAI\Responses\Chat\CreateResponse;
+use OpenAI\Responses\Chat\CreateResponseChoice;
+use OpenAI\Responses\Chat\CreateResponseMessage;
+use OpenAI\Responses\Chat\CreateResponseFunctionCall;
+use OpenAI\Responses\Chat\CreateResponseUsage;
+
 class AIController extends Controller
 {
     const USD_TO_JPY = 156.0;
@@ -50,6 +56,34 @@ class AIController extends Controller
         $maxRetries = 3;
         $result = null;
 
+        $dummyJson = <<<'Json'
+{
+  "id":"chatcmpl-BvxZ8G2dKAZqRHdB9sEFna4uKE818",
+  "object":"chat.completion",
+  "created":1753153366,
+  "model":"gpt-3.5-turbo-0125",
+  "choices":[
+    {
+      "index":0,
+      "message":{
+        "role":"assistant",
+        "content":null,
+        "function_call":{
+          "name":"reviewUserAnswer",
+          "arguments":"{\"evaluations\":[{\"questionNumber\":1,\"subQuestionNumber\":1,\"rating\":\"×\",\"comment\":\"正解は「イ」です。...\"}]}"
+        }
+      },
+      "finish_reason":"function_call"
+    }
+  ],
+  "usage":{
+    "prompt_tokens":4134,
+    "completion_tokens":424,
+    "total_tokens":4558
+  }
+}
+Json;
+
         do {
             $result = OpenAI::chat()->create([
                 'model' => $this->model,
@@ -59,7 +93,15 @@ class AIController extends Controller
                 ],
                 'function_call' => 'auto',
             ]);
-            Log::debug(print_r($result, true));
+
+            // コスト削減のため、取得したresultを出力する
+            // $data = json_decode($dummyJson, true);
+            // // $result = CreateResponse::from($data, null);
+            // OpenAI::fake([
+            //     CreateResponse::fake()
+            // ]);
+
+            Log::debug('AIcontroller result', $result->toArray());
             $this->debugTokenCosts($result->usage->promptTokens, $result->usage->completionTokens);
 
             $retryCount++;
