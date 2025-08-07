@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_answers', function (Blueprint $table) {
-            $table->id();
+            // $table->id();
             $table->string('exam_code');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('question_number');
@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('ai_rating')->nullable();
             $table->text('ai_text')->nullable();
             $table->timestamps();
+            $table->unique(['user_id', 'exam_code', 'question_number', 'sub_question_number', 'small_question_number'], 'ua_index');
         });
     }
 

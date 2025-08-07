@@ -1,17 +1,24 @@
 import { Box, Flex, Text, Textarea } from "@chakra-ui/react";
 import { FC, memo } from "react";
 import { FetchedQuestion } from "../../hooks/useExam";
-import { UseFormRegister, UseFormWatch } from "react-hook-form";
+import { Control, useController } from "react-hook-form";
 import { AnswerInputs } from "../organisms/QuestionAndAnswerForm";
 
 type Props = {
     question: FetchedQuestion;
-    register: UseFormRegister<AnswerInputs>;
-    watch: UseFormWatch<AnswerInputs>;
+    control: Control<AnswerInputs>;
 };
 
-export const TextareaQuestionForm: FC<Props> = memo((props) => {
-    const { question, register, watch } = props;
+export const TextareaQuestionForm: FC<Props> = (props) => {
+    const { question, control } = props;
+
+    // 文字数のリアルタイム監視
+    const filedName: `answer.${string}` = `answer.${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`;
+    const { field } = useController({
+        name: filedName,
+        control,
+        defaultValue: "",
+    });
 
     return (
         <Box>
@@ -22,24 +29,14 @@ export const TextareaQuestionForm: FC<Props> = memo((props) => {
                         {question.options[0].label}
                     </Text>
                 )}
-                <Textarea
-                    {...register(
-                        `answer.${question.questionNumber}-${question.subQuestionNumber}-${question.smallQuestionNumber}`
-                    )}
-                />
+                <Textarea {...field} />
             </Flex>
 
             {question.maxLength && (
                 <Box textAlign="right">
-                    (
-                    {watch(
-                        `answer.${question.questionNumber}-${question.subQuestionNumber}-${question.smallQuestionNumber}`,
-                        ""
-                    ).length || 0}
-                    /{question.maxLength}
-                    字)
+                    ({field.value.length}/{question.maxLength}字)
                 </Box>
             )}
         </Box>
     );
-});
+};

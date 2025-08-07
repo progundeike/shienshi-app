@@ -28,6 +28,7 @@ export default defineConfig({
         mimeTypes: {
             'application/javascript': ['mjs'],
         },
+        cors: true,
     },
     optimizeDeps:{
         esbuildOptions: {

@@ -2,63 +2,30 @@ import {
     Box,
     Button,
     Divider,
-    Flex,
-    FormControl,
-    Input,
-    InputGroup,
-    InputLeftAddon,
-    Radio,
-    RadioGroup,
-    Textarea,
     VStack,
     Text,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalHeader,
-    ModalOverlay,
     useDisclosure,
 } from "@chakra-ui/react";
 import { FC, Fragment, memo, useEffect, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 
-import {
-    Controller,
-    SubmitHandler,
-    useFieldArray,
-    useForm,
-} from "react-hook-form";
 import { FetchedQuestion, useExam } from "../../hooks/useExam";
 import { CheckboxQuestionForm } from "../molecules/CheckboxQuestionForm";
 import { InputQuestionForm } from "../molecules/InputQuestionForm";
-import { NeedRegister } from "../molecules/NeedRegister";
 import { RadioQuestionForm } from "../molecules/RadioQuestionForm";
 import { TextareaQuestionForm } from "../molecules/TextareaQuestionForm";
 import { AnswerInputs } from "./QuestionAndAnswerForm";
-import { AiOutlineFieldString } from "react-icons/ai";
-import { useParams } from "react-router-dom";
-import { Page404 } from "../pages/Page404";
-import { MainColorButton } from "../atoms/MainColorButton";
 import { EditQuestionModal } from "./EditQuestionModal";
+import { ModelAnswer } from "../../types/form";
+import { useAdmin } from "../../hooks/useAdmin";
+import { ModelAnswerForm } from "./ModelAnswerForm";
 
 type Props = {
     year: number;
     season: string;
     section: number;
 };
-
-// type QuestionFormInputs = {
-//     question_number: number;
-//     sub_question_number: number;
-//     small_question_number?: number;
-//     text: string;
-//     type: "radio" | "checkbox" | "input" | "textarea";
-//     options?: {
-//         label: string;
-//         value: string;
-//     }[];
-//     max_length?: number;
-// };
 
 export const RegisterQuestionForm: FC<Props> = memo((props) => {
     const { year, season, section } = props;
@@ -67,20 +34,52 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [editTargetQuestion, setEditTargetQuestion] =
         useState<FetchedQuestion | null>(null);
+    const { handleSubmit, watch, reset, setValue, control, getValues } =
+        useForm<AnswerInputs>();
 
-    // 模範解答用フォーム
-    const { register, handleSubmit, watch, reset } = useForm<AnswerInputs>();
+    // セッションストレージからデータを取得
+    const STORAGE_KEY = `modelAnswerFormData-${year}-${season}-${section}`;
+    const storedData = sessionStorage.getItem(STORAGE_KEY);
+
+    // 入力が変更されたらsessionStorageに保存
+    const answerValues = useWatch({
+        control,
+        name: "answer",
+    });
+
+    useEffect(() => {
+        if (answerValues) {
+            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(answerValues));
+        }
+    }, [answerValues]);
+
+    // sessionStorageからデータを復元
+    useEffect(() => {
+        if (storedData) {
+            const parsedData = JSON.parse(storedData);
+            reset({ answer: parsedData });
+        }
+    }, [setValue]);
+
+    // 模範解答を取得する
+    const [modelAnswers, setModelAnswers] = useState<ModelAnswer[]>([]);
+    const { getModelAnswers, updateModelAnswers } = useAdmin(
+        year,
+        season,
+        section
+    );
 
     // 模範解答提出ハンドラー
     const onModelAnswerSubmit: SubmitHandler<AnswerInputs> = async (data) => {
-        try {
-            // 模範解答の提出に使用する
-            console.log("Model answer submitted:", data);
-        } catch (e) {
-            console.error(e);
-        }
+        updateModelAnswers.mutate(data, {
+            // 成功したらフォームとセッションストレージをクリア
+            onSuccess: () => {
+                reset();
+                sessionStorage.removeItem(STORAGE_KEY);
 
-        return;
+                // 再度模範解答を取得
+            },
+        });
     };
 
     useEffect(() => {
@@ -88,6 +87,22 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
             const data = await fetchQuestions(year, season, section);
             if (data) {
                 setQuestions(data);
+            }
+
+            const modelAnswersData = await getModelAnswers(
+                year,
+                season,
+                section
+            );
+            if (modelAnswersData) {
+                setModelAnswers(modelAnswersData);
+
+                // 取得したmodelAnswerをフォーム初期値に反映
+                const initialValues: AnswerInputs["answer"] = {};
+                modelAnswersData.forEach((ma) => {
+                    initialValues[ma.questionCode] = ma.text;
+                });
+                reset({ answer: initialValues });
             }
         };
         fetch();
@@ -125,36 +140,33 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
                                     {question.type === "radio" && (
                                         <RadioQuestionForm
                                             question={question}
-                                            register={register}
-                                            watch={watch}
+                                            control={control}
                                         />
                                     )}
 
                                     {question.type === "checkbox" && (
                                         <CheckboxQuestionForm
                                             question={question}
-                                            register={register}
-                                            watch={watch}
+                                            control={control}
                                         />
                                     )}
 
                                     {question.type === "textarea" && (
                                         <TextareaQuestionForm
                                             question={question}
-                                            register={register}
-                                            watch={watch}
+                                            control={control}
                                         />
                                     )}
 
                                     {question.type === "input" && (
                                         <InputQuestionForm
                                             question={question}
-                                            register={register}
-                                            watch={watch}
+                                            control={control}
                                         />
                                     )}
                                 </Box>
 
+                                {/* 編集ボタン */}
                                 <Box w="100%" textAlign="right" mb="10px">
                                     <Button
                                         colorScheme="green"
@@ -164,11 +176,32 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
                                             onOpen(); // 問題編集モーダルを開く
                                         }}
                                     >
-                                        編集
+                                        問題を編集
                                     </Button>
                                 </Box>
+
+                                {/* <ModelAnswerForm
+                                    modelAnswer={modelAnswers.find(
+                                        (ma) =>
+                                            ma.questionCode ===
+                                            `${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`
+                                    )}
+                                    questionCode={`${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`}
+                                    control={control}
+                                /> */}
                             </Fragment>
                         ))}
+
+                    <Box w="100%" textAlign="center">
+                        <Button
+                            w="80%"
+                            borderRadius="full"
+                            colorScheme="green"
+                            type="submit"
+                        >
+                            模範解答を提出
+                        </Button>
+                    </Box>
                 </VStack>
             </form>
 
@@ -178,7 +211,10 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
             <Box w="80%" mx="auto" my="20px">
                 <Button
                     w="100%"
-                    onClick={onOpen}
+                    onClick={() => {
+                        setEditTargetQuestion(null);
+                        onOpen();
+                    }}
                     colorScheme="blue"
                     borderRadius="full"
                 >
@@ -193,6 +229,12 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
                 isOpen={isOpen}
                 onClose={onClose}
                 question={editTargetQuestion}
+                onSuccess={async () => {
+                    // 問題が追加された後に再度問題を取得
+                    console.log("Question added or edited successfully.");
+                    const data = await fetchQuestions(year, season, section);
+                    setQuestions(data);
+                }}
             />
         </Box>
     );

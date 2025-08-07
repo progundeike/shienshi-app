@@ -17,7 +17,7 @@ import {
     Text,
     FormLabel,
 } from "@chakra-ui/react";
-import { FC, memo, useEffect } from "react";
+import { FC, memo, useEffect, useState } from "react";
 import {
     Controller,
     set,
@@ -37,14 +37,17 @@ type Props = {
     isOpen: boolean;
     onClose: () => void;
     question: FetchedQuestion | null;
+    onSuccess: () => void;
 };
 
 export const EditQuestionModal: FC<Props> = memo((props) => {
-    const { year, season, section, isOpen, onClose, question } = props;
+    const { year, season, section, isOpen, onClose, question, onSuccess } =
+        props;
     const { updateExamQuestion } = useAdmin();
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
     // 問題編集用フォーム
-    const { register, handleSubmit, watch, setValue, reset, control } =
+    const { register, handleSubmit, setValue, reset, control } =
         useForm<QuestionFormInputs>();
 
     const { fields, append, remove } = useFieldArray({
@@ -57,7 +60,7 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
         data
     ) => {
         try {
-            updateExamQuestion({
+            const response = await updateExamQuestion({
                 year: Number(year),
                 season,
                 section: Number(section),
@@ -69,15 +72,36 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
                 options: data.options ?? null,
                 maxLength: data.maxLength ?? null,
             });
+
+            // 成功時の処理
+            if (response?.status === 201) {
+                onSuccess();
+                onClose();
+                reset();
+                setValidationErrors([]); // バリデーションエラーをリセット
+            }
+
+            // バリデーションエラーの場合
+            if (response?.status === 422) {
+                const errors = (response.data as any).errors || {}; // バリデーションエラーオブジェクトを取り出す。なければ空のオブジェクトを代入。
+                const messages = Object.values(errors)
+                    .flatMap(
+                        (
+                            value // バリデーションエラーのメッセージを項目ごとに一つの配列に変換
+                        ) => (Array.isArray(value) ? value : [value])
+                    )
+                    .map(String); // 各エラーメッセージを文字列に変換
+                setValidationErrors(messages);
+            }
         } catch (e) {
             console.error(e);
         }
-        // フォームをリセット
-        // reset();
         return;
     };
 
     useEffect(() => {
+        setValidationErrors([]); // モーダルが開かれたときにバリデーションエラーをリセット
+        reset(); // フォームをリセット
         if (question) {
             setValue("questionNumber", question.questionNumber);
             setValue("subQuestionNumber", question.subQuestionNumber);
@@ -100,11 +124,11 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
     }, [isOpen]);
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} size="xl">
+        <Modal isOpen={isOpen} onClose={onClose} size="full">
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent w="60%">
                 <ModalCloseButton />
-                <ModalBody>
+                <ModalBody mt="40px">
                     <form onSubmit={handleSubmit(handleUpdateExamQuestion)}>
                         <Box>
                             <FormControl>
@@ -116,6 +140,7 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
                                             </InputLeftAddon>
                                             <Input
                                                 placeholder="設問の番号"
+                                                autoComplete="off"
                                                 {...register("questionNumber")}
                                             />
                                         </InputGroup>
@@ -128,6 +153,7 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
                                             </InputLeftAddon>
                                             <Input
                                                 placeholder="(1)などの設問内の番号"
+                                                autoComplete="off"
                                                 {...register(
                                                     "subQuestionNumber"
                                                 )}
@@ -141,6 +167,7 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
                                                 smallQuestionNumber
                                             </InputLeftAddon>
                                             <Input
+                                                autoComplete="off"
                                                 {...register(
                                                     "smallQuestionNumber"
                                                 )}
@@ -154,7 +181,10 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
                                     {/* 問題文 */}
                                     <Box>
                                         <Box>問題文</Box>
-                                        <Textarea {...register("text")} />
+                                        <Textarea
+                                            autoComplete="off"
+                                            {...register("text")}
+                                        />
                                     </Box>
 
                                     {/* 問題の形式を選択 */}
@@ -191,29 +221,41 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
                                         {/* optionsのフィールドをループ */}
                                         <Flex direction="column" gap="10px">
                                             {fields.map((field, index) => (
-                                                <Flex key={field.id} gap="10px">
-                                                    <InputGroup>
-                                                        <InputLeftAddon>
-                                                            label
-                                                        </InputLeftAddon>
-                                                        <Input
+                                                <Flex
+                                                    key={field.id}
+                                                    gap="10px"
+                                                    direction="row"
+                                                    alignItems="flex-end"
+                                                >
+                                                    <Box>
+                                                        {index == 0 && (
+                                                            <Box>label</Box>
+                                                        )}
+                                                        <Textarea
+                                                            rows={1}
                                                             placeholder="[a]"
+                                                            autoComplete="off"
                                                             {...register(
                                                                 `options.${index}.label`
                                                             )}
                                                         />
-                                                    </InputGroup>
-                                                    <InputGroup>
-                                                        <InputLeftAddon>
-                                                            value
-                                                        </InputLeftAddon>
-                                                        <Input
+                                                    </Box>
+
+                                                    <Box>
+                                                        {index == 0 && (
+                                                            <Box>value</Box>
+                                                        )}
+                                                        <Textarea
+                                                            rows={1}
                                                             placeholder="a"
+                                                            autoComplete="off"
                                                             {...register(
                                                                 `options.${index}.value`
                                                             )}
                                                         />
-                                                    </InputGroup>
+                                                    </Box>
+
+                                                    {/* 削除ボタン */}
                                                     <Box>
                                                         <Button
                                                             colorScheme="red"
@@ -253,11 +295,26 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
                                                 </InputLeftAddon>
                                                 <Input
                                                     placeholder="最大文字数"
+                                                    autoComplete="off"
                                                     {...register("maxLength")}
                                                 />
                                             </InputGroup>
                                         </Box>
                                     </Box>
+
+                                    {/* バリデーションエラーの表示 */}
+                                    {validationErrors.length > 0 && (
+                                        <Box mt="10px" color="red.500">
+                                            <Text>バリデーションエラー:</Text>
+                                            {validationErrors.map(
+                                                (error, index) => (
+                                                    <Text key={index}>
+                                                        ・{error}
+                                                    </Text>
+                                                )
+                                            )}
+                                        </Box>
+                                    )}
 
                                     <Box w="50%" mx="auto">
                                         <MainColorButton type="submit">

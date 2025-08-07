@@ -47,22 +47,34 @@ export const AdminPage = memo(() => {
                         <Tr>
                             <CustomTh>2099年(令和99年) 春季</CustomTh>
                             <Td>
-                                <EditExamLinkButton url="2099/haru/1">
+                                <EditExamLinkButton
+                                    url="2099/haru/1"
+                                    color="red"
+                                >
                                     問1
                                 </EditExamLinkButton>
                             </Td>
                             <Td>
-                                <EditExamLinkButton url="2099/haru/2">
+                                <EditExamLinkButton
+                                    color="red"
+                                    url="2099/haru/2"
+                                >
                                     問2
                                 </EditExamLinkButton>
                             </Td>
                             <Td>
-                                <EditExamLinkButton url="2099/haru/3">
+                                <EditExamLinkButton
+                                    color="red"
+                                    url="2099/haru/3"
+                                >
                                     問3
                                 </EditExamLinkButton>
                             </Td>
                             <Td>
-                                <EditExamLinkButton url="2099/haru/4">
+                                <EditExamLinkButton
+                                    color="red"
+                                    url="2099/haru/4"
+                                >
                                     問4
                                 </EditExamLinkButton>
                             </Td>
@@ -70,22 +82,34 @@ export const AdminPage = memo(() => {
                         <Tr>
                             <CustomTh>2024年(令和6年) 秋期</CustomTh>
                             <Td>
-                                <EditExamLinkButton url="2024/aki/1">
+                                <EditExamLinkButton
+                                    color="red"
+                                    url="2024/aki/1"
+                                >
                                     問1
                                 </EditExamLinkButton>
                             </Td>
                             <Td>
-                                <EditExamLinkButton url="2024/aki/2">
+                                <EditExamLinkButton
+                                    color="red"
+                                    url="2024/aki/2"
+                                >
                                     問2
                                 </EditExamLinkButton>
                             </Td>
                             <Td>
-                                <EditExamLinkButton url="2024/aki/3">
+                                <EditExamLinkButton
+                                    color="red"
+                                    url="2024/aki/3"
+                                >
                                     問3
                                 </EditExamLinkButton>
                             </Td>
                             <Td>
-                                <EditExamLinkButton url="2024/aki/4">
+                                <EditExamLinkButton
+                                    color="red"
+                                    url="2024/aki/4"
+                                >
                                     問4
                                 </EditExamLinkButton>
                             </Td>
@@ -93,22 +117,34 @@ export const AdminPage = memo(() => {
                         <Tr>
                             <CustomTh>2024年(令和6年) 春期</CustomTh>
                             <Td>
-                                <EditExamLinkButton url="2024/haru/1">
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2024/haru/1"
+                                >
                                     問1
                                 </EditExamLinkButton>
                             </Td>
                             <Td>
-                                <EditExamLinkButton url="2024/haru/2">
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2024/haru/2"
+                                >
                                     問2
                                 </EditExamLinkButton>
                             </Td>
                             <Td>
-                                <EditExamLinkButton url="2024/haru/3">
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2024/haru/3"
+                                >
                                     問3
                                 </EditExamLinkButton>
                             </Td>
                             <Td>
-                                <EditExamLinkButton url="2024/haru/4">
+                                <EditExamLinkButton
+                                    color="red"
+                                    url="2024/haru/4"
+                                >
                                     問4
                                 </EditExamLinkButton>
                             </Td>
@@ -116,22 +152,34 @@ export const AdminPage = memo(() => {
                         <Tr>
                             <CustomTh>2023年(令和5年) 秋期</CustomTh>
                             <Td>
-                                <EditExamLinkButton url="2023/aki/1">
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2023/aki/1"
+                                >
                                     問1
                                 </EditExamLinkButton>
                             </Td>
                             <Td>
-                                <EditExamLinkButton url="2023/aki/2">
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2023/aki/2"
+                                >
                                     問2
                                 </EditExamLinkButton>
                             </Td>
                             <Td>
-                                <EditExamLinkButton url="2023/aki/3">
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2023/aki/3"
+                                >
                                     問3
                                 </EditExamLinkButton>
                             </Td>
                             <Td>
-                                <EditExamLinkButton url="2023/aki/4">
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2023/aki/4"
+                                >
                                     問4
                                 </EditExamLinkButton>
                             </Td>
@@ -149,27 +197,42 @@ export const AdminPage = memo(() => {
                         <Tr>
                             <CustomTh>2023年(令和5年) 春期</CustomTh>
                             <Td>
-                                <EditExamLinkButton url="2023/haru/1">
+                                <EditExamLinkButton
+                                    color="red"
+                                    url="2023/haru/1"
+                                >
                                     問1
                                 </EditExamLinkButton>
                             </Td>
                             <Td>
-                                <EditExamLinkButton url="2023/haru/2">
+                                <EditExamLinkButton
+                                    color="red"
+                                    url="2023/haru/2"
+                                >
                                     問2
                                 </EditExamLinkButton>
                             </Td>
                             <Td borderRight={"1px solid black"}>
-                                <EditExamLinkButton url="2023/haru/3">
+                                <EditExamLinkButton
+                                    color="red"
+                                    url="2023/haru/3"
+                                >
                                     問3
                                 </EditExamLinkButton>
                             </Td>
                             <Td>
-                                <EditExamLinkButton url="2023/haru/4">
+                                <EditExamLinkButton
+                                    color="red"
+                                    url="2023/haru/4"
+                                >
                                     問1
                                 </EditExamLinkButton>
                             </Td>
                             <Td>
-                                <EditExamLinkButton url="2023/haru/5">
+                                <EditExamLinkButton
+                                    color="red"
+                                    url="2023/haru/5"
+                                >
                                     問2
                                 </EditExamLinkButton>
                             </Td>

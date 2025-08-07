@@ -8,6 +8,7 @@ use App\Models\UserAnswer;
 use App\Models\SubmittedExam;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AnswerController extends Controller
 {
@@ -21,27 +22,15 @@ class AnswerController extends Controller
 
         $examController = new ExamController();
 
-        // userAnswersは以下のような形式
-        // [
-        //     [
-        //     'year' => 2023,
-        //     'season' => 'aki'
-        //     'section' => 1,
-        //     'questionNumber' => 1,
-        //     'subQuestionNumber' => 2,
-        //     'smallQuestionNumber' => 1,
-        //     'user_text' => 'ユーザーの回答',
-        //     ],
-        // ]
         $userAnswers = $this->storeAnswerInput($request);
         $userAnswerText = $examController->convertUserAnswerToText($userAnswers);
 
         // 問題文を取得
-        $examSentence = $examController->fetchExamSentences($year, $season, $section);
+        $examSentence = $examController->fetchExamSentences($examCode);
 
         // 設問と正解を取得
-        $examQuestions = $examController->fetchExamQuestionsArray($year, $season, $section);
-        $modelAnswers = $examController->fetchModelAnswer($year, $season, $section);
+        $examQuestions = $examController->fetchExamQuestionsArray($examCode);
+        $modelAnswers = $examController->fetchModelAnswer($examCode);
 
         if (count($examQuestions) !== count($modelAnswers)) {
             return response()->json(['message' => 'Failed to get questions and answers'], 500);
@@ -61,69 +50,82 @@ class AnswerController extends Controller
             ],
         ];
 
-        Log::debug($examQuestions, $modelAnswers);
-
-        // テスト用のダミーレスポンス
-        return response()->json($this->dummyResponse, 200);
+        // Log::debug('prompt', $prompt);
 
         // AIに投げる
-        $controller = new AIcontroller();
-        $aiResponse = $controller->useFunctionCall($prompt, $this->functionParameter);
+        // $controller = new AIcontroller();
+        // $aiResponse = $controller->useFunctionCall($prompt, $this->functionParameter);
 
-        // レスポンスを整形
-        $arguments = json_decode($aiResponse->choices[0]->message->functionCall->arguments, true);
-        $evaluations = $arguments['evaluations'];
+        // // レスポンスを整形
+        // $arguments = json_decode($aiResponse->choices[0]->message->functionCall->arguments, true);
+        // $evaluations = $arguments['evaluations'];
 
+        // Log::debug('evaluations', $evaluations);
+        $evaluations = [
+            ["questionNumber" => 1, "subQuestionNumber" => 1, "rating" => "×", "comment" => "正しいXSS脆弱性の種類が選択されていません。正解は「格納型 XSS」です。模範解答と照らし合わせて再度考えてみてください。"]
+        ];
+
+        $userId = Auth::id();
         $aiResponse = [];
         foreach ($evaluations as $evaluation) {
             $aiResponse[] = [
-                'questionNumber' => $evaluation['questionNumber'],
-                'subQuestionNumber' => $evaluation['subQuestionNumber'],
-                'smallQuestionNumber' => $evaluation['smallQuestionNumber'],
-                'rating' => $evaluation['rating'],
-                'comment' => $evaluation['comment'],
-            ];
-        }
-
-        // AIの回答をDBに保存　将来的にキューを使って非同期で保存したほうが良いかも
-        $userId = Auth::id();
-
-        $userAnswersAndCorrections = [];
-        foreach ($aiResponse as $response) {
-            // 更新する行の特定
-            $query = UserAnswer::where([
                 'user_id' => $userId,
-                'year' => $year,
-                'season' => $season,
-                'question_number' => $response['questionNumber'],
-                'sub_question_number' => $response['subQuestionNumber'],
-                'small_question_number' => $response['smallQuestionNumber'],
-            ]);
-
-            // データを更新
-            $query->update([
-                'ai_rating' => $response['rating'],
-                'ai_text' => $response['comment'],
-            ]);
-
-            // 更新されたデータを取得
-            $updatedAnswer = $query->first();
-
-            $userAnswersAndCorrections[] = [
-                'year' => $updatedAnswer->year,
-                'season' => $updatedAnswer->season,
-                'section' => $updatedAnswer->section,
-                'questionNumber' => $updatedAnswer->question_number,
-                'subQuestionNumber' => $updatedAnswer->sub_question_number,
-                'smallQuestionNumber' => $updatedAnswer->small_question_number,
-                'user_text' => $updatedAnswer->user_text,
-                'ai_rating' => $updatedAnswer->ai_rating,
-                'ai_text' => $updatedAnswer->ai_text,
+                'exam_code' => $examCode,
+                'question_number' => $evaluation['questionNumber'],
+                'sub_question_number' => $evaluation['subQuestionNumber'],
+                'small_question_number' => isset($evaluation['smallQuestionNumber']) ? $evaluation['smallQuestionNumber'] : 0,
+                'ai_rating' => $evaluation['rating'],
+                'ai_text' => $evaluation['comment'],
             ];
         }
 
-        // AIの回答を返す
-        return response()->json($userAnswersAndCorrections, 200);
+        // Log::debug('aiResponse', $aiResponse);
+
+        UserAnswer::upsert(
+            $aiResponse,
+            // キー
+            ['user_id', 'exam_code', 'question_number', 'sub_question_number', 'small_question_number'],
+            // 更新するカラム
+            ['ai_rating', 'ai_text']
+        );
+
+        $this->editAiTextToModelAnswer($userId, $examCode, $modelAnswers);
+
+        return response()->json(['message' => 'Answer submitted successfully'], 201);
+    }
+
+    // ユーザーが無回答の問題はai_textを模範解答で上書きする
+    // ai_textが取得できなかった場合も模範解答を返す
+    private function editAiTextToModelAnswer(int $userId, string $examCode, $modelAnswers)
+    {
+        // ユーザーの答案と添削を取得
+        $userAnswers = UserAnswer::where('user_id', $userId)
+            ->where('exam_code', $examCode)
+            ->get();
+
+        // $modelAnswerのマップ
+        $modelMap = [];
+        foreach ($modelAnswers as $modelAnswer) {
+            $key = $modelAnswer['questionNumber'] . '-' . $modelAnswer['subQuestionNumber'] . '-' . $modelAnswer['smallQuestionNumber'];
+            $modelMap[$key] = $modelAnswer['text'];
+        }
+
+        foreach ($userAnswers as $userAnswer) {
+            if (!$userAnswer->user_text && trim($userAnswer->user_text) == '') {
+                $key = $userAnswer->question_number . '-' . $userAnswer->sub_question_number . '-' . $userAnswer->small_question_number;
+
+                UserAnswer::where([
+                    'user_id' => $userId,
+                    'exam_code' => $examCode,
+                    'question_number' => $userAnswer->question_number,
+                    'sub_question_number' => $userAnswer->sub_question_number,
+                    'small_question_number' => $userAnswer->small_question_number
+                ])->update([
+                    'ai_rating' => '×',
+                    'ai_text' => '模範解答: ' . ($modelMap[$key] ?? '')
+                ]);
+            }
+        }
     }
 
     // ユーザーの回答とAIの添削を取得する
@@ -151,9 +153,9 @@ class AnswerController extends Controller
                 'questionNumber' => $answer->question_number,
                 'subQuestionNumber' => $answer->sub_question_number,
                 'smallQuestionNumber' => $answer->small_question_number,
-                'user_text' => $answer->user_text,
-                'ai_rating' => $answer->ai_rating,
-                'ai_text' => $answer->ai_text,
+                'userText' => $answer->user_text,
+                'aiRating' => $answer->ai_rating,
+                'aiText' => $answer->ai_text,
             ];
         });
 
@@ -166,6 +168,7 @@ class AnswerController extends Controller
     {
         $data = $request->validated();
         $userId = Auth::id();
+        $examCode = $data['year'] . '_' . $data['season'] . '_' . $data['section'];
 
         $answers = $data['answers'];
         $userAnswers = [];
@@ -174,9 +177,7 @@ class AnswerController extends Controller
         SubmittedExam::updateOrCreate(
             [
                 'user_id' => $userId,
-                'year' => $data['year'],
-                'season' => $data['season'],
-                'section' => $data['section'],
+                'exam_code' => $examCode,
             ]
         );
 
@@ -186,9 +187,7 @@ class AnswerController extends Controller
                 UserAnswer::updateOrCreate(
                     [
                         'user_id' => $userId,
-                        'year' => $data['year'],
-                        'season' => $data['season'],
-                        'section' => $data['section'],
+                        'exam_code' => $examCode,
                         'question_number' => $answer['questionNumber'],
                         'sub_question_number' => $answer['subQuestionNumber'],
                         'small_question_number' => $answer['smallQuestionNumber'],
@@ -201,9 +200,7 @@ class AnswerController extends Controller
                 );
 
             $userAnswers[] = [
-                'year' => $createdAnswer->year,
-                'season' => $createdAnswer->season,
-                'section' => $createdAnswer->section,
+                'examCode' => $examCode,
                 'questionNumber' => $createdAnswer->question_number,
                 'subQuestionNumber' => $createdAnswer->sub_question_number,
                 'smallQuestionNumber' => $createdAnswer->small_question_number,
@@ -220,12 +217,11 @@ class AnswerController extends Controller
         $year = (int) $request->year;
         $season = (string) $request->season;
         $section = (int) $request->section;
+        $examCode = $year . '_' . $season . '_' . $section;
 
         try {
             $results = UserAnswer::where('user_id', $userId)
-                ->where('year', $year)
-                ->where('season', $season)
-                ->where('section', $section)
+                ->where('exam_code', $examCode)
                 ->delete();
 
             if ($results === 0) {
@@ -275,7 +271,7 @@ class AnswerController extends Controller
 
             $choices = '';
             foreach ($options as $option) {
-                $choices .= '(' . $option->value . ') ' . $option->label . ', ';
+                $choices .= '(' . $option['value'] . ') ' . $option['label'] . ', ';
             }
 
             $text .= '[解答群:' . $choices . ']';
@@ -336,52 +332,5 @@ class AnswerController extends Controller
             ],
             'required' => ['evaluations'],
         ],
-    ];
-
-    protected $dummyResponse = [
-        [
-            'questionNumber' => 1,
-            'subQuestionNumber' => 1,
-            'rating' => '×',
-            'comment' => '選択肢の中で正しいのはイ（格納型 XSS）であり、ア（DOM Based XSS）は誤りである。'
-        ],
-        [
-            'questionNumber' => 1,
-            'subQuestionNumber' => 2,
-            'rating' => '×',
-            'comment' => 'この問いは未回答であり、模範解答は「レビュータイトルを出力する前にエスケープ処理を施す。」である。'
-        ],
-        [
-            'questionNumber' => 2,
-            'subQuestionNumber' => 1,
-            'rating' => '×',
-            'comment' => '設問2が未回答であり、模範解答は「HTMLがコメントアウトされ一つのスクリプトになるような投稿を複数回に分けて行った。」である。'
-
-        ],
-        [
-            'questionNumber' => 3,
-            'subQuestionNumber' => 1,
-            'rating' => '×',
-            'comment' => '未回答であり、模範解答は「XHRのレスポンスから取得したトークンとともに, アイコン画像としてセッションIDをアップロードする。」である。'
-        ],
-        [
-            'questionNumber' => 3,
-            'subQuestionNumber' => 2,
-            'rating' => '×',
-            'comment' => '未回答であり、模範解答は「会員のアイコン画像をダウンロードして, そこからセッションIDの文字列を取り出す。」である。'
-
-        ],
-        [
-            'questionNumber' => 3,
-            'subQuestionNumber' => 3,
-            'rating' => '×',
-            'comment' => '未回答であり、模範解答は「ページVにアクセスした会員になりすまして, WebアプリQの機能を使う。」である。'
-        ],
-        [
-            'questionNumber' => 4,
-            'subQuestionNumber' => 1,
-            'rating' => '×',
-            'comment' => '未回答であり、模範解答は「スクリプトから別ドメインのURLに対してcookieが送られない仕組み」である。'
-        ]
     ];
 }

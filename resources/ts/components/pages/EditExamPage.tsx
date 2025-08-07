@@ -91,23 +91,20 @@ export const EditExamPage: FC = memo(() => {
                         section={parsedSection}
                     />
 
-                    {isPdfExists ? (
-                        <Box
-                            display="flex"
-                            flexDirection="column"
-                            height="50vh"
-                            backgroundColor="gray.300"
-                            overflow={"auto"}
-                        >
-                            <DisplayExamPdf />
-                        </Box>
-                    ) : (
-                        <PDFUploadFrom
-                            year={parsedYear}
-                            season={season}
-                            section={parsedSection}
-                        />
-                    )}
+                    <PDFUploadFrom
+                        year={parsedYear}
+                        season={season}
+                        section={parsedSection}
+                    />
+                    <Box
+                        display="flex"
+                        flexDirection="column"
+                        height="50vh"
+                        backgroundColor="gray.300"
+                        overflow={"auto"}
+                    >
+                        <DisplayExamPdf />
+                    </Box>
 
                     {/* テキスト化した問題文(examSentence)を編集するためのフォーム */}
                     <EditExamSentenceForm

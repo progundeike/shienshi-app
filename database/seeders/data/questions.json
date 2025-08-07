@@ -1678,5 +1678,109 @@
         "max_length": null,
         "created_at": null,
         "updated_at": null
+    },
+    {
+        "id": 87,
+        "exam_code": "2024_haru_4",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "[データ連携機能のセキュリティレビュー] について答えよ。\n(1) ) 本文中の[空欄 a]に入れる適切な字句を,解答群の中から選び,記号で答えよ。",
+        "type": "radio",
+        "options": [
+            {
+                "label": "[ア] システム運用担当者",
+                "value": "ア"
+            },
+            {
+                "label": "[イ] システム運用担当者とシステム開発者",
+                "value": "イ"
+            },
+            {
+                "label": "[ウ] システム開発者",
+                "value": "ウ"
+            },
+            {
+                "label": "[エ] システム開発者と重要情報取扱運用者",
+                "value": "エ"
+            },
+            {
+                "label": "[オ] 重要情報取扱運用者",
+                "value": "オ"
+            }
+        ],
+        "max_length": null,
+        "created_at": null,
+        "updated_at": null
+    },
+    {
+        "id": 88,
+        "exam_code": "2024_haru_4",
+        "question_number": 1,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "(2) 本文中の[空欄 b]に入れる適切な所属グループを,表3中から選び答え \nよ。",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": null,
+        "updated_at": null
+    },
+    {
+        "id": 89,
+        "exam_code": "2024_haru_4",
+        "question_number": 1,
+        "sub_question_number": 3,
+        "small_question_number": 0,
+        "text": "(3) 本文中の[空欄 c]に入れる適切なプログラムを,表4中から選び, No.列の番号で答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": null,
+        "updated_at": null
+    },
+    {
+        "id": 90,
+        "exam_code": "2024_haru_4",
+        "question_number": 2,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "[ユーザー登録機能のセキュリティレビュー] について答えよ。 \n(1) 本文中の[空欄 d]に入れる適切な行番号を,図3中から選び,答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": null,
+        "updated_at": null
+    },
+    {
+        "id": 91,
+        "exam_code": "2024_haru_4",
+        "question_number": 2,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "(2) 本文中の[空欄 e]に入れる適切な字句を答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": null,
+        "updated_at": null
+    },
+    {
+        "id": 92,
+        "exam_code": "2024_haru_4",
+        "question_number": 2,
+        "sub_question_number": 3,
+        "small_question_number": 1,
+        "text": "(3) 本文中の下線 1について, システム運用担当者とシステム開発者が, アクセスが禁止されているのにアクセスできてしまう情報は何か。 図2中のユーザーマスターテーブルの列名で, それぞれ全て答えよ。 また, その情報が出力される場所を、解答群の中から選び, それぞれ記号で答えよ。\n\n[不備によりシステム運用担当者の「アクセスできてしまう情報」及び 「出力される場所」は成立しない。]",
+        "type": "input",
+        "options": [
+            {
+                "label": "システム開発者の\"アクセスできてしまう情報\"",
+                "value": "システム開発者の\"アクセスできてしまう情報\""
+            }
+        ],
+        "max_length": null,
+        "created_at": null,
+        "updated_at": null
     }
 ]

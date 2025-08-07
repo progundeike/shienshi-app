@@ -17,9 +17,10 @@ class ModelAnswer extends Model
     protected $fillable = [
         'id',
         'exam_code',
-        'question_number',
-        'sub_question_number',
-        'small_question_number',
+        // 'question_number',
+        // 'sub_question_number',
+        // 'small_question_number',
+        'question_code',
         'text',
     ];
 }

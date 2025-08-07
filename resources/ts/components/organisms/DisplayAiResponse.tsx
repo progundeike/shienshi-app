@@ -32,14 +32,14 @@ export const DisplayAIResponse: FC<Props> = memo((Props) => {
             <Box>
                 <Text>
                     {`あなたの解答: ${
-                        response.user_text ? response.user_text : "提出なし"
+                        response.userText ? response.userText : "提出なし"
                     }`}
                 </Text>
                 <Text></Text>
             </Box>
             <Box backgroundColor="yellow.200" mb="10px" p="5px">
-                <Box>評価: {response.rating}</Box>
-                <Box>{response.comment}</Box>
+                <Box>評価: {response.aiRating}</Box>
+                <Box>{response.aiText}</Box>
             </Box>
         </Box>
     );

@@ -105,7 +105,6 @@ export const useAuth = () => {
                 if (response.data.username) {
                     setUser(response.data);
                 }
-                console.log(response.data)
             })
             .catch((error: any) => {
                 if (error.response.status === 401) {

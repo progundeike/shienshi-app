@@ -46,3 +46,21 @@ export type QuestionFormInputs = {
     }[];
     maxLength?: number | null;
 };
+
+export type ModelAnswer = {
+    questionCode: string;
+    text: string;
+};
+
+// type QuestionFormInputs = {
+//     question_number: number;
+//     sub_question_number: number;
+//     small_question_number?: number;
+//     text: string;
+//     type: "radio" | "checkbox" | "input" | "textarea";
+//     options?: {
+//         label: string;
+//         value: string;
+//     }[];
+//     max_length?: number;
+// };

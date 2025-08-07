@@ -2,831 +2,665 @@
     {
         "id": 1,
         "exam_code": "2023_aki_1",
-        "question_number": 1,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "1_1_0",
         "text": "イ",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 2,
         "exam_code": "2023_aki_1",
-        "question_number": 1,
-        "sub_question_number": 2,
-        "small_question_number": 0,
+        "question_code": "1_2_0",
         "text": "レビュータイトルを出力する前にエスケープ処理を施す。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 3,
         "exam_code": "2023_aki_1",
-        "question_number": 2,
-        "sub_question_number": 0,
-        "small_question_number": 0,
+        "question_code": "2_1_0",
         "text": "HTMLがコメントアウトされ一つのスクリプトになるような投稿を複数回に分けて行った。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 4,
         "exam_code": "2023_aki_1",
-        "question_number": 3,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "3_1_0",
         "text": "XHRのレスポンスから取得したトークンとともに, アイコン画像としてセッションIDをアップロードする。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 5,
         "exam_code": "2023_aki_1",
-        "question_number": 3,
-        "sub_question_number": 2,
-        "small_question_number": 0,
+        "question_code": "3_2_0",
         "text": "会員のアイコン画像をダウンロードして, そこからセッションIDの文字列を取り出す。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 6,
         "exam_code": "2023_aki_1",
-        "question_number": 3,
-        "sub_question_number": 3,
-        "small_question_number": 0,
+        "question_code": "3_3_0",
         "text": "ページVにアクセスした会員になりすまして, WebアプリQの機能を使う。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 7,
         "exam_code": "2023_aki_1",
-        "question_number": 4,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "4_1_0",
         "text": "スクリプトから別ドメインのURLに対してcookieが送られない仕組み",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 8,
         "exam_code": "2023_aki_2",
-        "question_number": 1,
-        "sub_question_number": 1,
-        "small_question_number": 1,
+        "question_code": "1_1_1",
         "text": "利用者ID",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 9,
         "exam_code": "2023_aki_2",
-        "question_number": 1,
-        "sub_question_number": 1,
-        "small_question_number": 2,
+        "question_code": "1_1_2",
         "text": "パスワード",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 10,
         "exam_code": "2023_aki_2",
-        "question_number": 1,
-        "sub_question_number": 2,
-        "small_question_number": 1,
+        "question_code": "1_2_1",
         "text": "このサーバ証明書は,信頼された認証局から発行されたサーバ証明書ではない",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 11,
         "exam_code": "2023_aki_2",
-        "question_number": 1,
-        "sub_question_number": 2,
-        "small_question_number": 2,
+        "question_code": "1_2_2",
         "text": "このサーバ証明書に記載されているサーバ名は,接続先のサーバ名と異なる",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 12,
         "exam_code": "2023_aki_2",
-        "question_number": 1,
-        "sub_question_number": 3,
-        "small_question_number": 0,
+        "question_code": "1_3_0",
         "text": "HTTPのアクセスをHTTPSのアクセスに置き換えてアクセスする。その後,偽サイトからサーバ証明書を受け取る。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 13,
         "exam_code": "2023_aki_2",
-        "question_number": 2,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "2_1_0",
         "text": "外部共有者のメールアドレスに自身の私用メールアドレスを指定する。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 14,
         "exam_code": "2023_aki_2",
-        "question_number": 2,
-        "sub_question_number": 2,
-        "small_question_number": 0,
+        "question_code": "2_2_0",
         "text": "MACアドレス",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 15,
         "exam_code": "2023_aki_2",
-        "question_number": 3,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "3_1_0",
         "text": "RADIUS",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 16,
         "exam_code": "2023_aki_2",
-        "question_number": 3,
-        "sub_question_number": 2,
-        "small_question_number": 0,
+        "question_code": "3_2_0",
         "text": "秘密鍵",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 17,
         "exam_code": "2023_aki_2",
-        "question_number": 3,
-        "sub_question_number": 3,
-        "small_question_number": 0,
+        "question_code": "3_3_0",
         "text": "業務PCから取り出せないように",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 18,
         "exam_code": "2023_aki_2",
-        "question_number": 3,
-        "sub_question_number": 4,
-        "small_question_number": 0,
+        "question_code": "3_4_0",
         "text": "EAP-TLSに必要な認証情報は,業務PCにしか格納できないから",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 19,
         "exam_code": "2023_aki_2",
-        "question_number": 3,
-        "sub_question_number": 5,
-        "small_question_number": 0,
+        "question_code": "3_5_0",
         "text": "来客用無線LANからインターネットにアクセスする場合の送信元IPアドレスを a1.b1.c1.d1 とは別のIPアドレスにする。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 20,
         "exam_code": "2023_aki_2",
-        "question_number": 3,
-        "sub_question_number": 6,
-        "small_question_number": 0,
+        "question_code": "3_6_0",
         "text": "DNS",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 21,
         "exam_code": "2023_aki_2",
-        "question_number": 3,
-        "sub_question_number": 7,
-        "small_question_number": 1,
+        "question_code": "3_7_1",
         "text": "1",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 22,
         "exam_code": "2023_aki_2",
-        "question_number": 3,
-        "sub_question_number": 7,
-        "small_question_number": 2,
+        "question_code": "3_7_2",
         "text": "1, 4",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 23,
         "exam_code": "2023_aki_3",
-        "question_number": 1,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "1_1_0",
         "text": "ウ,エ",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 24,
         "exam_code": "2023_aki_3",
-        "question_number": 2,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "2_1_0",
         "text": "偽サイトに入力されたTOTPを入手し,そのTOTPが有効な間にログインした。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 25,
         "exam_code": "2023_aki_3",
-        "question_number": 2,
-        "sub_question_number": 2,
-        "small_question_number": 0,
+        "question_code": "2_2_0",
         "text": "ア",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 26,
         "exam_code": "2023_aki_3",
-        "question_number": 2,
-        "sub_question_number": 3,
-        "small_question_number": 0,
+        "question_code": "2_3_0",
         "text": "イ",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 27,
         "exam_code": "2023_aki_3",
-        "question_number": 2,
-        "sub_question_number": 4,
-        "small_question_number": 0,
+        "question_code": "2_4_0",
         "text": "\/procファイルシステムから環境変数を読み取った。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 28,
         "exam_code": "2023_aki_3",
-        "question_number": 2,
-        "sub_question_number": 5,
-        "small_question_number": 0,
+        "question_code": "2_5_0",
         "text": "認証に用いる情報に含まれるオリジン及び署名をサーバが確認する仕組み",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 29,
         "exam_code": "2023_aki_3",
-        "question_number": 2,
-        "sub_question_number": 6,
-        "small_question_number": 0,
+        "question_code": "2_6_0",
         "text": "ア",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 30,
         "exam_code": "2023_aki_3",
-        "question_number": 3,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "3_1_0",
         "text": "有効なコード署名が付与された偽のPアプリをJストアにアップロードする攻撃",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 31,
         "exam_code": "2023_aki_3",
-        "question_number": 3,
-        "sub_question_number": 2,
-        "small_question_number": 0,
+        "question_code": "3_2_0",
         "text": "J社のWebサイトから削除する。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 32,
         "exam_code": "2023_aki_3",
-        "question_number": 3,
-        "sub_question_number": 3,
-        "small_question_number": 0,
+        "question_code": "3_3_0",
         "text": "秘密鍵が漏れないという利点",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 33,
         "exam_code": "2023_aki_3",
-        "question_number": 3,
-        "sub_question_number": 4,
-        "small_question_number": 1,
+        "question_code": "3_4_1",
         "text": "Pアプリを起動できない。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 34,
         "exam_code": "2023_aki_3",
-        "question_number": 3,
-        "sub_question_number": 4,
-        "small_question_number": 2,
+        "question_code": "3_4_2",
         "text": "Pアプリをアップデートする。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 35,
         "exam_code": "2023_aki_4",
-        "question_number": 1,
-        "sub_question_number": 1,
-        "small_question_number": 1,
+        "question_code": "1_1_1",
         "text": "10,11,12,13",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 36,
         "exam_code": "2023_aki_4",
-        "question_number": 1,
-        "sub_question_number": 1,
-        "small_question_number": 2,
+        "question_code": "1_1_2",
         "text": "大",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 37,
         "exam_code": "2023_aki_4",
-        "question_number": 1,
-        "sub_question_number": 1,
-        "small_question_number": 3,
+        "question_code": "1_1_3",
         "text": "C",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 38,
         "exam_code": "2023_aki_4",
-        "question_number": 2,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "2_1_0",
         "text": "G百貨店で,Sサービスへログイン可能なIPアドレスをW社プロキシだけに設定する。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 39,
         "exam_code": "2023_aki_4",
-        "question_number": 2,
-        "sub_question_number": 2,
-        "small_question_number": 1,
+        "question_code": "2_2_1",
         "text": "配送管理課員が,添付ファイルを開き,配送管理用PCが未知のマルウェアに感染した結果,IDとPWを周知するメールが読み取られ,SサービスのIDとPWが窃取される。そのIDとPWが利用されて,W社外からSサービスにログインされて,Z情報が漏えいする。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 40,
         "exam_code": "2023_aki_4",
-        "question_number": 2,
-        "sub_question_number": 2,
-        "small_question_number": 2,
+        "question_code": "2_2_2",
         "text": "2,3,5,6,9,12",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 41,
         "exam_code": "2023_aki_4",
-        "question_number": 2,
-        "sub_question_number": 2,
-        "small_question_number": 3,
+        "question_code": "2_2_3",
         "text": "大",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 42,
         "exam_code": "2023_aki_4",
-        "question_number": 2,
-        "sub_question_number": 2,
-        "small_question_number": 4,
+        "question_code": "2_2_4",
         "text": "高",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 43,
         "exam_code": "2023_aki_4",
-        "question_number": 2,
-        "sub_question_number": 2,
-        "small_question_number": 5,
+        "question_code": "2_2_5",
         "text": "A",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 44,
         "exam_code": "2023_aki_4",
-        "question_number": 2,
-        "sub_question_number": 2,
-        "small_question_number": 6,
+        "question_code": "2_2_6",
         "text": "配送管理用PCにEDRを導入し,不審な動作が起きていないかを監視する。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 45,
         "exam_code": "2023_aki_4",
-        "question_number": 3,
-        "sub_question_number": 1,
-        "small_question_number": 1,
+        "question_code": "3_1_1",
         "text": "5,10,12",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 46,
         "exam_code": "2023_aki_4",
-        "question_number": 3,
-        "sub_question_number": 1,
-        "small_question_number": 2,
+        "question_code": "3_1_2",
         "text": "2,3,4",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 47,
         "exam_code": "2024_haru_1",
-        "question_number": 1,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "1_1_0",
         "text": "ステートレス",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 48,
         "exam_code": "2024_haru_1",
-        "question_number": 2,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "2_1_0",
         "text": "500",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 49,
         "exam_code": "2024_haru_1",
-        "question_number": 2,
-        "sub_question_number": 2,
-        "small_question_number": 1,
+        "question_code": "2_2_1",
         "text": "JWT ヘッダ内のalgに指定された値",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 50,
         "exam_code": "2024_haru_1",
-        "question_number": 2,
-        "sub_question_number": 2,
-        "small_question_number": 2,
+        "question_code": "2_2_2",
         "text": "NONEでないことを検証する。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 51,
         "exam_code": "2024_haru_1",
-        "question_number": 2,
-        "sub_question_number": 3,
-        "small_question_number": 0,
+        "question_code": "2_3_0",
         "text": "JWTに含まれる利用者IDがmidの値と一致するかどうかを検証する処理",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 52,
         "exam_code": "2024_haru_1",
-        "question_number": 2,
-        "sub_question_number": 4,
-        "small_question_number": 0,
+        "question_code": "2_4_0",
         "text": "共通モジュール P",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 53,
         "exam_code": "2024_haru_1",
-        "question_number": 2,
-        "sub_question_number": 5,
-        "small_question_number": 0,
+        "question_code": "2_5_0",
         "text": "連続失敗回数がしきい値を超えたらアカウントをロックする処理",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 54,
         "exam_code": "2024_haru_1",
-        "question_number": 3,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "3_1_0",
         "text": "テストサーバのindex.htmlへのアクセスを記録し,確認する仕組み",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 55,
         "exam_code": "2024_haru_1",
-        "question_number": 3,
-        "sub_question_number": 2,
-        "small_question_number": 1,
+        "question_code": "3_2_1",
         "text": "Header",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 56,
         "exam_code": "2024_haru_1",
-        "question_number": 3,
-        "sub_question_number": 2,
-        "small_question_number": 2,
+        "question_code": "3_2_2",
         "text": "Header",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 57,
         "exam_code": "2024_haru_1",
-        "question_number": 3,
-        "sub_question_number": 3,
-        "small_question_number": 0,
+        "question_code": "3_3_1",
         "text": "¥W[jJ][nN][dD][iI]¥W または ¥W[jJ][nN][dD][iI]¥W",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 58,
         "exam_code": "2024_haru_1",
-        "question_number": 3,
-        "sub_question_number": 3,
-        "small_question_number": 1,
+        "question_code": "3_3_2",
         "text": "誤検知による遮断を防ぐことができる。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 59,
         "exam_code": "2024_haru_1",
-        "question_number": 3,
-        "sub_question_number": 3,
-        "small_question_number": 2,
+        "question_code": "3_3_3",
         "text": "アラートを受信したら攻撃かどうかを精査する。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 60,
         "exam_code": "2024_haru_2",
-        "question_number": 1,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "1_1_0",
         "text": "公開Webサーバ,取引先向けWebサーバを攻撃対象に,HTTP GETリクエストを繰返し送る。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 61,
         "exam_code": "2024_haru_2",
-        "question_number": 1,
-        "sub_question_number": 2,
-        "small_question_number": 0,
+        "question_code": "1_2_0",
         "text": "正常な通信を異常として検知してしまう。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 62,
         "exam_code": "2024_haru_2",
-        "question_number": 1,
-        "sub_question_number": 3,
-        "small_question_number": 1,
+        "question_code": "1_3_1",
         "text": "DNS-K",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 63,
         "exam_code": "2024_haru_2",
-        "question_number": 1,
-        "sub_question_number": 3,
-        "small_question_number": 2,
+        "question_code": "1_3_2",
         "text": "DNS-F",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 64,
         "exam_code": "2024_haru_2",
-        "question_number": 2,
-        "sub_question_number": 1,
-        "small_question_number": 1,
+        "question_code": "2_1_1",
         "text": "攻撃者が,正規のVPNダイアログに利用者IDとパスワードを入力すると,正規利用者のスマートフォンにセキュリティコードが送信される。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 65,
         "exam_code": "2024_haru_2",
-        "question_number": 2,
-        "sub_question_number": 1,
-        "small_question_number": 2,
+        "question_code": "2_1_2",
         "text": "正規利用者が受信したセキュリティコードを,罠のWebサイトに入力すると,攻撃者がそれを読み取り,正規のセキュリティコード入力画面に入力することで認証される。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 66,
         "exam_code": "2024_haru_2",
-        "question_number": 2,
-        "sub_question_number": 2,
-        "small_question_number": 0,
+        "question_code": "2_2_0",
         "text": "認証情報の入力は,受信したメール内のURLリンクをクリックして起動した画面には行わず,VPNダイアログにだけ行う。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 67,
         "exam_code": "2024_haru_2",
-        "question_number": 3,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "3_1_0",
         "text": "盗聴したパケットと同じ順番に通信要求を送信する。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 68,
         "exam_code": "2024_haru_2",
-        "question_number": 3,
-        "sub_question_number": 2,
-        "small_question_number": 0,
+        "question_code": "3_2_0",
         "text": "SPAパケットはユニークであり,同じパケットを再利用すると破棄されるから",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 69,
         "exam_code": "2024_haru_2",
-        "question_number": 4,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "4_1_0",
         "text": "(解答例1) DDoS対策機能を有するCDNサービス\n(解答例2) クラウド型ファイアウォールサービス\n(解答例3) ISPが提供するDDoS防御サービス",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 70,
         "exam_code": "2024_haru_2",
-        "question_number": 4,
-        "sub_question_number": 2,
-        "small_question_number": 0,
+        "question_code": "4_2_0",
         "text": "(解答例1) 取引専用PC以外からの通信は取引先向けWebサーバに到達しないから\n(解答例2) UTMの設定変更によって,ボットネットからの通信が遮断されるから\n(解答例3) UTMの設定変更に伴って,外部からの接続対象サーバではなくなったから",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 71,
         "exam_code": "2024_haru_3",
-        "question_number": 1,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "1_1_0",
         "text": "9",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 72,
         "exam_code": "2024_haru_3",
-        "question_number": 1,
-        "sub_question_number": 2,
-        "small_question_number": 0,
+        "question_code": "1_2_0",
         "text": "攻撃者がわなリンクを用意し,管理者にそのリンクを踏ませることで管理者権限のcookieを攻撃者のWebサイトに送信させ,その値を読み取って利用することで管理者としてサイトXにアクセスし,利用者情報を取得する。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 73,
         "exam_code": "2024_haru_3",
-        "question_number": 2,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "2_1_0",
         "text": "攻撃者が自らのアカウントで取得したcsrf tokenと一緒に利用者情報をサイトXに送るように構成したわなフォームに,詐欺メールなどで利用者を誘導し,利用者情報を変更させる。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 74,
         "exam_code": "2024_haru_3",
-        "question_number": 2,
-        "sub_question_number": 2,
-        "small_question_number": 1,
+        "question_code": "2_2_1",
         "text": "×",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 75,
         "exam_code": "2024_haru_3",
-        "question_number": 2,
-        "sub_question_number": 2,
-        "small_question_number": 2,
+        "question_code": "2_2_2",
         "text": "×",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 76,
         "exam_code": "2024_haru_3",
-        "question_number": 2,
-        "sub_question_number": 2,
-        "small_question_number": 3,
+        "question_code": "2_2_3",
         "text": "◯",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 77,
         "exam_code": "2024_haru_3",
-        "question_number": 2,
-        "sub_question_number": 2,
-        "small_question_number": 4,
+        "question_code": "2_2_4",
         "text": "×",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 78,
         "exam_code": "2024_haru_3",
-        "question_number": 3,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "3_1_0",
         "text": "order-codeの下6桁を総当たりで試行する。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 79,
         "exam_code": "2024_haru_3",
-        "question_number": 3,
-        "sub_question_number": 2,
-        "small_question_number": 0,
+        "question_code": "3_2_0",
         "text": "cookieの値で利用者アカウントを特定し,order-codeの値から特定したものと違っていれば,エラーにする。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 80,
         "exam_code": "2024_haru_3",
-        "question_number": 4,
-        "sub_question_number": 1,
-        "small_question_number": 0,
+        "question_code": "4_1_0",
         "text": "変更後のURLにPOSTデータは送ることができないから",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 81,
         "exam_code": "2024_haru_3",
-        "question_number": 4,
-        "sub_question_number": 2,
-        "small_question_number": 0,
+        "question_code": "4_2_0",
         "text": "パラメータpageの値をIMDSのクレデンシャル情報を返すURLに変更する。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 82,
         "exam_code": "2024_haru_3",
-        "question_number": 4,
-        "sub_question_number": 3,
-        "small_question_number": 0,
+        "question_code": "4_3_0",
         "text": "トークンを発行するURLにPUTメソッドでアクセスしてトークンを入手し,そのトークンをリクエストヘッダに含めて,IMDSのクレデンシャル情報を返すURLにアクセスする。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     },
     {
         "id": 83,
         "exam_code": "2024_haru_3",
-        "question_number": 4,
-        "sub_question_number": 4,
-        "small_question_number": 0,
+        "question_code": "4_4_0",
         "text": "パラメータpageの値がサイトP以外のURLならエラーにする。",
-        "created_at": "2025-07-03T05:24:52.000000Z",
-        "updated_at": "2025-07-03T05:24:52.000000Z"
+        "created_at": "2025-08-07T12:39:28.000000Z",
+        "updated_at": "2025-08-07T12:39:28.000000Z"
     }
 ]

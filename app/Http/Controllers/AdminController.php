@@ -15,6 +15,8 @@ class AdminController extends Controller
     {
         $this->checkIsAdmin();
 
+        Log::debug($request->all());
+
         // リクエストのバリデーション
         $validated = $request->validate([
             'year' => 'required|numeric',
@@ -23,11 +25,12 @@ class AdminController extends Controller
             'questionNumber' => 'required|numeric|max:20',
             'subQuestionNumber' => 'required|numeric|max:20',
             'smallQuestionNumber' => 'nullable|numeric|max:20',
-            'text' => 'required|string|max:1000',
+            'text' => 'nullable|string|max:1000',
             'type' => 'required|string|in:textarea,radio,checkbox,input',
-            'options' => 'array',
+            'options' => 'nullable|array',
             'maxLength' => 'nullable|integer|max:5000',
         ]);
+
 
         // numericで受け入れた文字列を念の為 int にキャスト
         $validated['year'] = (int) $validated['year'];
@@ -61,7 +64,7 @@ class AdminController extends Controller
             'sub_question_number' => $validated['subQuestionNumber'],
             'small_question_number' => $validated['smallQuestionNumber'] ?? null,
             'type' => $validated['type'],
-            'text' => $validated['text'],
+            'text' => $validated['text'] ? $validated['text'] : "",
             'options' => empty($validated['options']) ? null : $validated['options'],
             'max_length' => $validated['maxLength'] ?? null,
         ];
@@ -104,12 +107,13 @@ class AdminController extends Controller
                     'sub_question_number' => $validated['subQuestionNumber'],
                     'small_question_number' => $validated['smallQuestionNumber'],
                 ],
-                [
-                    'text' => $validated['text'],
-                    'type' => $validated['type'],
-                    'options' => empty($validated['options']) ? null : $validated['options'],
-                    'max_length' => $validated['maxLength'] ?? null,
-                ]
+                // [
+                //     'text' => $validated['text'],
+                //     'type' => $validated['type'],
+                //     'options' => empty($validated['options']) ? null : $validated['options'],
+                //     'max_length' => $validated['maxLength'] ?? null,
+                // ]
+                $newQuestion
             );
 
             return response()->json(['message' => 'Exam question updated successfully'], 201);
@@ -220,6 +224,84 @@ class AdminController extends Controller
             Log::error('Failed to upload PDF: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to upload PDF'], 500);
         }
+    }
+
+    public function getModelAnswers(string $year, string $season, string $section): JsonResponse
+    {
+        $this->checkIsAdmin();
+
+        $controller = new ExamController();
+        $examCode = $year . '_' . $season . '_' . $section;
+        $modelAnswers = $controller->fetchModelAnswer($examCode);
+
+        if (is_null($modelAnswers)) {
+            return response()->json(['error' => 'Model answers not found'], 404);
+        }
+
+        // キーと値のペアで返す
+        $modelMap = [];
+        foreach ($modelAnswers as &$answer) {
+            $modelMap[] = [
+                'questionCode' => $answer['questionNumber'] . '_' . $answer['subQuestionNumber'] . '_' . $answer['smallQuestionNumber'],
+                'text' => $answer['text'],
+            ];
+        }
+
+        return response()->json($modelMap, 200);
+    }
+
+    public function updateModelAnswers(Request $request, string $year, string $season, string $section): JsonResponse
+    {
+        $this->checkIsAdmin();
+        Log::debug($request->answer);
+
+        return response()->json(['message' => 'Model answers updated successfully'], 200);
+
+        // // リクエストのバリデーション
+        $validated = $request->validate([
+            'answer' => 'required|array'
+        ]);
+
+        $examCode = $year . '_' . $season . '_' . $section;
+
+        // 模範解答をアップデート
+        foreach ($validated['answer'] as $questionCode => $text) {
+            // questionCodeを分解して、questionNumber, subQuestionNumber, smallQuestionNumberを取得
+            list($questionNumber, $subQuestionNumber, $smallQuestionNumber) = explode('_', $questionCode);
+
+            Question::updateOrCreate(
+                [
+                    'exam_code' => $examCode,
+                    'question_number' => (int)$questionNumber,
+                    'sub_question_number' => (int)$subQuestionNumber,
+                    'small_question_number' => (int)$smallQuestionNumber,
+                ],
+                ['text' => $text]
+            );
+        }
+
+        // // モデル解答の更新処理を実行
+        // try {
+        //     foreach ($validated['model'] as $model) {
+        //         // questionCodeを分解して、questionNumber, subQuestionNumber, smallQuestionNumberを取得
+        //         list($questionNumber, $subQuestionNumber, $smallQuestionNumber) = explode('_', $model['questionCode']);
+
+        //         Question::updateOrCreate(
+        //             [
+        //                 'exam_code' => $examCode,
+        //                 'question_number' => (int)$questionNumber,
+        //                 'sub_question_number' => (int)$subQuestionNumber,
+        //                 'small_question_number' => (int)$smallQuestionNumber,
+        //             ],
+        //             ['text' => $model['text']]
+        //         );
+        //     }
+
+        //     return response()->json(['message' => 'Model answers updated successfully'], 200);
+        // } catch (\Exception $e) {
+        //     Log::error('Failed to update model answers: ' . $e->getMessage());
+        //     return response()->json(['error' => 'Failed to update model answers'], 500);
+        // }
     }
 
     // 管理者権限があるか確認する

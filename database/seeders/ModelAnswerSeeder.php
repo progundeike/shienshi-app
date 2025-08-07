@@ -33,6 +33,8 @@ class ModelAnswerSeeder extends Seeder
         // データベースに挿入
         ModelAnswer::insert($questions);
         $this->command->info("Inserted " . count($questions) . " records into the database.");
+
+
         // $modelAnswersFilesDirectory = database_path('model-answers');
         // $filePathList = File::allFiles($modelAnswersFilesDirectory);
         // foreach ($filePathList as $filePath) {
