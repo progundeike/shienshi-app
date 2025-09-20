@@ -2,13 +2,8 @@ import {
     Box,
     Button,
     chakra,
-    Flex,
     Heading,
-    Input,
-    Radio,
-    RadioGroup,
     Table,
-    TableCaption,
     TableContainer,
     Tbody,
     Td,
@@ -45,6 +40,7 @@ export const AdminPage = memo(() => {
                 <Table variant="simple">
                     <Tbody>
                         <Tr>
+                            {/* 編集が終わったページのボタンの色はredからgreenに変える */}
                             <CustomTh>2099年(令和99年) 春季</CustomTh>
                             <Td>
                                 <EditExamLinkButton
@@ -80,11 +76,11 @@ export const AdminPage = memo(() => {
                             </Td>
                         </Tr>
                         <Tr>
-                            <CustomTh>2024年(令和6年) 秋期</CustomTh>
+                            <CustomTh>2025年(令和7年) 春期</CustomTh>
                             <Td>
                                 <EditExamLinkButton
-                                    color="red"
-                                    url="2024/aki/1"
+                                    color="green"
+                                    url="2025/haru/1"
                                 >
                                     問1
                                 </EditExamLinkButton>
@@ -92,7 +88,7 @@ export const AdminPage = memo(() => {
                             <Td>
                                 <EditExamLinkButton
                                     color="red"
-                                    url="2024/aki/2"
+                                    url="2025/haru/2"
                                 >
                                     問2
                                 </EditExamLinkButton>
@@ -100,7 +96,7 @@ export const AdminPage = memo(() => {
                             <Td>
                                 <EditExamLinkButton
                                     color="red"
-                                    url="2024/aki/3"
+                                    url="2025/haru/3"
                                 >
                                     問3
                                 </EditExamLinkButton>
@@ -108,6 +104,41 @@ export const AdminPage = memo(() => {
                             <Td>
                                 <EditExamLinkButton
                                     color="red"
+                                    url="2025/haru/4"
+                                >
+                                    問4
+                                </EditExamLinkButton>
+                            </Td>
+                        </Tr>
+                        <Tr>
+                            <CustomTh>2024年(令和6年) 秋期</CustomTh>
+                            <Td>
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2024/aki/1"
+                                >
+                                    問1
+                                </EditExamLinkButton>
+                            </Td>
+                            <Td>
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2024/aki/2"
+                                >
+                                    問2
+                                </EditExamLinkButton>
+                            </Td>
+                            <Td>
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2024/aki/3"
+                                >
+                                    問3
+                                </EditExamLinkButton>
+                            </Td>
+                            <Td>
+                                <EditExamLinkButton
+                                    color="green"
                                     url="2024/aki/4"
                                 >
                                     問4
@@ -142,7 +173,7 @@ export const AdminPage = memo(() => {
                             </Td>
                             <Td>
                                 <EditExamLinkButton
-                                    color="red"
+                                    color="green"
                                     url="2024/haru/4"
                                 >
                                     問4

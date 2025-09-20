@@ -39,6 +39,7 @@ export type QuestionFormInputs = {
     subQuestionNumber: number;
     smallQuestionNumber: number | null;
     text: string;
+    textForAi: string | null;
     type: "radio" | "checkbox" | "input" | "textarea";
     options?: {
         label: string;

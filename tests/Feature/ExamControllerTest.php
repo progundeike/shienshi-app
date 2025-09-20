@@ -41,12 +41,39 @@ class ExamControllerTest extends TestCase
             'password' => Hash::make('password'),
             'is_admin' => false,
         ]);
+
+        // テスト用の模範解答を作成
+        DB::table('model_answers')->insert([
+            [
+                'exam_code' => '2099_haru_1',
+                'question_code' => '1_1_0',
+                'text' => '模範解答1',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'exam_code' => '2099_haru_1',
+                'question_code' => '1_2_1',
+                'text' => '模範解答2',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'exam_code' => '2099_haru_1',
+                'question_code' => '1_2_2',
+                'text' => '模範解答3',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
     }
 
-    // #[Test]
-    // public function 設問を取得できない(): void
-    // {
-    //     $response = $this->get('/api/questions/wrong-url-1');
-    //     $response->assertStatus(404);
-    // }
+    #[Test]
+    public function 模範解答をまとめて取得できる(): void
+    {
+        $response = $this->actingAs($this->adminUser)->getJson('/api/admin/model-answers/2099-haru-1', ['Accept' => 'application/json']);
+
+        $response->assertStatus(200);
+        $this->assertCount(3, $response->json());
+    }
 }

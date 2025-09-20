@@ -24,6 +24,7 @@ class Question extends Model
         'text',
         'options',
         'max_length',
+        'text_for_ai',
     ];
 
     protected $casts = ['options' => 'array'];

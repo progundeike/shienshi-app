@@ -26,7 +26,7 @@ import {
     useForm,
 } from "react-hook-form";
 import { MainColorButton } from "../atoms/MainColorButton";
-import { FetchedQuestion, useExam } from "../../hooks/useExam";
+import { FetchedQuestion, QuestionForEdit, useExam } from "../../hooks/useExam";
 import { useAdmin } from "../../hooks/useAdmin";
 import { QuestionFormInputs } from "../../types/form";
 
@@ -36,14 +36,18 @@ type Props = {
     section: number;
     isOpen: boolean;
     onClose: () => void;
-    question: FetchedQuestion | null;
+    question: QuestionForEdit | null;
     onSuccess: () => void;
 };
 
 export const EditQuestionModal: FC<Props> = memo((props) => {
     const { year, season, section, isOpen, onClose, question, onSuccess } =
         props;
-    const { updateExamQuestion } = useAdmin();
+    const { updateExamQuestion, deleteQuestion } = useAdmin(
+        year,
+        season,
+        section
+    );
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
     // 問題編集用フォーム
@@ -54,6 +58,22 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
         control,
         name: "options",
     });
+
+    // 問題削除
+    const onDelete = async () => {
+        if (!question) return;
+        try {
+            await deleteQuestion.mutateAsync(
+                `${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`
+            );
+            onSuccess();
+            onClose();
+            reset();
+            setValidationErrors([]); // バリデーションエラーをリセット
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
     // 問題編集用ハンドラー
     const handleUpdateExamQuestion: SubmitHandler<QuestionFormInputs> = async (
@@ -68,6 +88,7 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
                 subQuestionNumber: Number(data.subQuestionNumber),
                 smallQuestionNumber: Number(data.smallQuestionNumber) ?? null,
                 text: data.text,
+                textForAi: data.textForAi ?? null,
                 type: data.type,
                 options: data.options ?? null,
                 maxLength: data.maxLength ?? null,
@@ -100,6 +121,7 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
     };
 
     useEffect(() => {
+        console.log(question);
         setValidationErrors([]); // モーダルが開かれたときにバリデーションエラーをリセット
         reset(); // フォームをリセット
         if (question) {
@@ -107,6 +129,7 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
             setValue("subQuestionNumber", question.subQuestionNumber);
             setValue("smallQuestionNumber", question.smallQuestionNumber);
             setValue("text", question.text);
+            setValue("textForAi", question.textForAi || "");
             setValue("type", question.type);
             setValue("maxLength", question.maxLength || null);
             if (question.options) {
@@ -184,6 +207,17 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
                                         <Textarea
                                             autoComplete="off"
                                             {...register("text")}
+                                        />
+                                    </Box>
+
+                                    {/* AI専用の補助テキスト */}
+                                    <Box>
+                                        <Box>
+                                            AI用の問題文(AIによる解答生成に使用する問題文です。ユーザーには表示されません。)
+                                        </Box>
+                                        <Textarea
+                                            autoComplete="off"
+                                            {...register("textForAi")}
                                         />
                                     </Box>
 
@@ -316,11 +350,31 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
                                         </Box>
                                     )}
 
-                                    <Box w="50%" mx="auto">
-                                        <MainColorButton type="submit">
-                                            {question ? "更新" : "追加"}
-                                        </MainColorButton>
-                                    </Box>
+                                    <Flex
+                                        w="80%"
+                                        mx="auto"
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                    >
+                                        <Box w="40%">
+                                            <MainColorButton type="submit">
+                                                {question ? "更新" : "追加"}
+                                            </MainColorButton>
+                                        </Box>
+                                        {question && (
+                                            <Box w="40%">
+                                                <Button
+                                                    colorScheme="red"
+                                                    borderRadius="full"
+                                                    ml="10px"
+                                                    w="100%"
+                                                    onClick={onDelete}
+                                                >
+                                                    削除
+                                                </Button>
+                                            </Box>
+                                        )}
+                                    </Flex>
                                 </Flex>
                             </FormControl>
                         </Box>

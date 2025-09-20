@@ -41,6 +41,7 @@ class AIQuestionController extends Controller
         // 問題文を取得
         $examController = new ExamController();
         $examSentence = $examController->fetchExamSentences($year, $season, $section);
+        // TODO: AI専用の設問文を取得する
 
         // 質問された設問と正解を取得
         $examQuestion = $examController->fetchExamQuestionsArray($year, $season, $section, $questionNumber, $subQuestionNumber);

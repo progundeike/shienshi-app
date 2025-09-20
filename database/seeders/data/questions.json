@@ -22,8 +22,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 2,
@@ -35,8 +35,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 30,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 3,
@@ -48,8 +48,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 50,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 4,
@@ -61,8 +61,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 60,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 5,
@@ -74,8 +74,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 50,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 6,
@@ -87,8 +87,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 40,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 7,
@@ -100,8 +100,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 40,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 8,
@@ -118,8 +118,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 9,
@@ -136,8 +136,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 10,
@@ -154,8 +154,8 @@
             }
         ],
         "max_length": 40,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 11,
@@ -172,8 +172,8 @@
             }
         ],
         "max_length": 40,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 12,
@@ -185,8 +185,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 60,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 13,
@@ -198,8 +198,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 40,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 14,
@@ -216,8 +216,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 15,
@@ -229,8 +229,8 @@
         "type": "textarea",
         "options": null,
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 16,
@@ -247,8 +247,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 17,
@@ -260,8 +260,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 20,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 18,
@@ -273,8 +273,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 40,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 19,
@@ -286,8 +286,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 70,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 20,
@@ -304,8 +304,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 21,
@@ -322,8 +322,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 22,
@@ -340,8 +340,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 23,
@@ -374,8 +374,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 24,
@@ -387,8 +387,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 50,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 25,
@@ -417,8 +417,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 26,
@@ -447,8 +447,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 27,
@@ -460,8 +460,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 35,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 28,
@@ -473,8 +473,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 40,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 29,
@@ -511,8 +511,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 30,
@@ -524,8 +524,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 40,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 31,
@@ -537,8 +537,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 20,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 32,
@@ -550,8 +550,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 20,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 33,
@@ -568,8 +568,8 @@
             }
         ],
         "max_length": 20,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 34,
@@ -586,8 +586,8 @@
             }
         ],
         "max_length": 20,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 35,
@@ -656,8 +656,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 36,
@@ -682,8 +682,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 37,
@@ -712,8 +712,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 38,
@@ -725,8 +725,8 @@
         "type": "textarea",
         "options": null,
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 39,
@@ -743,8 +743,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 40,
@@ -813,8 +813,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 41,
@@ -839,8 +839,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 42,
@@ -865,8 +865,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 43,
@@ -895,8 +895,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 44,
@@ -908,8 +908,8 @@
         "type": "input",
         "options": null,
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 45,
@@ -978,8 +978,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 46,
@@ -1048,8 +1048,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 47,
@@ -1061,8 +1061,8 @@
         "type": "input",
         "options": null,
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 48,
@@ -1074,8 +1074,8 @@
         "type": "input",
         "options": null,
         "max_length": 30,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 49,
@@ -1092,8 +1092,8 @@
             }
         ],
         "max_length": 20,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 50,
@@ -1110,8 +1110,8 @@
             }
         ],
         "max_length": 20,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 51,
@@ -1123,8 +1123,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 40,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 52,
@@ -1136,8 +1136,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 30,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 53,
@@ -1149,8 +1149,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 30,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 54,
@@ -1162,8 +1162,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 35,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 55,
@@ -1180,8 +1180,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 56,
@@ -1198,8 +1198,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 57,
@@ -1211,8 +1211,8 @@
         "type": "input",
         "options": null,
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 58,
@@ -1229,8 +1229,8 @@
             }
         ],
         "max_length": 25,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 59,
@@ -1247,8 +1247,8 @@
             }
         ],
         "max_length": 25,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 60,
@@ -1265,8 +1265,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 61,
@@ -1278,8 +1278,8 @@
         "type": "input",
         "options": null,
         "max_length": 25,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 62,
@@ -1300,8 +1300,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 63,
@@ -1322,8 +1322,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 64,
@@ -1340,8 +1340,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 65,
@@ -1358,8 +1358,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 66,
@@ -1371,8 +1371,8 @@
         "type": "textarea",
         "options": null,
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 67,
@@ -1384,8 +1384,8 @@
         "type": "input",
         "options": null,
         "max_length": 30,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 68,
@@ -1397,8 +1397,8 @@
         "type": "input",
         "options": null,
         "max_length": 40,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 69,
@@ -1410,8 +1410,8 @@
         "type": "input",
         "options": null,
         "max_length": 20,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 70,
@@ -1423,8 +1423,8 @@
         "type": "input",
         "options": null,
         "max_length": 40,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 71,
@@ -1436,8 +1436,8 @@
         "type": "input",
         "options": null,
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 72,
@@ -1449,8 +1449,8 @@
         "type": "textarea",
         "options": null,
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 73,
@@ -1462,8 +1462,8 @@
         "type": "textarea",
         "options": null,
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 74,
@@ -1484,8 +1484,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 75,
@@ -1506,8 +1506,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 76,
@@ -1528,8 +1528,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 77,
@@ -1550,8 +1550,8 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 78,
@@ -1563,8 +1563,8 @@
         "type": "input",
         "options": null,
         "max_length": 30,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 79,
@@ -1576,8 +1576,8 @@
         "type": "textarea",
         "options": null,
         "max_length": 60,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 80,
@@ -1589,8 +1589,8 @@
         "type": "input",
         "options": null,
         "max_length": 35,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 81,
@@ -1602,8 +1602,8 @@
         "type": "textarea",
         "options": null,
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 82,
@@ -1615,8 +1615,8 @@
         "type": "textarea",
         "options": null,
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 83,
@@ -1628,64 +1628,16 @@
         "type": "input",
         "options": null,
         "max_length": 35,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
         "id": 84,
-        "exam_code": "2099_haru_1",
-        "question_number": 1,
-        "sub_question_number": 1,
-        "small_question_number": 1,
-        "text": "test4",
-        "type": "input",
-        "options": null,
-        "max_length": null,
-        "created_at": null,
-        "updated_at": null
-    },
-    {
-        "id": 85,
-        "exam_code": "2099_haru_1",
-        "question_number": 1,
-        "sub_question_number": 1,
-        "small_question_number": 2,
-        "text": "tes2",
-        "type": "radio",
-        "options": [
-            {
-                "label": "a",
-                "value": "a"
-            },
-            {
-                "label": "b",
-                "value": "b"
-            }
-        ],
-        "max_length": null,
-        "created_at": null,
-        "updated_at": null
-    },
-    {
-        "id": 86,
-        "exam_code": "2099_haru_1",
-        "question_number": 1,
-        "sub_question_number": 1,
-        "small_question_number": 3,
-        "text": "tes3",
-        "type": "input",
-        "options": null,
-        "max_length": null,
-        "created_at": null,
-        "updated_at": null
-    },
-    {
-        "id": 87,
         "exam_code": "2024_haru_4",
         "question_number": 1,
         "sub_question_number": 1,
         "small_question_number": 0,
-        "text": "[データ連携機能のセキュリティレビュー] について答えよ。\n(1) ) 本文中の[空欄 a]に入れる適切な字句を,解答群の中から選び,記号で答えよ。",
+        "text": "[データ連携機能のセキュリティレビュー] について答えよ。\n(1) 本文中の[空欄 a]に入れる適切な字句を,解答群の中から選び,記号で答えよ。",
         "type": "radio",
         "options": [
             {
@@ -1710,11 +1662,11 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
-        "id": 88,
+        "id": 85,
         "exam_code": "2024_haru_4",
         "question_number": 1,
         "sub_question_number": 2,
@@ -1723,11 +1675,11 @@
         "type": "input",
         "options": null,
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
-        "id": 89,
+        "id": 86,
         "exam_code": "2024_haru_4",
         "question_number": 1,
         "sub_question_number": 3,
@@ -1736,11 +1688,11 @@
         "type": "input",
         "options": null,
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
-        "id": 90,
+        "id": 87,
         "exam_code": "2024_haru_4",
         "question_number": 2,
         "sub_question_number": 1,
@@ -1749,11 +1701,11 @@
         "type": "input",
         "options": null,
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
-        "id": 91,
+        "id": 88,
         "exam_code": "2024_haru_4",
         "question_number": 2,
         "sub_question_number": 2,
@@ -1762,11 +1714,11 @@
         "type": "input",
         "options": null,
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
     },
     {
-        "id": 92,
+        "id": 89,
         "exam_code": "2024_haru_4",
         "question_number": 2,
         "sub_question_number": 3,
@@ -1780,7 +1732,1464 @@
             }
         ],
         "max_length": null,
-        "created_at": null,
-        "updated_at": null
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
+    },
+    {
+        "id": 90,
+        "exam_code": "2024_haru_4",
+        "question_number": 2,
+        "sub_question_number": 3,
+        "small_question_number": 2,
+        "text": "[出力される場所]",
+        "type": "radio",
+        "options": [
+            {
+                "label": "[ア] 開発ログサーバのAPログを保存したテキストファイル",
+                "value": "ア"
+            },
+            {
+                "label": "[イ] 本番AP サーバの\/sbinディレクトリ配下のバイナリファイル",
+                "value": "イ"
+            },
+            {
+                "label": "[ウ] 本番AP サーバの \/var\/dataディレクトリ配下のCSV ファイル",
+                "value": "ウ"
+            },
+            {
+                "label": "[エ] 本番AP サーバの\/var\/log\/serverlogディレクトリ配下のテキストファイル",
+                "value": "エ"
+            },
+            {
+                "label": "[オ] 本番ログサーバのAPログを保存したテキストファイル",
+                "value": "オ"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
+    },
+    {
+        "id": 91,
+        "exam_code": "2024_haru_4",
+        "question_number": 2,
+        "sub_question_number": 4,
+        "small_question_number": 0,
+        "text": "(4) 図4中の[空欄 f]に入れる適切な字句を答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
+    },
+    {
+        "id": 92,
+        "exam_code": "2024_haru_4",
+        "question_number": 2,
+        "sub_question_number": 5,
+        "small_question_number": 0,
+        "text": "(5) 図4中の[空欄 g]に入れる適切な処理を, ソースコード又は具体的な処理内容のいずれかで答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
+    },
+    {
+        "id": 93,
+        "exam_code": "2024_haru_4",
+        "question_number": 2,
+        "sub_question_number": 6,
+        "small_question_number": 0,
+        "text": "(6) 図4中の[空欄 h]に入れる適切なソースコードを答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
+    },
+    {
+        "id": 94,
+        "exam_code": "2024_haru_4",
+        "question_number": 2,
+        "sub_question_number": 7,
+        "small_question_number": 0,
+        "text": "(7) 本文中の下線②について,図4の6,7行目をどのように修正すればよいか。修正後の適切なソースコードを解答群の中から選び,記号で答えよ。\nここで,変数saltには,addUserメソッドの呼出しごとに異なる32バイトの固定長文字列が入っているものとし,ユーザーマスターテーブルの定義に変更はないものとする。",
+        "type": "radio",
+        "options": [
+            {
+                "label": "[ア]\nbyte[] hashByte = md0bj.digest((salt + this.password).getBytes());\nthis.password = salt + String.format(\"%x\", new BigInteger(1, hashByte));",
+                "value": "ア"
+            },
+            {
+                "label": "[イ]\nthis.password= String.format(\"%x\", new BigInteger(1, hashByte));\nbyte[] hashByte = md0bj.digest((salt + this.password).getBytes());",
+                "value": "イ"
+            },
+            {
+                "label": "[ウ]\nbyte[] hashByte = md0bj.digest(this.password.getBytes());\nbyte[] saltByte = md0bj.digest(salt.getBytes());\nthis. password= String.format(\"%x\", new BigInteger(1, hashByte)) + String. format(\"%x\", new BigInteger(1, saltByte));",
+                "value": "ウ"
+            },
+            {
+                "label": "[エ]\nbyte[] hashByte = md0bj. digest (this. password. getBytes()); \nthis. password = salt + String. format(\"%x\", new BigInteger (1, hashByte));",
+                "value": "エ"
+            },
+            {
+                "label": "[オ]\nbyte[] hashByte = md0bj.digest(this.password.getBytes());\nthis.password = String.format(\"%x\", new BigInteger(1, hashByte));\nbyte[] saltHashByte = md0bj.digest((salt + this.password).getBytes());\nthis.password = String.format(\"%x\", new BigInteger(1, saltHashByte));",
+                "value": "オ"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
+    },
+    {
+        "id": 95,
+        "exam_code": "2099_haru_1",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 3,
+        "text": "tes3",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
+    },
+    {
+        "id": 97,
+        "exam_code": "2099_haru_1",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 1,
+        "text": "(1) 問題1",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
+    },
+    {
+        "id": 98,
+        "exam_code": "2099_haru_1",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 2,
+        "text": "(2) 問題2",
+        "type": "radio",
+        "options": [
+            {
+                "label": "a",
+                "value": "a"
+            },
+            {
+                "label": "b",
+                "value": "b"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
+    },
+    {
+        "id": 99,
+        "exam_code": "2099_haru_1",
+        "question_number": 2,
+        "sub_question_number": 1,
+        "small_question_number": 1,
+        "text": "tes",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-08-29T12:56:14.000000Z",
+        "updated_at": "2025-08-29T12:56:14.000000Z"
+    },
+    {
+        "id": 100,
+        "exam_code": "2024_aki_1",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "[暫定対策と追加調査の実施]について答えよ。\n(1) 本文中及び図3中の[空欄 a]に入れる適切なホスト名を答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-13T13:05:55.000000Z",
+        "updated_at": "2025-09-13T13:05:55.000000Z"
+    },
+    {
+        "id": 101,
+        "exam_code": "2024_aki_1",
+        "question_number": 1,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "(2) 本文中の[空欄 b]に入れる適切なホスト名を答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-13T13:07:10.000000Z",
+        "updated_at": "2025-09-13T13:07:10.000000Z"
+    },
+    {
+        "id": 102,
+        "exam_code": "2024_aki_1",
+        "question_number": 1,
+        "sub_question_number": 3,
+        "small_question_number": 0,
+        "text": "(3) 本文中及び図3中の[空欄 c]に入れる適切なアカウント名を,表3の注記1に従って答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-13T13:08:54.000000Z",
+        "updated_at": "2025-09-13T13:08:54.000000Z"
+    },
+    {
+        "id": 103,
+        "exam_code": "2024_aki_1",
+        "question_number": 1,
+        "sub_question_number": 4,
+        "small_question_number": 0,
+        "text": "(4) 図3中の[空欄 d]に入れる適切な対策を10字以内で答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": 10,
+        "created_at": "2025-09-13T13:09:56.000000Z",
+        "updated_at": "2025-09-13T13:09:56.000000Z"
+    },
+    {
+        "id": 104,
+        "exam_code": "2024_aki_1",
+        "question_number": 1,
+        "sub_question_number": 5,
+        "small_question_number": 0,
+        "text": "(5) 図3中の下線①について,対策の内容を,具体的に答えよ。",
+        "type": "textarea",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-13T13:10:36.000000Z",
+        "updated_at": "2025-09-13T13:12:14.000000Z"
+    },
+    {
+        "id": 105,
+        "exam_code": "2024_aki_1",
+        "question_number": 1,
+        "sub_question_number": 6,
+        "small_question_number": 0,
+        "text": "(6) 図3中の下線②について,調査の内容を,具体的に答えよ。",
+        "type": "textarea",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-13T13:12:03.000000Z",
+        "updated_at": "2025-09-13T13:12:03.000000Z"
+    },
+    {
+        "id": 106,
+        "exam_code": "2024_aki_1",
+        "question_number": 1,
+        "sub_question_number": 7,
+        "small_question_number": 0,
+        "text": "(7) 本文中の下線③について,調査の内容を,具体的に答えよ。",
+        "type": "textarea",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-13T13:12:50.000000Z",
+        "updated_at": "2025-09-13T13:12:50.000000Z"
+    },
+    {
+        "id": 107,
+        "exam_code": "2024_aki_1",
+        "question_number": 1,
+        "sub_question_number": 8,
+        "small_question_number": 1,
+        "text": "(8) 本文中の下線④について,検出する仕組みを,二つ答えよ。",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "1つ目",
+                "value": "1つ目"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-13T13:13:49.000000Z",
+        "updated_at": "2025-09-13T13:14:24.000000Z"
+    },
+    {
+        "id": 108,
+        "exam_code": "2024_aki_1",
+        "question_number": 1,
+        "sub_question_number": 8,
+        "small_question_number": 2,
+        "text": "",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "2つ目",
+                "value": "2つ目"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-13T13:14:53.000000Z",
+        "updated_at": "2025-09-13T13:14:53.000000Z"
+    },
+    {
+        "id": 109,
+        "exam_code": "2024_aki_1",
+        "question_number": 2,
+        "sub_question_number": 1,
+        "small_question_number": 1,
+        "text": "設問2 表6中の[空欄 e], [空欄 f]に入れる適切な字句を答えよ。",
+        "type": "input",
+        "options": [
+            {
+                "label": "[e]",
+                "value": "e"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-13T13:16:45.000000Z",
+        "updated_at": "2025-09-13T13:16:45.000000Z"
+    },
+    {
+        "id": 110,
+        "exam_code": "2024_aki_1",
+        "question_number": 2,
+        "sub_question_number": 1,
+        "small_question_number": 2,
+        "text": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[f]",
+                "value": "f"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-13T13:17:08.000000Z",
+        "updated_at": "2025-09-13T13:17:08.000000Z"
+    },
+    {
+        "id": 111,
+        "exam_code": "2024_aki_2",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "[情報システムの現状]について答えよ。\n(1) 表1中及び表2中の[空欄 a]に入れる適切な字句を答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-16T05:13:23.000000Z",
+        "updated_at": "2025-09-16T05:13:37.000000Z"
+    },
+    {
+        "id": 112,
+        "exam_code": "2024_aki_2",
+        "question_number": 1,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "(2) 表2中の[空欄 b]に入れる適切な字句を答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-16T05:14:14.000000Z",
+        "updated_at": "2025-09-16T05:14:31.000000Z"
+    },
+    {
+        "id": 113,
+        "exam_code": "2024_aki_2",
+        "question_number": 2,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "表5中の[空欄 c]に入れる適切な字句を英字10字以内で答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": 10,
+        "created_at": "2025-09-16T05:15:07.000000Z",
+        "updated_at": "2025-09-16T05:15:07.000000Z"
+    },
+    {
+        "id": 114,
+        "exam_code": "2024_aki_2",
+        "question_number": 3,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "[送信対応の設定内容についての検討]について答えよ。\n(1) 本文中の下線①のFQDNを解答群の中から選び,記号で答えよ。",
+        "type": "radio",
+        "options": [
+            {
+                "label": "[ア] rsa-sha256._dkim.z-sha.co.jp",
+                "value": "ア"
+            },
+            {
+                "label": "[イ] rsa-sha256._domainkey.z-sha.co.jp",
+                "value": "イ"
+            },
+            {
+                "label": "[ウ] z2024_dkim.z-sha.co.jp",
+                "value": "ウ"
+            },
+            {
+                "label": "[エ] z2024._domainkey.z-sha.co.jp",
+                "value": "エ"
+            },
+            {
+                "label": "[オ] z2024.z-sha.co.jp",
+                "value": "オ"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T05:17:46.000000Z",
+        "updated_at": "2025-09-16T05:19:16.000000Z"
+    },
+    {
+        "id": 115,
+        "exam_code": "2024_aki_2",
+        "question_number": 3,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "(2) 図4中の[空欄 d]に入れる適切な字句を解答群の中から選び,記号で答えよ。",
+        "type": "radio",
+        "options": [
+            {
+                "label": "[ア] accept",
+                "value": "ア"
+            },
+            {
+                "label": "[イ] none",
+                "value": "イ"
+            },
+            {
+                "label": "[ウ] quarantine",
+                "value": "ウ"
+            },
+            {
+                "label": "[エ] receive",
+                "value": "エ"
+            },
+            {
+                "label": "[オ] reject",
+                "value": "オ"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T05:25:58.000000Z",
+        "updated_at": "2025-09-16T05:26:27.000000Z"
+    },
+    {
+        "id": 116,
+        "exam_code": "2024_aki_2",
+        "question_number": 4,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "[A社ドメイン名の契約についての検討]について答えよ。\n(1) 表7中の下線②について,攻撃の方法を具体的に答えよ。",
+        "type": "textarea",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-16T05:27:19.000000Z",
+        "updated_at": "2025-09-16T05:27:19.000000Z"
+    },
+    {
+        "id": 118,
+        "exam_code": "2024_aki_2",
+        "question_number": 4,
+        "sub_question_number": 3,
+        "small_question_number": 0,
+        "text": "(3) 図5中の[空欄 e]に入れる適切な字句を解答群の中から選び,記号で答えよ。",
+        "type": "radio",
+        "options": [
+            {
+                "label": "[ア] -all",
+                "value": "ア"
+            },
+            {
+                "label": "[イ] ?all",
+                "value": "イ"
+            },
+            {
+                "label": "[ウ] block",
+                "value": "ウ"
+            },
+            {
+                "label": "[エ] deny",
+                "value": "エ"
+            },
+            {
+                "label": "[オ] refuse",
+                "value": "オ"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T05:29:33.000000Z",
+        "updated_at": "2025-09-16T05:29:33.000000Z"
+    },
+    {
+        "id": 119,
+        "exam_code": "2024_aki_2",
+        "question_number": 5,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "[Uサービスへの移行の見直し]について答えよ。\n(1) 本文中の下線④について,見直しの内容を具体的に答えよ。",
+        "type": "textarea",
+        "options": [
+            {
+                "label": null,
+                "value": null
+            },
+            {
+                "label": null,
+                "value": null
+            },
+            {
+                "label": null,
+                "value": null
+            },
+            {
+                "label": null,
+                "value": null
+            },
+            {
+                "label": null,
+                "value": null
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T05:30:23.000000Z",
+        "updated_at": "2025-09-16T05:30:23.000000Z"
+    },
+    {
+        "id": 120,
+        "exam_code": "2024_aki_2",
+        "question_number": 4,
+        "sub_question_number": 2,
+        "small_question_number": 1,
+        "text": "(2) 表7中の下線③について,受信するメールの内容及び続きの攻撃の例を具体的に答えよ。",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[メールの内容]",
+                "value": "メールの内容"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T05:32:31.000000Z",
+        "updated_at": "2025-09-16T05:32:31.000000Z"
+    },
+    {
+        "id": 121,
+        "exam_code": "2024_aki_2",
+        "question_number": 4,
+        "sub_question_number": 2,
+        "small_question_number": 2,
+        "text": "",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[攻撃の例]",
+                "value": "攻撃の例"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T05:33:11.000000Z",
+        "updated_at": "2025-09-16T05:33:11.000000Z"
+    },
+    {
+        "id": 122,
+        "exam_code": "2024_aki_2",
+        "question_number": 5,
+        "sub_question_number": 2,
+        "small_question_number": 1,
+        "text": "(2) 図8中の下線⑤について,SPFによる認証に失敗する理由及びDKIMによる認証に失敗する理由をそれぞれ,Sサービスへの登録内容とYサービスの仕様を含めて,具体的に答えよ。",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[SPF]",
+                "value": "SPF"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T05:35:15.000000Z",
+        "updated_at": "2025-09-16T05:35:15.000000Z"
+    },
+    {
+        "id": 123,
+        "exam_code": "2024_aki_2",
+        "question_number": 5,
+        "sub_question_number": 2,
+        "small_question_number": 2,
+        "text": "",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[DKIM]",
+                "value": "DKIM"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T05:35:49.000000Z",
+        "updated_at": "2025-09-16T05:35:49.000000Z"
+    },
+    {
+        "id": 124,
+        "exam_code": "2024_aki_3",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 1,
+        "text": "本文中の[空欄 a]~[空欄 e]に入れる適切な行番号又は字句を答えよ。",
+        "type": "input",
+        "options": [
+            {
+                "label": "[a]",
+                "value": "a"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T13:26:04.000000Z",
+        "updated_at": "2025-09-16T13:26:04.000000Z"
+    },
+    {
+        "id": 125,
+        "exam_code": "2024_aki_3",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 2,
+        "text": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[b]",
+                "value": "b"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T13:26:26.000000Z",
+        "updated_at": "2025-09-16T13:26:26.000000Z"
+    },
+    {
+        "id": 126,
+        "exam_code": "2024_aki_3",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 3,
+        "text": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[c]",
+                "value": "c"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T13:26:46.000000Z",
+        "updated_at": "2025-09-16T13:26:46.000000Z"
+    },
+    {
+        "id": 127,
+        "exam_code": "2024_aki_3",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 4,
+        "text": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[d]",
+                "value": "d"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T13:27:09.000000Z",
+        "updated_at": "2025-09-16T13:27:09.000000Z"
+    },
+    {
+        "id": 128,
+        "exam_code": "2024_aki_3",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 5,
+        "text": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[e]",
+                "value": "e"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T13:27:44.000000Z",
+        "updated_at": "2025-09-16T13:27:44.000000Z"
+    },
+    {
+        "id": 129,
+        "exam_code": "2024_aki_3",
+        "question_number": 2,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "(1) 本文中の下線①について,書換え後の画面全体を図示せよ。\n[この問題は作図が必要なため、AI添削に対応しておりません。]",
+        "type": "textarea",
+        "options": [
+            {
+                "label": null,
+                "value": null
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T13:28:16.000000Z",
+        "updated_at": "2025-09-16T13:36:43.000000Z"
+    },
+    {
+        "id": 130,
+        "exam_code": "2024_aki_3",
+        "question_number": 2,
+        "sub_question_number": 2,
+        "small_question_number": 1,
+        "text": "(2) 本文中の下線②について,パラメータ名とその値を答えよ。",
+        "type": "input",
+        "options": [
+            {
+                "label": "[パラメータ名]",
+                "value": "パラメータ名"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T13:29:19.000000Z",
+        "updated_at": "2025-09-16T13:29:37.000000Z"
+    },
+    {
+        "id": 131,
+        "exam_code": "2024_aki_3",
+        "question_number": 2,
+        "sub_question_number": 2,
+        "small_question_number": 2,
+        "text": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[値]",
+                "value": "値"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T13:30:05.000000Z",
+        "updated_at": "2025-09-16T13:30:05.000000Z"
+    },
+    {
+        "id": 132,
+        "exam_code": "2024_aki_3",
+        "question_number": 2,
+        "sub_question_number": 3,
+        "small_question_number": 0,
+        "text": "(3) 図2について,4~15行目の処理内容を具体的に答えよ。",
+        "type": "textarea",
+        "options": [
+            {
+                "label": null,
+                "value": null
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T13:30:34.000000Z",
+        "updated_at": "2025-09-16T13:30:34.000000Z"
+    },
+    {
+        "id": 133,
+        "exam_code": "2024_aki_3",
+        "question_number": 3,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "[クレジットカード情報の漏えいの調査と対策]について答えよ。\n(1) 本文中の下線③について,攻撃者のWebサーバでクレジットカード情報を取得する方法を答えよ。",
+        "type": "textarea",
+        "options": [
+            {
+                "label": null,
+                "value": null
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T13:31:10.000000Z",
+        "updated_at": "2025-09-16T13:31:10.000000Z"
+    },
+    {
+        "id": 134,
+        "exam_code": "2024_aki_3",
+        "question_number": 3,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "(2) 本文中の[空欄 f]に入れる適切な字句を答えよ。",
+        "type": "input",
+        "options": [
+            {
+                "label": null,
+                "value": null
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-16T13:31:46.000000Z",
+        "updated_at": "2025-09-16T13:31:46.000000Z"
+    },
+    {
+        "id": 135,
+        "exam_code": "2024_aki_4",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "図4中の2章について答えよ。\n(1) 表A中及び2.2.1(2)中の[空欄 a]に入れる適切な記号を,図3中の画面遷移の記号(ア)~(ナ)から選び,答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-18T02:49:29.000000Z",
+        "updated_at": "2025-09-18T02:49:29.000000Z"
+    },
+    {
+        "id": 136,
+        "exam_code": "2024_aki_4",
+        "question_number": 1,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "(2) 図A中の[空欄 b]に入れる適切なURLを,表1から選び答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-18T02:50:09.000000Z",
+        "updated_at": "2025-09-18T02:50:09.000000Z"
+    },
+    {
+        "id": 137,
+        "exam_code": "2024_aki_4",
+        "question_number": 1,
+        "sub_question_number": 3,
+        "small_question_number": 0,
+        "text": "(3) 図A中の[空欄 c]に入れる適切な操作を答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-18T02:50:29.000000Z",
+        "updated_at": "2025-09-18T02:50:29.000000Z"
+    },
+    {
+        "id": 138,
+        "exam_code": "2024_aki_4",
+        "question_number": 1,
+        "sub_question_number": 4,
+        "small_question_number": 0,
+        "text": "(4) 2.2.1(2)中の[空欄 d]に入れる適切な修正方法を具体的に答えよ。",
+        "type": "textarea",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-18T02:50:50.000000Z",
+        "updated_at": "2025-09-18T02:50:50.000000Z"
+    },
+    {
+        "id": 139,
+        "exam_code": "2024_aki_4",
+        "question_number": 1,
+        "sub_question_number": 5,
+        "small_question_number": 1,
+        "text": "(5) 表D中の[空欄 e],[空欄 f]に入れる適切な効果を答えよ。",
+        "type": "input",
+        "options": [
+            {
+                "label": "[e]",
+                "value": "e"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T02:51:29.000000Z",
+        "updated_at": "2025-09-18T02:51:29.000000Z"
+    },
+    {
+        "id": 140,
+        "exam_code": "2024_aki_4",
+        "question_number": 1,
+        "sub_question_number": 5,
+        "small_question_number": 2,
+        "text": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[f]",
+                "value": "f"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T02:52:11.000000Z",
+        "updated_at": "2025-09-18T02:52:11.000000Z"
+    },
+    {
+        "id": 141,
+        "exam_code": "2024_aki_4",
+        "question_number": 2,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "図4中の4章にある図D中の[空欄 g],[空欄 h]に入れる攻撃手順を答えよ。",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[g]",
+                "value": "g"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T03:58:10.000000Z",
+        "updated_at": "2025-09-18T03:58:10.000000Z"
+    },
+    {
+        "id": 142,
+        "exam_code": "2024_aki_4",
+        "question_number": 2,
+        "sub_question_number": 1,
+        "small_question_number": 2,
+        "text": "",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[h]",
+                "value": "h"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T03:58:34.000000Z",
+        "updated_at": "2025-09-18T03:58:34.000000Z"
+    },
+    {
+        "id": 143,
+        "exam_code": "2024_aki_4",
+        "question_number": 3,
+        "sub_question_number": 1,
+        "small_question_number": 1,
+        "text": "あなたがこの診断を担当したとして,図4中の5章の表F中の[空欄 i],[空欄 j]及び表G中の[空欄 k],[空欄 l]に記述する内容を答えよ。\nなお,複数の改善の方針案がある場合は,被害を防ぐ効果が最も高いものを答えよ。",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[i]",
+                "value": "i"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T03:59:43.000000Z",
+        "updated_at": "2025-09-18T03:59:43.000000Z"
+    },
+    {
+        "id": 144,
+        "exam_code": "2024_aki_4",
+        "question_number": 3,
+        "sub_question_number": 1,
+        "small_question_number": 2,
+        "text": "",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[j]",
+                "value": "j"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T04:00:08.000000Z",
+        "updated_at": "2025-09-18T04:00:08.000000Z"
+    },
+    {
+        "id": 145,
+        "exam_code": "2024_aki_4",
+        "question_number": 3,
+        "sub_question_number": 1,
+        "small_question_number": 3,
+        "text": "",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[k]",
+                "value": "k"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T04:00:31.000000Z",
+        "updated_at": "2025-09-18T04:00:31.000000Z"
+    },
+    {
+        "id": 146,
+        "exam_code": "2024_aki_4",
+        "question_number": 3,
+        "sub_question_number": 1,
+        "small_question_number": 4,
+        "text": "",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[l]",
+                "value": "l"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T04:00:51.000000Z",
+        "updated_at": "2025-09-18T04:00:51.000000Z"
+    },
+    {
+        "id": 147,
+        "exam_code": "2025_haru_1",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "[ガイドラインの作成]について答えよ。\n(1) 本文中の下線①について,どのような考え方か答えよ。",
+        "type": "textarea",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-18T05:23:56.000000Z",
+        "updated_at": "2025-09-18T05:23:56.000000Z"
+    },
+    {
+        "id": 148,
+        "exam_code": "2025_haru_1",
+        "question_number": 1,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "(2) 本文中の下線②について,明記すべき事項を,50字以内で答えよ。",
+        "type": "textarea",
+        "options": null,
+        "max_length": 50,
+        "created_at": "2025-09-18T05:24:19.000000Z",
+        "updated_at": "2025-09-18T05:24:19.000000Z"
+    },
+    {
+        "id": 149,
+        "exam_code": "2025_haru_1",
+        "question_number": 2,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "[過去のインシデントの確認]について答えよ。\n(1) 本文中の下線③について,影響を受けない配置方法を答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-18T05:25:20.000000Z",
+        "updated_at": "2025-09-18T05:25:20.000000Z"
+    },
+    {
+        "id": 150,
+        "exam_code": "2025_haru_1",
+        "question_number": 2,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "(2) 本文中の下線④について,加えた変更を,具体的に答えよ。",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-18T05:26:18.000000Z",
+        "updated_at": "2025-09-18T05:26:18.000000Z"
+    },
+    {
+        "id": 151,
+        "exam_code": "2025_haru_1",
+        "question_number": 2,
+        "sub_question_number": 3,
+        "small_question_number": 1,
+        "text": "(3) 本文中の下線⑤について,修正した項番と修正内容を答えよ。",
+        "type": "input",
+        "options": [
+            {
+                "label": "[項番]",
+                "value": "項番"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T05:27:35.000000Z",
+        "updated_at": "2025-09-18T05:27:35.000000Z"
+    },
+    {
+        "id": 152,
+        "exam_code": "2025_haru_1",
+        "question_number": 2,
+        "sub_question_number": 3,
+        "small_question_number": 2,
+        "text": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[修正内容]",
+                "value": "修正内容"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T05:28:09.000000Z",
+        "updated_at": "2025-09-18T05:28:09.000000Z"
+    },
+    {
+        "id": 153,
+        "exam_code": "2025_haru_1",
+        "question_number": 3,
+        "sub_question_number": 1,
+        "small_question_number": 1,
+        "text": "[ガイドラインを用いた点検の実施]について答えよ。\n(1) 表2中の[空欄 ア]〜[空欄 エ]に入れる適切な項番を答えよ。",
+        "type": "input",
+        "options": [
+            {
+                "label": "[ア]",
+                "value": "ア"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T05:28:55.000000Z",
+        "updated_at": "2025-09-18T05:28:55.000000Z"
+    },
+    {
+        "id": 154,
+        "exam_code": "2025_haru_1",
+        "question_number": 3,
+        "sub_question_number": 1,
+        "small_question_number": 2,
+        "text": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[イ]",
+                "value": "イ"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T05:29:20.000000Z",
+        "updated_at": "2025-09-18T05:29:20.000000Z"
+    },
+    {
+        "id": 155,
+        "exam_code": "2025_haru_1",
+        "question_number": 3,
+        "sub_question_number": 1,
+        "small_question_number": 3,
+        "text": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[ウ]",
+                "value": "ウ"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T05:29:47.000000Z",
+        "updated_at": "2025-09-18T05:29:47.000000Z"
+    },
+    {
+        "id": 156,
+        "exam_code": "2025_haru_1",
+        "question_number": 3,
+        "sub_question_number": 1,
+        "small_question_number": 4,
+        "text": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[エ]",
+                "value": "エ"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T05:30:12.000000Z",
+        "updated_at": "2025-09-18T05:30:12.000000Z"
+    },
+    {
+        "id": 157,
+        "exam_code": "2025_haru_1",
+        "question_number": 3,
+        "sub_question_number": 2,
+        "small_question_number": 1,
+        "text": "(2) 表2中の[空欄 a]〜[空欄 c]に入れる適切な字句を答えよ。",
+        "type": "input",
+        "options": [
+            {
+                "label": "[a]",
+                "value": "a"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T05:30:43.000000Z",
+        "updated_at": "2025-09-18T05:30:43.000000Z"
+    },
+    {
+        "id": 158,
+        "exam_code": "2025_haru_1",
+        "question_number": 3,
+        "sub_question_number": 2,
+        "small_question_number": 2,
+        "text": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[b]",
+                "value": "b"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T05:31:02.000000Z",
+        "updated_at": "2025-09-18T05:31:02.000000Z"
+    },
+    {
+        "id": 159,
+        "exam_code": "2025_haru_1",
+        "question_number": 3,
+        "sub_question_number": 2,
+        "small_question_number": 3,
+        "text": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[c]",
+                "value": "c"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T05:31:24.000000Z",
+        "updated_at": "2025-09-18T05:31:24.000000Z"
+    },
+    {
+        "id": 160,
+        "exam_code": "2025_haru_1",
+        "question_number": 4,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "本文中の下線⑥について,脆弱性管理がしやすくなる理由を,具体的に答えよ。",
+        "type": "textarea",
+        "options": [
+            {
+                "label": null,
+                "value": null
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T05:32:22.000000Z",
+        "updated_at": "2025-09-18T05:32:22.000000Z"
+    },
+    {
+        "id": 161,
+        "exam_code": "2025_haru_1",
+        "question_number": 5,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "[開発工程のセキュリティ対策についての確認]について答えよ。\n(1) 本文中の[空欄 d]に入れる適切な字句を図2中の名称で答えよ。",
+        "type": "input",
+        "options": [
+            {
+                "label": null,
+                "value": null
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-18T05:32:45.000000Z",
+        "updated_at": "2025-09-18T05:32:45.000000Z"
+    },
+    {
+        "id": 162,
+        "exam_code": "2025_haru_1",
+        "question_number": 5,
+        "sub_question_number": 2,
+        "small_question_number": 1,
+        "text": "(2) 本文中の下線⑦について,(あ),(い)で実行する利点を,それぞれ40字以内で答えよ。",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "(あ)",
+                "value": "あ"
+            }
+        ],
+        "max_length": 40,
+        "created_at": "2025-09-18T05:33:44.000000Z",
+        "updated_at": "2025-09-18T05:33:44.000000Z"
+    },
+    {
+        "id": 163,
+        "exam_code": "2025_haru_1",
+        "question_number": 5,
+        "sub_question_number": 2,
+        "small_question_number": 2,
+        "text": "",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "(い)",
+                "value": "い"
+            }
+        ],
+        "max_length": 40,
+        "created_at": "2025-09-18T05:34:11.000000Z",
+        "updated_at": "2025-09-18T05:34:11.000000Z"
+    },
+    {
+        "id": 164,
+        "exam_code": "2025_haru_2",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 1,
+        "text": "表1中の[空欄 a]〜[空欄 e]に入れる応答を,解答群の中から選び,記号で答えよ。なお,解答は重複して選んでもよい。\n解答群\n[ア] \"コンテンツがありません\"というメッセージが返される。\n[イ] 2025年4月1日のキャンペーンのコンテンツが返される。\n[ウ] サーバから応答が返されない。\n[エ] 内部サーバエラーが返される。\n\n[a]",
+        "type": "radio",
+        "options": [
+            {
+                "label": "[ア]",
+                "value": "ア"
+            },
+            {
+                "label": "[イ]",
+                "value": "イ"
+            },
+            {
+                "label": "[ウ]",
+                "value": "ウ"
+            },
+            {
+                "label": "[エ]",
+                "value": "エ"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-19T12:21:36.000000Z",
+        "updated_at": "2025-09-19T12:25:51.000000Z"
+    },
+    {
+        "id": 165,
+        "exam_code": "2025_haru_2",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 2,
+        "text": "[b]",
+        "type": "radio",
+        "options": [
+            {
+                "label": "[ア]",
+                "value": "ア"
+            },
+            {
+                "label": "[イ]",
+                "value": "イ"
+            },
+            {
+                "label": "[ウ]",
+                "value": "ウ"
+            },
+            {
+                "label": "[エ]",
+                "value": "エ"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-19T12:24:06.000000Z",
+        "updated_at": "2025-09-19T12:26:13.000000Z"
+    },
+    {
+        "id": 166,
+        "exam_code": "2025_haru_2",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 3,
+        "text": "[c]",
+        "type": "radio",
+        "options": [
+            {
+                "label": "[ア]",
+                "value": "ア"
+            },
+            {
+                "label": "[イ]",
+                "value": "イ"
+            },
+            {
+                "label": "[ウ]",
+                "value": "ウ"
+            },
+            {
+                "label": "[エ]",
+                "value": "エ"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-19T12:27:13.000000Z",
+        "updated_at": "2025-09-19T12:27:13.000000Z"
+    },
+    {
+        "id": 167,
+        "exam_code": "2025_haru_2",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 4,
+        "text": "[d]",
+        "type": "radio",
+        "options": [
+            {
+                "label": "[ア]",
+                "value": "ア"
+            },
+            {
+                "label": "[イ]",
+                "value": "イ"
+            },
+            {
+                "label": "[ウ]",
+                "value": "ウ"
+            },
+            {
+                "label": "[エ]",
+                "value": "エ"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-19T12:28:28.000000Z",
+        "updated_at": "2025-09-19T12:28:28.000000Z"
+    },
+    {
+        "id": 168,
+        "exam_code": "2025_haru_2",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 5,
+        "text": "[e]",
+        "type": "radio",
+        "options": [
+            {
+                "label": "[ア]",
+                "value": "ア"
+            },
+            {
+                "label": "[イ]",
+                "value": "イ"
+            },
+            {
+                "label": "[ウ]",
+                "value": "ウ"
+            },
+            {
+                "label": "[エ]",
+                "value": "エ"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-19T12:29:17.000000Z",
+        "updated_at": "2025-09-19T12:29:17.000000Z"
+    },
+    {
+        "id": 169,
+        "exam_code": "2025_haru_2",
+        "question_number": 2,
+        "sub_question_number": 1,
+        "small_question_number": 1,
+        "text": "本文中の[空欄 f],[空欄 g]に入れる適切な字句を,それぞれ20字以内で答えよ。",
+        "type": "input",
+        "options": [
+            {
+                "label": "[f]",
+                "value": "f"
+            }
+        ],
+        "max_length": 20,
+        "created_at": "2025-09-19T12:30:16.000000Z",
+        "updated_at": "2025-09-19T12:30:16.000000Z"
+    },
+    {
+        "id": 170,
+        "exam_code": "2025_haru_2",
+        "question_number": 2,
+        "sub_question_number": 1,
+        "small_question_number": 2,
+        "text": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[g]",
+                "value": "g"
+            }
+        ],
+        "max_length": 20,
+        "created_at": "2025-09-19T12:30:35.000000Z",
+        "updated_at": "2025-09-19T12:30:35.000000Z"
     }
 ]

@@ -101,24 +101,29 @@ class ExamController extends Controller
     {
         $query = ModelAnswer::where('exam_code', $examCode);
 
-        // 特定の設問を取得する場合は条件を追加
         if ($questionNumber) {
-            $query->where('question_number', $questionNumber);
-        }
-        if ($subQuestionNumber) {
-            $query->where('sub_question_number', $subQuestionNumber);
-        }
-        if ($smallQuestionNumber) {
-            $query->where('small_question_number', $smallQuestionNumber);
-        }
+            $questionNumber = (int) $questionNumber;
 
+            // intにキャストまたはワイルドカードを代入
+            if ($subQuestionNumber) {
+                $subQuestionNumber = (int) $subQuestionNumber;
+            } else {
+                $subQuestionNumber = '%';
+            }
+
+            if ($smallQuestionNumber) {
+                $smallQuestionNumber = (int) $smallQuestionNumber;
+            } else {
+                $smallQuestionNumber = '%';
+            }
+
+            $query->where('question_code', 'like', `1\_{$questionNumber}\_{$subQuestionNumber}\_{$smallQuestionNumber}`);
+        }
         $result = $query->get();
 
         $modelAnswer = $result->map(function ($answer) {
             return [
-                'questionNumber' => $answer->question_number,
-                'subQuestionNumber' => $answer->sub_question_number,
-                'smallQuestionNumber' => $answer->small_question_number,
+                'questionCode' => $answer->question_code,
                 'text' => $answer->text,
             ];
         });

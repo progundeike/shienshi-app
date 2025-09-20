@@ -23,13 +23,16 @@ export const EditExamPage: FC = memo(() => {
     const [examData, setExamData] = useState<ExamSentenceResponse | null>(null);
 
     const { year, season, section } = useParams();
+    if (!year || !season || !section) {
+        return <Page404 />;
+    }
 
     // year, sectionを10進数でcastする
     const parsedYear = parseInt(year ?? "", 10);
     const parsedSection = parseInt(section ?? "", 10);
 
     const { checkPdfExists } = useExam();
-    const { getExamSentence } = useAdmin();
+    const { getExamSentence } = useAdmin(parsedYear, season, parsedSection);
 
     if (isNaN(parsedYear) || !season || isNaN(parsedSection)) {
         return <Page404 />;
@@ -69,7 +72,6 @@ export const EditExamPage: FC = memo(() => {
         // 初期ロード時にPDFと問題文の存在確認を行う
         checkPdf();
         checkExamSentence();
-        console.log("EditExamPage: useEffect called");
     }, []);
 
     return (
