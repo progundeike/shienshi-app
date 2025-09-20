@@ -16,6 +16,20 @@ export type FetchedQuestion = {
     maxLength: number | null
 };
 
+export type QuestionForEdit = {
+    year: number;
+    season: string;
+    section: number;
+    questionNumber: number;
+    subQuestionNumber: number;
+    smallQuestionNumber: number;
+    type: "radio" | "checkbox" | "input" | "textarea";
+    text: string;
+    textForAi: string | null;
+    options: Option[] | null; // JSON文字列
+    maxLength: number | null
+};
+
 export type Option = {
     label: string;
     value: string;
@@ -38,6 +52,7 @@ export type UpdateQuestionInputs = {
         smallQuestionNumber: number | null;
         type: "radio" | "checkbox" | "input" | "textarea";
         text: string;
+        textForAi: string | null;
         options: Option[] | null; // JSON文字列
         maxLength: number | null;
     };

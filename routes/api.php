@@ -31,8 +31,11 @@ Route::get('/exam-list', [ExamController::class, 'getExamList']);
 Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
     Route::get('/sentence/{year}-{season}-{section}', [AdminController::class, 'fetchExamSentence']);
     Route::put('/sentence', [AdminController::class, 'updateExamSentence']);
+    Route::get('/questions/{year}-{season}-{section}', [AdminController::class, 'fetchQuestionsForEdit']);
     Route::post('/question', [AdminController::class, 'updateExamQuestion']);
     Route::post('/upload-pdf', [AdminController::class, 'uploadExamPdf']);
     Route::get('/model-answers/{year}-{season}-{section}', [AdminController::class, 'getModelAnswers']);
     Route::post('/model-answers/{year}-{season}-{section}', [AdminController::class, 'updateModelAnswers']);
+
+    Route::delete('/question/{year}-{season}-{section}/{questionId}', [AdminController::class, 'deleteQuestion']);
 });

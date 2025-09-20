@@ -7,19 +7,18 @@ import {
     useDisclosure,
 } from "@chakra-ui/react";
 import { FC, Fragment, memo, useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 
-import { FetchedQuestion, useExam } from "../../hooks/useExam";
+import { FetchedQuestion, QuestionForEdit, useExam } from "../../hooks/useExam";
 import { CheckboxQuestionForm } from "../molecules/CheckboxQuestionForm";
 import { InputQuestionForm } from "../molecules/InputQuestionForm";
 import { RadioQuestionForm } from "../molecules/RadioQuestionForm";
 import { TextareaQuestionForm } from "../molecules/TextareaQuestionForm";
 import { AnswerInputs } from "./QuestionAndAnswerForm";
 import { EditQuestionModal } from "./EditQuestionModal";
-import { ModelAnswer } from "../../types/form";
 import { useAdmin } from "../../hooks/useAdmin";
-import { ModelAnswerForm } from "./ModelAnswerForm";
+import { LoadingPage } from "../pages/LoadingPage";
 
 type Props = {
     year: number;
@@ -29,13 +28,12 @@ type Props = {
 
 export const RegisterQuestionForm: FC<Props> = memo((props) => {
     const { year, season, section } = props;
-    const { fetchQuestions } = useExam();
-    const [questions, setQuestions] = useState<FetchedQuestion[] | null>(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [editTargetQuestion, setEditTargetQuestion] =
-        useState<FetchedQuestion | null>(null);
+        useState<QuestionForEdit | null>(null);
     const { handleSubmit, watch, reset, setValue, control, getValues } =
         useForm<AnswerInputs>();
+    const qc = useQueryClient();
 
     // セッションストレージからデータを取得
     const STORAGE_KEY = `modelAnswerFormData-${year}-${season}-${section}`;
@@ -56,18 +54,23 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
     // sessionStorageからデータを復元
     useEffect(() => {
         if (storedData) {
+            console.log("sessionStorageからデータを復元");
             const parsedData = JSON.parse(storedData);
             reset({ answer: parsedData });
         }
     }, [setValue]);
 
-    // 模範解答を取得する
-    const [modelAnswers, setModelAnswers] = useState<ModelAnswer[]>([]);
-    const { getModelAnswers, updateModelAnswers } = useAdmin(
-        year,
-        season,
-        section
-    );
+    // 模範解答の取得、更新
+    const { getModelAnswers, updateModelAnswers, getQuestionsForEdit } =
+        useAdmin(year, season, section);
+    const questionsQuery = useQuery({
+        queryKey: ["questions", year, season, section],
+        queryFn: () => getQuestionsForEdit(year, season, section),
+    });
+    const modelAnswersQuery = useQuery({
+        queryKey: ["modelAnswers", year, season, section],
+        queryFn: () => getModelAnswers(year, season, section),
+    });
 
     // 模範解答提出ハンドラー
     const onModelAnswerSubmit: SubmitHandler<AnswerInputs> = async (data) => {
@@ -76,37 +79,33 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
             onSuccess: () => {
                 reset();
                 sessionStorage.removeItem(STORAGE_KEY);
+                console.log("sessionStorageをクリア");
 
-                // 再度模範解答を取得
+                // ReactQueryのキャッシュを無効化して再取得
+                qc.invalidateQueries({
+                    queryKey: ["modelAnswers", year, season, section],
+                });
             },
         });
     };
 
+    // modelAnswersをフォーム初期値に反映(sessionStorageが無いときだけ)
     useEffect(() => {
-        const fetch = async () => {
-            const data = await fetchQuestions(year, season, section);
-            if (data) {
-                setQuestions(data);
-            }
+        const modelAnswersData = modelAnswersQuery.data;
+        console.log(modelAnswersData);
+        if (modelAnswersData && !storedData) {
+            const initialValues: AnswerInputs["answer"] = {};
+            modelAnswersData.forEach((ma) => {
+                initialValues[ma.questionCode] = ma.text;
+            });
+            reset({ answer: initialValues });
+            console.log("modelAnswersをフォーム初期値に反映");
+        }
+    }, [modelAnswersQuery.data, reset, storedData]);
 
-            const modelAnswersData = await getModelAnswers(
-                year,
-                season,
-                section
-            );
-            if (modelAnswersData) {
-                setModelAnswers(modelAnswersData);
-
-                // 取得したmodelAnswerをフォーム初期値に反映
-                const initialValues: AnswerInputs["answer"] = {};
-                modelAnswersData.forEach((ma) => {
-                    initialValues[ma.questionCode] = ma.text;
-                });
-                reset({ answer: initialValues });
-            }
-        };
-        fetch();
-    }, [year, season, section]);
+    if (questionsQuery.isLoading || modelAnswersQuery.isLoading) {
+        return <LoadingPage />;
+    }
 
     return (
         <Box>
@@ -117,8 +116,8 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
             >
                 <VStack align="stretch">
                     {/* 設問をループ */}
-                    {questions &&
-                        questions.map((question, index) => (
+                    {questionsQuery.data &&
+                        questionsQuery.data.map((question, index) => (
                             <Fragment key={index}>
                                 {question.subQuestionNumber == 1 &&
                                     question.smallQuestionNumber < 2 && (
@@ -135,6 +134,16 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
                                     <Text fontSize="md" whiteSpace="pre-line">
                                         {question.text}
                                     </Text>
+
+                                    {/* AI専用のテキスト */}
+                                    <Box>
+                                        <Text
+                                            fontSize="md"
+                                            whiteSpace="pre-line"
+                                        >
+                                            [text_for_ai: {question.textForAi}]
+                                        </Text>
+                                    </Box>
 
                                     {/* 解答欄 */}
                                     {question.type === "radio" && (
@@ -179,16 +188,6 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
                                         問題を編集
                                     </Button>
                                 </Box>
-
-                                {/* <ModelAnswerForm
-                                    modelAnswer={modelAnswers.find(
-                                        (ma) =>
-                                            ma.questionCode ===
-                                            `${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`
-                                    )}
-                                    questionCode={`${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`}
-                                    control={control}
-                                /> */}
                             </Fragment>
                         ))}
 
@@ -231,9 +230,9 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
                 question={editTargetQuestion}
                 onSuccess={async () => {
                     // 問題が追加された後に再度問題を取得
-                    console.log("Question added or edited successfully.");
-                    const data = await fetchQuestions(year, season, section);
-                    setQuestions(data);
+                    qc.invalidateQueries({
+                        queryKey: ["questions", year, season, section],
+                    });
                 }}
             />
         </Box>

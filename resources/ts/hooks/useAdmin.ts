@@ -3,7 +3,7 @@ import { atom, useAtom } from "jotai";
 
 import { axiosInstance } from "./axiosInstance";
 import { useChakraToast } from "../utils/toastUtils";
-import { UpdateQuestionInputs } from "./useExam";
+import { QuestionForEdit, UpdateQuestionInputs } from "./useExam";
 import { ErrorResponse, ModelAnswer } from "../types/form";
 import { get } from "react-hook-form";
 import { IoReturnUpBack } from "react-icons/io5";
@@ -193,6 +193,7 @@ export const useAdmin = (
                 if (response.status === 200) {
                     return response.data;
                 }
+                console.log(response)
                 return null;
             }
             )
@@ -234,7 +235,50 @@ export const useAdmin = (
         },
         onError: () => toast(unexpectedServerErrorToast),
     });
-    
 
-    return { getExamSentence, updateExamSentence, updateExamQuestion, uploadPDF, getModelAnswers, updateModelAnswers };
+    const deleteQuestion = useMutation({
+        mutationFn: async (questionId: string) => {
+            await axiosInstance.delete(`/api/admin/question/${year}-${season}-${section}/${questionId}`);
+        },
+        onSuccess: () => {
+            toast({
+                title: "問題の削除に成功しました",
+                status: "success",
+                duration: 6000,
+                isClosable: true,
+            });
+        },
+        onError: () => toast(unexpectedServerErrorToast),
+    });
+
+    const getQuestionsForEdit = async (
+        year: number,
+        season: string,
+        section: number
+    ): Promise<QuestionForEdit[] | null> => {
+        return await axiosInstance
+            .get(`/api/admin/questions/${year}-${season}-${section}`)
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                if (error.response && error.response.status === 404) {
+                    toast({
+                        title: "設問が見つかりません",
+                        description: "指定された試験の設問が存在しません。",
+                        status: "error",
+                        duration: 6000,
+                        isClosable: true,
+                        position: "bottom-right",
+                    });
+                    return null;
+                }
+
+                toast(unexpectedServerErrorToast);
+                console.error(error);
+                return null;
+            });
+    };
+
+    return { getExamSentence, updateExamSentence, updateExamQuestion, uploadPDF, getModelAnswers, updateModelAnswers, deleteQuestion, getQuestionsForEdit };
 }

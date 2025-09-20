@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ExamSentence;
+use App\Models\ModelAnswer;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -26,6 +27,7 @@ class AdminController extends Controller
             'subQuestionNumber' => 'required|numeric|max:20',
             'smallQuestionNumber' => 'nullable|numeric|max:20',
             'text' => 'nullable|string|max:1000',
+            'textForAi' => 'nullable|string|max:5000',
             'type' => 'required|string|in:textarea,radio,checkbox,input',
             'options' => 'nullable|array',
             'maxLength' => 'nullable|integer|max:5000',
@@ -65,13 +67,14 @@ class AdminController extends Controller
             'small_question_number' => $validated['smallQuestionNumber'] ?? null,
             'type' => $validated['type'],
             'text' => $validated['text'] ? $validated['text'] : "",
+            'text_for_ai' => $validated['textForAi'] ? $validated['textForAi'] : "",
             'options' => empty($validated['options']) ? null : $validated['options'],
             'max_length' => $validated['maxLength'] ?? null,
         ];
 
         // 既存の問題を更新または新規追加
         $questionExists = false;
-        foreach ($existingQuestions as &$question) {
+        foreach ($existingQuestions as $question) {
             if (
                 $question['exam_code'] === $examCode &&
                 $question['question_number'] === $validated['questionNumber'] &&
@@ -107,12 +110,6 @@ class AdminController extends Controller
                     'sub_question_number' => $validated['subQuestionNumber'],
                     'small_question_number' => $validated['smallQuestionNumber'],
                 ],
-                // [
-                //     'text' => $validated['text'],
-                //     'type' => $validated['type'],
-                //     'options' => empty($validated['options']) ? null : $validated['options'],
-                //     'max_length' => $validated['maxLength'] ?? null,
-                // ]
                 $newQuestion
             );
 
@@ -242,7 +239,7 @@ class AdminController extends Controller
         $modelMap = [];
         foreach ($modelAnswers as &$answer) {
             $modelMap[] = [
-                'questionCode' => $answer['questionNumber'] . '_' . $answer['subQuestionNumber'] . '_' . $answer['smallQuestionNumber'],
+                'questionCode' => $answer['questionCode'],
                 'text' => $answer['text'],
             ];
         }
@@ -255,9 +252,9 @@ class AdminController extends Controller
         $this->checkIsAdmin();
         Log::debug($request->answer);
 
-        return response()->json(['message' => 'Model answers updated successfully'], 200);
+        // return response()->json(['message' => 'Model answers updated successfully'], 200);
 
-        // // リクエストのバリデーション
+        // リクエストのバリデーション
         $validated = $request->validate([
             'answer' => 'required|array'
         ]);
@@ -265,43 +262,85 @@ class AdminController extends Controller
         $examCode = $year . '_' . $season . '_' . $section;
 
         // 模範解答をアップデート
-        foreach ($validated['answer'] as $questionCode => $text) {
-            // questionCodeを分解して、questionNumber, subQuestionNumber, smallQuestionNumberを取得
-            list($questionNumber, $subQuestionNumber, $smallQuestionNumber) = explode('_', $questionCode);
+        try {
+            foreach ($validated['answer'] as $questionCode => $text) {
+                ModelAnswer::updateOrCreate(
+                    [
+                        'exam_code' => $examCode,
+                        'question_code' => $questionCode,
+                    ],
+                    ['text' => $text]
+                );
+            }
 
-            Question::updateOrCreate(
-                [
-                    'exam_code' => $examCode,
-                    'question_number' => (int)$questionNumber,
-                    'sub_question_number' => (int)$subQuestionNumber,
-                    'small_question_number' => (int)$smallQuestionNumber,
-                ],
-                ['text' => $text]
-            );
+            return response()->json(['message' => 'Model answers updated successfully'], 200);
+        } catch (\Exception $e) {
+            Log::error('Failed to update model answers: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to update model answers'], 500);
+        }
+    }
+
+    public function deleteQuestion(string $year, string $season, string $section, string $questionId): JsonResponse
+    {
+        $this->checkIsAdmin();
+        list($questionNumber, $subQuestionNumber, $smallQuestionNumber) = explode('_', $questionId);
+
+        // TODO:模範解答も念の為消したほうがいいかも
+
+        try {
+            // 該当の問題を削除
+            Question::where('exam_code', "{$year}_{$season}_{$section}")
+                ->where('question_number', $questionNumber)
+                ->where('sub_question_number', $subQuestionNumber)
+                ->where('small_question_number', $smallQuestionNumber)
+                ->delete();
+
+            return response()->json(['message' => 'Question deleted successfully'], 200);
+        } catch (\Exception $e) {
+            Log::error('Failed to delete question: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to delete question'], 500);
+        }
+    }
+
+    // fetchExamQuestionsArrayでは取得しなかったtext_for_aiも取得する
+    // 大問または設問番号を指定して設問を取得する
+    public function fetchQuestionsForEdit(
+        string $year,
+        string $season,
+        string $section,
+    ): array | null {
+        $this->checkIsAdmin();
+
+        Log::debug("fetchQuestionsForEdit called", [
+            'year' => $year,
+            'season' => $season,
+            'section' => $section,
+        ]);
+        $examCode = $year . '_' . $season . '_' . $section;
+        $query = Question::where('exam_code', $examCode);
+        $result = $query->get();
+
+        // questionsが取得できない場合はnullを返す
+        if ($result->isEmpty()) {
+            return null;
         }
 
-        // // モデル解答の更新処理を実行
-        // try {
-        //     foreach ($validated['model'] as $model) {
-        //         // questionCodeを分解して、questionNumber, subQuestionNumber, smallQuestionNumberを取得
-        //         list($questionNumber, $subQuestionNumber, $smallQuestionNumber) = explode('_', $model['questionCode']);
+        // 必要なデータだけを取り出す
+        $questions = $result->map(function ($question) {
+            return [
+                'examCode' => $question->exam_code,
+                'questionNumber' => $question->question_number,
+                'subQuestionNumber' => $question->sub_question_number,
+                'smallQuestionNumber' => $question->small_question_number,
+                'type' => $question->type,
+                'text' => $question->text,
+                'textForAi' => $question->text_for_ai,
+                'options' => $question->options,
+                'maxLength' => $question->max_length,
+            ];
+        });
 
-        //         Question::updateOrCreate(
-        //             [
-        //                 'exam_code' => $examCode,
-        //                 'question_number' => (int)$questionNumber,
-        //                 'sub_question_number' => (int)$subQuestionNumber,
-        //                 'small_question_number' => (int)$smallQuestionNumber,
-        //             ],
-        //             ['text' => $model['text']]
-        //         );
-        //     }
-
-        //     return response()->json(['message' => 'Model answers updated successfully'], 200);
-        // } catch (\Exception $e) {
-        //     Log::error('Failed to update model answers: ' . $e->getMessage());
-        //     return response()->json(['error' => 'Failed to update model answers'], 500);
-        // }
+        return $questions->toArray();
     }
 
     // 管理者権限があるか確認する

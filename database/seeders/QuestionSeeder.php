@@ -21,12 +21,19 @@ class QuestionSeeder extends Seeder
 
         $questions = json_decode(file_get_contents($path), true);
 
-        // optionsはJSON文字列へ, idは自動増分なので除外、タイムスタンプも除外
         $questions = array_map(function ($question) {
+            // optionsはJSON文字列へ
             if (isset($question['options'])) {
                 $question['options'] = json_encode($question['options'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             }
-            unset($question['id'], $question['created_at'], $question['updated_at']);
+
+            // idは自動増分なので除外
+            unset($question['id']);
+
+            // タイムスタンプは更新
+            $question['created_at'] = now();
+            $question['updated_at'] = now();
+
             return $question;
         }, $questions);
 

@@ -19,20 +19,27 @@ class ModelAnswerSeeder extends Seeder
             $this->command->error("File not found: {$path}");
         }
 
-        $questions = json_decode(file_get_contents($path), true);
+        $modelAnswers = json_decode(file_get_contents($path), true);
 
-        // optionsはJSON文字列へ, idは自動増分なので除外、タイムスタンプも除外
-        $questions = array_map(function ($question) {
-            if (isset($question['options'])) {
-                $question['options'] = json_encode($question['options'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $modelAnswers = array_map(function ($modelAnswer) {
+            // optionsはJSON文字列へ
+            if (isset($modelAnswer['options'])) {
+                $modelAnswer['options'] = json_encode($modelAnswer['options'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             }
-            unset($question['id'], $question['created_at'], $question['updated_at']);
-            return $question;
-        }, $questions);
+
+            // idは自動増分なので除外
+            unset($modelAnswer['id']);
+
+            // タイムスタンプは更新
+            $modelAnswer['created_at'] = now();
+            $modelAnswer['updated_at'] = now();
+
+            return $modelAnswer;
+        }, $modelAnswers);
 
         // データベースに挿入
-        ModelAnswer::insert($questions);
-        $this->command->info("Inserted " . count($questions) . " records into the database.");
+        ModelAnswer::insert($modelAnswers);
+        $this->command->info("Inserted " . count($modelAnswers) . " records into the database.");
 
 
         // $modelAnswersFilesDirectory = database_path('model-answers');

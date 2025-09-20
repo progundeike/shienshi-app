@@ -20,20 +20,27 @@ class ExamSentenceSeeder extends Seeder
             $this->command->error("File not found: {$path}");
         }
 
-        $questions = json_decode(file_get_contents($path), true);
+        $examSentences = json_decode(file_get_contents($path), true);
 
-        // optionsはJSON文字列へ, idは自動増分なので除外、タイムスタンプも除外
-        $questions = array_map(function ($question) {
-            if (isset($question['options'])) {
-                $question['options'] = json_encode($question['options'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $examSentences = array_map(function ($examSentence) {
+            // optionsはJSON文字列へ
+            if (isset($examSentence['options'])) {
+                $examSentence['options'] = json_encode($examSentence['options'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             }
-            unset($question['id'], $question['created_at'], $question['updated_at']);
-            return $question;
-        }, $questions);
+
+            // idは自動増分なので除外
+            unset($examSentence['id']);
+
+            // タイムスタンプは更新
+            $examSentence['created_at'] = now();
+            $examSentence['updated_at'] = now();
+
+            return $examSentence;
+        }, $examSentences);
 
         // データベースに挿入
-        ExamSentence::insert($questions);
-        $this->command->info("Inserted " . count($questions) . " records into the database.");
+        ExamSentence::insert($examSentences);
+        $this->command->info("Inserted " . count($examSentences) . " records into the database.");
 
         // $examSentenceFilesDirectory = database_path('exam-sentences');
         // $filePathList = File::allFiles($examSentenceFilesDirectory);
