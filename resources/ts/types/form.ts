@@ -34,6 +34,13 @@ export type Dialogue = {
     content: string;
 };
 
+export type AnswerInputs = {
+    answer: {
+        text: Record<string, string>; // textarea, input, radio用
+        checkbox: Record<string, string[]>; // checkbox用 
+    };
+};
+
 export type QuestionFormInputs = {
     questionNumber: number;
     subQuestionNumber: number;

@@ -2,7 +2,7 @@ import { Box, Flex, Text, Textarea } from "@chakra-ui/react";
 import { FC, memo } from "react";
 import { FetchedQuestion } from "../../hooks/useExam";
 import { Control, useController } from "react-hook-form";
-import { AnswerInputs } from "../organisms/QuestionAndAnswerForm";
+import { AnswerInputs } from "../../types/form";
 
 type Props = {
     question: FetchedQuestion;
@@ -13,9 +13,10 @@ export const TextareaQuestionForm: FC<Props> = (props) => {
     const { question, control } = props;
 
     // 文字数のリアルタイム監視
-    const filedName: `answer.${string}` = `answer.${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`;
-    const { field } = useController({
-        name: filedName,
+    const code = `${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`;
+    const fieldName: `answer.text.${string}` = `answer.text.${code}`;
+    const { field } = useController<AnswerInputs, typeof fieldName>({
+        name: fieldName,
         control,
         defaultValue: "",
     });

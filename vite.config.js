@@ -8,7 +8,7 @@ export default defineConfig({
         target: "es2022",
         manifest: 'manifest.json',
         rollupOptions: {
-            input: 'resources/ts/App.tsx'
+            input: 'resources/ts/main.tsx'
         }
     },
     esbuild: {

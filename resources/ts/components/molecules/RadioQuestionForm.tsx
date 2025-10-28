@@ -2,7 +2,7 @@ import { Box, Flex, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
 import { FC, memo } from "react";
 import { FetchedQuestion, Option } from "../../hooks/useExam";
 import { Control, useController } from "react-hook-form";
-import { AnswerInputs } from "../organisms/QuestionAndAnswerForm";
+import { AnswerInputs } from "../../types/form";
 
 type Props = {
     question: FetchedQuestion;
@@ -11,9 +11,9 @@ type Props = {
 
 export const RadioQuestionForm: FC<Props> = (props) => {
     const { question, control } = props;
-    const fieldName: `answer.${string}` = `answer.${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`;
-
-    const { field } = useController({
+    const code = `${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`;
+    const fieldName: `answer.text.${string}` = `answer.text.${code}`;
+    const { field } = useController<AnswerInputs, typeof fieldName>({
         name: fieldName,
         control,
         defaultValue: "",

@@ -43,11 +43,7 @@ type Props = {
 export const EditQuestionModal: FC<Props> = memo((props) => {
     const { year, season, section, isOpen, onClose, question, onSuccess } =
         props;
-    const { updateExamQuestion, deleteQuestion } = useAdmin(
-        year,
-        season,
-        section
-    );
+    const { updateExamQuestion, deleteQuestion } = useAdmin();
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
     // 問題編集用フォーム
@@ -63,9 +59,12 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
     const onDelete = async () => {
         if (!question) return;
         try {
-            await deleteQuestion.mutateAsync(
-                `${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`
-            );
+            await deleteQuestion.mutateAsync({
+                year: Number(year),
+                season,
+                section: Number(section),
+                questionId: `${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`,
+            });
             onSuccess();
             onClose();
             reset();
@@ -121,7 +120,6 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
     };
 
     useEffect(() => {
-        console.log(question);
         setValidationErrors([]); // モーダルが開かれたときにバリデーションエラーをリセット
         reset(); // フォームをリセット
         if (question) {

@@ -87,7 +87,7 @@ export const AdminPage = memo(() => {
                             </Td>
                             <Td>
                                 <EditExamLinkButton
-                                    color="red"
+                                    color="green"
                                     url="2025/haru/2"
                                 >
                                     問2
@@ -95,7 +95,7 @@ export const AdminPage = memo(() => {
                             </Td>
                             <Td>
                                 <EditExamLinkButton
-                                    color="red"
+                                    color="green"
                                     url="2025/haru/3"
                                 >
                                     問3
@@ -103,7 +103,7 @@ export const AdminPage = memo(() => {
                             </Td>
                             <Td>
                                 <EditExamLinkButton
-                                    color="red"
+                                    color="green"
                                     url="2025/haru/4"
                                 >
                                     問4

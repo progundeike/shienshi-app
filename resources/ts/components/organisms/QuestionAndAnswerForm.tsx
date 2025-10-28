@@ -20,12 +20,7 @@ import { RadioQuestionForm } from "../molecules/RadioQuestionForm";
 import { CheckboxQuestionForm } from "../molecules/CheckboxQuestionForm";
 import { InputQuestionForm } from "../molecules/InputQuestionForm";
 import { TextareaQuestionForm } from "../molecules/TextareaQuestionForm";
-
-export type AnswerInputs = {
-    answer: {
-        [id: string]: string | string[];
-    };
-};
+import { AnswerInputs } from "../../types/form";
 
 export type Correction = {
     questionNumber: number;

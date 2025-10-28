@@ -1,6 +1,5 @@
 import { axiosInstance } from "./axiosInstance";
 
-import { AnswerInputs } from "../components/organisms/QuestionAndAnswerForm";
 import { useChakraToast } from "../utils/toastUtils";
 import { Dialogue, ErrorResponse } from "../types/form";
 

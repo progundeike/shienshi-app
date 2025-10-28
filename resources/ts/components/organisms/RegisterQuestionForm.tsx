@@ -15,10 +15,10 @@ import { CheckboxQuestionForm } from "../molecules/CheckboxQuestionForm";
 import { InputQuestionForm } from "../molecules/InputQuestionForm";
 import { RadioQuestionForm } from "../molecules/RadioQuestionForm";
 import { TextareaQuestionForm } from "../molecules/TextareaQuestionForm";
-import { AnswerInputs } from "./QuestionAndAnswerForm";
 import { EditQuestionModal } from "./EditQuestionModal";
 import { useAdmin } from "../../hooks/useAdmin";
 import { LoadingPage } from "../pages/LoadingPage";
+import { AnswerInputs } from "../../types/form";
 
 type Props = {
     year: number;
@@ -31,38 +31,14 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [editTargetQuestion, setEditTargetQuestion] =
         useState<QuestionForEdit | null>(null);
-    const { handleSubmit, watch, reset, setValue, control, getValues } =
-        useForm<AnswerInputs>();
-    const qc = useQueryClient();
-
-    // セッションストレージからデータを取得
-    const STORAGE_KEY = `modelAnswerFormData-${year}-${season}-${section}`;
-    const storedData = sessionStorage.getItem(STORAGE_KEY);
-
-    // 入力が変更されたらsessionStorageに保存
-    const answerValues = useWatch({
-        control,
-        name: "answer",
+    const { handleSubmit, reset, control } = useForm<AnswerInputs>({
+        defaultValues: { answer: { text: {}, checkbox: {} } },
     });
-
-    useEffect(() => {
-        if (answerValues) {
-            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(answerValues));
-        }
-    }, [answerValues]);
-
-    // sessionStorageからデータを復元
-    useEffect(() => {
-        if (storedData) {
-            console.log("sessionStorageからデータを復元");
-            const parsedData = JSON.parse(storedData);
-            reset({ answer: parsedData });
-        }
-    }, [setValue]);
+    const qc = useQueryClient();
 
     // 模範解答の取得、更新
     const { getModelAnswers, updateModelAnswers, getQuestionsForEdit } =
-        useAdmin(year, season, section);
+        useAdmin();
     const questionsQuery = useQuery({
         queryKey: ["questions", year, season, section],
         queryFn: () => getQuestionsForEdit(year, season, section),
@@ -74,34 +50,64 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
 
     // 模範解答提出ハンドラー
     const onModelAnswerSubmit: SubmitHandler<AnswerInputs> = async (data) => {
-        updateModelAnswers.mutate(data, {
-            // 成功したらフォームとセッションストレージをクリア
-            onSuccess: () => {
-                reset();
-                sessionStorage.removeItem(STORAGE_KEY);
-                console.log("sessionStorageをクリア");
-
-                // ReactQueryのキャッシュを無効化して再取得
-                qc.invalidateQueries({
-                    queryKey: ["modelAnswers", year, season, section],
-                });
-            },
+        // フラット化 + 正規化(配列→文字列, 未入力→空文字)
+        const normalized: Record<string, string> = {};
+        Object.entries(data.answer.text).forEach(([key, value]) => {
+            normalized[key] = (value ?? "").toString().trim();
         });
+        Object.entries(data.answer.checkbox).forEach(([key, value]) => {
+            normalized[key] = Array.isArray(value)
+                ? value.length
+                    ? value.join(",")
+                    : ""
+                : "";
+        });
+
+        updateModelAnswers.mutate(
+            { year, season, section, modelAnswers: normalized } as any,
+            {
+                onSuccess: () => {
+                    reset(); // フォームをクリア
+
+                    // ReactQueryのキャッシュを無効化して再取得
+                    qc.invalidateQueries({
+                        queryKey: ["modelAnswers", year, season, section],
+                    });
+                },
+            }
+        );
     };
 
-    // modelAnswersをフォーム初期値に反映(sessionStorageが無いときだけ)
+    // modelAnswersをフォーム初期値に反映
     useEffect(() => {
-        const modelAnswersData = modelAnswersQuery.data;
-        console.log(modelAnswersData);
-        if (modelAnswersData && !storedData) {
-            const initialValues: AnswerInputs["answer"] = {};
-            modelAnswersData.forEach((ma) => {
-                initialValues[ma.questionCode] = ma.text;
-            });
-            reset({ answer: initialValues });
-            console.log("modelAnswersをフォーム初期値に反映");
-        }
-    }, [modelAnswersQuery.data, reset, storedData]);
+        const questionsData = questionsQuery.data;
+        if (!questionsData) return;
+        const modelAnswersData = modelAnswersQuery.data ?? [];
+        const byCode = new Map(
+            modelAnswersData.map((ma) => [ma.questionCode, ma.text])
+        );
+        const initialValues: AnswerInputs["answer"] = {
+            text: {},
+            checkbox: {},
+        };
+
+        questionsData.forEach((q) => {
+            const code = `${q.questionNumber}_${q.subQuestionNumber}_${q.smallQuestionNumber}`;
+            const answerText = byCode.get(code) ?? "";
+            if (
+                q.type === "textarea" ||
+                q.type === "input" ||
+                q.type === "radio"
+            ) {
+                initialValues.text[code] = answerText;
+            } else if (q.type === "checkbox") {
+                initialValues.checkbox[code] = answerText
+                    ? answerText.split(",")
+                    : [];
+            }
+        });
+        reset({ answer: initialValues });
+    }, [modelAnswersQuery.data, questionsQuery.data, reset]);
 
     if (questionsQuery.isLoading || modelAnswersQuery.isLoading) {
         return <LoadingPage />;
@@ -136,12 +142,18 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
                                     </Text>
 
                                     {/* AI専用のテキスト */}
-                                    <Box>
+                                    <Box
+                                        my="10px"
+                                        backgroundColor={"gray.100"}
+                                        p="10px"
+                                        borderRadius="md"
+                                    >
+                                        <Text>text_for_ai</Text>
                                         <Text
                                             fontSize="md"
                                             whiteSpace="pre-line"
                                         >
-                                            [text_for_ai: {question.textForAi}]
+                                            {question.textForAi}
                                         </Text>
                                     </Box>
 

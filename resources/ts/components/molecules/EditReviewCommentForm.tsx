@@ -16,7 +16,7 @@ type ReviewCommentForm = {
 
 export const EditReviewCommentForm: FC<Props> = memo((props) => {
     const { year, season, section, reviewComment } = props;
-    const { updateExamSentence } = useAdmin(year, season, section);
+    const { updateExamSentence } = useAdmin();
 
     const { register, handleSubmit, reset } = useForm<ReviewCommentForm>({
         defaultValues: {
