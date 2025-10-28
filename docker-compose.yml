@@ -3,7 +3,8 @@ services:
   app:
     build:
       context: .
-      dockerfile: docker/php/Dockerfile.dev
+      dockerfile: docker/php/Dockerfile
+      target: prod
     volumes:
       - ./src:/var/www/html
     ports:
@@ -20,13 +21,13 @@ services:
       - db
 
   web:
-    build:
-      context: .
-      dockerfile: docker/nginx/Dockerfile
+    image: caddy:2
     ports:
       - ${IP}:80:80
     volumes:
-      - ./src/:/var/www/html
+      - ./docker/caddy/Caddyfile.dev:/etc/caddy/Caddyfile:ro
+      - ./src:/var/www/html:ro
+      - caddy_data:/data
     depends_on:
       - app
 
@@ -44,15 +45,6 @@ services:
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
       - MYSQL_USER=${DB_USER}
 
-  db-testing:
-    build:
-      context: .
-      dockerfile: docker/mysql/Dockerfile
-    environment:
-      - MYSQL_DATABASE=${DB_NAME}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
-      - MYSQL_USER=${DB_USER}
-
 volumes:
+  caddy_data:
   db-volumes:

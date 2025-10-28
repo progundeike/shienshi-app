@@ -3,7 +3,8 @@ services:
   app:
     build:
       context: .
-      dockerfile: docker/php/Dockerfile.dev
+      dockerfile: docker/php/Dockerfile
+      target: dev
     volumes:
       - ./src:/var/www/html
     ports:
@@ -28,7 +29,6 @@ services:
     volumes:
       - ./docker/caddy/Caddyfile.dev:/etc/caddy/Caddyfile:ro
       - ./src:/var/www/html:ro
-      - caddy_data:/data
     depends_on:
       - app
 
@@ -57,5 +57,4 @@ services:
       - MYSQL_USER=${DB_USER}
 
 volumes:
-  caddy_data:
   db-volumes:
