@@ -1,0 +1,20 @@
+{
+  "name": "SPA_EXAM",
+  "dockerComposeFile": [
+    "../docker-compose.yml"
+  ],
+  "service": "app",
+  "workspaceFolder": "/var/www/html",
+  "forwardPorts": [
+    9003
+  ],
+  "extensions": [
+    "bmewburn.vscode-intelephense-client",
+    "streetsidesoftware.code-spell-checker",
+    "xdebug.php-debug",
+    "esbenp.prettier-vscode",
+    "esbenp.prettier-vscode",
+    "jebbs.plantuml",
+    "GitHub.copilot",
+  ]
+}
