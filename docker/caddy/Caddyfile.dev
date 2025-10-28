@@ -1,0 +1,10 @@
+:80 {
+    root * /var/www/html/public
+    encode zstd gzip
+
+    # Laravelへ
+    php_fastcgi app:9000
+
+    # public配下の静的ファイル
+    file_server
+}

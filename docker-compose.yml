@@ -1,0 +1,58 @@
+version: '3.9'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile.dev
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - ${IP}:5173:5173
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_NAME}
+      - DB_USERNAME=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - TZ=Asia/Tokyo
+    depends_on:
+      - db
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    ports:
+      - ${IP}:80:80
+    volumes:
+      - ./src/:/var/www/html
+    depends_on:
+      - app
+
+  db:
+    build:
+      context: .
+      dockerfile: docker/mysql/Dockerfile
+    ports:
+      - ${IP}:3306:3306
+    volumes:
+      - db-volumes:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_USER=${DB_USER}
+
+  db-testing:
+    build:
+      context: .
+      dockerfile: docker/mysql/Dockerfile
+    environment:
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_USER=${DB_USER}
+
+volumes:
+  db-volumes:
