@@ -22,9 +22,10 @@ import { DisplayAIResponse } from "./DisplayAIResponse";
 import { loadingAtom } from "../../states/loadingAtom";
 import { DisplayAskToAICard } from "../molecules/DisplayAskToAICard";
 import { RadioQuestionForm } from "../molecules/RadioQuestionForm";
-import { AnswerInputs, Correction } from "./QuestionAndAnswerForm";
+import { Correction } from "./QuestionAndAnswerForm";
 import { User } from "../../types/user";
 import { LuBookX } from "react-icons/lu";
+import { AnswerInputs } from "../../types/form";
 
 type Props = {
     year: number;

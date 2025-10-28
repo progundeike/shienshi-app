@@ -6,6 +6,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "この攻撃で使われた XSS 脆弱性について答えよ。\n\n(1) XSS脆弱性の種類を解答群の中から選び, 記号で答えよ",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -32,6 +33,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) WebアプリQにおける対策を, 30字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 30,
@@ -45,6 +47,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "図3について, 入力文字数制限を超える長さのスクリプトが実行されるようにした方法を, 50字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 50,
@@ -58,6 +61,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "図4のスクリプトについて答えよ。\n\n(1) 図4の6~20行目の処理の内容を, 60字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 60,
@@ -71,6 +75,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 攻撃者は, 図4のスクリプトによってアップロードされた情報をどのようにして取得できるか。取得する方法を, 50字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 50,
@@ -84,6 +89,7 @@
         "sub_question_number": 3,
         "small_question_number": 0,
         "text": "(3) 攻撃者が(2)で取得した情報を使うことによってできることを, 40字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 40,
@@ -97,6 +103,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "仮に, 攻撃者が用意したドメインのサイトに図4と同じスクリプトを含むHTMLを準備し, そのサイトにWebアプリQのログイン済み会員がアクセスしたとしても, Web ブラウザの仕組みによって攻撃は成功しない。この仕組みを, 40字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 40,
@@ -110,6 +117,7 @@
         "sub_question_number": 1,
         "small_question_number": 1,
         "text": "[社外の攻撃者によるファイルの持出しについてのセキュリティ対策の確認] について答えよ。\n\n(1) 本文中の[a], [b]に入れる適切な字句を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -128,6 +136,7 @@
         "sub_question_number": 1,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -146,6 +155,7 @@
         "sub_question_number": 2,
         "small_question_number": 1,
         "text": "(2) 図2中の[c], [d]に入れる適切な字句を, それぞれ40字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -164,6 +174,7 @@
         "sub_question_number": 2,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -182,6 +193,7 @@
         "sub_question_number": 3,
         "small_question_number": 0,
         "text": "(3) 本文中の下線①について, エラーメッセージが表示される直前までのWebブラウザの動きを, 60字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 60,
@@ -195,6 +207,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[従業員によるファイルの持出しについてのセキュリティ対策の確認] について答えよ。\n\n(1) 本文中の下線②について, M社外からファイルをダウンロード可能にするためのファイル共有機能の悪用方法を, 40字以内で具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 40,
@@ -208,6 +221,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 本文中の[e]に入れる適切な字句を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -226,6 +240,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[方法1と方法2についての対策の検討] について答えよ。\n\n(1) 本文中の下線③について, 認証サーバがEAPで使うUDP上のプロトコルを答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": null,
@@ -239,6 +254,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 本文中の[f]に入れる適切な字句を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -257,6 +273,7 @@
         "sub_question_number": 3,
         "small_question_number": 0,
         "text": "(3) 本文中の[g]に入れる適切な字句を,20字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 20,
@@ -270,6 +287,7 @@
         "sub_question_number": 4,
         "small_question_number": 0,
         "text": "(4) 本文中の下線④について, その理由を, 40字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 40,
@@ -283,6 +301,7 @@
         "sub_question_number": 5,
         "small_question_number": 0,
         "text": "(5) 本文中の下線⑤について, 変更内容を, 70字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 70,
@@ -296,6 +315,7 @@
         "sub_question_number": 6,
         "small_question_number": 0,
         "text": "(6) 本文中の[h]に入れる適切な字句を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -314,6 +334,7 @@
         "sub_question_number": 7,
         "small_question_number": 1,
         "text": "(7) 本文中の下線⑥について, 表3及び表4の削除すべき項番を, それぞれ全て答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -332,6 +353,7 @@
         "sub_question_number": 7,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -350,6 +372,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "本文中の下線①について,該当するものはどれか。解答群の中から全て選び記号で答えよ。",
+        "text_for_ai": null,
         "type": "checkbox",
         "options": [
             {
@@ -384,6 +407,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[N社のインシデントの発生と対応] について答えよ。\n\n(1) 本文中の下線②について,攻撃者による不正ログインの方法を,50字以内で具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 50,
@@ -397,6 +421,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 本文中の下線③について,RFC 9162 で規定されている技術を,解答群の中から選び,記号で答えよ。",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -427,6 +452,7 @@
         "sub_question_number": 3,
         "small_question_number": 0,
         "text": "(3) 本文中の下線④について,このような手法の名称を,解答群の中から選び,記号で答えよ。",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -457,6 +483,7 @@
         "sub_question_number": 4,
         "small_question_number": 0,
         "text": "(4) 本文中の下線⑤について,プロセスYがシークレットを取得するのに使った方法として考えられるものを,35字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 35,
@@ -470,6 +497,7 @@
         "sub_question_number": 5,
         "small_question_number": 0,
         "text": "(5) 図2中の下線⑥について,仮に,利用者が偽サイトでログインを試みてしまっても,攻撃者は不正ログインできない。不正ログインを防ぐWebAuthnの仕組みを,40字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 40,
@@ -483,6 +511,7 @@
         "sub_question_number": 6,
         "small_question_number": 0,
         "text": "(6) 図2中の[空欄a]に入れる適切な字句を,解答群の中から選び,記号で答えよ。",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -521,6 +550,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[N社の顧客での対応] について答えよ。\n\n(1) 本文中の下線⑦について,Kさんが開始した対応を踏まえ,予想される攻撃を,40字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 40,
@@ -534,6 +564,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 本文中の下線⑧について,必要な対応を,20字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 20,
@@ -547,6 +578,7 @@
         "sub_question_number": 3,
         "small_question_number": 0,
         "text": "(3) 本文中の下線9について,コード署名を付与する際にHSMを使うことによって得られるセキュリティ上の利点を,20字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 20,
@@ -560,6 +592,7 @@
         "sub_question_number": 4,
         "small_question_number": 1,
         "text": "(4) 本文中の下線⑩について,影響と対応を,それぞれ20字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -578,6 +611,7 @@
         "sub_question_number": 4,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -596,6 +630,7 @@
         "sub_question_number": 1,
         "small_question_number": 1,
         "text": "表4及び表5中の[空欄 ア] 〜 [空欄 エ]に入れる適切な字句を答えよ。\n[空欄 ア]は,表2中から該当する項番を全て選び,数字で答えよ。該当する項番がない場合は,\"なし” と答えよ。",
+        "text_for_ai": null,
         "type": "checkbox",
         "options": [
             {
@@ -666,6 +701,7 @@
         "sub_question_number": 1,
         "small_question_number": 2,
         "text": "[空欄 イ]は答案用紙の大・中・小のいずれかの文字を○で囲んで示せ。",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -692,6 +728,7 @@
         "sub_question_number": 1,
         "small_question_number": 3,
         "text": "[空欄 ウ]は答案用紙のA・B・C・D のいずれかの文字を○で囲んで示せ。",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -722,6 +759,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "次の問いに答えよ。\n(1) 表4中の[空欄 あ]に入れる適切な字句を,本文に示した状況設定に沿う範囲で,あなたの知見に基づき,答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": null,
@@ -735,6 +773,7 @@
         "sub_question_number": 2,
         "small_question_number": 1,
         "text": "(2) 解答した[空欄 あ]の内容に基づき,表4及び表5中の[空欄 い]〜[空欄 き]に入れる適切な字句を答えよ。\n[空欄 う]は,表2中から該当する項番を全て選び,数字で答えよ。該当する項番がない場合は,“なし”と答えよ。\n[空欄 え]は答案用紙の大・中・小のいずれかの文字を○で囲んで示せ。\n[空欄 お]は答案用紙の高・中・低のいずれかの文字を○で囲んで示せ。\n[空欄 か]は答案用紙のA・B・C・D のいずれかの文字を○で囲んで示せ。",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -753,6 +792,7 @@
         "sub_question_number": 2,
         "small_question_number": 2,
         "text": "[空欄 う]",
+        "text_for_ai": null,
         "type": "checkbox",
         "options": [
             {
@@ -823,6 +863,7 @@
         "sub_question_number": 2,
         "small_question_number": 3,
         "text": "[空欄 え]",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -849,6 +890,7 @@
         "sub_question_number": 2,
         "small_question_number": 4,
         "text": "[空欄 お]",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -875,6 +917,7 @@
         "sub_question_number": 2,
         "small_question_number": 5,
         "text": "[空欄 か]",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -905,6 +948,7 @@
         "sub_question_number": 2,
         "small_question_number": 6,
         "text": "[空欄 き]",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -918,6 +962,7 @@
         "sub_question_number": 1,
         "small_question_number": 1,
         "text": "表4中の[空欄 a],[空欄 b]に入れる適切な字句について,表2中から該当する項番を全て選び,数字で答えよ。該当する項番がない場合は,“なし”と答えよ。\n[空欄 a]",
+        "text_for_ai": null,
         "type": "checkbox",
         "options": [
             {
@@ -988,6 +1033,7 @@
         "sub_question_number": 1,
         "small_question_number": 2,
         "text": "[空欄 b]",
+        "text_for_ai": null,
         "type": "checkbox",
         "options": [
             {
@@ -1058,6 +1104,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "本文中の[空欄 a]に入れる適切な字句を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -1071,6 +1118,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[脆弱性診断の結果]について答えよ。\n(1) 表3中の[空欄 b]に入れる適切な数値を,小数点以下を四捨五入して,整数で答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": 30,
@@ -1084,6 +1132,7 @@
         "sub_question_number": 2,
         "small_question_number": 1,
         "text": "(2) 表5中の下線①について,修正後のライブラリQで行うJWTの検証では,どのようなデータに対してどのような検証を行うか。検証対象となるデータと検証の内容を,それぞれ20字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -1102,6 +1151,7 @@
         "sub_question_number": 2,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -1120,6 +1170,7 @@
         "sub_question_number": 3,
         "small_question_number": 0,
         "text": "(3) 表5中の下線②について,P呼出し処理に追加すべき処理を,40字以内で具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 40,
@@ -1133,6 +1184,7 @@
         "sub_question_number": 4,
         "small_question_number": 0,
         "text": "(4) 表5中[空欄 c]に入れる適切な字句を,表2中の用語で答えよ",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 30,
@@ -1146,6 +1198,7 @@
         "sub_question_number": 5,
         "small_question_number": 0,
         "text": "(5) 表5中の[空欄 d]に入れる適切な処理内容を,30字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 30,
@@ -1159,6 +1212,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[新たな脆弱性への対応]について答えよ。\n(1) 図7中の下線③について, テストサーバに実装する仕組みを,35字以内で具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 35,
@@ -1172,6 +1226,7 @@
         "sub_question_number": 2,
         "small_question_number": 1,
         "text": "(2) 表6中の[空欄 e], [空欄 f]に入れる適切な字句を図5中から選び答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -1190,6 +1245,7 @@
         "sub_question_number": 2,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -1208,6 +1264,7 @@
         "sub_question_number": 3,
         "small_question_number": 0,
         "text": "(3) 本文中の下線④の変更後の案について,表6中のルール1に記述すべきパターンを,図5の記述形式で答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -1221,6 +1278,7 @@
         "sub_question_number": 3,
         "small_question_number": 1,
         "text": "(4) 本文中の下線⑤について,WAFルールの動作に\"遮断\"ではなく\"検知\"を設定することによる利点と,\"検知\"に設定した際に被害を最小化するために実施すべき内容を,それぞれ25字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -1239,6 +1297,7 @@
         "sub_question_number": 3,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -1257,6 +1316,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[DDoS攻撃に対する調査]について答えよ。\n(1) 表4中の[空欄 a]に入れる攻撃の例を,H社での攻撃対象を示して具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -1275,6 +1335,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 本文中の下線①の場合に発生する弊害を,25字以内で答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": 25,
@@ -1288,6 +1349,7 @@
         "sub_question_number": 3,
         "small_question_number": 1,
         "text": "(3) 本文中の[空欄 b], [空欄 c]に入れる適切な字句を,\"DNS-F\"又は\"DNS-K\"から選び答えよ。\n[b]",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -1310,6 +1372,7 @@
         "sub_question_number": 3,
         "small_question_number": 2,
         "text": "[c]",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -1332,6 +1395,7 @@
         "sub_question_number": 1,
         "small_question_number": 1,
         "text": "[対策V-1 についての検討]について答えよ。\n(1) 表5中の[空欄 d],[空欄 e]に入れる,不正な接続までの攻撃手順を,具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -1350,6 +1414,7 @@
         "sub_question_number": 1,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -1368,6 +1433,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 本文中の下線②について,注意喚起の内容を,具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": null,
@@ -1381,6 +1447,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[対策 V-3についての検討]について答えよ。\n(1) 本文中の下線③について,設定Pを突破する方法を,30字以内で答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": 30,
@@ -1394,6 +1461,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 本文中の下線④について,突破されないのはなぜか。40字以内で答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": 40,
@@ -1407,6 +1475,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[DDoS攻撃に対する具体的対策の検討]について答えよ。 \n(1) 本文中の下線⑤について,利用する外部のサービスを,20字以内で具体的に答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": 20,
@@ -1420,6 +1489,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 本文中の下線⑥について,軽減できる理由を,40字以内で答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": 40,
@@ -1433,6 +1503,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[XSSについて]について答えよ。\n(1)本文中の下線1について,図3中のリクエスト内のスクリプトが出力されるのはどの機能か。表1の詳細機能に対する項番を選び答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -1446,6 +1517,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2)本文中の下線2について,攻撃者はどのような手順で利用者情報を取得するか。具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": null,
@@ -1459,6 +1531,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[CSRFについて]について答えよ。\n(1)本文中の下線③について,被害を与える攻撃の手順を,具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": null,
@@ -1472,6 +1545,7 @@
         "sub_question_number": 2,
         "small_question_number": 1,
         "text": "(2)表3中の[空欄 a]〜[空欄 d]に入れる適切な内容を,“○”又は“×”から選び答えよ。\n[a]",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -1494,6 +1568,7 @@
         "sub_question_number": 2,
         "small_question_number": 2,
         "text": "[b]",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -1516,6 +1591,7 @@
         "sub_question_number": 2,
         "small_question_number": 3,
         "text": "[c]",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -1538,6 +1614,7 @@
         "sub_question_number": 2,
         "small_question_number": 4,
         "text": "[d]",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -1560,6 +1637,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[認可制御の不備について]について答えよ。\n(1) 本文中の下線④について,どのような攻撃手法を用いれば攻撃が成功するか。30字以内で答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": 30,
@@ -1573,6 +1651,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 本文中の下線5についてサイトXのWebアプリに追加すべき処理を60字以内で具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 60,
@@ -1586,6 +1665,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[SSRFについて]について答えよ。\n(1)本文中の下線⑥について,ログインができないのはなぜか。SSRF攻撃の特徴を基に,35字以内で答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": 35,
@@ -1599,6 +1679,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 本文中の下線⑦について,クレデンシャル情報を取得する方法を,具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": null,
@@ -1612,6 +1693,7 @@
         "sub_question_number": 3,
         "small_question_number": 0,
         "text": "(3) 本文中の下線⑧について,方法Gを用いてクレデンシャル情報を取得する方法を,具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": null,
@@ -1625,6 +1707,7 @@
         "sub_question_number": 4,
         "small_question_number": 0,
         "text": "(4) 本文中の下線⑨について,サイトYのWebアプリに追加すべき処理を,35字以内で具体的に答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": 35,
@@ -1638,6 +1721,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[データ連携機能のセキュリティレビュー] について答えよ。\n(1) 本文中の[空欄 a]に入れる適切な字句を,解答群の中から選び,記号で答えよ。",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -1672,6 +1756,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 本文中の[空欄 b]に入れる適切な所属グループを,表3中から選び答え \nよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -1685,6 +1770,7 @@
         "sub_question_number": 3,
         "small_question_number": 0,
         "text": "(3) 本文中の[空欄 c]に入れる適切なプログラムを,表4中から選び, No.列の番号で答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -1698,6 +1784,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[ユーザー登録機能のセキュリティレビュー] について答えよ。 \n(1) 本文中の[空欄 d]に入れる適切な行番号を,図3中から選び,答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -1711,6 +1798,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 本文中の[空欄 e]に入れる適切な字句を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -1724,6 +1812,7 @@
         "sub_question_number": 3,
         "small_question_number": 1,
         "text": "(3) 本文中の下線 1について, システム運用担当者とシステム開発者が, アクセスが禁止されているのにアクセスできてしまう情報は何か。 図2中のユーザーマスターテーブルの列名で, それぞれ全て答えよ。 また, その情報が出力される場所を、解答群の中から選び, それぞれ記号で答えよ。\n\n[不備によりシステム運用担当者の「アクセスできてしまう情報」及び 「出力される場所」は成立しない。]",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -1742,6 +1831,7 @@
         "sub_question_number": 3,
         "small_question_number": 2,
         "text": "[出力される場所]",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -1776,6 +1866,7 @@
         "sub_question_number": 4,
         "small_question_number": 0,
         "text": "(4) 図4中の[空欄 f]に入れる適切な字句を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -1789,6 +1880,7 @@
         "sub_question_number": 5,
         "small_question_number": 0,
         "text": "(5) 図4中の[空欄 g]に入れる適切な処理を, ソースコード又は具体的な処理内容のいずれかで答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -1802,6 +1894,7 @@
         "sub_question_number": 6,
         "small_question_number": 0,
         "text": "(6) 図4中の[空欄 h]に入れる適切なソースコードを答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -1815,6 +1908,7 @@
         "sub_question_number": 7,
         "small_question_number": 0,
         "text": "(7) 本文中の下線②について,図4の6,7行目をどのように修正すればよいか。修正後の適切なソースコードを解答群の中から選び,記号で答えよ。\nここで,変数saltには,addUserメソッドの呼出しごとに異なる32バイトの固定長文字列が入っているものとし,ユーザーマスターテーブルの定義に変更はないものとする。",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -1849,6 +1943,7 @@
         "sub_question_number": 1,
         "small_question_number": 3,
         "text": "tes3",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -1862,6 +1957,7 @@
         "sub_question_number": 1,
         "small_question_number": 1,
         "text": "(1) 問題1",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -1875,6 +1971,7 @@
         "sub_question_number": 1,
         "small_question_number": 2,
         "text": "(2) 問題2",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -1897,6 +1994,7 @@
         "sub_question_number": 1,
         "small_question_number": 1,
         "text": "tes",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -1910,6 +2008,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[暫定対策と追加調査の実施]について答えよ。\n(1) 本文中及び図3中の[空欄 a]に入れる適切なホスト名を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -1923,6 +2022,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 本文中の[空欄 b]に入れる適切なホスト名を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -1936,6 +2036,7 @@
         "sub_question_number": 3,
         "small_question_number": 0,
         "text": "(3) 本文中及び図3中の[空欄 c]に入れる適切なアカウント名を,表3の注記1に従って答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -1949,6 +2050,7 @@
         "sub_question_number": 4,
         "small_question_number": 0,
         "text": "(4) 図3中の[空欄 d]に入れる適切な対策を10字以内で答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": 10,
@@ -1962,6 +2064,7 @@
         "sub_question_number": 5,
         "small_question_number": 0,
         "text": "(5) 図3中の下線①について,対策の内容を,具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": null,
@@ -1975,6 +2078,7 @@
         "sub_question_number": 6,
         "small_question_number": 0,
         "text": "(6) 図3中の下線②について,調査の内容を,具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": null,
@@ -1988,6 +2092,7 @@
         "sub_question_number": 7,
         "small_question_number": 0,
         "text": "(7) 本文中の下線③について,調査の内容を,具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": null,
@@ -2001,6 +2106,7 @@
         "sub_question_number": 8,
         "small_question_number": 1,
         "text": "(8) 本文中の下線④について,検出する仕組みを,二つ答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -2019,6 +2125,7 @@
         "sub_question_number": 8,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -2037,6 +2144,7 @@
         "sub_question_number": 1,
         "small_question_number": 1,
         "text": "設問2 表6中の[空欄 e], [空欄 f]に入れる適切な字句を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2055,6 +2163,7 @@
         "sub_question_number": 1,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2073,6 +2182,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[情報システムの現状]について答えよ。\n(1) 表1中及び表2中の[空欄 a]に入れる適切な字句を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -2086,6 +2196,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 表2中の[空欄 b]に入れる適切な字句を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -2099,6 +2210,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "表5中の[空欄 c]に入れる適切な字句を英字10字以内で答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": 10,
@@ -2112,6 +2224,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[送信対応の設定内容についての検討]について答えよ。\n(1) 本文中の下線①のFQDNを解答群の中から選び,記号で答えよ。",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -2146,6 +2259,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 図4中の[空欄 d]に入れる適切な字句を解答群の中から選び,記号で答えよ。",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -2180,6 +2294,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[A社ドメイン名の契約についての検討]について答えよ。\n(1) 表7中の下線②について,攻撃の方法を具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": null,
@@ -2193,6 +2308,7 @@
         "sub_question_number": 3,
         "small_question_number": 0,
         "text": "(3) 図5中の[空欄 e]に入れる適切な字句を解答群の中から選び,記号で答えよ。",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -2227,29 +2343,9 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[Uサービスへの移行の見直し]について答えよ。\n(1) 本文中の下線④について,見直しの内容を具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
-        "options": [
-            {
-                "label": null,
-                "value": null
-            },
-            {
-                "label": null,
-                "value": null
-            },
-            {
-                "label": null,
-                "value": null
-            },
-            {
-                "label": null,
-                "value": null
-            },
-            {
-                "label": null,
-                "value": null
-            }
-        ],
+        "options": null,
         "max_length": null,
         "created_at": "2025-09-16T05:30:23.000000Z",
         "updated_at": "2025-09-16T05:30:23.000000Z"
@@ -2261,6 +2357,7 @@
         "sub_question_number": 2,
         "small_question_number": 1,
         "text": "(2) 表7中の下線③について,受信するメールの内容及び続きの攻撃の例を具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -2279,6 +2376,7 @@
         "sub_question_number": 2,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -2297,6 +2395,7 @@
         "sub_question_number": 2,
         "small_question_number": 1,
         "text": "(2) 図8中の下線⑤について,SPFによる認証に失敗する理由及びDKIMによる認証に失敗する理由をそれぞれ,Sサービスへの登録内容とYサービスの仕様を含めて,具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -2315,6 +2414,7 @@
         "sub_question_number": 2,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -2333,6 +2433,7 @@
         "sub_question_number": 1,
         "small_question_number": 1,
         "text": "本文中の[空欄 a]~[空欄 e]に入れる適切な行番号又は字句を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2351,6 +2452,7 @@
         "sub_question_number": 1,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2369,6 +2471,7 @@
         "sub_question_number": 1,
         "small_question_number": 3,
         "text": "",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2387,6 +2490,7 @@
         "sub_question_number": 1,
         "small_question_number": 4,
         "text": "",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2405,6 +2509,7 @@
         "sub_question_number": 1,
         "small_question_number": 5,
         "text": "",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2423,13 +2528,9 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "(1) 本文中の下線①について,書換え後の画面全体を図示せよ。\n[この問題は作図が必要なため、AI添削に対応しておりません。]",
+        "text_for_ai": null,
         "type": "textarea",
-        "options": [
-            {
-                "label": null,
-                "value": null
-            }
-        ],
+        "options": null,
         "max_length": null,
         "created_at": "2025-09-16T13:28:16.000000Z",
         "updated_at": "2025-09-16T13:36:43.000000Z"
@@ -2441,6 +2542,7 @@
         "sub_question_number": 2,
         "small_question_number": 1,
         "text": "(2) 本文中の下線②について,パラメータ名とその値を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2459,6 +2561,7 @@
         "sub_question_number": 2,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2477,13 +2580,9 @@
         "sub_question_number": 3,
         "small_question_number": 0,
         "text": "(3) 図2について,4~15行目の処理内容を具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
-        "options": [
-            {
-                "label": null,
-                "value": null
-            }
-        ],
+        "options": null,
         "max_length": null,
         "created_at": "2025-09-16T13:30:34.000000Z",
         "updated_at": "2025-09-16T13:30:34.000000Z"
@@ -2495,13 +2594,9 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[クレジットカード情報の漏えいの調査と対策]について答えよ。\n(1) 本文中の下線③について,攻撃者のWebサーバでクレジットカード情報を取得する方法を答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
-        "options": [
-            {
-                "label": null,
-                "value": null
-            }
-        ],
+        "options": null,
         "max_length": null,
         "created_at": "2025-09-16T13:31:10.000000Z",
         "updated_at": "2025-09-16T13:31:10.000000Z"
@@ -2513,13 +2608,9 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 本文中の[空欄 f]に入れる適切な字句を答えよ。",
+        "text_for_ai": null,
         "type": "input",
-        "options": [
-            {
-                "label": null,
-                "value": null
-            }
-        ],
+        "options": null,
         "max_length": null,
         "created_at": "2025-09-16T13:31:46.000000Z",
         "updated_at": "2025-09-16T13:31:46.000000Z"
@@ -2531,6 +2622,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "図4中の2章について答えよ。\n(1) 表A中及び2.2.1(2)中の[空欄 a]に入れる適切な記号を,図3中の画面遷移の記号(ア)~(ナ)から選び,答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -2544,6 +2636,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 図A中の[空欄 b]に入れる適切なURLを,表1から選び答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -2557,6 +2650,7 @@
         "sub_question_number": 3,
         "small_question_number": 0,
         "text": "(3) 図A中の[空欄 c]に入れる適切な操作を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -2570,6 +2664,7 @@
         "sub_question_number": 4,
         "small_question_number": 0,
         "text": "(4) 2.2.1(2)中の[空欄 d]に入れる適切な修正方法を具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": null,
@@ -2583,6 +2678,7 @@
         "sub_question_number": 5,
         "small_question_number": 1,
         "text": "(5) 表D中の[空欄 e],[空欄 f]に入れる適切な効果を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2601,6 +2697,7 @@
         "sub_question_number": 5,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2619,6 +2716,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "図4中の4章にある図D中の[空欄 g],[空欄 h]に入れる攻撃手順を答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -2637,6 +2735,7 @@
         "sub_question_number": 1,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -2655,6 +2754,7 @@
         "sub_question_number": 1,
         "small_question_number": 1,
         "text": "あなたがこの診断を担当したとして,図4中の5章の表F中の[空欄 i],[空欄 j]及び表G中の[空欄 k],[空欄 l]に記述する内容を答えよ。\nなお,複数の改善の方針案がある場合は,被害を防ぐ効果が最も高いものを答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -2673,6 +2773,7 @@
         "sub_question_number": 1,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -2691,6 +2792,7 @@
         "sub_question_number": 1,
         "small_question_number": 3,
         "text": "",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -2709,6 +2811,7 @@
         "sub_question_number": 1,
         "small_question_number": 4,
         "text": "",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -2727,6 +2830,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[ガイドラインの作成]について答えよ。\n(1) 本文中の下線①について,どのような考え方か答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": null,
@@ -2740,6 +2844,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 本文中の下線②について,明記すべき事項を,50字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": null,
         "max_length": 50,
@@ -2753,6 +2858,7 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[過去のインシデントの確認]について答えよ。\n(1) 本文中の下線③について,影響を受けない配置方法を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -2766,6 +2872,7 @@
         "sub_question_number": 2,
         "small_question_number": 0,
         "text": "(2) 本文中の下線④について,加えた変更を,具体的に答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": null,
         "max_length": null,
@@ -2779,6 +2886,7 @@
         "sub_question_number": 3,
         "small_question_number": 1,
         "text": "(3) 本文中の下線⑤について,修正した項番と修正内容を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2797,6 +2905,7 @@
         "sub_question_number": 3,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2815,6 +2924,7 @@
         "sub_question_number": 1,
         "small_question_number": 1,
         "text": "[ガイドラインを用いた点検の実施]について答えよ。\n(1) 表2中の[空欄 ア]〜[空欄 エ]に入れる適切な項番を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2833,6 +2943,7 @@
         "sub_question_number": 1,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2851,6 +2962,7 @@
         "sub_question_number": 1,
         "small_question_number": 3,
         "text": "",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2869,6 +2981,7 @@
         "sub_question_number": 1,
         "small_question_number": 4,
         "text": "",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2887,6 +3000,7 @@
         "sub_question_number": 2,
         "small_question_number": 1,
         "text": "(2) 表2中の[空欄 a]〜[空欄 c]に入れる適切な字句を答えよ。",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2905,6 +3019,7 @@
         "sub_question_number": 2,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2923,6 +3038,7 @@
         "sub_question_number": 2,
         "small_question_number": 3,
         "text": "",
+        "text_for_ai": null,
         "type": "input",
         "options": [
             {
@@ -2941,13 +3057,9 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "本文中の下線⑥について,脆弱性管理がしやすくなる理由を,具体的に答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
-        "options": [
-            {
-                "label": null,
-                "value": null
-            }
-        ],
+        "options": null,
         "max_length": null,
         "created_at": "2025-09-18T05:32:22.000000Z",
         "updated_at": "2025-09-18T05:32:22.000000Z"
@@ -2959,13 +3071,9 @@
         "sub_question_number": 1,
         "small_question_number": 0,
         "text": "[開発工程のセキュリティ対策についての確認]について答えよ。\n(1) 本文中の[空欄 d]に入れる適切な字句を図2中の名称で答えよ。",
+        "text_for_ai": null,
         "type": "input",
-        "options": [
-            {
-                "label": null,
-                "value": null
-            }
-        ],
+        "options": null,
         "max_length": null,
         "created_at": "2025-09-18T05:32:45.000000Z",
         "updated_at": "2025-09-18T05:32:45.000000Z"
@@ -2977,6 +3085,7 @@
         "sub_question_number": 2,
         "small_question_number": 1,
         "text": "(2) 本文中の下線⑦について,(あ),(い)で実行する利点を,それぞれ40字以内で答えよ。",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -2995,6 +3104,7 @@
         "sub_question_number": 2,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": null,
         "type": "textarea",
         "options": [
             {
@@ -3013,6 +3123,7 @@
         "sub_question_number": 1,
         "small_question_number": 1,
         "text": "表1中の[空欄 a]〜[空欄 e]に入れる応答を,解答群の中から選び,記号で答えよ。なお,解答は重複して選んでもよい。\n解答群\n[ア] \"コンテンツがありません\"というメッセージが返される。\n[イ] 2025年4月1日のキャンペーンのコンテンツが返される。\n[ウ] サーバから応答が返されない。\n[エ] 内部サーバエラーが返される。\n\n[a]",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -3043,6 +3154,7 @@
         "sub_question_number": 1,
         "small_question_number": 2,
         "text": "[b]",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -3073,6 +3185,7 @@
         "sub_question_number": 1,
         "small_question_number": 3,
         "text": "[c]",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -3103,6 +3216,7 @@
         "sub_question_number": 1,
         "small_question_number": 4,
         "text": "[d]",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -3133,6 +3247,7 @@
         "sub_question_number": 1,
         "small_question_number": 5,
         "text": "[e]",
+        "text_for_ai": null,
         "type": "radio",
         "options": [
             {
@@ -3163,6 +3278,7 @@
         "sub_question_number": 1,
         "small_question_number": 1,
         "text": "本文中の[空欄 f],[空欄 g]に入れる適切な字句を,それぞれ20字以内で答えよ。",
+        "text_for_ai": "[f]と[g]は順不同である",
         "type": "input",
         "options": [
             {
@@ -3172,7 +3288,7 @@
         ],
         "max_length": 20,
         "created_at": "2025-09-19T12:30:16.000000Z",
-        "updated_at": "2025-09-19T12:30:16.000000Z"
+        "updated_at": "2025-09-22T04:42:31.000000Z"
     },
     {
         "id": 170,
@@ -3181,6 +3297,7 @@
         "sub_question_number": 1,
         "small_question_number": 2,
         "text": "",
+        "text_for_ai": "",
         "type": "input",
         "options": [
             {
@@ -3190,6 +3307,1085 @@
         ],
         "max_length": 20,
         "created_at": "2025-09-19T12:30:35.000000Z",
-        "updated_at": "2025-09-19T12:30:35.000000Z"
+        "updated_at": "2025-09-20T13:46:27.000000Z"
+    },
+    {
+        "id": 171,
+        "exam_code": "2025_haru_2",
+        "question_number": 3,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "[PF診断で検出された脆弱性]について答えよ。\n(1) 表4中の[空欄 h]〜[空欄 k]に入れる適切な字句の組合せを,解答群の中から選び,記号で答えよ。",
+        "text_for_ai": "解答群\n[ア] h:112, i:曲線, j:128, k:鍵長\n[イ] h:112, i:直線, j:128, k:署名\n[ウ] h:128, i:曲線, j:112, k:鍵長\n[エ] h:128, i:直線, j:112, k:署名",
+        "type": "radio",
+        "options": [
+            {
+                "label": "[ア]",
+                "value": "ア"
+            },
+            {
+                "label": "[イ]",
+                "value": "イ"
+            },
+            {
+                "label": "[ウ]",
+                "value": "ウ"
+            },
+            {
+                "label": "[エ]",
+                "value": "エ"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-22T01:10:15.000000Z",
+        "updated_at": "2025-09-22T01:10:15.000000Z"
+    },
+    {
+        "id": 172,
+        "exam_code": "2025_haru_2",
+        "question_number": 3,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "(2) 本文中の下線①について,検知する方法を,具体的に答えよ。",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-22T01:14:25.000000Z",
+        "updated_at": "2025-09-22T01:14:25.000000Z"
+    },
+    {
+        "id": 173,
+        "exam_code": "2025_haru_2",
+        "question_number": 3,
+        "sub_question_number": 3,
+        "small_question_number": 0,
+        "text": "(3) 本文中の下線②について,採用した対策を,20字以内で具体的に答えよ。",
+        "text_for_ai": "",
+        "type": "input",
+        "options": null,
+        "max_length": 20,
+        "created_at": "2025-09-22T01:14:55.000000Z",
+        "updated_at": "2025-09-22T01:14:55.000000Z"
+    },
+    {
+        "id": 174,
+        "exam_code": "2025_haru_2",
+        "question_number": 4,
+        "sub_question_number": 1,
+        "small_question_number": 1,
+        "text": "[Webアプリ診断で検出された脆弱性]について答えよ。\n(1) 本文中の下線③について,脆弱性WA-1のACがLと評価された評価根拠と脆弱性WB-1のACがHと評価された評価根拠を,それぞれ具体的に答えよ。",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[WA-1]",
+                "value": "WA-1"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-22T01:17:11.000000Z",
+        "updated_at": "2025-09-22T04:42:53.000000Z"
+    },
+    {
+        "id": 175,
+        "exam_code": "2025_haru_2",
+        "question_number": 4,
+        "sub_question_number": 1,
+        "small_question_number": 2,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[WB-1]",
+                "value": "WB-1"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-22T01:17:48.000000Z",
+        "updated_at": "2025-09-22T04:43:01.000000Z"
+    },
+    {
+        "id": 176,
+        "exam_code": "2025_haru_2",
+        "question_number": 4,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "(2) 本文中の下線④について,該当するサイトCの仕様を,図2中の項番から選び,答えよ。",
+        "text_for_ai": "",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-22T01:18:21.000000Z",
+        "updated_at": "2025-09-22T01:18:21.000000Z"
+    },
+    {
+        "id": 178,
+        "exam_code": "2025_haru_2",
+        "question_number": 5,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "(2) 本文中の[空欄 l]に入れる適切な字句を,15字以内で答えよ。",
+        "text_for_ai": "",
+        "type": "input",
+        "options": null,
+        "max_length": 15,
+        "created_at": "2025-09-22T01:19:14.000000Z",
+        "updated_at": "2025-09-22T01:19:14.000000Z"
+    },
+    {
+        "id": 179,
+        "exam_code": "2025_haru_2",
+        "question_number": 5,
+        "sub_question_number": 3,
+        "small_question_number": 0,
+        "text": "(3) 本文中の下線⑥について,妥当である理由を,30字以内で答えよ。",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": null,
+        "max_length": 30,
+        "created_at": "2025-09-22T01:19:45.000000Z",
+        "updated_at": "2025-09-22T01:19:45.000000Z"
+    },
+    {
+        "id": 180,
+        "exam_code": "2025_haru_2",
+        "question_number": 6,
+        "sub_question_number": 1,
+        "small_question_number": 1,
+        "text": "表7中及び表8中の[空欄 m]〜[空欄 t]に入れる対応優先度を答えよ。",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[m]",
+                "value": "m"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-22T01:21:00.000000Z",
+        "updated_at": "2025-09-22T01:21:00.000000Z"
+    },
+    {
+        "id": 181,
+        "exam_code": "2025_haru_2",
+        "question_number": 6,
+        "sub_question_number": 1,
+        "small_question_number": 2,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[n]",
+                "value": "n"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-22T01:21:31.000000Z",
+        "updated_at": "2025-09-22T01:21:31.000000Z"
+    },
+    {
+        "id": 182,
+        "exam_code": "2025_haru_2",
+        "question_number": 6,
+        "sub_question_number": 1,
+        "small_question_number": 3,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[o]",
+                "value": "o"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-22T01:22:03.000000Z",
+        "updated_at": "2025-09-22T01:22:03.000000Z"
+    },
+    {
+        "id": 183,
+        "exam_code": "2025_haru_2",
+        "question_number": 6,
+        "sub_question_number": 1,
+        "small_question_number": 4,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[p]",
+                "value": "p"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-22T01:22:27.000000Z",
+        "updated_at": "2025-09-22T01:22:27.000000Z"
+    },
+    {
+        "id": 184,
+        "exam_code": "2025_haru_2",
+        "question_number": 6,
+        "sub_question_number": 1,
+        "small_question_number": 5,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[q]",
+                "value": "q"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-22T01:22:55.000000Z",
+        "updated_at": "2025-09-22T01:22:55.000000Z"
+    },
+    {
+        "id": 185,
+        "exam_code": "2025_haru_2",
+        "question_number": 6,
+        "sub_question_number": 1,
+        "small_question_number": 6,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[r]",
+                "value": "r"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-22T01:23:31.000000Z",
+        "updated_at": "2025-09-22T01:23:31.000000Z"
+    },
+    {
+        "id": 186,
+        "exam_code": "2025_haru_2",
+        "question_number": 6,
+        "sub_question_number": 1,
+        "small_question_number": 7,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[s]",
+                "value": "s"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-22T01:24:00.000000Z",
+        "updated_at": "2025-09-22T01:24:00.000000Z"
+    },
+    {
+        "id": 187,
+        "exam_code": "2025_haru_2",
+        "question_number": 6,
+        "sub_question_number": 1,
+        "small_question_number": 8,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[t]",
+                "value": "t"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-22T01:24:28.000000Z",
+        "updated_at": "2025-09-22T01:24:28.000000Z"
+    },
+    {
+        "id": 188,
+        "exam_code": "2025_haru_2",
+        "question_number": 5,
+        "sub_question_number": 1,
+        "small_question_number": 1,
+        "text": "[脆弱性評価方法の検討]について答えよ。\n(1) 本文中の下線⑤について,現状値は手間が掛かる理由とEPSS値は手間が掛からない理由を,それぞれ40字以内で答えよ。",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[現状値]",
+                "value": "現状値"
+            }
+        ],
+        "max_length": 40,
+        "created_at": "2025-09-22T04:46:56.000000Z",
+        "updated_at": "2025-09-22T04:46:56.000000Z"
+    },
+    {
+        "id": 189,
+        "exam_code": "2025_haru_2",
+        "question_number": 5,
+        "sub_question_number": 1,
+        "small_question_number": 2,
+        "text": "",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[EPSS値]",
+                "value": "EPSS値"
+            }
+        ],
+        "max_length": 40,
+        "created_at": "2025-09-22T04:49:45.000000Z",
+        "updated_at": "2025-09-22T04:49:45.000000Z"
+    },
+    {
+        "id": 190,
+        "exam_code": "2099_haru_1",
+        "question_number": 3,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "checkbox_test",
+        "text_for_ai": "",
+        "type": "checkbox",
+        "options": [
+            {
+                "label": "[a]",
+                "value": "a"
+            },
+            {
+                "label": "[b]",
+                "value": "b"
+            },
+            {
+                "label": "[c]",
+                "value": "c"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-22T05:34:33.000000Z",
+        "updated_at": "2025-09-22T05:34:33.000000Z"
+    },
+    {
+        "id": 191,
+        "exam_code": "2099_haru_1",
+        "question_number": 3,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-22T05:35:52.000000Z",
+        "updated_at": "2025-09-22T05:39:20.000000Z"
+    },
+    {
+        "id": 192,
+        "exam_code": "2025_haru_3",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "[Fアプリの脆弱性診断結果]について答えよ。\n(1) 表1中の下線①について,アクセスキーを取得する方法を,具体的に答えよ。",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-28T13:06:18.000000Z",
+        "updated_at": "2025-09-28T13:06:18.000000Z"
+    },
+    {
+        "id": 193,
+        "exam_code": "2025_haru_3",
+        "question_number": 1,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "(2) 表1中の下線②について,アクセスキーを取得する方法を,具体的に答えよ。",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-28T13:06:44.000000Z",
+        "updated_at": "2025-09-28T13:06:44.000000Z"
+    },
+    {
+        "id": 194,
+        "exam_code": "2025_haru_3",
+        "question_number": 1,
+        "sub_question_number": 3,
+        "small_question_number": 0,
+        "text": "(3) 表1中の下線③について,ダウンロードする方法を,具体的に答えよ。",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-28T13:07:03.000000Z",
+        "updated_at": "2025-09-28T13:07:03.000000Z"
+    },
+    {
+        "id": 195,
+        "exam_code": "2025_haru_3",
+        "question_number": 1,
+        "sub_question_number": 4,
+        "small_question_number": 0,
+        "text": "(4) 表1中の下線④について,攻撃者のWebサイトにアクセスさせることができるように細工したURLの例を,攻撃者が取得したドメイン名をk-sha.co.jpとした場合で答えよ。",
+        "text_for_ai": "",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-28T13:07:44.000000Z",
+        "updated_at": "2025-10-03T12:37:09.000000Z"
+    },
+    {
+        "id": 196,
+        "exam_code": "2025_haru_3",
+        "question_number": 2,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "[脆弱性1]について答えよ。\n(1) 図9中の下線⑤について,サーバ証明書のSubject Alternative Nameの値を,具体的に答えよ。",
+        "text_for_ai": "",
+        "type": "input",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-28T13:08:40.000000Z",
+        "updated_at": "2025-09-28T13:08:40.000000Z"
+    },
+    {
+        "id": 197,
+        "exam_code": "2025_haru_3",
+        "question_number": 2,
+        "sub_question_number": 2,
+        "small_question_number": 1,
+        "text": "(2) 図9中の[空欄 a]~[空欄h]に入れる適切な字句を,解答群の中から選び,記号で答えよ。\n解答群\nア Certificate\nイ Certificate Verify\nウ Client Hello\nエ CONNECT ○○○.○○○.○○○.○○○:443 HTTP\/1.1\nオ CONNECT www.a-sha.co.jp:443 HTTP\/1.1\nカ Finished\nキ GET \/campaign\/⬜︎⬜︎⬜︎ HTTP\/1.1\nク HTTPステータスコード101 (Switching Protocols)\nケ HTTPステータスコード200 (OK)\nコ Server Hello",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[a]",
+                "value": "a"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-28T13:11:20.000000Z",
+        "updated_at": "2025-09-28T13:11:20.000000Z"
+    },
+    {
+        "id": 198,
+        "exam_code": "2025_haru_3",
+        "question_number": 2,
+        "sub_question_number": 2,
+        "small_question_number": 2,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[b]",
+                "value": "b"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-28T13:12:02.000000Z",
+        "updated_at": "2025-09-28T13:12:02.000000Z"
+    },
+    {
+        "id": 199,
+        "exam_code": "2025_haru_3",
+        "question_number": 2,
+        "sub_question_number": 2,
+        "small_question_number": 3,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[c]",
+                "value": "c"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-28T13:12:39.000000Z",
+        "updated_at": "2025-09-28T13:12:39.000000Z"
+    },
+    {
+        "id": 200,
+        "exam_code": "2025_haru_3",
+        "question_number": 2,
+        "sub_question_number": 2,
+        "small_question_number": 4,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[d]",
+                "value": "d"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-28T13:12:58.000000Z",
+        "updated_at": "2025-09-28T13:12:58.000000Z"
+    },
+    {
+        "id": 202,
+        "exam_code": "2025_haru_3",
+        "question_number": 2,
+        "sub_question_number": 2,
+        "small_question_number": 5,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[e]",
+                "value": "e"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-28T13:15:06.000000Z",
+        "updated_at": "2025-09-28T13:15:06.000000Z"
+    },
+    {
+        "id": 203,
+        "exam_code": "2025_haru_3",
+        "question_number": 2,
+        "sub_question_number": 2,
+        "small_question_number": 6,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[f]",
+                "value": "f"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-28T13:15:53.000000Z",
+        "updated_at": "2025-09-28T13:15:53.000000Z"
+    },
+    {
+        "id": 204,
+        "exam_code": "2025_haru_3",
+        "question_number": 2,
+        "sub_question_number": 2,
+        "small_question_number": 7,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[g]",
+                "value": "g"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-28T13:16:07.000000Z",
+        "updated_at": "2025-09-28T13:16:07.000000Z"
+    },
+    {
+        "id": 205,
+        "exam_code": "2025_haru_3",
+        "question_number": 2,
+        "sub_question_number": 2,
+        "small_question_number": 8,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[h]",
+                "value": "h"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-28T13:16:25.000000Z",
+        "updated_at": "2025-09-28T13:16:25.000000Z"
+    },
+    {
+        "id": 206,
+        "exam_code": "2025_haru_3",
+        "question_number": 2,
+        "sub_question_number": 3,
+        "small_question_number": 0,
+        "text": "(3) 本文中の下線⑥について,設定の内容を,具体的に答えよ。",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-28T13:17:31.000000Z",
+        "updated_at": "2025-09-28T13:17:31.000000Z"
+    },
+    {
+        "id": 207,
+        "exam_code": "2025_haru_3",
+        "question_number": 3,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "設問3\n本文中の[空欄 i]に入れる記号を,図4中の(あ)~(お)から選び,答えよ。",
+        "text_for_ai": "",
+        "type": "radio",
+        "options": [
+            {
+                "label": "[あ]",
+                "value": "あ"
+            },
+            {
+                "label": "[い]",
+                "value": "い"
+            },
+            {
+                "label": "[う]",
+                "value": "う"
+            },
+            {
+                "label": "[え]",
+                "value": "え"
+            },
+            {
+                "label": "[お]",
+                "value": "お"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-09-28T13:18:59.000000Z",
+        "updated_at": "2025-09-28T13:18:59.000000Z"
+    },
+    {
+        "id": 208,
+        "exam_code": "2025_haru_3",
+        "question_number": 4,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "[脆弱性3]について答えよ。\n(1) 本文中の下線⑦について,問題点を,20字以内で答えよ。",
+        "text_for_ai": "",
+        "type": "input",
+        "options": null,
+        "max_length": 20,
+        "created_at": "2025-09-28T13:20:08.000000Z",
+        "updated_at": "2025-09-28T13:20:08.000000Z"
+    },
+    {
+        "id": 209,
+        "exam_code": "2025_haru_3",
+        "question_number": 4,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "(2) 本文中の下線⑧について,実装する機能を,具体的に答えよ。",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": null,
+        "max_length": null,
+        "created_at": "2025-09-28T13:20:35.000000Z",
+        "updated_at": "2025-09-28T13:20:35.000000Z"
+    },
+    {
+        "id": 210,
+        "exam_code": "2025_haru_4",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 1,
+        "text": "本文中の下線①について,設定を変更したサーバを,図1中から一つ選び,サーバ名を答えよ。また,その設定の変更内容を,30字以内で具体的に答えよ。",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[サーバ名]",
+                "value": "サーバ名"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-10-04T12:36:38.000000Z",
+        "updated_at": "2025-10-04T12:36:38.000000Z"
+    },
+    {
+        "id": 211,
+        "exam_code": "2025_haru_4",
+        "question_number": 1,
+        "sub_question_number": 1,
+        "small_question_number": 2,
+        "text": "",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[変更内容]",
+                "value": "変更内容"
+            }
+        ],
+        "max_length": 30,
+        "created_at": "2025-10-04T12:37:23.000000Z",
+        "updated_at": "2025-10-04T12:37:23.000000Z"
+    },
+    {
+        "id": 212,
+        "exam_code": "2025_haru_4",
+        "question_number": 2,
+        "sub_question_number": 1,
+        "small_question_number": 1,
+        "text": "[目標K-1の実現]について答えよ。\n(1) 図2中の[空欄 a], [空欄 b]に入れる適切な内容を,それぞれ30字以内で答えよ。",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[a]",
+                "value": "a"
+            }
+        ],
+        "max_length": 30,
+        "created_at": "2025-10-04T12:38:23.000000Z",
+        "updated_at": "2025-10-04T12:38:23.000000Z"
+    },
+    {
+        "id": 213,
+        "exam_code": "2025_haru_4",
+        "question_number": 2,
+        "sub_question_number": 1,
+        "small_question_number": 2,
+        "text": "",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[b]",
+                "value": "b"
+            }
+        ],
+        "max_length": 30,
+        "created_at": "2025-10-04T12:38:44.000000Z",
+        "updated_at": "2025-10-04T12:38:44.000000Z"
+    },
+    {
+        "id": 214,
+        "exam_code": "2025_haru_4",
+        "question_number": 2,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "(2) 本文中の[空欄 c]に入れる適切な字句を,英字10字以内で答えよ。",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[c]",
+                "value": "c"
+            }
+        ],
+        "max_length": 10,
+        "created_at": "2025-10-04T12:39:45.000000Z",
+        "updated_at": "2025-10-04T12:39:45.000000Z"
+    },
+    {
+        "id": 215,
+        "exam_code": "2025_haru_4",
+        "question_number": 2,
+        "sub_question_number": 3,
+        "small_question_number": 1,
+        "text": "(3) 図3中の[空欄 あ]~[空欄 う]に入れる適切な文字を,X,Y,Zから選び,答えよ。",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[あ]",
+                "value": "あ"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-10-04T12:40:51.000000Z",
+        "updated_at": "2025-10-04T12:40:51.000000Z"
+    },
+    {
+        "id": 216,
+        "exam_code": "2025_haru_4",
+        "question_number": 2,
+        "sub_question_number": 3,
+        "small_question_number": 2,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[い]",
+                "value": "い"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-10-04T12:41:28.000000Z",
+        "updated_at": "2025-10-04T12:41:28.000000Z"
+    },
+    {
+        "id": 217,
+        "exam_code": "2025_haru_4",
+        "question_number": 2,
+        "sub_question_number": 3,
+        "small_question_number": 3,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[う]",
+                "value": "う"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-10-04T12:41:47.000000Z",
+        "updated_at": "2025-10-04T12:41:47.000000Z"
+    },
+    {
+        "id": 218,
+        "exam_code": "2025_haru_4",
+        "question_number": 2,
+        "sub_question_number": 4,
+        "small_question_number": 1,
+        "text": "(4) 図3中の[空欄 d]~[空欄 h]に入れる適切な内容を,次の解答群の中から選び,記号で答えよ。\n解答群\nア: FQDN\nイ: GIP\nウ: GIP割振り元の事業者名\nエ: OS\nオ: V社\nカ: 位置情報\nキ: 担当者識別番号\nク: ドメイン名\nケ: ポート番号\nコ: メールアドレス",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[d]",
+                "value": "d"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-10-04T12:43:47.000000Z",
+        "updated_at": "2025-10-04T12:43:47.000000Z"
+    },
+    {
+        "id": 219,
+        "exam_code": "2025_haru_4",
+        "question_number": 2,
+        "sub_question_number": 4,
+        "small_question_number": 2,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[e]",
+                "value": "e"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-10-04T12:44:16.000000Z",
+        "updated_at": "2025-10-04T12:44:16.000000Z"
+    },
+    {
+        "id": 220,
+        "exam_code": "2025_haru_4",
+        "question_number": 2,
+        "sub_question_number": 4,
+        "small_question_number": 3,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[f]",
+                "value": "f"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-10-04T12:44:30.000000Z",
+        "updated_at": "2025-10-04T12:44:30.000000Z"
+    },
+    {
+        "id": 221,
+        "exam_code": "2025_haru_4",
+        "question_number": 2,
+        "sub_question_number": 4,
+        "small_question_number": 4,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[g]",
+                "value": "g"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-10-04T12:44:44.000000Z",
+        "updated_at": "2025-10-04T12:44:44.000000Z"
+    },
+    {
+        "id": 222,
+        "exam_code": "2025_haru_4",
+        "question_number": 2,
+        "sub_question_number": 4,
+        "small_question_number": 5,
+        "text": "",
+        "text_for_ai": "",
+        "type": "input",
+        "options": [
+            {
+                "label": "[h]",
+                "value": "h"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-10-04T12:45:00.000000Z",
+        "updated_at": "2025-10-04T12:45:00.000000Z"
+    },
+    {
+        "id": 223,
+        "exam_code": "2025_haru_4",
+        "question_number": 3,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "[V社の管理すべきIT資産の確認と管理の強化]について答えよ。\n(1) 本文中の下線②について,調査方法を,40字以内で具体的に答えよ。",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": null,
+        "max_length": 40,
+        "created_at": "2025-10-04T12:45:37.000000Z",
+        "updated_at": "2025-10-04T12:45:37.000000Z"
+    },
+    {
+        "id": 224,
+        "exam_code": "2025_haru_4",
+        "question_number": 3,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "(2) 本文中の下線③について,調査方法を,40字以内で具体的に答えよ。",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": null,
+        "max_length": 40,
+        "created_at": "2025-10-04T12:46:08.000000Z",
+        "updated_at": "2025-10-04T12:46:08.000000Z"
+    },
+    {
+        "id": 225,
+        "exam_code": "2025_haru_4",
+        "question_number": 3,
+        "sub_question_number": 3,
+        "small_question_number": 1,
+        "text": "(3) 本文中の下線④について,二つの場合における主な対応方法を,それぞれ35字以内で具体的に答えよ。",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[する場合]",
+                "value": "する場合"
+            }
+        ],
+        "max_length": 35,
+        "created_at": "2025-10-04T12:47:02.000000Z",
+        "updated_at": "2025-10-04T12:47:02.000000Z"
+    },
+    {
+        "id": 226,
+        "exam_code": "2025_haru_4",
+        "question_number": 3,
+        "sub_question_number": 3,
+        "small_question_number": 2,
+        "text": "",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[しない場合]",
+                "value": "しない場合"
+            }
+        ],
+        "max_length": 35,
+        "created_at": "2025-10-04T12:47:41.000000Z",
+        "updated_at": "2025-10-04T12:47:41.000000Z"
+    },
+    {
+        "id": 227,
+        "exam_code": "2025_haru_4",
+        "question_number": 4,
+        "sub_question_number": 1,
+        "small_question_number": 0,
+        "text": "[脆弱性管理の改善]について答えよ。\n(1) 本文中の下線⑤について,CVSSの最新のバージョン番号を,4字以内で答えよ。",
+        "text_for_ai": "",
+        "type": "input",
+        "options": null,
+        "max_length": 4,
+        "created_at": "2025-10-04T12:48:21.000000Z",
+        "updated_at": "2025-10-04T12:48:21.000000Z"
+    },
+    {
+        "id": 228,
+        "exam_code": "2025_haru_4",
+        "question_number": 4,
+        "sub_question_number": 2,
+        "small_question_number": 0,
+        "text": "(2) 本文中の下線⑥について,KEVカタログのフルスペルを,解答群の中から選び,記号で答えよ。\n解答群\nア: Key Exploited Vulnerabilities catalog\nイ: Key Exposure Vulnerabilities catalog\nウ: Known Exploited Vulnerabilities catalog\nエ: Known Exposure Vulnerabilities catalog",
+        "text_for_ai": "",
+        "type": "radio",
+        "options": [
+            {
+                "label": "[ア]",
+                "value": "ア"
+            },
+            {
+                "label": "[イ]",
+                "value": "イ"
+            },
+            {
+                "label": "[ウ]",
+                "value": "ウ"
+            },
+            {
+                "label": "[エ]",
+                "value": "エ"
+            }
+        ],
+        "max_length": null,
+        "created_at": "2025-10-04T12:49:44.000000Z",
+        "updated_at": "2025-10-04T12:49:44.000000Z"
+    },
+    {
+        "id": 229,
+        "exam_code": "2025_haru_4",
+        "question_number": 4,
+        "sub_question_number": 3,
+        "small_question_number": 0,
+        "text": "(3) 本文中の下線⑥について,KEVカタログに掲載される脆弱性はどのようなものか。掲載される条件のうち主なものを,20字以内で答えよ。",
+        "text_for_ai": "",
+        "type": "input",
+        "options": null,
+        "max_length": 20,
+        "created_at": "2025-10-04T12:50:38.000000Z",
+        "updated_at": "2025-10-04T12:50:38.000000Z"
+    },
+    {
+        "id": 230,
+        "exam_code": "2025_haru_4",
+        "question_number": 4,
+        "sub_question_number": 4,
+        "small_question_number": 1,
+        "text": "(4) 本文中の下線⑦について,表1の脆弱性管理の項番1,2の改善策を,項番1の改善策は60字以内で,項番2の改善策は40字以内でそれぞれ具体的に答えよ。",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[項番1]",
+                "value": "項番1"
+            }
+        ],
+        "max_length": 60,
+        "created_at": "2025-10-04T12:51:30.000000Z",
+        "updated_at": "2025-10-04T12:51:30.000000Z"
+    },
+    {
+        "id": 231,
+        "exam_code": "2025_haru_4",
+        "question_number": 4,
+        "sub_question_number": 4,
+        "small_question_number": 2,
+        "text": "",
+        "text_for_ai": "",
+        "type": "textarea",
+        "options": [
+            {
+                "label": "[項番2]",
+                "value": "項番2"
+            }
+        ],
+        "max_length": 40,
+        "created_at": "2025-10-04T12:52:05.000000Z",
+        "updated_at": "2025-10-04T12:52:05.000000Z"
     }
 ]

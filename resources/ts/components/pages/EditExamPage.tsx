@@ -32,7 +32,7 @@ export const EditExamPage: FC = memo(() => {
     const parsedSection = parseInt(section ?? "", 10);
 
     const { checkPdfExists } = useExam();
-    const { getExamSentence } = useAdmin(parsedYear, season, parsedSection);
+    const { getExamSentence } = useAdmin();
 
     if (isNaN(parsedYear) || !season || isNaN(parsedSection)) {
         return <Page404 />;

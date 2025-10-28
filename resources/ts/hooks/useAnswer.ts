@@ -2,11 +2,12 @@ import { useToast } from "@chakra-ui/react";
 import { useAtom } from "jotai";
 
 import {
+    AnswerInputs,
     ErrorResponse,
 } from "../types/form";
 import { axiosInstance } from "./axiosInstance";
 import { loadingAtom } from "../states/loadingAtom";
-import { Correction, AnswerInputs } from "../components/organisms/QuestionAndAnswerForm";
+import { Correction } from "../components/organisms/QuestionAndAnswerForm";
 import { useChakraToast } from "../utils/toastUtils";
 
 export const useAnswer = () => {

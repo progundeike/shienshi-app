@@ -1,14 +1,9 @@
 import axios from "axios";
-import { atom, useAtom } from "jotai";
-
 import { axiosInstance } from "./axiosInstance";
 import { useChakraToast } from "../utils/toastUtils";
 import { QuestionForEdit, UpdateQuestionInputs } from "./useExam";
-import { ErrorResponse, ModelAnswer } from "../types/form";
-import { get } from "react-hook-form";
-import { IoReturnUpBack } from "react-icons/io5";
-import { AnswerInputs } from "../components/organisms/QuestionAndAnswerForm";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AnswerInputs, ErrorResponse, ModelAnswer } from "../types/form";
+import { useMutation } from "@tanstack/react-query";
 
 export type ExamSentenceResponse = {
     sentence: string;
@@ -16,11 +11,7 @@ export type ExamSentenceResponse = {
     reviewComment: string;
 }
 
-export const useAdmin = (
-    year: number,
-    season: string,
-    section: number
-) => {
+export const useAdmin = () => {
     // const [isLoading, setIsLoading] = useAtom(loadingAtom);
     const { unexpectedServerErrorToast, toast } = useChakraToast();
 
@@ -217,12 +208,20 @@ export const useAdmin = (
         );  
     }
 
+    type UpdateModelAnswerParams = {
+        modelAnswers: AnswerInputs;
+        year: number;
+        season: string;
+        section: number;
+    }
+
     // 模範解答の更新のMutationフック
-    const updateModelAnswers = useMutation({
-        mutationFn: async (modelAnswer: AnswerInputs) => {
+    const updateModelAnswers = useMutation<void, Error, UpdateModelAnswerParams>({
+        mutationFn: async ({year, season, section, modelAnswers}) => {
+            console.log(year, season, section, modelAnswers)
             await axiosInstance.post(
                 `/api/admin/model-answers/${year}-${season}-${section}`,
-                modelAnswer
+                {modelAnswers}
             );
         },
         onSuccess: () => {
@@ -236,8 +235,15 @@ export const useAdmin = (
         onError: () => toast(unexpectedServerErrorToast),
     });
 
-    const deleteQuestion = useMutation({
-        mutationFn: async (questionId: string) => {
+    type DeleteQuestionIdParams = {
+        questionId: string;
+        year: number;
+        season: string;
+        section: number;
+    }
+
+    const deleteQuestion = useMutation<void, Error, DeleteQuestionIdParams>({
+        mutationFn: async ({year, season, section, questionId}) => {
             await axiosInstance.delete(`/api/admin/question/${year}-${season}-${section}/${questionId}`);
         },
         onSuccess: () => {

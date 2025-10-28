@@ -30,9 +30,21 @@ class AdminController extends Controller
             'textForAi' => 'nullable|string|max:5000',
             'type' => 'required|string|in:textarea,radio,checkbox,input',
             'options' => 'nullable|array',
+            'options.*' => 'required|required_array_keys:label,value',
             'maxLength' => 'nullable|integer|max:5000',
         ]);
 
+        // optionsがkey,valueともに空文字列の配列の場合はnullにする
+        if (isset($validated['options'])) {
+            $checkedOptions = [];
+            foreach ($validated['options'] as $option) {
+                // keyとvalueで構成されていることを確認
+                if ($option['label'] || $option['value']) {
+                    $checkedOptions[] = $option;
+                }
+            }
+            $validated['options'] = $checkedOptions;
+        }
 
         // numericで受け入れた文字列を念の為 int にキャスト
         $validated['year'] = (int) $validated['year'];
@@ -250,20 +262,18 @@ class AdminController extends Controller
     public function updateModelAnswers(Request $request, string $year, string $season, string $section): JsonResponse
     {
         $this->checkIsAdmin();
-        Log::debug($request->answer);
-
-        // return response()->json(['message' => 'Model answers updated successfully'], 200);
+        Log::debug('modelAnswers', ['modelAnswers' => $request->input('modelAnswers')]);
 
         // リクエストのバリデーション
         $validated = $request->validate([
-            'answer' => 'required|array'
+            'modelAnswers' => 'required|array'
         ]);
 
         $examCode = $year . '_' . $season . '_' . $section;
 
         // 模範解答をアップデート
         try {
-            foreach ($validated['answer'] as $questionCode => $text) {
+            foreach ($validated['modelAnswers'] as $questionCode => $text) {
                 ModelAnswer::updateOrCreate(
                     [
                         'exam_code' => $examCode,
@@ -311,11 +321,6 @@ class AdminController extends Controller
     ): array | null {
         $this->checkIsAdmin();
 
-        Log::debug("fetchQuestionsForEdit called", [
-            'year' => $year,
-            'season' => $season,
-            'section' => $section,
-        ]);
         $examCode = $year . '_' . $season . '_' . $section;
         $query = Question::where('exam_code', $examCode);
         $result = $query->get();

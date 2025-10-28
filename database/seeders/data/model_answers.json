@@ -1294,5 +1294,541 @@
         "text": "CI\/CDパイプラインの管理機能を使って自動実行することができる。",
         "created_at": "2025-09-18T05:39:56.000000Z",
         "updated_at": "2025-09-18T05:39:56.000000Z"
+    },
+    {
+        "id": 163,
+        "exam_code": "2025_haru_2",
+        "question_code": "1_1_1",
+        "text": "ア",
+        "created_at": "2025-09-22T01:30:54.000000Z",
+        "updated_at": "2025-09-22T01:30:54.000000Z"
+    },
+    {
+        "id": 164,
+        "exam_code": "2025_haru_2",
+        "question_code": "1_1_2",
+        "text": "ア",
+        "created_at": "2025-09-22T01:30:54.000000Z",
+        "updated_at": "2025-09-22T01:30:54.000000Z"
+    },
+    {
+        "id": 165,
+        "exam_code": "2025_haru_2",
+        "question_code": "1_1_3",
+        "text": "ア",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T01:30:55.000000Z"
+    },
+    {
+        "id": 166,
+        "exam_code": "2025_haru_2",
+        "question_code": "1_1_4",
+        "text": "ア",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T01:30:55.000000Z"
+    },
+    {
+        "id": 167,
+        "exam_code": "2025_haru_2",
+        "question_code": "1_1_5",
+        "text": "イ",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T01:30:55.000000Z"
+    },
+    {
+        "id": 168,
+        "exam_code": "2025_haru_2",
+        "question_code": "2_1_1",
+        "text": "新たな脆弱性が発見されたこと",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T01:30:55.000000Z"
+    },
+    {
+        "id": 169,
+        "exam_code": "2025_haru_2",
+        "question_code": "2_1_2",
+        "text": "リスクが変わったと評価し値を変えたこと",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T01:30:55.000000Z"
+    },
+    {
+        "id": 170,
+        "exam_code": "2025_haru_2",
+        "question_code": "3_1_0",
+        "text": "ウ",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T01:30:55.000000Z"
+    },
+    {
+        "id": 171,
+        "exam_code": "2025_haru_2",
+        "question_code": "3_2_0",
+        "text": "OpenSSHのログに認証タイムアウトのメッセージの出力が多数あったらサイト担当者に電子メールでアラートを送る。",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T01:30:55.000000Z"
+    },
+    {
+        "id": 172,
+        "exam_code": "2025_haru_2",
+        "question_code": "3_3_0",
+        "text": "クライアント認証を行う。",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T01:30:55.000000Z"
+    },
+    {
+        "id": 173,
+        "exam_code": "2025_haru_2",
+        "question_code": "4_1_1",
+        "text": "パラメータitemの値が容易に推測できること",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T01:30:55.000000Z"
+    },
+    {
+        "id": 174,
+        "exam_code": "2025_haru_2",
+        "question_code": "4_1_2",
+        "text": "(解答例1)発注確認機能のURLが推測困難であること(解答例2)発注確認機能のURLを入手する必要があること",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T01:30:55.000000Z"
+    },
+    {
+        "id": 175,
+        "exam_code": "2025_haru_2",
+        "question_code": "4_2_0",
+        "text": "3",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T01:30:55.000000Z"
+    },
+    {
+        "id": 176,
+        "exam_code": "2025_haru_2",
+        "question_code": "5_1_0",
+        "text": null,
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T01:30:55.000000Z"
+    },
+    {
+        "id": 177,
+        "exam_code": "2025_haru_2",
+        "question_code": "5_2_0",
+        "text": "EPSS値の監視",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T05:09:23.000000Z"
+    },
+    {
+        "id": 178,
+        "exam_code": "2025_haru_2",
+        "question_code": "5_3_0",
+        "text": "診断時に実際に悪用できることを確認しているから",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T05:09:23.000000Z"
+    },
+    {
+        "id": 179,
+        "exam_code": "2025_haru_2",
+        "question_code": "6_1_1",
+        "text": "A",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T05:09:23.000000Z"
+    },
+    {
+        "id": 180,
+        "exam_code": "2025_haru_2",
+        "question_code": "6_1_2",
+        "text": "A",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T05:09:23.000000Z"
+    },
+    {
+        "id": 181,
+        "exam_code": "2025_haru_2",
+        "question_code": "6_1_3",
+        "text": "C",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T05:09:23.000000Z"
+    },
+    {
+        "id": 182,
+        "exam_code": "2025_haru_2",
+        "question_code": "6_1_4",
+        "text": "A",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T05:09:23.000000Z"
+    },
+    {
+        "id": 183,
+        "exam_code": "2025_haru_2",
+        "question_code": "6_1_5",
+        "text": "B",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T05:09:23.000000Z"
+    },
+    {
+        "id": 184,
+        "exam_code": "2025_haru_2",
+        "question_code": "6_1_6",
+        "text": "B",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T05:09:23.000000Z"
+    },
+    {
+        "id": 185,
+        "exam_code": "2025_haru_2",
+        "question_code": "6_1_7",
+        "text": "A",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T05:09:23.000000Z"
+    },
+    {
+        "id": 186,
+        "exam_code": "2025_haru_2",
+        "question_code": "6_1_8",
+        "text": "S",
+        "created_at": "2025-09-22T01:30:55.000000Z",
+        "updated_at": "2025-09-22T05:09:23.000000Z"
+    },
+    {
+        "id": 187,
+        "exam_code": "2025_haru_2",
+        "question_code": "5_1_1",
+        "text": "攻撃コードなどの情報を多くの公開サイトにある情報から判断する必要があるから",
+        "created_at": "2025-09-22T05:08:08.000000Z",
+        "updated_at": "2025-09-22T05:08:08.000000Z"
+    },
+    {
+        "id": 188,
+        "exam_code": "2025_haru_2",
+        "question_code": "5_1_2",
+        "text": "FIRSTのサイトで公開されている値をそのまま使えばよいから",
+        "created_at": "2025-09-22T05:08:08.000000Z",
+        "updated_at": "2025-09-22T05:08:08.000000Z"
+    },
+    {
+        "id": 189,
+        "exam_code": "2025_haru_3",
+        "question_code": "1_1_0",
+        "text": "Cサービスに送られたHTTPリクエストのAuthorizationヘッダーから取り出す。",
+        "created_at": "2025-10-03T12:36:44.000000Z",
+        "updated_at": "2025-10-03T12:42:46.000000Z"
+    },
+    {
+        "id": 190,
+        "exam_code": "2025_haru_3",
+        "question_code": "1_2_0",
+        "text": "Fアプリを解析し,暗号化されたアクセスキー並びに共通鍵及び初期ベクトルを入手し,暗号化されたアクセスキーをAES-CBCで復号する。",
+        "created_at": "2025-10-03T12:36:44.000000Z",
+        "updated_at": "2025-10-03T12:36:44.000000Z"
+    },
+    {
+        "id": 191,
+        "exam_code": "2025_haru_3",
+        "question_code": "1_3_0",
+        "text": "ファイル名に含まれる注文番号を00000001から順に増やしてダウンロードを試行する。",
+        "created_at": "2025-10-03T12:36:44.000000Z",
+        "updated_at": "2025-10-03T12:36:44.000000Z"
+    },
+    {
+        "id": 192,
+        "exam_code": "2025_haru_3",
+        "question_code": "1_4_0",
+        "text": "(解答例1)https:\/\/www.a-sha.co.jp.k-sha.co.jp\/ (解答例2)https:\/\/www.a-sha.co.jp@k-sha.co.jp\/ (解答例3)https:\/\/k-sha.co.jp\/",
+        "created_at": "2025-10-03T12:36:44.000000Z",
+        "updated_at": "2025-10-03T12:42:23.000000Z"
+    },
+    {
+        "id": 193,
+        "exam_code": "2025_haru_3",
+        "question_code": "2_1_0",
+        "text": "www.a-sha.co.jp",
+        "created_at": "2025-10-03T12:36:44.000000Z",
+        "updated_at": "2025-10-03T12:42:23.000000Z"
+    },
+    {
+        "id": 194,
+        "exam_code": "2025_haru_3",
+        "question_code": "2_2_1",
+        "text": "オ",
+        "created_at": "2025-10-03T12:36:44.000000Z",
+        "updated_at": "2025-10-03T12:42:23.000000Z"
+    },
+    {
+        "id": 195,
+        "exam_code": "2025_haru_3",
+        "question_code": "2_2_2",
+        "text": "ケ",
+        "created_at": "2025-10-03T12:36:44.000000Z",
+        "updated_at": "2025-10-03T12:42:23.000000Z"
+    },
+    {
+        "id": 196,
+        "exam_code": "2025_haru_3",
+        "question_code": "2_2_3",
+        "text": "ウ",
+        "created_at": "2025-10-03T12:36:44.000000Z",
+        "updated_at": "2025-10-03T12:42:23.000000Z"
+    },
+    {
+        "id": 197,
+        "exam_code": "2025_haru_3",
+        "question_code": "2_2_4",
+        "text": "コ",
+        "created_at": "2025-10-03T12:36:44.000000Z",
+        "updated_at": "2025-10-03T12:42:23.000000Z"
+    },
+    {
+        "id": 198,
+        "exam_code": "2025_haru_3",
+        "question_code": "2_2_5",
+        "text": "ア",
+        "created_at": "2025-10-03T12:36:44.000000Z",
+        "updated_at": "2025-10-03T12:42:23.000000Z"
+    },
+    {
+        "id": 199,
+        "exam_code": "2025_haru_3",
+        "question_code": "2_2_6",
+        "text": "イ",
+        "created_at": "2025-10-03T12:36:44.000000Z",
+        "updated_at": "2025-10-03T12:42:23.000000Z"
+    },
+    {
+        "id": 200,
+        "exam_code": "2025_haru_3",
+        "question_code": "2_2_7",
+        "text": "カ",
+        "created_at": "2025-10-03T12:36:44.000000Z",
+        "updated_at": "2025-10-03T12:42:23.000000Z"
+    },
+    {
+        "id": 201,
+        "exam_code": "2025_haru_3",
+        "question_code": "2_2_8",
+        "text": "キ",
+        "created_at": "2025-10-03T12:36:44.000000Z",
+        "updated_at": "2025-10-03T12:42:23.000000Z"
+    },
+    {
+        "id": 202,
+        "exam_code": "2025_haru_3",
+        "question_code": "2_3_0",
+        "text": "通信解析ツールのプライベート認証局のルート証明書をインストールし,信頼設定を行う。",
+        "created_at": "2025-10-03T12:36:44.000000Z",
+        "updated_at": "2025-10-03T12:42:23.000000Z"
+    },
+    {
+        "id": 203,
+        "exam_code": "2025_haru_3",
+        "question_code": "3_1_0",
+        "text": "い",
+        "created_at": "2025-10-03T12:36:44.000000Z",
+        "updated_at": "2025-10-03T12:42:23.000000Z"
+    },
+    {
+        "id": 204,
+        "exam_code": "2025_haru_3",
+        "question_code": "4_1_0",
+        "text": "URLを確認する手段がない。",
+        "created_at": "2025-10-03T12:36:44.000000Z",
+        "updated_at": "2025-10-03T12:42:23.000000Z"
+    },
+    {
+        "id": 205,
+        "exam_code": "2025_haru_3",
+        "question_code": "4_2_0",
+        "text": "WebViewを呼び出す前に,URLの先頭がhttps:\/\/www.a-sha.co.jp\/であるかを検証する。",
+        "created_at": "2025-10-03T12:36:44.000000Z",
+        "updated_at": "2025-10-03T12:42:23.000000Z"
+    },
+    {
+        "id": 206,
+        "exam_code": "2025_haru_4",
+        "question_code": "1_1_1",
+        "text": "権威DNSサーバ",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 207,
+        "exam_code": "2025_haru_4",
+        "question_code": "1_1_2",
+        "text": "終了したサブドメインのCNAMEレコードを削除する。",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 208,
+        "exam_code": "2025_haru_4",
+        "question_code": "2_1_1",
+        "text": "レンタルサービスを契約して利用した",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 209,
+        "exam_code": "2025_haru_4",
+        "question_code": "2_1_2",
+        "text": "他社データセンターを契約して利用した",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 210,
+        "exam_code": "2025_haru_4",
+        "question_code": "2_2_0",
+        "text": "WHOIS",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 211,
+        "exam_code": "2025_haru_4",
+        "question_code": "2_3_1",
+        "text": "Z",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 212,
+        "exam_code": "2025_haru_4",
+        "question_code": "2_3_2",
+        "text": "X",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 213,
+        "exam_code": "2025_haru_4",
+        "question_code": "2_3_3",
+        "text": "Y",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 214,
+        "exam_code": "2025_haru_4",
+        "question_code": "2_4_1",
+        "text": "オ",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 215,
+        "exam_code": "2025_haru_4",
+        "question_code": "2_4_2",
+        "text": "ア",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 216,
+        "exam_code": "2025_haru_4",
+        "question_code": "2_4_3",
+        "text": "イ",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 217,
+        "exam_code": "2025_haru_4",
+        "question_code": "2_4_4",
+        "text": "ク",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 218,
+        "exam_code": "2025_haru_4",
+        "question_code": "2_4_5",
+        "text": "キ",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 219,
+        "exam_code": "2025_haru_4",
+        "question_code": "3_1_0",
+        "text": "ポートスキャンでWebのポートだけが開いていることを確認する。",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 220,
+        "exam_code": "2025_haru_4",
+        "question_code": "3_2_0",
+        "text": "脆弱性スキャナーを実行して,脆弱性の有無を確認する。",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 221,
+        "exam_code": "2025_haru_4",
+        "question_code": "3_3_1",
+        "text": "一旦,サービスを停止し,脆弱性を修正後に再開する。",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 222,
+        "exam_code": "2025_haru_4",
+        "question_code": "3_3_2",
+        "text": "速やかにネットワークから切り離し,機器を廃棄する。",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 223,
+        "exam_code": "2025_haru_4",
+        "question_code": "4_1_0",
+        "text": "4.0",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 224,
+        "exam_code": "2025_haru_4",
+        "question_code": "4_2_0",
+        "text": "ウ",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 225,
+        "exam_code": "2025_haru_4",
+        "question_code": "4_3_0",
+        "text": "実際に悪用された。",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 226,
+        "exam_code": "2025_haru_4",
+        "question_code": "4_4_1",
+        "text": "情シ部がIT資産管理台帳にあるSWについて,重要な脆弱性情報が発表されていないかを継続的に確認する。",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 227,
+        "exam_code": "2025_haru_4",
+        "question_code": "4_4_2",
+        "text": "該当SWを保有する管理部門に対策の優先度を連絡し,対策実施を確認する。",
+        "created_at": "2025-10-04T12:56:08.000000Z",
+        "updated_at": "2025-10-04T12:56:08.000000Z"
+    },
+    {
+        "id": 228,
+        "exam_code": "2099_haru_1",
+        "question_code": "3_2_0",
+        "text": null,
+        "created_at": "2025-10-16T05:12:04.000000Z",
+        "updated_at": "2025-10-16T05:12:04.000000Z"
+    },
+    {
+        "id": 229,
+        "exam_code": "2099_haru_1",
+        "question_code": "3_1_0",
+        "text": "a,b",
+        "created_at": "2025-10-16T12:25:34.000000Z",
+        "updated_at": "2025-10-16T12:27:44.000000Z"
     }
 ]

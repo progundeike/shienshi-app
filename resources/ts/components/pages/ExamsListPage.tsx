@@ -39,19 +39,19 @@ export const ExamsListPage: FC = memo(() => {
                                 </ExamLinkButton>
                             </Td>
                             <Td>
-                                <PreReleaseExamLinkButton url="2025/haru/2">
+                                <ExamLinkButton url="2025/haru/2">
                                     問2
-                                </PreReleaseExamLinkButton>
+                                </ExamLinkButton>
                             </Td>
                             <Td>
-                                <PreReleaseExamLinkButton url="2025/haru/3">
+                                <ExamLinkButton url="2025/haru/3">
                                     問3
-                                </PreReleaseExamLinkButton>
+                                </ExamLinkButton>
                             </Td>
                             <Td>
-                                <PreReleaseExamLinkButton url="2025/haru/4">
+                                <ExamLinkButton url="2025/haru/4">
                                     問4
-                                </PreReleaseExamLinkButton>
+                                </ExamLinkButton>
                             </Td>
                         </Tr>
                         <Tr>
