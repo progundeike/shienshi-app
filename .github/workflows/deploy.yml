@@ -17,7 +17,7 @@ jobs:
       - name: Set image tags
         id: vars
         run: |
-          echo "IMAGE=ghcr.io/${{ github.repository_owner }}/$(basename $GITHUB_REPOSITORY)" >> $GITHUB_OUTPUT
+          echo "IMAGE=ghcr.io/${{ github.repository_owner }}/spa-exam-app" >> $GITHUB_OUTPUT
           echo "TAG=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
 
       - name: Login to GHCR
@@ -26,15 +26,14 @@ jobs:
       - name: Set up Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build & Push image
+      - name: Build & Push via Compose (Buildx Bake)
         run: |
-          docker build \
-            --target prod \
-            -t "${{ steps.vars.outputs.IMAGE }}:${{ steps.vars.outputs.TAG }}" \
-            -t "${{ steps.vars.outputs.IMAGE }}:latest" \
-            .
-          docker push "${{ steps.vars.outputs.IMAGE }}:${{ steps.vars.outputs.TAG }}"
-          docker push "${{ steps.vars.outputs.IMAGE }}:latest"
+          docker buildx bake \
+            -f docker-compose.yml \
+            --set app.build.target=prod \
+            --set app.tags="${{ steps.vars.outputs.IMAGE }}:${{ steps.vars.outputs.TAG }}" \
+            --set app.tags+=("${{ step.vars.outputs.IMAGE }}:latest") \
+            --push
 
       - name: Prepare SSH
         run: |
