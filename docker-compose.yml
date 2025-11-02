@@ -8,7 +8,7 @@ services:
     volumes:
       - ./src:/var/www/html
     ports:
-      - ${IP}:5173:5173
+      - 5173:5173
     environment:
       - DB_CONNECTION=mysql
       - DB_HOST=db
@@ -23,7 +23,7 @@ services:
   web:
     image: caddy:2
     ports:
-      - ${IP}:80:80
+      - 80:80
     volumes:
       - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - ./src:/var/www/html:ro
@@ -33,7 +33,7 @@ services:
   db:
     image: mysql:8.4
     ports:
-      - ${IP}:3306:3306
+      - 3306:3306
     volumes:
       - db-volumes:/var/lib/mysql
       - ./docker/mysql/my.cnf:etc/mysql/conf.d/my.cnf:ro
