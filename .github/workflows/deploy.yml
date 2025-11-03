@@ -30,9 +30,10 @@ jobs:
           docker buildx build \
             --target prod \
             -f docker/php/Dockerfile \
-            -t "$IMAGE:$TAG"
-            -t "$IMAGE:latest"
-            --push
+            -t "$IMAGE:$TAG" \
+            -t "$IMAGE:latest" \
+            --push \
+            .
 
       - name: Prepare SSH
         run: |
