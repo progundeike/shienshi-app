@@ -38,7 +38,7 @@ services:
       - ${IP}:3306:3306
     volumes:
       - db-volumes:/var/lib/mysql
-      - ./docker/mysql/my.cnf:etc/mysql/conf.d/my.cnf:ro
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/z-my.cnf:ro
     environment:
       - MYSQL_DATABASE=${DB_NAME}
       - MYSQL_PASSWORD=${DB_PASSWORD}
@@ -47,14 +47,16 @@ services:
       - TZ=Asia/Tokyo
 
   db-testing:
-    build:
-      context: .
-      dockerfile: docker/mysql/Dockerfile
+    image: mysql:8.4
+    volumes:
+      - db-volumes:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/z-my.cnf:ro
     environment:
       - MYSQL_DATABASE=${DB_NAME}
       - MYSQL_PASSWORD=${DB_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
       - MYSQL_USER=${DB_USER}
+      - TZ=Asia/Tokyo
 
 volumes:
   db-volumes:

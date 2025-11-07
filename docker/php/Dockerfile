@@ -13,7 +13,10 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     # PHPの拡張ライブラリをインストール
-    docker-php-ext-install intl pdo_mysql bcmath zip
+    docker-php-ext-install intl pdo_mysql bcmath zip mbstring
+
+# composerをrootで使う警告抑止
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # 共通の php.ini
 COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
@@ -24,7 +27,8 @@ COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
 FROM base AS vendor
 WORKDIR /var/www/html
 COPY src/composer.json src/composer.lock ./
-RUN composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader
+
+RUN composer install --no-dev --prefer-dist --no-interaction --no-progress --no-scripts --optimize-autoloader
 
 # =========================================
 # フロント資産ビルド（Vite）
@@ -48,6 +52,8 @@ COPY src ./
 # vendor と ビルド済みアセットだけを取り込み
 COPY --from=vendor /var/www/html/vendor ./vendor
 COPY --from=assets /app/public/build ./public/build
+
+RUN composer dump-autoload -o
 
 ENV APP_ENV=production \
     APP_DEBUG=0
