@@ -36,6 +36,12 @@ jobs:
             -t "$IMAGE:latest" \
             --push \
             .
+
+      - name: Write SSH key file
+        run: |
+          mkdir -p .ssh
+          printf "%s" "${{ secrets.SSH_PRIVATE_KEY }}" > .ssh/deploy_key
+          chmod 600 .ssh/deploy_key
       
       - name: Connectivity test
         uses: appleboy/ssh-action@v1.0.3
@@ -49,6 +55,9 @@ jobs:
 
       - name: Remote compose pull & up
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          GHCR_USER: ${{ github.actor }}
+          GHCR_PAT: ${{ secrets.GHCR_PAT }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
@@ -57,7 +66,7 @@ jobs:
           script: |
             set -e
             cd /srv/spa-exam
-            fi
+            echo "$GHCR_PAT" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
             docker compose pull
             docker compose up -d --remove-orphans
             docker image prune -f
