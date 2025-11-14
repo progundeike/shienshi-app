@@ -37,17 +37,17 @@ jobs:
             --push \
             .
 
-      - name: Prepare SSH
-        run: |
-          install -m 600 /dev/null ~/.ssh/id_ed25519
-          printf "%s" "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          if [ -n "${{ secrets.SSH_KNOWN_HOSTS }}" ]; then
-            printf "%s\n" "${{ secrets.SSH_KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
-          else
-            ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-          fi
-
-      - name: Remote Compose pull & up
-        run: |
-          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
-            'cd /srv/spa-exam && docker compose pull && docker compose up -d --remove-orphans && docker image prune -f'
+      - name: Remote compose pull & up
+        uses: appleboy/ssh-actions@v.1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            set -e
+            cd /srv/spa-exam
+            fi
+            docker compose pull
+            docker compose up -d --remove-orphans
+            docker image prune -f
