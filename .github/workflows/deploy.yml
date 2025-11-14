@@ -36,6 +36,16 @@ jobs:
             -t "$IMAGE:latest" \
             --push \
             .
+      
+      - name: Connectivity test
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          debug: true
+          script: 'echo ok'
 
       - name: Remote compose pull & up
         uses: appleboy/ssh-action@v1.0.3
