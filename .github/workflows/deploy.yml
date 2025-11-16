@@ -37,22 +37,6 @@ jobs:
             --push \
             .
 
-      - name: Write SSH key file
-        run: |
-          mkdir -p .ssh
-          printf "%s" "${{ secrets.SSH_PRIVATE_KEY }}" > .ssh/deploy_key
-          chmod 600 .ssh/deploy_key
-      
-      - name: Connectivity test
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          debug: true
-          script: 'echo ok'
-
       - name: Remote compose pull & up
         uses: appleboy/ssh-action@v1.0.3
         env:
@@ -63,6 +47,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
+          envs: GHCR_USER,GHCR_PAT
           script: |
             set -e
             cd /srv/spa-exam
