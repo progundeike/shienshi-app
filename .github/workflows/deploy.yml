@@ -40,7 +40,7 @@ jobs:
       - name: Remote compose pull & up
         uses: appleboy/ssh-action@v1.0.3
         env:
-          GHCR_USER: ${{ github.actor }}
+          GHCR_USER: ${{ github.repository_owner }}
           GHCR_PAT: ${{ secrets.GHCR_PAT }}
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -51,7 +51,7 @@ jobs:
             set -e
             cd /srv/spa-exam
             [ -n "${{ secrets.GHCR_PAT }}"] || { echo "GHCR_PAT is empty" >&2; exit 1; }
-            docker login ghcr.io -u "${{ github.repository_owner }}" --pasword-stdin <<< "${{ secrets.GHCR_PAT }}"
+            docker login ghcr.io -u "${{ github.repository_owner }}" --password-stdin <<< "${{ secrets.GHCR_PAT }}"
             docker compose pull
             docker compose up -d --remove-orphans
             docker image prune -f
