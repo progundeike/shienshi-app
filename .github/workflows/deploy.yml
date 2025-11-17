@@ -47,11 +47,12 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
+          envs: GHCR_USER,GHCR_PAT
           script: |
             set -e
             cd /srv/spa-exam
-            [ -n "${{ secrets.GHCR_PAT }}"] || { echo "GHCR_PAT is empty" >&2; exit 1; }
-            docker login ghcr.io -u "${{ github.repository_owner }}" --password-stdin <<< "${{ secrets.GHCR_PAT }}"
+            [ -n "$GHCR_PAT" ] || { echo "GHCR_PAT is empty" >&2; exit 1; }
+            docker login ghcr.io -u "$GHCR_USER" --password-stdin
             docker compose pull
             docker compose up -d --remove-orphans
             docker image prune -f
