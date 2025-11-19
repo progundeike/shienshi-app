@@ -37,7 +37,7 @@ jobs:
             --push \
             .
 
-      - name: Remote compose pull & up
+      - name: Remote clone/pull & compose up
         uses: appleboy/ssh-action@v1.0.3
         env:
           GHCR_USER: ${{ github.repository_owner }}
@@ -50,10 +50,21 @@ jobs:
           envs: GHCR_USER,GHCR_PAT
           script: |
             set -euo pipefail
-            cd /srv/spa-exam
+            REPO="${{ github.repository }}"
+            DEST=/srv/spa-exam
+            ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null || true
+            if [ ! -d "$DEST/.git" ]; then
+              git clone --depth=1 "git@github.com:${REPO}.git" "$DEST"
+            else
+              git -C "$DEST" fetch --prune
+              git -C "$DEST" checkout main
+              git -C "$DEST" reset --hard origin/main
+            fi
             [ -n "$GHCR_USER" ] || { echo "GHCR_USER is empty" >&2; exit 1; }
             [ -n "$GHCR_PAT" ] || { echo "GHCR_PAT is empty" >&2; exit 1; }
             echo "$GHCR_PAT" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
-            docker compose pull
-            docker compose up -d --remove-orphans
+            COMPOSE="$DEST/docker-compose.yml"
+            [ -f "$COMPOSE" ] || { echo "compose file not found: $COMPOSE"; ls -la "$DEST"; exit 1; }
+            docker compose -f "$COMPOSE" pull
+            docker compose -f "$COMPOSE" up -d --remove-orphans
             docker image prune -f
