@@ -27,6 +27,8 @@ services:
 
   db:
     image: mysql:8.4
+    ports:
+      - 127.0.0.1:3306:3306
     volumes:
       - db-volumes:/var/lib/mysql
       - ./docker/mysql/my.cnf:/etc/mysql/conf.d/z-my.cnf:ro
