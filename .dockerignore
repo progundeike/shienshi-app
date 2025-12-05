@@ -1,0 +1,5 @@
+READEME.md
+*.pu
+*.git
+*.env
+docker-compose.dev.yml
