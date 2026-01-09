@@ -22,6 +22,15 @@ export type InquiryInput = {
     message: string;
 };
 
+export type Inquiry = {
+    id: number;
+    user_id: number | null;
+    name: string;
+    email: string | null;
+    message: string;
+    created_at: string;
+};
+
 export type ErrorResponse = {
     message: string;
     errors: {
@@ -58,6 +67,13 @@ export type QuestionFormInputs = {
 export type ModelAnswer = {
     questionCode: string;
     text: string;
+};
+
+export type NewsItem = {
+    id?: number;
+    title: string;
+    content: string | null;
+    published_at: string;
 };
 
 // type QuestionFormInputs = {

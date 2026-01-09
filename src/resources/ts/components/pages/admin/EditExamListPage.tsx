@@ -2,6 +2,7 @@ import {
     Box,
     Button,
     chakra,
+    Flex,
     Heading,
     Table,
     TableContainer,
@@ -12,10 +13,8 @@ import {
 } from "@chakra-ui/react";
 import { memo } from "react";
 
-import { ExamLinkButton } from "../atoms/ExamLinkButton";
-import { EditExamLinkButton } from "../atoms/EditExamLinkButton";
-import { useAdmin } from "../../hooks/useAdmin";
-import { useForm, Controller } from "react-hook-form";
+import { EditExamLinkButton } from "../../atoms/EditExamLinkButton";
+import { Link } from "react-router-dom";
 
 const CustomTh = chakra(Th, {
     baseStyle: {
@@ -24,17 +23,11 @@ const CustomTh = chakra(Th, {
     },
 });
 
-type UpdateExam = {
-    year: number;
-    season: "haru" | "aki";
-    sectionCount: number;
-};
-
-export const AdminPage = memo(() => {
+export const EditExamListPage = memo(() => {
     return (
-        <Box w="80%" m="auto" textAlign="center">
+        <Box w="80%" m="auto" textAlign="center" my="30px">
             <Box m="20px">
-                <Heading>問題編集ページ</Heading>
+                <Heading>問題編集</Heading>
             </Box>
             <TableContainer>
                 <Table variant="simple">
@@ -70,6 +63,41 @@ export const AdminPage = memo(() => {
                                 <EditExamLinkButton
                                     color="red"
                                     url="2099/haru/4"
+                                >
+                                    問4
+                                </EditExamLinkButton>
+                            </Td>
+                        </Tr>
+                        <Tr>
+                            <CustomTh>2025年(令和7年) 秋期</CustomTh>
+                            <Td>
+                                <EditExamLinkButton
+                                    color="red"
+                                    url="2025/aki/1"
+                                >
+                                    問1
+                                </EditExamLinkButton>
+                            </Td>
+                            <Td>
+                                <EditExamLinkButton
+                                    color="red"
+                                    url="2025/aki/2"
+                                >
+                                    問2
+                                </EditExamLinkButton>
+                            </Td>
+                            <Td>
+                                <EditExamLinkButton
+                                    color="red"
+                                    url="2025/aki/3"
+                                >
+                                    問3
+                                </EditExamLinkButton>
+                            </Td>
+                            <Td>
+                                <EditExamLinkButton
+                                    color="red"
+                                    url="2025/aki/4"
                                 >
                                     問4
                                 </EditExamLinkButton>

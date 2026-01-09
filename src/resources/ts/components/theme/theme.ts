@@ -3,7 +3,9 @@ import { Component } from "react";
 
 export const theme = extendTheme({
     colors: {
-        baseColor:  '#003366',
+        // baseColor:  '#003366',
+        baseColor:  '#1e3a8a',
+        subColor: '#3b82f6',
         baseTextColor: 'white',
         accentColor: '#3CB371',
         accentTextColor: 'white',
@@ -11,7 +13,7 @@ export const theme = extendTheme({
     styles: {
         global: {
             body: {
-                backgroundColor: "#F5F5F5",
+                backgroundColor: "#F0F4F8",
                 color: "gray.800",
             },
             ".hiddenCanvasElement": {

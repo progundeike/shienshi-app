@@ -18,9 +18,12 @@ import { PreAuthRoutes } from "./templates/PreAuthRoutes";
 import { UpdatePasswordPage } from "./pages/auth/UpdatePasswordPage";
 import { RegisterEmailPage } from "./pages/auth/RegisterEmailPage";
 import { ForgotPasswordPage } from "./pages/auth/ForgotPasswordPage";
-import { AdminPage } from "./pages/AdminPage";
+import { AdminPage } from "./pages/admin/AdminPage";
 import { AdminRoutes } from "./templates/AdminRoutes";
 import { EditExamPage } from "./pages/EditExamPage";
+import { NewsItemPage } from "./pages/admin/NewsItemPage";
+import { InquiryPage } from "./pages/admin/InquiryPage";
+import { EditExamListPage } from "./pages/admin/EditExamListPage";
 
 export const Router: FC = memo(() => {
     const { getUser } = useAuth();
@@ -75,6 +78,9 @@ export const Router: FC = memo(() => {
                 {/* 管理者ページ */}
                 <Route element={<AdminRoutes />}>
                     <Route path="/admin" element={<AdminPage />} />
+                    <Route path="/admin/news_item" element={<NewsItemPage />} />
+                    <Route path="/admin/inquiry" element={<InquiryPage />} />
+                    <Route path="/admin/exams" element={<EditExamListPage />} />
                     <Route
                         path="/admin/edit/:year/:season/:section"
                         element={<EditExamPage />}

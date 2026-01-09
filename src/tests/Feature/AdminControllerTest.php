@@ -194,12 +194,14 @@ class AdminControllerTest extends TestCase
             'subQuestionNumber' => 1,
             'smallQuestionNumber' => null,
             'text' => 'This is a sample question text for testing',
+            'textForAi' => 'This is a message for AI',
             'type' => 'input',
             'options' => null,
             'maxLength' => 30,
         ];
 
         $response = $this->actingAs($this->adminUser)->post('/api/admin/question', $data, ['Accept' => 'application/json']);
+        $response->dump();
         $response->assertStatus(201);
         $this->assertDatabaseHas('questions', [
             'exam_code' => '2099_haru_1',
@@ -207,6 +209,7 @@ class AdminControllerTest extends TestCase
             'sub_question_number' => 1,
             'small_question_number' => 0,
             'text' => 'This is a sample question text for testing',
+            'text_for_ai' => 'This is a message for AI',
             'type' => 'input',
             'options' => null,
             'max_length' => 30,

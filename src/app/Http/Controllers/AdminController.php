@@ -115,7 +115,7 @@ class AdminController extends Controller
 
         // 試験問題の更新処理を実行
         try {
-            Question::UpdateOrCreate(
+            Question::updateOrCreate(
                 [
                     'exam_code' => $examCode,
                     'question_number' => $validated['questionNumber'],

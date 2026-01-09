@@ -17,6 +17,7 @@ class UserControllerTest extends TestCase
 
     protected User $adminUser;
     protected User $normalUser;
+    protected string $xsrfToken = '';
 
     // protected $baseUrl = 'http://127.0.0.4';
 
@@ -48,7 +49,7 @@ class UserControllerTest extends TestCase
     #[Test]
     public function 管理者がログインできる(): void
     {
-        $response = $this->post('/api/login', [
+        $response = $this->postJson('/api/login', [
             'username' => 'TestAdminUser',
             'password' => 'password',
         ]);
@@ -61,7 +62,7 @@ class UserControllerTest extends TestCase
     #[Test]
     public function 一般ユーザーがログインできる(): void
     {
-        $response = $this->post('/api/login', [
+        $response = $this->postJson('/api/login', [
             'username' => 'NewTestUser',
             'password' => 'password',
         ]);

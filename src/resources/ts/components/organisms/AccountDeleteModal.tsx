@@ -36,13 +36,21 @@ export const AccountDeleteModal: FC = memo(() => {
     };
 
     return (
-        <>
-            <Button onClick={onOpen}>アカウントを削除</Button>
+        <Box>
+            <Box textAlign="right">
+                <Button
+                    onClick={onOpen}
+                    borderRadius="full"
+                    w="30%"
+                    border="1px solid black"
+                >
+                    アカウントを削除
+                </Button>
+            </Box>
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader m="auto">アカウントを削除</ModalHeader>
-
                     <ModalBody mb="20px">
                         <Center mb="20px">
                             <Icon as={GoAlert} color="red.500" boxSize="30%" />
@@ -89,6 +97,6 @@ export const AccountDeleteModal: FC = memo(() => {
                     )}
                 </ModalContent>
             </Modal>
-        </>
+        </Box>
     );
 });

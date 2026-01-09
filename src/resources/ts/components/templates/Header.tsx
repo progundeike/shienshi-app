@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { FC, memo } from "react";
 import { Link } from "react-router-dom";
 import { GrCircleInformation } from "react-icons/gr";
@@ -13,11 +13,22 @@ import { dateUtils } from "../../utils/dateUtils";
 
 export const Header: FC = memo(() => {
     const user = useAtomValue(userAtom);
-    const { daysUntilNextExam } = dateUtils();
+
+    // CBT方式への移行に伴い試験日表示は一旦非表示
+    // const { daysUntilNextExam } = dateUtils();
 
     return (
-        <Box backgroundColor="baseColor" color={"baseTextColor"}>
-            <Box w="90%" m="auto" p="12px">
+        <Box
+            as="header"
+            bg="baseColor"
+            color="baseTextColor"
+            borderBottom="1px solid"
+            borderColor="blackAlpha.200"
+            position="sticky"
+            top="0"
+            zIndex="sticky"
+        >
+            <Box w="90%" m="auto" py="5px" px={{ base: 4, md: 6 }}>
                 <Flex
                     justifyContent="space-between"
                     wrap="wrap"
@@ -25,20 +36,29 @@ export const Header: FC = memo(() => {
                 >
                     {/* 左バナー */}
                     <Link to="/">
-                        <Heading
-                            as="h1"
-                            size="md"
-                            fontSize="30px"
-                            fontWeight="400"
-                            color="baseTextColor"
-                            textShadow="1px 1px 1px gray"
-                        >
-                            情報処理安全確保支援士 午後対策
-                        </Heading>
+                        <Flex direction="column">
+                            <Box mb="0px">
+                                <Heading
+                                    as="h1"
+                                    size="md"
+                                    fontSize="50px"
+                                    fontWeight="400"
+                                    color="baseTextColor"
+                                    textShadow="1px 1px 1px gray"
+                                >
+                                    フカボリ
+                                </Heading>
+                            </Box>
+                            <Box mt="-8px">
+                                <Text fontSize="18px" color="#92c4fc">
+                                    情報処理安全確保支援士 午後対策
+                                </Text>
+                            </Box>
+                        </Flex>
                     </Link>
-                    <Box fontSize="20px">
+                    {/* <Box fontSize="20px">
                         試験まで残り{daysUntilNextExam()}日
-                    </Box>
+                    </Box> */}
 
                     {/* 右メニュー */}
                     {/* {isMobileView ? <MobileMenu /> : <PcMenu />} */}
