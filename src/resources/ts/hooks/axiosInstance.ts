@@ -25,11 +25,6 @@ axiosInstance.interceptors.response.use(
     },
     async (error: any) => {
         const originalRequest = error.config;
-
-        // 422エラーが発生した場合、バリデーションエラーを処理する
-        if (error.response.status === 422) {
-            return Promise.reject(error.response)
-        }
         
         // 419エラーが発生した場合、トークンを更新してリクエストを再試行する
         if (error.response.status === 419 && !originalRequest._retry) {

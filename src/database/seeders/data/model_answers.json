@@ -752,38 +752,6 @@
         "updated_at": "2025-08-29T13:02:07.000000Z"
     },
     {
-        "id": 95,
-        "exam_code": "2099_haru_1",
-        "question_code": "1_1_1",
-        "text": "1",
-        "created_at": "2025-08-29T13:14:34.000000Z",
-        "updated_at": "2025-08-29T13:14:34.000000Z"
-    },
-    {
-        "id": 96,
-        "exam_code": "2099_haru_1",
-        "question_code": "1_1_2",
-        "text": "a",
-        "created_at": "2025-08-29T13:14:34.000000Z",
-        "updated_at": "2025-08-29T13:14:34.000000Z"
-    },
-    {
-        "id": 97,
-        "exam_code": "2099_haru_1",
-        "question_code": "1_1_3",
-        "text": "3",
-        "created_at": "2025-08-29T13:14:34.000000Z",
-        "updated_at": "2025-08-29T13:14:34.000000Z"
-    },
-    {
-        "id": 98,
-        "exam_code": "2099_haru_1",
-        "question_code": "2_1_1",
-        "text": "2-3",
-        "created_at": "2025-08-29T13:14:34.000000Z",
-        "updated_at": "2025-08-29T13:16:31.000000Z"
-    },
-    {
         "id": 99,
         "exam_code": "2024_aki_1",
         "question_code": "1_1_0",
@@ -1814,21 +1782,5 @@
         "text": "該当SWを保有する管理部門に対策の優先度を連絡し,対策実施を確認する。",
         "created_at": "2025-10-04T12:56:08.000000Z",
         "updated_at": "2025-10-04T12:56:08.000000Z"
-    },
-    {
-        "id": 228,
-        "exam_code": "2099_haru_1",
-        "question_code": "3_2_0",
-        "text": null,
-        "created_at": "2025-10-16T05:12:04.000000Z",
-        "updated_at": "2025-10-16T05:12:04.000000Z"
-    },
-    {
-        "id": 229,
-        "exam_code": "2099_haru_1",
-        "question_code": "3_1_0",
-        "text": "a,b",
-        "created_at": "2025-10-16T12:25:34.000000Z",
-        "updated_at": "2025-10-16T12:27:44.000000Z"
     }
 ]

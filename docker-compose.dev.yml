@@ -48,7 +48,6 @@ services:
   db-testing:
     image: mysql:8.4
     volumes:
-      - db-volumes:/var/lib/mysql
       - ./docker/mysql/my.cnf:/etc/mysql/conf.d/z-my.cnf:ro
     environment:
       - MYSQL_DATABASE=${DB_NAME}

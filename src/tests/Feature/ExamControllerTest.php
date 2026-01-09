@@ -2,10 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\ExamSentence;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Support\Facades\Log;
@@ -24,6 +22,7 @@ class ExamControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->withoutExceptionHandling();
 
         // 初期データをシード
         $this->seed();
@@ -45,21 +44,21 @@ class ExamControllerTest extends TestCase
         // テスト用の模範解答を作成
         DB::table('model_answers')->insert([
             [
-                'exam_code' => '2099_haru_1',
+                'exam_code' => '9999_haru_1',
                 'question_code' => '1_1_0',
                 'text' => '模範解答1',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'exam_code' => '2099_haru_1',
+                'exam_code' => '9999_haru_1',
                 'question_code' => '1_2_1',
                 'text' => '模範解答2',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'exam_code' => '2099_haru_1',
+                'exam_code' => '9999_haru_1',
                 'question_code' => '1_2_2',
                 'text' => '模範解答3',
                 'created_at' => now(),
@@ -71,7 +70,7 @@ class ExamControllerTest extends TestCase
     #[Test]
     public function 模範解答をまとめて取得できる(): void
     {
-        $response = $this->actingAs($this->adminUser)->getJson('/api/admin/model-answers/2099-haru-1', ['Accept' => 'application/json']);
+        $response = $this->actingAs($this->adminUser)->getJson('/api/admin/model-answers/9999-haru-1', ['Accept' => 'application/json']);
 
         $response->assertStatus(200);
         $this->assertCount(3, $response->json());
