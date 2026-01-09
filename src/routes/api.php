@@ -44,7 +44,7 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::delete('/question/{year}-{season}-{section}/{questionId}', [AdminController::class, 'deleteQuestion']);
 
     // お知らせ管理
-    Route::post('/news/update', [NewsItemController::class, 'createOrUpdate']);
+    Route::post('/news', [NewsItemController::class, 'createOrUpdate']);
     Route::delete('/news/{newsItem}', [NewsItemController::class, 'delete']);
 
     // お問い合わせ
