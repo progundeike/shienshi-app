@@ -49,6 +49,6 @@ class NewsItemController extends Controller
         $this->authorize('delete', $newsItem);
         $newsItem->delete();
 
-        return response()->json(['message' => 'News item deleted successfully'], 200);
+        return response()->noContent();
     }
 }

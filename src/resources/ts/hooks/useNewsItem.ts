@@ -21,7 +21,7 @@ export const useNewsItem = () => {
     const updateNewsItem = useMutation({
             mutationFn: async (data: NewsItem) => {
                 await axiosInstance.post(
-                    `/api/admin/news/update`,
+                    `/api/admin/news`,
                     data
                 );
             },
