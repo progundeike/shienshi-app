@@ -36,8 +36,8 @@ export const Header: FC = memo(() => {
                 >
                     {/* 左バナー */}
                     <Link to="/">
-                        <Flex direction="column">
-                            <Box mb="0px">
+                        <Flex direction="row" alignItems="center" gap="10px">
+                            <Box>
                                 <Heading
                                     as="h1"
                                     size="md"
@@ -46,12 +46,12 @@ export const Header: FC = memo(() => {
                                     color="baseTextColor"
                                     textShadow="1px 1px 1px gray"
                                 >
-                                    フカボリ
+                                    支援士対策室
                                 </Heading>
                             </Box>
-                            <Box mt="-8px">
-                                <Text fontSize="18px" color="#92c4fc">
-                                    情報処理安全確保支援士 午後対策
+                            <Box>
+                                <Text fontSize="18px" color="baseTextColor">
+                                    情報処理安全確保支援士 科目B(旧午後試験)対策
                                 </Text>
                             </Box>
                         </Flex>

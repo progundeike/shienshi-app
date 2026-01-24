@@ -21,11 +21,9 @@ import { FetchedQuestion, Option, useExam } from "../../hooks/useExam";
 import { DisplayAIResponse } from "./DisplayAIResponse";
 import { loadingAtom } from "../../states/loadingAtom";
 import { DisplayAskToAICard } from "../molecules/DisplayAskToAICard";
-import { RadioQuestionForm } from "../molecules/RadioQuestionForm";
 import { Correction } from "./QuestionAndAnswerForm";
 import { User } from "../../types/user";
-import { LuBookX } from "react-icons/lu";
-import { AnswerInputs } from "../../types/form";
+import { AnswerItem } from "../../types/form";
 
 type Props = {
     year: number;
@@ -48,12 +46,13 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
         refetchCollections,
     } = props;
     const [isLoading, setIsLoading] = useAtom(loadingAtom);
+    const STORAGE_KEY = `formData-${year}-${season}-${section}`;
 
     const {
         register,
         formState: { errors },
         reset,
-    } = useForm<AnswerInputs>();
+    } = useForm<AnswerItem[]>();
 
     const { deleteSubmittedAnswer } = useAnswer();
 
@@ -61,6 +60,8 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
         await deleteSubmittedAnswer(year, season, section);
         refetchCollections();
         reset();
+        // sessionStorageをクリア
+        sessionStorage.removeItem(STORAGE_KEY);
     };
 
     if (isLoading) {
@@ -209,13 +210,8 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
                                 />
 
                                 <DisplayAskToAICard
-                                    questionNumber={question.questionNumber}
-                                    subQuestionNumber={
-                                        question.subQuestionNumber
-                                    }
-                                    year={question.year}
-                                    season={question.season}
-                                    section={question.section}
+                                    examCode={question.examCode}
+                                    questionCode={`${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`}
                                 />
                             </Fragment>
                         ))}

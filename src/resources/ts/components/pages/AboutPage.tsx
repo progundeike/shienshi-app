@@ -7,20 +7,18 @@ import {
     FormLabel,
     Heading,
     Input,
+    Text,
     Textarea,
 } from "@chakra-ui/react";
-import Split from "react-split";
-import { Card } from "../templates/Card";
 import { useForm } from "react-hook-form";
-import { InquiryInput } from "../../types/form";
-import { SubmitButton } from "../atoms/SubmitButton";
-import { useAtomValue } from "jotai";
-import { userAtom } from "../../states/userAtom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useChakraToast } from "../../utils/toastUtils";
-import { axiosInstance } from "../../hooks/axiosInstance";
 import { AxiosError } from "axios";
-import { TbFocusAuto } from "react-icons/tb";
+
+import { Card } from "../templates/Card";
+import { useChakraToast } from "../../utils/toastUtils";
+import { SubmitButton } from "../atoms/SubmitButton";
+import { InquiryInput } from "../../types/form";
+import { axiosInstance } from "../../hooks/axiosInstance";
 
 export const AboutPage = () => {
     const {
@@ -76,50 +74,69 @@ export const AboutPage = () => {
 
     return (
         <Box w="80%" m="20px auto">
-            <Heading size="lg">当サイトについて</Heading>
+            <Heading size="lg">管理者について</Heading>
             <Box m="20px">ここに説明</Box>
 
+            <Box my="20px">
+                <Heading>利用規約</Heading>
+                <Box>ここに利用規約</Box>
+            </Box>
+
+            <Box my="20px">
+                <Heading>プライバシーポリシー</Heading>
+                <Box>個人情報に関する声明</Box>
+            </Box>
+
             <Card maxW="80%">
-                <Box m="auto">
-                    <Heading>お問い合わせ</Heading>
+                <Box textAlign="center">
+                    <Box my="20px">
+                        <Heading mb="20px">お問い合わせ</Heading>
+                        <Text textAlign="left">
+                            お問い合わせは下記フォームよりお願い致します。
+                        </Text>
+                    </Box>
+
+                    <form onSubmit={onSubmit}>
+                        <Flex gap="4" direction="column">
+                            <FormControl isInvalid={!!errors.name} isRequired>
+                                <FormLabel>お名前</FormLabel>
+                                <Input
+                                    {...register("name", {
+                                        required: "入力が必要です",
+                                    })}
+                                />
+                                <FormErrorMessage>
+                                    {errors.name && errors.name.message}
+                                </FormErrorMessage>
+                            </FormControl>
+
+                            <FormControl isInvalid={!!errors.email}>
+                                <FormLabel>メールアドレス</FormLabel>
+                                <Input {...register("email")} />
+                                <FormErrorMessage>
+                                    {errors.email && errors.email.message}
+                                </FormErrorMessage>
+                            </FormControl>
+
+                            <FormControl
+                                isInvalid={!!errors.message}
+                                isRequired
+                            >
+                                <FormLabel>お問い合わせ内容</FormLabel>
+                                <Textarea
+                                    {...register("message", {
+                                        required: "入力が必要です",
+                                    })}
+                                />
+                                <FormErrorMessage>
+                                    {errors.message && errors.message.message}
+                                </FormErrorMessage>
+                            </FormControl>
+
+                            <SubmitButton>送信</SubmitButton>
+                        </Flex>
+                    </form>
                 </Box>
-                <form onSubmit={onSubmit}>
-                    <Flex gap="4" direction="column">
-                        <FormControl isInvalid={!!errors.name}>
-                            <FormLabel>お名前</FormLabel>
-                            <Input
-                                {...register("name", {
-                                    required: "入力が必要です",
-                                })}
-                            />
-                            <FormErrorMessage>
-                                {errors.name && errors.name.message}
-                            </FormErrorMessage>
-                        </FormControl>
-
-                        <FormControl isInvalid={!!errors.email}>
-                            <FormLabel>メールアドレス</FormLabel>
-                            <Input {...register("email")} />
-                            <FormErrorMessage>
-                                {errors.email && errors.email.message}
-                            </FormErrorMessage>
-                        </FormControl>
-
-                        <FormControl isInvalid={!!errors.message}>
-                            <FormLabel>お問い合わせ内容</FormLabel>
-                            <Textarea
-                                {...register("message", {
-                                    required: "入力が必要です",
-                                })}
-                            />
-                            <FormErrorMessage>
-                                {errors.message && errors.message.message}
-                            </FormErrorMessage>
-                        </FormControl>
-
-                        <SubmitButton>送信</SubmitButton>
-                    </Flex>
-                </form>
             </Card>
         </Box>
     );

@@ -34,6 +34,11 @@ export const theme = extendTheme({
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "50%",
             },
+            ".react-pdf__Page__textContent, .react-pdf__Page__textContent span, .textLayer, .textLayer span": {
+                userSelect: "text !important",
+                cursor: "text",
+                pointerEvent: "auto",
+            }
         },
     components: {
         Table: {

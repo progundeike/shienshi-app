@@ -53,7 +53,7 @@ class AnswerController extends Controller
         // Log::debug('prompt', $prompt);
 
         // AIに投げる
-        // $controller = new AIcontroller();
+        // $controller = new AiController();
         // $aiResponse = $controller->useFunctionCall($prompt, $this->functionParameter);
 
         // // レスポンスを整形
@@ -68,12 +68,12 @@ class AnswerController extends Controller
         $userId = Auth::id();
         $aiResponse = [];
         foreach ($evaluations as $evaluation) {
+            $smallQuestionNumber = $evaluation['smallQuestionNumber'] ?? 0;
+
             $aiResponse[] = [
                 'user_id' => $userId,
                 'exam_code' => $examCode,
-                'question_number' => $evaluation['questionNumber'],
-                'sub_question_number' => $evaluation['subQuestionNumber'],
-                'small_question_number' => isset($evaluation['smallQuestionNumber']) ? $evaluation['smallQuestionNumber'] : 0,
+                'question_code' => $evaluation['questionNumber'] . '_' . $evaluation['subQuestionNumber'] . '_' . $smallQuestionNumber,
                 'ai_rating' => $evaluation['rating'],
                 'ai_text' => $evaluation['comment'],
             ];
@@ -84,7 +84,7 @@ class AnswerController extends Controller
         UserAnswer::upsert(
             $aiResponse,
             // キー
-            ['user_id', 'exam_code', 'question_number', 'sub_question_number', 'small_question_number'],
+            ['user_id', 'exam_code', 'question_code'],
             // 更新するカラム
             ['ai_rating', 'ai_text']
         );
@@ -105,31 +105,29 @@ class AnswerController extends Controller
 
         // $modelAnswerのマップ
         $modelMap = [];
+
         foreach ($modelAnswers as $modelAnswer) {
-            $key = $modelAnswer['questionNumber'] . '-' . $modelAnswer['subQuestionNumber'] . '-' . $modelAnswer['smallQuestionNumber'];
-            $modelMap[$key] = $modelAnswer['text'];
+            $questionCode = $modelAnswer['questionCode'];
+            $modelMap[$questionCode] = $modelAnswer['text'];
         }
 
         foreach ($userAnswers as $userAnswer) {
             if (!$userAnswer->user_text && trim($userAnswer->user_text) == '') {
-                $key = $userAnswer->question_number . '-' . $userAnswer->sub_question_number . '-' . $userAnswer->small_question_number;
 
                 UserAnswer::where([
                     'user_id' => $userId,
                     'exam_code' => $examCode,
-                    'question_number' => $userAnswer->question_number,
-                    'sub_question_number' => $userAnswer->sub_question_number,
-                    'small_question_number' => $userAnswer->small_question_number
+                    'question_code' => $userAnswer->question_code,
                 ])->update([
                     'ai_rating' => '×',
-                    'ai_text' => '模範解答: ' . ($modelMap[$key] ?? '')
+                    'ai_text' => '模範解答: ' . ($modelMap[$userAnswer->question_code] ?? '')
                 ]);
             }
         }
     }
 
     // ユーザーの回答とAIの添削を取得する
-    public function fetchCorrection(int $year, string $season, int $section)
+    public function fetchCorrection(string $examCode)
     {
         $userId = Auth::id();
 
@@ -137,8 +135,6 @@ class AnswerController extends Controller
         if (!$userId) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-
-        $examCode = $year . '_' . $season . '_' . $section;
 
         $userAnswers = UserAnswer::where('user_id', $userId)
             ->where('exam_code', $examCode)
@@ -148,11 +144,14 @@ class AnswerController extends Controller
             return response()->json([], 200);
         }
 
+
+
         $answers = $userAnswers->map(function ($answer) {
+            [$q, $sub, $small] = array_map('intval', explode('_', $answer['question_code']));
             return [
-                'questionNumber' => $answer->question_number,
-                'subQuestionNumber' => $answer->sub_question_number,
-                'smallQuestionNumber' => $answer->small_question_number,
+                'questionNumber' => $q,
+                'subQuestionNumber' => $sub,
+                'smallQuestionNumber' => $small,
                 'userText' => $answer->user_text,
                 'aiRating' => $answer->ai_rating,
                 'aiText' => $answer->ai_text,
@@ -171,7 +170,6 @@ class AnswerController extends Controller
         $examCode = $data['year'] . '_' . $data['season'] . '_' . $data['section'];
 
         $answers = $data['answers'];
-        $userAnswers = [];
 
         // SubmittedExamsテーブルを更新
         SubmittedExam::updateOrCreate(
@@ -181,30 +179,33 @@ class AnswerController extends Controller
             ]
         );
 
+        // user_id, exam_code, question_codeを複合主キーとして更新
+        $rows = [];
         foreach ($answers as $answer) {
-            // ユーザーの回答を保存、更新する。AIの評価と回答はnullで初期化
-            $createdAnswer =
-                UserAnswer::updateOrCreate(
-                    [
-                        'user_id' => $userId,
-                        'exam_code' => $examCode,
-                        'question_number' => $answer['questionNumber'],
-                        'sub_question_number' => $answer['subQuestionNumber'],
-                        'small_question_number' => $answer['smallQuestionNumber'],
-                    ],
-                    [
-                        'user_text' => $answer['user_text'],
-                        'ai_rating' => null,
-                        'ai_text' => null,
-                    ]
-                );
+            $rows[] = [
+                'user_id' => $userId,
+                'exam_code' => $examCode,
+                'question_code' => $answer['questionCode'],
+                'user_text' => $answer['user_text'],
+                'ai_rating' => null,
+                'ai_text' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
 
-            $userAnswers[] = [
+        UserAnswer::upsert($rows, ['user_id', 'exam_code', 'question_code'], ['user_text', 'ai_rating', 'ai_text', 'updated_at']);
+
+        // 返却用
+        $userAnswers = [];
+        foreach ($answers as $answer) {
+            [$q, $sub, $small] = array_map('intval', explode('_', $answer['questionCode']));
+            $userAnswers[] =  [
                 'examCode' => $examCode,
-                'questionNumber' => $createdAnswer->question_number,
-                'subQuestionNumber' => $createdAnswer->sub_question_number,
-                'smallQuestionNumber' => $createdAnswer->small_question_number,
-                'user_text' => $createdAnswer->user_text,
+                'questionNumber' => $q,
+                'subQuestionNumber' => $sub,
+                'smallQuestionNumber' => $small,
+                'user_text' => $answer['user_text'],
             ];
         }
 

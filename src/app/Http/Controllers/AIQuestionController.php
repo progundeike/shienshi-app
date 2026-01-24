@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 
 // TODO: smallQuestionNumberを追加する
 
-class AIQuestionController extends Controller
+class AiQuestionController extends Controller
 {
     public function run(QuestionRequest $request)
     {
@@ -19,20 +19,14 @@ class AIQuestionController extends Controller
 
         // リクエストの例
         // [
-        //     'year' => 2023,
-        //     'season' => 'aki',
-        //     'section' => 1,
-        //     'questionNumber' => 1,
-        //     'subQuestionNumber' => 1,
+        //     'examCode' => 2023_aki_1,
+        //     'questionCode' => 1_1_0,
         //     'message' => 'test',
         // ];
 
         // 試験回とどの設問への質問かを取得
-        $year = request('year');
-        $season = request('season');
-        $section = request('section');
-        $questionNumber = request('questionNumber');
-        $subQuestionNumber = request('subQuestionNumber');
+        $examCode = request('examCode');
+        $questionCode = request('questionCode');
         $userMessage = request('message');
 
         // ユーザーIDを取得
@@ -40,19 +34,19 @@ class AIQuestionController extends Controller
 
         // 問題文を取得
         $examController = new ExamController();
-        $examSentence = $examController->fetchExamSentences($year, $season, $section);
+        $examSentence = $examController->fetchExamSentences($examCode);
         // TODO: AI専用の設問文を取得する
 
         // 質問された設問と正解を取得
-        $examQuestion = $examController->fetchExamQuestionsArray($year, $season, $section, $questionNumber, $subQuestionNumber);
-        $modelAnswer = $examController->fetchModelAnswer($year, $season, $section, $questionNumber, $subQuestionNumber);
+        $examQuestion = $examController->fetchExamQuestionsArray($examCode, $questionCode);
+        $modelAnswer = $examController->fetchModelAnswer($examCode, $questionCode);
 
         // ユーザーの回答を取得
-        $userAnswer = $examController->fetchUserAnswer($userId, $year, $season, $section, $questionNumber, $subQuestionNumber);
+        $userAnswer = $examController->fetchUserAnswer($userId, $examCode, $questionCode);
         $userAnswerContent = $examController->convertUserAnswerToText([$userAnswer]);
 
         // これまでの質問とその回答を取得
-        $dialogues = $this->fetchDialogues($year, $season, $section, $questionNumber, $subQuestionNumber);
+        $dialogues = $this->fetchDialogues($examCode, $questionCode);
 
         // これまでの質問とその回答に新しい質問を追加してAIに投げる
         $dialogues[] = [
@@ -79,7 +73,7 @@ class AIQuestionController extends Controller
         // Log::debug($prompt);
 
         // AIに投げる
-        // $controller = new AIcontroller();
+        // $controller = new AiController();
         // $result = $controller->chat($prompt);
 
         // Log::debug(print_r($result, true));
@@ -92,14 +86,13 @@ class AIQuestionController extends Controller
 
         $aiMessage = '反射型XSS（Cross-Site Scripting）は、Webアプリケーションのセキュリティ上の脆弱性の一つです。攻撃者は、URLパラメータやフォーム入力などの入力値を悪意のあるスクリプトに置き換えてサーバーに送り、その結果、そのスクリプトがユーザーのブラウザで実行されます。これにより、攻撃者はセッションCookieなどの情報を盗み、ユーザーに代わってWebアプリケーションを操作することができます。反射型XSS攻撃は、悪意のあるリンクをクリックすることによってユーザーに対して実行される場合があります。ユーザーが特定のリンクをクリックすると、そのリンクに埋め込まれたスクリプトが実行されます。対策としては、入力値のエスケープやサニタイズ、適切な入力検証、セッションCookieのSecure属性やHttpOnly属性の設定などが挙げられます。';
 
+        [$q, $sub, $small] = array_map('intval', explode('_', $questionCode));
+
         // ユーザーの質問とAIの回答をDBに保存
         $latestDialogue = UserAiDialogue::create([
             'user_id' => $userId,
-            'year' => $year,
-            'season' => $season,
-            'section' => $section,
-            'question_number' => $questionNumber,
-            'sub_question_number' => $subQuestionNumber,
+            'exam_code' => $examCode,
+            'question_code' => $questionCode,
             'user_question' => $userMessage,
             'ai_answer' => $aiMessage,
         ]);
@@ -108,31 +101,21 @@ class AIQuestionController extends Controller
         return response()->json($aiMessage, 200);
     }
 
-    public function getDialogues(Request $request)
+    public function getDialogues(string $examCode, string $questionCode)
     {
-        $userId = Auth::id();
-        $year = (int) $request->year;
-        $season = (string) $request->season;
-        $section = (int) $request->section;
-        $questionNumber = (int) $request->questionNumber;
-        $subQuestionNumber = (int) $request->subQuestionNumber;
-
-        $dialogues = $this->fetchDialogues($year, $season, $section, $questionNumber, $subQuestionNumber);
+        $dialogues = $this->fetchDialogues($examCode, $questionCode);
 
         return response()->json($dialogues, 200);
     }
 
     // これまでの対話履歴を取得する
-    private function fetchDialogues(int $year, string $season, int $section, int $questionNumber, int $subQuestionNumber)
+    private function fetchDialogues(string $examCode, string $questionCode)
     {
         $userId = Auth::id();
 
         $results = UserAiDialogue::where('user_id', $userId)
-            ->where('year', $year)
-            ->where('season', $season)
-            ->where('section', $section)
-            ->where('question_number', $questionNumber)
-            ->where('sub_question_number', $subQuestionNumber)
+            ->where('exam_code', $examCode)
+            ->where('question_code', $questionCode)
             ->get();
 
         if ($results->isEmpty()) {
@@ -153,29 +136,20 @@ class AIQuestionController extends Controller
         return $dialogues;
     }
 
-    public function deleteDialogues(Request $request)
+    public function deleteDialogues(string $examCode, string $questionCode)
     {
         $userId = Auth::id();
 
-        $year = (int) $request->year;
-        $season = (string) $request->season;
-        $section = (int) $request->section;
-        $questionNumber = (int) $request->questionNumber;
-        $subQuestionNumber = (int) $request->subQuestionNumber;
-
         try {
             $results = UserAiDialogue::where('user_id', $userId)
-                ->where('year', $year)
-                ->where('season', $season)
-                ->where('section', $section)
-                ->where('question_number', $questionNumber)
-                ->where('sub_question_number', $subQuestionNumber)
+                ->where('exam_code', $examCode)
+                ->where('question_code', $questionCode)
                 ->delete();
 
             if ($results === 0) {
                 return response()->json(['message' => 'No records found to delete'], 404);
             } else {
-                return response()->json(['message' => 'Deleted'], 200);
+                return response()->noContent();
             }
         } catch (\Exception $e) {
             Log::error($e);

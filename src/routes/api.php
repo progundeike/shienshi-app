@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\ExamController;
-use App\Http\Controllers\AIQuestionController;
+use App\Http\Controllers\AiQuestionController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NewsItemController;
 use App\Http\Controllers\InquiryController;
@@ -25,10 +25,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // 解答
     Route::post('/answer', [AnswerController::class, 'answerSubmit']);
     Route::delete('answer/{year}-{season}-{section}', [AnswerController::class, 'deleteSubmittedAnswer']);
-    Route::post('/question', [AIQuestionController::class, 'run']);
-    Route::get('/dialogues', [AIQuestionController::class, 'getDialogues']);
-    Route::delete('/dialogues/{year}-{season}-{section}-{questionNumber}-{subQuestionNumber}', [AIQuestionController::class, 'deleteDialogues']);
-    Route::get('/corrections/{year}-{season}-{section}', [AnswerController::class, 'fetchCorrection']);
+    Route::post('/chat', [AiQuestionController::class, 'run']);
+    Route::get('/dialogues/{examCode}/{questionCode}', [AiQuestionController::class, 'getDialogues']);
+    Route::delete('/dialogues/{examCode}/{questionCode}', [AiQuestionController::class, 'deleteDialogues']);
+    Route::get('/corrections/{examCode}', [AnswerController::class, 'fetchCorrection']);
 });
 
 // 管理者用のルート

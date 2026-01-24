@@ -25,43 +25,43 @@ class AnswerRequest extends FormRequest
     {
         return [
             'year' => 'required|integer',
-            'season' => 'required|string',
+            'season' => 'required|in:haru,aki',
             'section' => 'required|integer',
             'answers' => 'required|array',
-            'answers.*.questionNumber' => 'required|integer',
-            'answers.*.subQuestionNumber' => 'required|integer',
-            'answers.*.smallQuestionNumber' => 'required|integer',
+            'answers.*.questionCode' => 'required|string',
             'answers.*.user_text' => 'string|nullable',
         ];
     }
 
     protected function prepareForValidation()
     {
-        $answers = $this->input('answerInputs')['answer'];
+        $items = $this->input('answers', []);
 
         // answersの配列を回して、idを振り直す
-        $formattedAnswers = [];
-        foreach ($answers as $answerId => $text) {
-            // answerIdは'1-2-0'のような形式で送られてくる
-            list($questionNumber, $subQuestionNumber, $smallQuestionNumber) = explode('-', $answerId);
+        $formatted = [];
+        foreach ($items as $item) {
+            $content = $item['content'] ?? null;
 
             // $textが配列の場合はカンマ区切りに変換
-            if (is_array($text)) {
-                $text = implode(',', $text);
+            if (is_array($content)) {
+                $content = implode(',', $content);
             }
 
-            $formattedAnswers[] = [
-                'questionNumber' => (int) $questionNumber,
-                'subQuestionNumber' => (int) $subQuestionNumber,
-                'smallQuestionNumber' => (int) $smallQuestionNumber,
-                'user_text' => $text === false ? null : $text, // falseの場合はnullに変換
+            if ($content === false) {
+                $content = null;
+            }
+
+            $formatted[] = [
+                'questionCode' => (string) $item['questionCode'],
+                'user_text' => $content,
             ];
         };
 
         $this->merge([
-            'year' => $this->input('year'),
+            'year' => (int) $this->input('year'),
             'season' => $this->input('season'),
-            'answers' => $formattedAnswers,
+            'section' => (int) $this->input('section'),
+            'answers' => $formatted,
         ]);
     }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Question;
@@ -41,21 +40,17 @@ class ExamController extends Controller
     }
 
     // 大問または設問番号を指定して設問を取得する
-    public function fetchExamQuestionsArray(
-        string $examCode,
-        ?string $questionNumber = null,
-        ?string $subQuestionNumber = null
-    ): array | null {
+    public function fetchExamQuestionsArray(string $examCode, ?string $questionCode = null): array | null
+    {
         $query = Question::where('exam_code', $examCode);
 
         // 特定の設問を取得する場合は条件を追加
-        if ($questionNumber) {
-            $query->where('question_number', $questionNumber);
+        if ($questionCode) {
+            [$q, $sub, $small] = array_map('intval', explode('_', $questionCode));
+            $query->where('question_number', $q)
+                ->where('sub_question_number', $sub)
+                ->where('small_question_number', $small);
         }
-        if ($subQuestionNumber) {
-            $query->where('sub_question_number', $subQuestionNumber);
-        }
-
         $result = $query->get();
 
         // questionsが取得できない場合はnullを返す
@@ -97,27 +92,12 @@ class ExamController extends Controller
     }
 
     // 模範解答を取得する
-    public function fetchModelAnswer(string $examCode, $questionNumber = null, $subQuestionNumber = null, $smallQuestionNumber = null): array
+    public function fetchModelAnswer(string $examCode, ?string $questionCode = null): array
     {
         $query = ModelAnswer::where('exam_code', $examCode);
 
-        if ($questionNumber) {
-            $questionNumber = (int) $questionNumber;
-
-            // intにキャストまたはワイルドカードを代入
-            if ($subQuestionNumber) {
-                $subQuestionNumber = (int) $subQuestionNumber;
-            } else {
-                $subQuestionNumber = '%';
-            }
-
-            if ($smallQuestionNumber) {
-                $smallQuestionNumber = (int) $smallQuestionNumber;
-            } else {
-                $smallQuestionNumber = '%';
-            }
-
-            $query->where('question_code', 'like', `1\_{$questionNumber}\_{$subQuestionNumber}\_{$smallQuestionNumber}`);
+        if ($questionCode) {
+            $query->where('question_code', $questionCode);
         }
         $result = $query->get();
 
@@ -132,19 +112,15 @@ class ExamController extends Controller
     }
 
     // 指定した問題のユーザーの回答を取得する
-    public function fetchUserAnswer(int $userId, int $year, string $season, int $section, int $questionNumber, int $subQuestionNumber): array
+    public function fetchUserAnswer(int $userId, string $examCode, string $questionCode): array
     {
-        $examCode = $year . '_' . $season . '_' . $section;
-
         $answer = UserAnswer::where('user_id', $userId)
             ->where('exam_code', $examCode)
-            ->where('question_number', $questionNumber)
-            ->where('sub_question_number', $subQuestionNumber)
+            ->where('question_code', $questionCode)
             ->first();
 
         return [
-            'questionNumber' => $answer->question_number,
-            'subQuestionNumber' => $answer->sub_question_number,
+            'questionCode' => $answer->question_code,
             'user_text' => $answer->user_text,
         ];
     }
@@ -205,6 +181,7 @@ class ExamController extends Controller
         return response()->json($submittedAnswers, 200);
     }
 
+    # userAnswersは [{"examCode":"2023_aki_3","questionNumber":1,"subQuestionNumber":1,"smallQuestionNumber":0,"user_text":"test"},]の形式
     public function convertUserAnswerToText(array $userAnswers): string
     {
         $length = count($userAnswers);

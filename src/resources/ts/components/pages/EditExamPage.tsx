@@ -5,11 +5,10 @@ import "react-pdf/dist/Page/TextLayer.css";
 import Split from "react-split";
 
 import { ExamHeader } from "../molecules/ExamHeader";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Page404 } from "./Page404";
 import { DisplayExamPdf } from "../organisms/DisplayExamPdf";
 import { useExam } from "../../hooks/useExam";
-import { LoadingPage } from "./LoadingPage";
 import { RegisterQuestionForm } from "../organisms/RegisterQuestionForm";
 import { ExamSentenceResponse, useAdmin } from "../../hooks/useAdmin";
 import { EditExamSentenceForm } from "../molecules/EditExamSentenceForm";
