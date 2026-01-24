@@ -22,11 +22,8 @@ class QuestionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'year' => 'required|integer',
-            'season' => 'required|string',
-            'section' => 'required|integer',
-            'questionNumber' => 'required|integer',
-            'subQuestionNumber' => 'required|integer',
+            'examCode' => 'required|string',
+            'questionCode' => 'required|string',
             'message' => 'required|string',
         ];
     }

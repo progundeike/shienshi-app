@@ -7,7 +7,7 @@ import {
     Center,
     Divider,
 } from "@chakra-ui/react";
-import { FC, memo, useEffect, useState, Fragment } from "react";
+import { FC, memo, useEffect, useState, Fragment, useMemo } from "react";
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { useAtom, useAtomValue } from "jotai";
 
@@ -20,7 +20,7 @@ import { RadioQuestionForm } from "../molecules/RadioQuestionForm";
 import { CheckboxQuestionForm } from "../molecules/CheckboxQuestionForm";
 import { InputQuestionForm } from "../molecules/InputQuestionForm";
 import { TextareaQuestionForm } from "../molecules/TextareaQuestionForm";
-import { AnswerInputs } from "../../types/form";
+import { AnswerItem } from "../../types/form";
 
 export type Correction = {
     questionNumber: number;
@@ -44,43 +44,56 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
     const [isLoading, setIsLoading] = useAtom(loadingAtom);
     const STORAGE_KEY = `formData-${year}-${season}-${section}`;
     const storedData = sessionStorage.getItem(STORAGE_KEY);
-    const defaultValues = storedData ? JSON.parse(storedData) : {};
+
+    const initialAnswers = useMemo(
+        () =>
+            questions.map((q) => ({
+                questionCode: `${q.questionNumber}_${q.subQuestionNumber}_${q.smallQuestionNumber}`,
+                content: q.type === "checkbox" ? [] : "",
+            })),
+        [questions]
+    );
 
     const {
         handleSubmit,
-        setValue,
         reset,
         control,
         formState: { errors },
-    } = useForm<AnswerInputs>({
-        defaultValues: { answer: defaultValues },
+    } = useForm<{ answers: AnswerItem[] }>({
+        defaultValues: {
+            answers: storedData ? JSON.parse(storedData) : initialAnswers,
+        },
     });
 
     const { submitAnswer } = useAnswer();
 
     // 入力が変更されたらsessionStorageに保存
-    const answerValues = useWatch({
+    const answersWatch = useWatch({
         control,
-        name: "answer",
+        name: "answers",
     });
 
     useEffect(() => {
-        if (answerValues) {
-            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(answerValues));
+        if (answersWatch) {
+            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(answersWatch));
         }
-    }, [answerValues]);
+    }, [answersWatch]);
 
     // sessionStorageからデータを復元
     useEffect(() => {
         if (storedData) {
-            const parsedData = JSON.parse(storedData);
-            reset({ answer: parsedData });
+            reset({ answers: JSON.parse(storedData) });
         }
-    }, [setValue]);
+    }, [reset]);
 
-    const onSubmit: SubmitHandler<AnswerInputs> = async (data) => {
+    const onSubmit: SubmitHandler<{ answers: AnswerItem[] }> = async (data) => {
         try {
-            const response = await submitAnswer(data, year, season, section);
+            const response = await submitAnswer(
+                data.answers,
+                year,
+                season,
+                section
+            );
 
             // sessionStorageをクリア
             sessionStorage.removeItem(STORAGE_KEY);
@@ -146,6 +159,7 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
                                         <RadioQuestionForm
                                             question={question}
                                             control={control}
+                                            index={index}
                                         />
                                     )}
 
@@ -153,6 +167,7 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
                                         <CheckboxQuestionForm
                                             question={question}
                                             control={control}
+                                            index={index}
                                         />
                                     )}
 
@@ -160,6 +175,7 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
                                         <TextareaQuestionForm
                                             question={question}
                                             control={control}
+                                            index={index}
                                         />
                                     )}
 
@@ -167,6 +183,7 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
                                         <InputQuestionForm
                                             question={question}
                                             control={control}
+                                            index={index}
                                         />
                                     )}
                                 </Box>

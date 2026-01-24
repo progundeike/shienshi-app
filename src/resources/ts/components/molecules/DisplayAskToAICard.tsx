@@ -3,15 +3,12 @@ import { FC, memo, useEffect, useState } from "react";
 import { AskToAICard } from "../organisms/AskToAICard";
 
 type Props = {
-    questionNumber: number;
-    subQuestionNumber: number;
-    year: number;
-    season: string;
-    section: number;
+    examCode: string;
+    questionCode: string;
 };
 
 export const DisplayAskToAICard: FC<Props> = memo((props) => {
-    const { questionNumber, subQuestionNumber, year, season, section } = props;
+    const { examCode, questionCode } = props;
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -31,11 +28,8 @@ export const DisplayAskToAICard: FC<Props> = memo((props) => {
             {/* ボタンが押されたときに表示されるカード */}
             {isOpen && (
                 <AskToAICard
-                    questionNumber={questionNumber}
-                    subQuestionNumber={subQuestionNumber}
-                    year={year}
-                    season={season}
-                    section={section}
+                    examCode={examCode}
+                    questionCode={questionCode}
                     onClose={() => setIsOpen(false)}
                 />
             )}

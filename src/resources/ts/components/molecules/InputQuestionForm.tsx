@@ -2,21 +2,21 @@ import { Box, Flex, Text, Input } from "@chakra-ui/react";
 import { FC, memo } from "react";
 import { FetchedQuestion, Option } from "../../hooks/useExam";
 import { Control, useController } from "react-hook-form";
-import { AnswerInputs } from "../../types/form";
+import { AnswerItem } from "../../types/form";
 
 type Props = {
     question: FetchedQuestion;
-    control: Control<AnswerInputs>;
+    control: Control<{ answers: AnswerItem[] }>;
+    index: number;
 };
 
 export const InputQuestionForm: FC<Props> = (props) => {
-    const { question, control } = props;
+    const { question, control, index } = props;
 
     // 文字数のリアルタイム監視
-    const code = `${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`;
-    const fieldName: `answer.text.${string}` = `answer.text.${code}`;
-    const { field } = useController<AnswerInputs, typeof fieldName>({
-        name: fieldName,
+    const questionCode = `${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`;
+    const { field } = useController({
+        name: `answers.${index}.content`,
         control,
         defaultValue: "",
     });

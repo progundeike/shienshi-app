@@ -6,24 +6,18 @@ import { Dialogue, ErrorResponse } from "../types/form";
 export const useQuestion = () => {
     const { unexpectedServerErrorToast, toast } = useChakraToast();
 
-    const submitQuestion = async (
-        year: number,
-        season: string,
-        section: number,
-        questionNumber: number,
-        subQuestionNumber: number,
+    const sendChat = async (
+        examCode: string,
+        questionCode: string,
         message: string,
     ): Promise<string> => {
 
         try {
             const response = await axiosInstance
-            .post<ErrorResponse | string | null>("/api/question", {
-                year: year,
-                season: season,
-                section: section,
-                questionNumber: questionNumber,
-                subQuestionNumber: subQuestionNumber,
-                message: message,
+            .post<ErrorResponse | string | null>("/api/chat", {
+                examCode,
+                questionCode,
+                message,
             })
 
             console.log(response);
@@ -43,23 +37,12 @@ export const useQuestion = () => {
     };
 
     const fetchDialogues = async (
-        year: number,
-        season: string,
-        section: number,
-        questionNumber: number,
-        subQuestionNumber: number) => {
+        examCode: string,
+        questionCode: String
+    ) => {
         try {
             const response = await axiosInstance
-            .get<Dialogue[]>("/api/dialogues", {
-                params: 
-                    {
-                    year: year,
-                    season: season,
-                    section: section,
-                    questionNumber: questionNumber,
-                    subQuestionNumber: subQuestionNumber,
-                }
-            })
+            .get<Dialogue[]>(`/api/dialogues/${examCode}/${questionCode}`)
 
             // 成功
             if (response.status === 200) {
@@ -76,15 +59,12 @@ export const useQuestion = () => {
     }
 
     const deleteDialogues = async (
-        year: number,
-        season: string,
-        section: number,
-        questionNumber: number,
-        subQuestionNumber: number) => {
-        console.log("start deleteQuestion");
+        examCode: string,
+        questionCode: String
+    ) => {
         try {
             const response = await axiosInstance
-            .delete<Dialogue[]>(`/api/dialogues/${year}-${season}-${section}-${questionNumber}-${subQuestionNumber}`)
+            .delete<Dialogue[]>(`/api/dialogues/${examCode}/${questionCode}`)
 
             console.log(response);
         } catch (error) {
@@ -93,5 +73,5 @@ export const useQuestion = () => {
         }
     }
 
-    return { submitQuestion, fetchDialogues, deleteDialogues };
+    return { sendChat, fetchDialogues, deleteDialogues };
 };

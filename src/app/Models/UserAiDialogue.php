@@ -17,9 +17,8 @@ class UserAiDialogue extends Model
     protected $fillable = [
         'id',
         'exam_code',
+        'question_code',
         'user_id',
-        'question_number',
-        'sub_question_number',
         'user_question',
         'ai_answer',
     ];

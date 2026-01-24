@@ -29,7 +29,7 @@ export const TopPage: FC = memo(() => {
                                 解く→添削→訊く。
                             </Text>
                             <Text fontSize="2xl" mb="20px">
-                                「フカボリ」は、情報処理安全確保支援士試験の午後対策に特化した学習支援サービスです。
+                                「支援士対策室」は、情報処理安全確保支援士試験の科目B(旧午後試験)対策に特化した学習支援サービスです。
                                 <br />
                                 AIを活用した添削機能と質問機能により、効率的な学習をサポートします。
                                 <br />
@@ -45,13 +45,29 @@ export const TopPage: FC = memo(() => {
                             alt="メインビジュアル"
                         />
                     </Flex>
+
+                    <Box w="80%" mx="auto" my="30px" textAlign="center">
+                        <Flex direction="row" justifyContent="space-between">
+                            <Card>
+                                過去問を解く
+                                <Image
+                                    src="/images/sample1.svg"
+                                    h="100px"
+                                    objectFit="cover"
+                                    alt="過去問を解く"
+                                />
+                            </Card>
+                            <Card>添削する</Card>
+                            <Card>質問する</Card>
+                        </Flex>
+                    </Box>
                 </Box>
 
                 {/* 試験概要 */}
                 <Card>
                     <Flex gap="30px" direction="column">
                         <Heading size="xl" color="baseColor">
-                            情報処理安全確保支援士試験について
+                            情報処理安全確保支援士試験とは
                         </Heading>
                         <Box textAlign="left">
                             <Text>
@@ -82,24 +98,6 @@ export const TopPage: FC = memo(() => {
                         </Heading>
                     </Box>
                     <DisplayNewsItemList />
-                </Card>
-
-                {/* about */}
-                <Card>
-                    <Heading size="xl" color="baseColor">
-                        このサイトについて
-                    </Heading>
-                    <Box textAlign="left" mt="10px">
-                        <Text>
-                            「フカボリ」は、情報処理安全確保支援士試験の午後対策に特化した学習支援サービスです。
-                            <br />
-                            AIを活用した添削機能と質問機能により、効率的な学習をサポートします。
-                            <br />
-                            ユーザー登録は無料で、すぐに学習を始めることができます。
-                            <br />
-                            ぜひご活用ください。
-                        </Text>
-                    </Box>
                 </Card>
             </Flex>
         </Box>

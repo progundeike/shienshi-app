@@ -56,6 +56,8 @@ export const AnswerAndCorrectionForm: FC<Props> = memo((props) => {
         return <Box>設問を取得できませんでした</Box>;
     }
 
+    // console.log(corrections);
+
     return (
         <>
             {corrections && user ? (

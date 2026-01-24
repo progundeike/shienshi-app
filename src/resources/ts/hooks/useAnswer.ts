@@ -2,7 +2,7 @@ import { useToast } from "@chakra-ui/react";
 import { useAtom } from "jotai";
 
 import {
-    AnswerInputs,
+    AnswerItem,
     ErrorResponse,
 } from "../types/form";
 import { axiosInstance } from "./axiosInstance";
@@ -15,7 +15,7 @@ export const useAnswer = () => {
     const { unexpectedServerErrorToast, toast } = useChakraToast();
 
     const submitAnswer = async (
-        answerInputs: AnswerInputs,
+        answers: AnswerItem[],
         year: number,
         season: string,
         section: number,
@@ -25,7 +25,7 @@ export const useAnswer = () => {
         try {
             const response = await axiosInstance
             .post<ErrorResponse | Correction[] | null>("/api/answer", {
-                answerInputs,
+                answers,
                 year,
                 season,
                 section,
@@ -39,21 +39,7 @@ export const useAnswer = () => {
             return null;
         } catch (error) {
             console.log(error);
-
             // 認証エラー
-            // if (error.response.status === 401) {
-            //     toast({
-            //         title: "認証エラー",
-            //         description:
-            //             "答案の提出にはログインが必要です。",
-            //         status: "error",
-            //         duration: 10000,
-            //         isClosable: true,
-            //         position: "bottom-right",
-            //     });
-
-            //     return null
-            // }
 
             toast(unexpectedServerErrorToast);
             console.error(error);
@@ -72,9 +58,8 @@ export const useAnswer = () => {
         setIsLoading(true);
 
         try {
-            console.log('fetchCorrection')
             const response = await axiosInstance
-            .get<ErrorResponse | Correction[]>(`/api/corrections/${year}-${season}-${section}`)
+            .get<ErrorResponse | Correction[]>(`/api/corrections/${year}_${season}_${section}`)
 
             // 未提出の場合
             if (Array.isArray(response.data) && response.data.length === 0) {

@@ -4,9 +4,7 @@ import { axiosInstance } from "./axiosInstance";
 import { useChakraToast } from "../utils/toastUtils";
 
 export type FetchedQuestion = {
-    year: number;
-    season: string;
-    section: number;
+    examCode: string;
     questionNumber: number;
     subQuestionNumber: number;
     smallQuestionNumber: number;
@@ -17,9 +15,7 @@ export type FetchedQuestion = {
 };
 
 export type QuestionForEdit = {
-    year: number;
-    season: string;
-    section: number;
+    examCode: string;
     questionNumber: number;
     subQuestionNumber: number;
     smallQuestionNumber: number;
@@ -60,23 +56,6 @@ export type UpdateQuestionInputs = {
 export const useExam = () => {
     const { unexpectedServerErrorToast, toast } = useChakraToast();
 
-    // const fetchExamList = async () => {
-    //     setIsLoading(true);
-    //     return await axiosInstance
-    //         .get('api/exam-list')
-    //         .then((response) => {
-    //             if (response.status == 200) {
-    //                 return response.data;
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             toast(unexpectedServerErrorToast);
-    //             return null;
-    //         })
-    //         .finally(() =>
-    //          setIsLoading(false));
-    //     }
-
     const fetchQuestions = async (
         year: number,
         season: string,
@@ -86,6 +65,7 @@ export const useExam = () => {
             .get(`/api/questions/${year}-${season}-${section}`)
             .then((response) => {
                 return response.data;
+                
             })
             .catch((error) => {
                 if (error.response && error.response.status === 404) {

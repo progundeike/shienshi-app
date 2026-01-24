@@ -32,6 +32,29 @@ export const ExamsListPage: FC = memo(() => {
                 <Table variant="simple">
                     <Tbody>
                         <Tr>
+                            <CustomTh>2025年(令和7年) 秋期</CustomTh>
+                            <Td>
+                                <ExamLinkButton url="2025/aki/1">
+                                    問1
+                                </ExamLinkButton>
+                            </Td>
+                            <Td>
+                                <PreReleaseExamLinkButton url="2025/aki/2">
+                                    問2
+                                </PreReleaseExamLinkButton>
+                            </Td>
+                            <Td>
+                                <PreReleaseExamLinkButton url="2025/aki/3">
+                                    問3
+                                </PreReleaseExamLinkButton>
+                            </Td>
+                            <Td>
+                                <PreReleaseExamLinkButton url="2025/aki/4">
+                                    問4
+                                </PreReleaseExamLinkButton>
+                            </Td>
+                        </Tr>
+                        <Tr>
                             <CustomTh>2025年(令和7年) 春期</CustomTh>
                             <Td>
                                 <ExamLinkButton url="2025/haru/1">

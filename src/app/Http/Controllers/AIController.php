@@ -18,7 +18,7 @@ use OpenAI\Responses\Chat\CreateResponseMessage;
 use OpenAI\Responses\Chat\CreateResponseFunctionCall;
 use OpenAI\Responses\Chat\CreateResponseUsage;
 
-class AIController extends Controller
+class AiController extends Controller
 {
     const USD_TO_JPY = 156.0;
     // protected $model = 'gpt-4o';
@@ -101,7 +101,7 @@ Json;
             //     CreateResponse::fake()
             // ]);
 
-            Log::debug('AIcontroller result', $result->toArray());
+            Log::debug('AiController result', $result->toArray());
             $this->debugTokenCosts($result->usage->promptTokens, $result->usage->completionTokens);
 
             $retryCount++;

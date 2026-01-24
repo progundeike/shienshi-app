@@ -13,16 +13,14 @@ return new class extends Migration
     {
         Schema::create('user_answers', function (Blueprint $table) {
             // $table->id();
-            $table->string('exam_code');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('question_number');
-            $table->unsignedBigInteger('sub_question_number');
-            $table->unsignedBigInteger('small_question_number')->default(0);
+            $table->string('exam_code');
+            $table->string('question_code');
             $table->text('user_text')->nullable();
             $table->text('ai_rating')->nullable();
             $table->text('ai_text')->nullable();
             $table->timestamps();
-            $table->unique(['user_id', 'exam_code', 'question_number', 'sub_question_number', 'small_question_number'], 'ua_index');
+            $table->unique(['user_id', 'exam_code', 'question_code'], 'ua_index');
         });
     }
 

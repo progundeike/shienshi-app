@@ -17,11 +17,8 @@ import { Dialogue } from "../../types/form";
 import { DialogueBox } from "../atoms/DialogueBox";
 
 type Props = {
-    questionNumber: number;
-    subQuestionNumber: number;
-    year: number;
-    season: string;
-    section: number;
+    examCode: string;
+    questionCode: string;
     onClose: () => void;
 };
 
@@ -30,28 +27,15 @@ type Input = {
 };
 
 export const AskToAICard: FC<Props> = memo((props) => {
-    const {
-        questionNumber,
-        subQuestionNumber,
-        year,
-        season,
-        section,
-        onClose,
-    } = props;
+    const { questionCode, examCode, onClose } = props;
 
     const [isLoading, setIsLoading] = useState(false);
-    const { submitQuestion, fetchDialogues, deleteDialogues } = useQuestion();
+    const { sendChat, fetchDialogues, deleteDialogues } = useQuestion();
     const [dialogues, setDialogues] = useState<Dialogue[]>([]);
     const { register, handleSubmit, reset } = useForm<Input>();
 
     const onClickDeleteDialogues = () => {
-        deleteDialogues(
-            year,
-            season,
-            section,
-            questionNumber,
-            subQuestionNumber
-        );
+        deleteDialogues(examCode, questionCode);
 
         setDialogues([]);
     };
@@ -62,14 +46,7 @@ export const AskToAICard: FC<Props> = memo((props) => {
             { role: "user", content: data.message },
         ]);
 
-        const response = await submitQuestion(
-            year,
-            season,
-            section,
-            questionNumber,
-            subQuestionNumber,
-            data.message
-        );
+        const response = await sendChat(examCode, questionCode, data.message);
 
         reset(); //入力フォームをリセット
 
@@ -89,7 +66,7 @@ export const AskToAICard: FC<Props> = memo((props) => {
     useEffect(() => {
         setIsLoading(true);
 
-        fetchDialogues(year, season, section, questionNumber, subQuestionNumber)
+        fetchDialogues(examCode, questionCode)
             .then((data) => {
                 if (data) {
                     setDialogues(data);
