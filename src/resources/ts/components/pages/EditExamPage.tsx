@@ -46,7 +46,7 @@ export const EditExamPage: FC = memo(() => {
                 const exists = await checkPdfExists(
                     parsedYear,
                     season,
-                    parsedSection
+                    parsedSection,
                 );
                 setIsPdfExists(exists);
                 setLoading(false);
@@ -60,7 +60,7 @@ export const EditExamPage: FC = memo(() => {
                 const examSentence = await getExamSentence(
                     parsedYear,
                     season,
-                    parsedSection
+                    parsedSection,
                 );
                 setExamData(examSentence);
             } catch (error) {
@@ -102,7 +102,7 @@ export const EditExamPage: FC = memo(() => {
                         flexDirection="column"
                         height="50vh"
                         backgroundColor="gray.300"
-                        overflow={"auto"}
+                        overflow="auto"
                     >
                         <DisplayExamPdf />
                     </Box>

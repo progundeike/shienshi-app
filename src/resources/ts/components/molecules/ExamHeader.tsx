@@ -52,10 +52,10 @@ export const ExamHeader: FC<Props> = memo((props) => {
             <Flex justifyContent="space-between" alignItems="center">
                 <Heading as="h2" size="md">
                     {`${year}年 (${yearToJapaneseCalender(
-                        year
+                        year,
                     )}年) ${seasonToJapanese(season)} ${sectionToTitle(
                         section,
-                        year
+                        year,
                     )}`}
                 </Heading>
                 <Box>
@@ -64,9 +64,9 @@ export const ExamHeader: FC<Props> = memo((props) => {
                         download
                     >
                         <Button
-                            backgroundColor="accentColor"
-                            color="accentTextColor"
-                            borderRadius="full"
+                        // backgroundColor="accentColor"
+                        // color="accentTextColor"
+                        // borderRadius="full"
                         >
                             問題をダウンロード
                             <IoMdDownload />

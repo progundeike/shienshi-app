@@ -1,4 +1,4 @@
-import { extendTheme } from "@chakra-ui/react";
+import { extendTheme, position } from "@chakra-ui/react";
 import { Component } from "react";
 
 export const theme = extendTheme({
@@ -28,18 +28,16 @@ export const theme = extendTheme({
                 backgroundColor: "#F5F5F5",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "50%",
+                position: "relative",
+                zIndex: 999,
                 },
             ".gutter.gutter-horizontal": {
                 backgroundImage: "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==')",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "50%",
             },
-            ".react-pdf__Page__textContent, .react-pdf__Page__textContent span, .textLayer, .textLayer span": {
-                userSelect: "text !important",
-                cursor: "text",
-                pointerEvent: "auto",
-            }
         },
+    },
     components: {
         Table: {
             baseStyle: {
@@ -48,5 +46,5 @@ export const theme = extendTheme({
                 },
             },
         },
-    },}
+    },
 });

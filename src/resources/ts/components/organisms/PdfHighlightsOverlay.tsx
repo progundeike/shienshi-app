@@ -1,32 +1,42 @@
 import { Box } from "@chakra-ui/react";
 import type { Highlight } from "../../hooks/usePdfHighlights";
+import { FC } from "react";
 
-export const PdfHighlightsOverlay = ({
-    highlights,
-    page,
-}: {
-    highlights: Highlight[];
+type NormRect = {
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+};
+
+export type AreaHighlight = {
+    id: string;
     page: number;
-}) => {
+    rect: NormRect;
+};
+
+type Props = {
+    highlights: AreaHighlight[];
+    page: number;
+};
+
+// ハイライトの描画だけを担当するコンポーネント
+export const PdfHighlightsOverlay: FC<Props> = ({ highlights, page }) => {
     return (
         <Box position="absolute" inset={0} pointerEvents="none" zIndex={10}>
             {highlights
                 .filter((h) => h.page === page)
-                .flatMap((h) =>
-                    h.rects.map((r, i) => (
-                        <Box
-                            key={`${h.id}_${h.page}_${i}`}
-                            position="absolute"
-                            left={`${r.x * 100}%`}
-                            top={`${r.y * 100}%`}
-                            width={`${r.w * 100}%`}
-                            height={`${r.h * 100}%`}
-                            bg="yellow.200"
-                            opacity={0.55}
-                            borderRadius="2px"
-                        />
-                    )),
-                )}
+                .map((h) => (
+                    <Box
+                        key={h.id}
+                        position="absolute"
+                        left={`${h.rect.x * 100}%`}
+                        top={`${h.rect.y * 100}%`}
+                        width={`${h.rect.w * 100}%`}
+                        height={`${h.rect.h * 100}%`}
+                        bg="rgba(255, 226, 143, 0.6)"
+                    />
+                ))}
         </Box>
     );
 };
