@@ -1,7 +1,5 @@
 import { Box } from "@chakra-ui/react";
 import { FC, memo, useEffect, useState, useRef, useCallback } from "react";
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import "react-pdf/dist/Page/TextLayer.css";
 import Split from "react-split";
 
 import { ExamHeader } from "../molecules/ExamHeader";
@@ -35,7 +33,7 @@ export const ExamPage: FC = memo(() => {
                 const exists = await checkPdfExists(
                     parsedYear,
                     season,
-                    parsedSection
+                    parsedSection,
                 );
                 setIsPdfExists(exists);
                 setLoading(false);
@@ -43,7 +41,6 @@ export const ExamPage: FC = memo(() => {
                     navigate("/not-found");
                 }
             } catch (error) {
-                console.error("PDFの存在確認に失敗しました", error);
                 navigate("/not-found");
             }
         };
@@ -51,29 +48,32 @@ export const ExamPage: FC = memo(() => {
     }, []);
 
     return (
-        <Box minH="100vh">
+        <Box h="100vh" overflow="hidden" minH={0}>
             <Split
                 sizes={[60, 40]}
                 minSize={100}
                 gutterSize={10}
                 gutterAlign="center"
                 direction="horizontal"
-                style={{ display: "flex", height: "100%" }} // Splitコンテナにスタイルを追加
+                style={{ display: "flex", height: "100vh", minHeight: 0 }} // Splitコンテナにスタイルを追加
             >
                 {/* 左側のコンテナ */}
                 <Box
                     display="flex"
                     flexDirection="column"
-                    height="100vh"
+                    h="100%"
+                    minH={0}
                     backgroundColor="gray.300"
-                    overflow={"auto"}
+                    overflow="hidden"
                 >
                     <ExamHeader
                         year={parsedYear}
                         season={season}
                         section={parsedSection}
                     />
-                    <DisplayExamPdf />
+                    <Box flex="1" overflow="auto" minH={0}>
+                        <DisplayExamPdf />
+                    </Box>
                 </Box>
 
                 {/* 右側 */}

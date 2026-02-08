@@ -1,125 +1,138 @@
 import { Box, type BoxProps } from "@chakra-ui/react";
-import React, { forwardRef } from "react";
-import type { HighlightRect } from "../../hooks/usePdfHighlights";
+import React, {
+    forwardRef,
+    useImperativeHandle,
+    useRef,
+    useState,
+} from "react";
 
-type Props = BoxProps & {
-    onAddHighlight: (
-        page: number,
-        rects: HighlightRect[],
-        text?: string,
-    ) => void;
+type NormRect = {
+    x: number;
+    y: number;
+    w: number;
+    h: number;
 };
 
-export const PdfHighlighter = forwardRef<HTMLDivElement, Props>(
-    ({ onAddHighlight, children, ...boxProps }, ref) => {
-        const resetSelection = () => {
-            window.getSelection()?.removeAllRanges();
-        };
+export type PdfHighlighterHandle = {
+    getRootElement: () => HTMLDivElement | null;
+};
 
-        const handleMouseUp = () => {
-            const sel = window.getSelection();
-            if (!sel || sel.rangeCount === 0) return;
+// PDF上で選択したエリア情報を取得するラッパー
+export const PdfHighlighter = forwardRef<
+    PdfHighlighterHandle,
+    {
+        children: React.ReactNode;
+        onAddHighlight: (h: { page: number; rect: NormRect }) => void;
+    }
+>(({ children, onAddHighlight }, ref) => {
+    const rootRef = useRef<HTMLDivElement | null>(null);
 
-            const range = sel.getRangeAt(0);
-            const rangeRect = range.getBoundingClientRect();
-            if (rangeRect.width < 2 && rangeRect.height < 2) return;
+    useImperativeHandle(ref, () => ({
+        getRootElement: () => rootRef.current,
+    }));
 
-            const ancestor =
-                range.commonAncestorContainer.nodeType === Node.ELEMENT_NODE
-                    ? (range.commonAncestorContainer as HTMLElement)
-                    : range.commonAncestorContainer.parentElement;
+    const dragRef = useRef<{
+        page: number;
+        startX: number;
+        startY: number;
+        dragging: boolean;
+    } | null>(null);
 
-            const pageEl = ancestor?.closest?.(
-                "[data-page-number]",
-            ) as HTMLElement | null;
-            if (!pageEl) return;
+    const [ghost, setGhost] = useState<{ page: number; rect: NormRect } | null>(
+        null,
+    );
 
-            const pageNum = Number(pageEl.getAttribute("data-page-number"));
-            if (!Number.isFinite(pageNum)) return;
+    const findPageElement = (target: EventTarget | null) => {
+        const element = target instanceof Element ? target : null;
+        return element?.closest?.("[data-page-number]") as HTMLElement | null;
+    };
 
-            const textLayer =
-                (pageEl.querySelector(
-                    ".react-pdf__Page__textContent",
-                ) as HTMLElement | null) ??
-                (pageEl.querySelector(".textLayer") as HTMLElement | null);
-            if (!textLayer) return;
+    const onMouseDown: React.MouseEventHandler<HTMLDivElement> = (e) => {
+        if (e.button !== 0) return;
 
-            const spans = Array.from(textLayer.querySelectorAll("span"));
-            const rr = range.getBoundingClientRect();
-            const yPad = Math.max(2, rr.height * 0.25);
-            const xPad = 2;
+        const pageEl = findPageElement(e.target);
+        if (!pageEl) return;
 
-            const selectedRects = spans
-                .map((span) => span.getBoundingClientRect())
-                .filter((r) => r.width > 0 && r.height > 0)
-                .filter((r) => {
-                    const cx = r.left + r.width / 2;
-                    const cy = r.top + r.height / 2;
-                    return (
-                        cx >= rr.left - xPad &&
-                        cx <= rr.right + xPad &&
-                        cy >= rr.top - yPad &&
-                        cy <= rr.bottom + yPad
-                    );
-                })
-                .filter((r) => r.height <= rr.height * 1.6);
+        const page = Number(pageEl.dataset.pageNumber);
+        const r = pageEl.getBoundingClientRect();
+        const x = e.clientX - r.left;
+        const y = e.clientY - r.top;
 
-            if (selectedRects.length === 0) return;
+        dragRef.current = { page, startX: x, startY: y, dragging: true };
 
-            const pb = pageEl.getBoundingClientRect();
-            const rectsRaw = selectedRects.map((r) => ({
-                x: (r.left - pb.left) / pb.width,
-                y: (r.top - pb.top) / pb.height,
-                w: r.width / pb.width,
-                h: r.height / pb.height,
-            }));
+        setGhost({
+            page,
+            rect: { x: x / r.width, y: y / r.height, w: 0, h: 0 },
+        });
+    };
 
-            // 同一行っぽいrectを横方向にマージ（濃淡/重なりの軽減）
-            const rects = rectsRaw
-                .filter((r) => r.w > 0 && r.h > 0)
-                .sort((a, b) => a.y - b.y || a.x - b.x)
-                .reduce<HighlightRect[]>((acc, r) => {
-                    const last = acc[acc.length - 1];
-                    if (!last) return [r];
+    const onMouseMove: React.MouseEventHandler<HTMLDivElement> = (e) => {
+        const st = dragRef.current;
+        if (!st?.dragging) return;
 
-                    const yTol = 0.012;
-                    const hTol = 0.02;
-                    const gapTol = 0.03;
+        const pageEl =
+            findPageElement(e.target) ??
+            rootRef.current?.querySelector(`[data-page-number="${st.page}"]`);
+        if (!pageEl) return;
 
-                    const sameLine =
-                        Math.abs(last.y - r.y) < yTol &&
-                        Math.abs(last.h - r.h) < hTol;
-                    const gap = r.x - (last.x + last.w);
+        const r = pageEl.getBoundingClientRect();
+        const x = Math.max(0, Math.min(r.width, e.clientX - r.left));
+        const y = Math.max(0, Math.min(r.height, e.clientY - r.top));
 
-                    if (!sameLine || gap > gapTol) {
-                        acc.push(r);
-                        return acc;
-                    }
+        const left = Math.min(st.startX, x);
+        const top = Math.min(st.startY, y);
+        const right = Math.max(st.startX, x);
+        const bottom = Math.max(st.startY, y);
 
-                    const left = Math.min(last.x, r.x);
-                    const right = Math.max(last.x + last.w, r.x + r.w);
-                    last.x = left;
-                    last.w = right - left;
-                    last.y = Math.min(last.y, r.y);
-                    last.h = Math.max(last.h, r.h);
-                    return acc;
-                }, []);
+        setGhost({
+            page: st.page,
+            rect: {
+                x: left / r.width,
+                y: top / r.height,
+                w: (right - left) / r.width,
+                h: (bottom - top) / r.height,
+            },
+        });
+    };
 
-            const text = sel.toString().trim() || undefined;
-            onAddHighlight(pageNum, rects, text);
+    const finish = () => {
+        const st = dragRef.current;
+        if (!st?.dragging) return;
 
-            resetSelection();
-        };
+        dragRef.current = null;
 
-        return (
-            <Box
-                ref={ref}
-                onMouseUp={handleMouseUp}
-                userSelect="text"
-                {...boxProps}
-            >
-                {children}
-            </Box>
-        );
-    },
-);
+        const g = ghost;
+        setGhost(null);
+
+        if (!g) return;
+
+        // あまりに小さい選択は無視
+        if (g.rect.w < 0.01 || g.rect.h < 0.01) {
+            return;
+        }
+
+        onAddHighlight({ page: g.page as number, rect: g.rect });
+    };
+
+    const onMouseUp: React.MouseEventHandler<HTMLDivElement> = (e) => finish();
+    const onMouseLeave: React.MouseEventHandler<HTMLDivElement> = (e) =>
+        finish();
+
+    return (
+        <Box
+            ref={rootRef}
+            position="relative"
+            onMouseDown={onMouseDown}
+            onMouseMove={onMouseMove}
+            onMouseUp={onMouseUp}
+            onMouseLeave={onMouseLeave}
+        >
+            {children}
+
+            {/* TODO: ghostはページ内に出す */}
+            {ghost && (
+                <Box position="absolute" pointerEvents="none" display="none" />
+            )}
+        </Box>
+    );
+});

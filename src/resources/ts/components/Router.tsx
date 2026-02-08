@@ -4,7 +4,6 @@ import { Route, Routes } from "react-router-dom";
 import { TopPage } from "./pages/TopPage";
 import { Page404 } from "./pages/Page404";
 import { ExamPage } from "./pages/ExamPage";
-import { ExamsPageSample } from "./pages/ExamsPageSample";
 import { Layout } from "./templates/Layout";
 import { AboutPage } from "./pages/AboutPage";
 import { ExamsListPage } from "./pages/ExamsListPage";
@@ -42,7 +41,6 @@ export const Router: FC = memo(() => {
                     element={<ExamPage />}
                 />
                 <Route path="/exams_list" element={<ExamsListPage />} />
-                <Route path="/sample" element={<ExamsPageSample />} />
 
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/terms" element={<TermsPage />} />
