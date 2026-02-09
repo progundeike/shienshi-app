@@ -21,7 +21,9 @@ export type PdfHighlighterHandle = {
 export const PdfHighlighter = forwardRef<
     PdfHighlighterHandle,
     {
-        children: React.ReactNode;
+        children: (
+            ghost: { page: number; rect: NormRect } | null,
+        ) => React.ReactNode;
         onAddHighlight: (h: { page: number; rect: NormRect }) => void;
     }
 >(({ children, onAddHighlight }, ref) => {
@@ -127,12 +129,7 @@ export const PdfHighlighter = forwardRef<
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseLeave}
         >
-            {children}
-
-            {/* TODO: ghostはページ内に出す */}
-            {ghost && (
-                <Box position="absolute" pointerEvents="none" display="none" />
-            )}
+            {children(ghost)}
         </Box>
     );
 });

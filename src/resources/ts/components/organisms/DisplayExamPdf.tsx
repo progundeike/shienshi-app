@@ -6,7 +6,16 @@ import "react-pdf/dist/Page/TextLayer.css";
 import { useParams } from "react-router-dom";
 
 import { PdfHighlighter, PdfHighlighterHandle } from "./PdfHighlighter";
-import { AreaHighlight, PdfHighlightsOverlay } from "./PdfHighlightsOverlay";
+import {
+    AreaHighlight,
+    NormRect,
+    PdfHighlightsOverlay,
+} from "./PdfHighlightsOverlay";
+
+type NewAreaHighlight = {
+    page: number;
+    rect: NormRect;
+};
 
 export const DisplayExamPdf: FC = memo(() => {
     const [numPages, setNumPages] = useState(1);
@@ -26,8 +35,12 @@ export const DisplayExamPdf: FC = memo(() => {
     const [width, setWidth] = useState(0);
     const elementRef = useRef<PdfHighlighterHandle | null>(null);
 
-    const onAddHighlight = (h: Omit<AreaHighlight, "id">) => {
+    const onAddHighlight = (h: NewAreaHighlight) => {
         setHighlights((prev) => [...prev, { ...h, id: crypto.randomUUID() }]);
+    };
+
+    const onDeleteHighlight = (id: string) => {
+        setHighlights((prev) => prev.filter((h) => h.id !== id));
     };
 
     useEffect(() => {
@@ -51,17 +64,21 @@ export const DisplayExamPdf: FC = memo(() => {
 
     return (
         <PdfHighlighter ref={elementRef} onAddHighlight={onAddHighlight}>
-            <Document file={url} onLoadSuccess={onDocumentLoadSuccess}>
-                {Array.from(new Array(numPages), (el, index) => (
-                    <Box key={`page_${index + 1}`} position="relative">
-                        <Page pageNumber={index + 1} width={width} />
-                        <PdfHighlightsOverlay
-                            highlights={highlights}
-                            page={index + 1}
-                        />
-                    </Box>
-                ))}
-            </Document>
+            {(ghost) => (
+                <Document file={url} onLoadSuccess={onDocumentLoadSuccess}>
+                    {Array.from(new Array(numPages), (el, index) => (
+                        <Box key={`page_${index + 1}`} position="relative">
+                            <Page pageNumber={index + 1} width={width} />
+                            <PdfHighlightsOverlay
+                                highlights={highlights}
+                                page={index + 1}
+                                ghost={ghost}
+                                onDelete={onDeleteHighlight}
+                            />
+                        </Box>
+                    ))}
+                </Document>
+            )}
         </PdfHighlighter>
     );
 });
