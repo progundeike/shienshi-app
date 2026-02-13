@@ -34,9 +34,9 @@ export const ExamsListPage: FC = memo(() => {
                         <Tr>
                             <CustomTh>2025年(令和7年) 秋期</CustomTh>
                             <Td>
-                                <ExamLinkButton url="2025/aki/1">
+                                <PreReleaseExamLinkButton url="2025/aki/1">
                                     問1
-                                </ExamLinkButton>
+                                </PreReleaseExamLinkButton>
                             </Td>
                             <Td>
                                 <PreReleaseExamLinkButton url="2025/aki/2">
