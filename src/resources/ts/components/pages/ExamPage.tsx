@@ -64,14 +64,14 @@ export const ExamPage: FC = memo(() => {
                     h="100%"
                     minH={0}
                     backgroundColor="gray.300"
-                    overflow="hidden"
+                    overflow="auto"
                 >
-                    <ExamHeader
-                        year={parsedYear}
-                        season={season}
-                        section={parsedSection}
-                    />
                     <Box flex="1" overflow="auto" minH={0}>
+                        <ExamHeader
+                            year={parsedYear}
+                            season={season}
+                            section={parsedSection}
+                        />
                         <DisplayExamPdf />
                     </Box>
                 </Box>

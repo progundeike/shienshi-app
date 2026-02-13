@@ -9,16 +9,9 @@ type Props = {
 
 export const Layout: FC<Props> = memo(({ children }) => {
     return (
-        <Flex direction="column" minH="100vh">
+        <Flex direction="column" minH="100vh" overflow="hidden">
             <Header />
-            <Box
-                w={{ base: "100%", md: "98%" }}
-                m="auto"
-                maxW="1500px"
-                minH="80vh"
-            >
-                {children}
-            </Box>
+            <Box minH="80vh">{children}</Box>
             <Divider />
             <Footer />
         </Flex>

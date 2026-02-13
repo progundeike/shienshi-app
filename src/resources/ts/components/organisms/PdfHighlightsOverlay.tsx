@@ -39,7 +39,7 @@ export const PdfHighlightsOverlay: FC<Props> = ({
                     width={`${ghost.rect.w * 100}%`}
                     height={`${ghost.rect.h * 100}%`}
                     bg="rgba(255, 226, 143, 0.6)"
-                    outline="2px dashed rgba(180, 140, 0, 0.5)"
+                    outline="1px dashed rgba(180, 140, 0, 0.5)"
                 />
             )}
             {highlights
