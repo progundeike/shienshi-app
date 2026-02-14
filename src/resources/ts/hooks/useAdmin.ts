@@ -2,7 +2,7 @@ import axios from "axios";
 import { axiosInstance } from "./axiosInstance";
 import { useChakraToast } from "../utils/toastUtils";
 import { QuestionForEdit, UpdateQuestionInputs } from "./useExam";
-import { AnswerInputs, ErrorResponse, ModelAnswer, NewsItem } from "../types/form";
+import { AnswerItem, ErrorResponse, ModelAnswer } from "../types/form";
 import { useMutation } from "@tanstack/react-query";
 
 export type ExamSentenceResponse = {
@@ -209,7 +209,7 @@ export const useAdmin = () => {
     }
 
     type UpdateModelAnswerParams = {
-        modelAnswers: AnswerInputs;
+        modelAnswers: AnswerItem[];
         year: number;
         season: string;
         section: number;

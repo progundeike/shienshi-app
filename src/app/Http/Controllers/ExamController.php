@@ -142,7 +142,9 @@ class ExamController extends Controller
             $section = (int) $examCodeParts[2];
 
             $submittedExam = [
-                'year' => $year
+                'year' => $year,
+                'season' => $season,
+                'section' => $section,
             ];
 
             // seasonを日本語に変換

@@ -20,7 +20,7 @@ type NewAreaHighlight = {
 export const DisplayExamPdf: FC = memo(() => {
     const [numPages, setNumPages] = useState(1);
     const { year, season, section } = useParams();
-    const url = `http://${window.location.host}/storage/pdf/${year}/${year}_${season}_${section}.pdf`;
+    const url = `${window.location.origin}/storage/pdf/${year}/${year}_${season}_${section}.pdf`;
     const [highlights, setHighlights] = useState<AreaHighlight[]>([]);
 
     // Workerのパスを設定　現在はCDNを使用

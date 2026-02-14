@@ -1,5 +1,11 @@
 import { FC, memo, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import {
+    Navigate,
+    replace,
+    Route,
+    Routes,
+    useNavigate,
+} from "react-router-dom";
 
 import { TopPage } from "./pages/TopPage";
 import { Page404 } from "./pages/Page404";
@@ -23,13 +29,38 @@ import { EditExamPage } from "./pages/EditExamPage";
 import { NewsItemPage } from "./pages/admin/NewsItemPage";
 import { InquiryPage } from "./pages/admin/InquiryPage";
 import { EditExamListPage } from "./pages/admin/EditExamListPage";
+import { useAtom } from "jotai";
+import { userAtom } from "../states/userAtom";
 
 export const Router: FC = memo(() => {
     const { getUser } = useAuth();
+    const [user, setUser] = useAtom(userAtom);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getUser();
     }, []);
+
+    useEffect(() => {
+        const onExpired = () => {
+            console.log("Authentication expired.");
+            setUser(null);
+
+            navigate("/login", {
+                replace: true,
+                state: { from: location.pathname },
+            });
+        };
+
+        window.addEventListener("auth:Expired", onExpired as EventListener);
+
+        return () => {
+            window.removeEventListener(
+                "auth:Expired",
+                onExpired as EventListener,
+            );
+        };
+    }, [navigate, location.pathname]);
 
     return (
         <Layout>
