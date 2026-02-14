@@ -2,9 +2,8 @@ import axios from "axios";
 
 async function refreshToken() {
     try {
-        const response = await axios.get("api/refresh-token");
-        const newToken = response.data.csrfToken;
-        return newToken;
+        await axios.get("/sanctum/csrf-cookie");
+        return;
     } catch (error) {
         console.log("Failed to refresh CSRF token:", error);
         throw error;
@@ -30,10 +29,18 @@ axiosInstance.interceptors.response.use(
         if (error.response.status === 419 && !originalRequest._retry) {
             originalRequest._retry = true;
 
-            const newToken = await refreshToken();
-            axios.defaults.headers.common["X-CSRF-TOKEN"] = newToken;
+            await refreshToken();
             return axiosInstance(originalRequest);
         }
+
+        // 401エラーが発生したら、カスタムイベントを投げる
+        if (error.response.status === 401) {
+            if (!originalRequest._authExpired) {
+                originalRequest._authExpired = true;
+                window.dispatchEvent(new CustomEvent("auth:Expired"));
+            }
+        }
+
         return Promise.reject(error);
     }
 );

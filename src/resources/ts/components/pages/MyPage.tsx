@@ -1,19 +1,18 @@
 import { FC, memo, useEffect, useState } from "react";
-import { Box, Button, Flex, Heading, Modal, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { LogoutButton } from "../atoms/LogoutButton";
 import { userAtom } from "../../states/userAtom";
 import { Link, useNavigate } from "react-router-dom";
 import { useAtomValue } from "jotai";
-import { FaExclamationCircle } from "react-icons/fa";
 import { SubmittedExam, useExam } from "../../hooks/useExam";
-import { UpdatePasswordPage } from "./auth/UpdatePasswordPage";
-import { RiFileExcel2Line } from "react-icons/ri";
 import { AccountDeleteModal } from "../organisms/AccountDeleteModal";
 
 export const MyPage: FC = memo(() => {
     const user = useAtomValue(userAtom);
     const { fetchSubmittedExams } = useExam();
     const [submittedExams, setSubmittedExams] = useState<SubmittedExam[]>([]);
+
+    console.log(submittedExams);
 
     const navigate = useNavigate();
 
