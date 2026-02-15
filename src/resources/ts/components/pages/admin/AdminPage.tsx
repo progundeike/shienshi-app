@@ -7,7 +7,7 @@ export const AdminPage = memo(() => {
         <Box w="80%" m="auto" textAlign="center" my="30px" p="50px">
             <Flex direction="column" gap="30px">
                 <Box>
-                    <Link to="/admin/newsItem">
+                    <Link to="/admin/news-item">
                         <Button colorScheme="green" borderRadius="full" w="50%">
                             お知らせ編集
                         </Button>

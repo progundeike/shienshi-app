@@ -107,7 +107,7 @@ export const Router: FC = memo(() => {
                 {/* 管理者ページ */}
                 <Route element={<AdminRoutes />}>
                     <Route path="/admin" element={<AdminPage />} />
-                    <Route path="/admin/news_item" element={<NewsItemPage />} />
+                    <Route path="/admin/news-item" element={<NewsItemPage />} />
                     <Route path="/admin/inquiry" element={<InquiryPage />} />
                     <Route path="/admin/exams" element={<EditExamListPage />} />
                     <Route

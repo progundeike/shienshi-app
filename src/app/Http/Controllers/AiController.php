@@ -36,7 +36,6 @@ class AiController extends Controller
                 'model' => $this->model,
                 'messages' => $prompt,
             ]);
-            Log::debug(print_r($result, true));
             $this->debugTokenCosts($result->usage->promptTokens, $result->usage->completionTokens);
 
             $retryCount++;
@@ -101,7 +100,6 @@ Json;
             //     CreateResponse::fake()
             // ]);
 
-            Log::debug('AiController result', $result->toArray());
             $this->debugTokenCosts($result->usage->promptTokens, $result->usage->completionTokens);
 
             $retryCount++;

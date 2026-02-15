@@ -20,8 +20,6 @@ class UpdateUserPassword implements UpdatesUserPasswords
      */
     public function update(User $user, array $input): void
     {
-        Log::debug($input);
-
         // new_passwordとnew_password_confirmationが一致しているかチェック
 
         Validator::make($input, [
