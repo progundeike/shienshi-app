@@ -50,8 +50,6 @@ class AnswerController extends Controller
             ],
         ];
 
-        // Log::debug('prompt', $prompt);
-
         // AIに投げる
         // $controller = new AiController();
         // $aiResponse = $controller->useFunctionCall($prompt, $this->functionParameter);
@@ -60,7 +58,6 @@ class AnswerController extends Controller
         // $arguments = json_decode($aiResponse->choices[0]->message->functionCall->arguments, true);
         // $evaluations = $arguments['evaluations'];
 
-        // Log::debug('evaluations', $evaluations);
         $evaluations = [
             ["questionNumber" => 1, "subQuestionNumber" => 1, "rating" => "×", "comment" => "正しいXSS脆弱性の種類が選択されていません。正解は「格納型 XSS」です。模範解答と照らし合わせて再度考えてみてください。"]
         ];
@@ -78,8 +75,6 @@ class AnswerController extends Controller
                 'ai_text' => $evaluation['comment'],
             ];
         }
-
-        // Log::debug('aiResponse', $aiResponse);
 
         UserAnswer::upsert(
             $aiResponse,

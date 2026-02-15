@@ -3,6 +3,7 @@ name: Deploy
 on:
   push:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -39,6 +40,7 @@ jobs:
 
       - name: Remote clone/pull & compose up
         uses: appleboy/ssh-action@v1.0.3
+        if: github.event_name == 'workflow_dispatch'
         env:
           GHCR_USER: ${{ github.repository_owner }}
           GHCR_PAT: ${{ secrets.GHCR_PAT }}

@@ -32,7 +32,7 @@ import { useNewsItem } from "../../../hooks/useNewsItem";
 
 export const NewsItemPage: FC = memo(() => {
     const [selectedNewsItem, setSelectedNewsItem] = useState<null | NewsItem>(
-        null
+        null,
     );
     const { newsItemList, updateNewsItem, deleteNewsItem } = useNewsItem();
     const newsItems = newsItemList.data ?? [];
@@ -55,7 +55,7 @@ export const NewsItemPage: FC = memo(() => {
                                 (messages as string[])[0] ??
                                 "入力内容をご確認ください",
                         });
-                    }
+                    },
                 );
             }
         }
@@ -116,7 +116,7 @@ export const NewsItemPage: FC = memo(() => {
     };
 
     return (
-        <Box>
+        <Box w="80%" mx="auto" my="50px" textAlign="center">
             <Heading>お知らせ編集</Heading>
             <Button
                 w="50%"
@@ -154,7 +154,7 @@ export const NewsItemPage: FC = memo(() => {
                                 >
                                     <Box w="50px">
                                         {new Date(
-                                            item.published_at
+                                            item.published_at,
                                         ).toLocaleDateString("ja-JP", {
                                             month: "numeric",
                                             day: "numeric",
@@ -269,7 +269,7 @@ export const NewsItemPage: FC = memo(() => {
                                                 borderRadius="full"
                                                 onClick={() =>
                                                     handleDelete(
-                                                        selectedNewsItem
+                                                        selectedNewsItem,
                                                     )
                                                 }
                                                 colorScheme="red"

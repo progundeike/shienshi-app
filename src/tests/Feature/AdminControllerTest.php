@@ -201,7 +201,6 @@ class AdminControllerTest extends TestCase
         ];
 
         $response = $this->actingAs($this->adminUser)->post('/api/admin/question', $data, ['Accept' => 'application/json']);
-        $response->dump();
         $response->assertStatus(201);
         $this->assertDatabaseHas('questions', [
             'exam_code' => '2099_haru_1',

@@ -70,13 +70,9 @@ class AiQuestionController extends Controller
         // dialoguesをpromptに追加
         $prompt = array_merge($prompt, $dialogues);
 
-        // Log::debug($prompt);
-
         // AIに投げる
         // $controller = new AiController();
         // $result = $controller->chat($prompt);
-
-        // Log::debug(print_r($result, true));
 
         // if ($result->choices[0]->message->content) {
         //     $aiMessage = $result->choices[0]->message->content;
