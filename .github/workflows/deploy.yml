@@ -14,6 +14,8 @@ jobs:
       id-token: write
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -31,7 +33,7 @@ jobs:
       - name: PHPUnit
         working-directory: src
         env:
-          APP_enV: testing
+          APP_ENV: testing
         run: php artisan test
       
       - name: Setup Node
