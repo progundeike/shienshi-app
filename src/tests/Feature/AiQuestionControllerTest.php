@@ -5,11 +5,9 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\UserAiDialogue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Attributes\Test;
-use Illuminate\Support\Facades\Log;
+use Tests\TestCase;
 
 class AiQuestionControllerTest extends TestCase
 {

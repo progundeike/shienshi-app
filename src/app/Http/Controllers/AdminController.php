@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\ExamSentence;
 use App\Models\ModelAnswer;
 use App\Models\Question;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
@@ -44,7 +43,7 @@ class AdminController extends Controller
 
         $validated['year'] = (int) $validated['year'];
         $validated['section'] = (int) $validated['section'];
-        $examCode = $validated['year'] . '_' . $validated['season'] . '_' . $validated['section'];
+        $examCode = $validated['year'].'_'.$validated['season'].'_'.$validated['section'];
 
         // 試験問題の更新処理を実行
         try {
@@ -61,8 +60,8 @@ class AdminController extends Controller
                     'sub_question_number' => $validated['subQuestionNumber'],
                     'small_question_number' => $validated['smallQuestionNumber'] ?? null,
                     'type' => $validated['type'],
-                    'text' => $validated['text'] ? $validated['text'] : "",
-                    'text_for_ai' => $validated['textForAi'] ? $validated['textForAi'] : "",
+                    'text' => $validated['text'] ? $validated['text'] : '',
+                    'text_for_ai' => $validated['textForAi'] ? $validated['textForAi'] : '',
                     'options' => empty($validated['options']) ? null : $validated['options'],
                     'max_length' => $validated['maxLength'] ?? null,
                 ]
@@ -70,7 +69,8 @@ class AdminController extends Controller
 
             return response()->json(['message' => 'Exam question updated successfully'], 201);
         } catch (\Exception $e) {
-            Log::error('Failed to update exam question: ' . $e->getMessage());
+            Log::error('Failed to update exam question: '.$e->getMessage());
+
             return response()->json(['error' => 'Failed to update exam question'], 500);
         }
     }
@@ -80,15 +80,15 @@ class AdminController extends Controller
     {
         // 試験文の取得
         try {
-            $examSentence = ExamSentence::where('exam_code', $year . '_' . $season . '_' . $section)
+            $examSentence = ExamSentence::where('exam_code', $year.'_'.$season.'_'.$section)
                 ->first();
 
-            if (!$examSentence) {
+            if (! $examSentence) {
                 // まだ登録されていない可能性もあるので、空のデータを返す
                 return response()->json([
-                    'sentence' => "",
-                    'purpose' => "",
-                    'reviewComment' => "",
+                    'sentence' => '',
+                    'purpose' => '',
+                    'reviewComment' => '',
                 ], 200);
             }
 
@@ -98,7 +98,8 @@ class AdminController extends Controller
                 'reviewComment' => $examSentence->review_comment,
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Failed to fetch exam sentences: ' . $e->getMessage());
+            Log::error('Failed to fetch exam sentences: '.$e->getMessage());
+
             return response()->json(['error' => 'Failed to fetch exam sentences'], 500);
         }
     }
@@ -113,7 +114,7 @@ class AdminController extends Controller
             'section' => 'required|integer',
             'sentence' => 'nullable|string',
             'purpose' => 'nullable|string',
-            'reviewComment' => 'nullable|string'
+            'reviewComment' => 'nullable|string',
         ]);
 
         // 試験文の更新処理を実行
@@ -130,11 +131,12 @@ class AdminController extends Controller
                 $updateData['review_comment'] = $validated['reviewComment'];
             }
 
-            ExamSentence::updateOrCreate(['exam_code' => $validated['year'] . '_' . $validated['season'] . '_' . $validated['section']], $updateData);
+            ExamSentence::updateOrCreate(['exam_code' => $validated['year'].'_'.$validated['season'].'_'.$validated['section']], $updateData);
 
             return response()->json(['message' => 'Exam sentence updated successfully'], 200);
         } catch (\Exception $e) {
-            Log::error('Failed to update exam sentence: ' . $e->getMessage());
+            Log::error('Failed to update exam sentence: '.$e->getMessage());
+
             return response()->json(['error' => 'Failed to update exam sentence'], 500);
         }
     }
@@ -149,7 +151,7 @@ class AdminController extends Controller
             'file' => 'required|file|mimes:pdf|max:4096', // 最大4MBのPDFファイル
         ]);
 
-        $directory = 'pdf/' . $validated['year'];
+        $directory = 'pdf/'.$validated['year'];
 
         // ファイルの保存処理
         try {
@@ -161,7 +163,8 @@ class AdminController extends Controller
 
             return response()->json(['message' => 'PDF uploaded successfully'], 201);
         } catch (\Exception $e) {
-            Log::error('Failed to upload PDF: ' . $e->getMessage());
+            Log::error('Failed to upload PDF: '.$e->getMessage());
+
             return response()->json(['error' => 'Failed to upload PDF'], 500);
         }
     }
@@ -169,7 +172,7 @@ class AdminController extends Controller
     public function getModelAnswers(string $year, string $season, string $section): JsonResponse
     {
         $controller = new ExamController();
-        $examCode = $year . '_' . $season . '_' . $section;
+        $examCode = $year.'_'.$season.'_'.$section;
         $modelAnswers = $controller->fetchModelAnswer($examCode);
 
         if (is_null($modelAnswers)) {
@@ -192,10 +195,10 @@ class AdminController extends Controller
     {
         // リクエストのバリデーション
         $validated = $request->validate([
-            'modelAnswers' => 'required|array'
+            'modelAnswers' => 'required|array',
         ]);
 
-        $examCode = $year . '_' . $season . '_' . $section;
+        $examCode = $year.'_'.$season.'_'.$section;
 
         // 模範解答をアップデート
         try {
@@ -211,28 +214,34 @@ class AdminController extends Controller
 
             return response()->json(['message' => 'Model answers updated successfully'], 200);
         } catch (\Exception $e) {
-            Log::error('Failed to update model answers: ' . $e->getMessage());
+            Log::error('Failed to update model answers: '.$e->getMessage());
+
             return response()->json(['error' => 'Failed to update model answers'], 500);
         }
     }
 
-    public function deleteQuestion(string $year, string $season, string $section, string $questionId): JsonResponse
+    public function deleteQuestion(string $year, string $season, string $section, string $questionCode): JsonResponse
     {
-        list($questionNumber, $subQuestionNumber, $smallQuestionNumber) = explode('_', $questionId);
-
-        // TODO:模範解答も念の為消したほうがいいかも
+        [$questionNumber, $subQuestionNumber, $smallQuestionNumber] = explode('_', $questionCode);
+        $examCode = $year.'_'.$season.'_'.$section;
 
         try {
             // 該当の問題を削除
-            Question::where('exam_code', "{$year}_{$season}_{$section}")
+            Question::where('exam_code', $examCode)
                 ->where('question_number', $questionNumber)
                 ->where('sub_question_number', $subQuestionNumber)
                 ->where('small_question_number', $smallQuestionNumber)
                 ->delete();
 
+            // 模範解答もあれば削除する
+            ModelAnswer::where('exam_code', $examCode)
+                ->where('question_code', $questionCode)
+                ->delete();
+
             return response()->json(['message' => 'Question deleted successfully'], 200);
         } catch (\Exception $e) {
-            Log::error('Failed to delete question: ' . $e->getMessage());
+            Log::error('Failed to delete question: '.$e->getMessage());
+
             return response()->json(['error' => 'Failed to delete question'], 500);
         }
     }
@@ -243,9 +252,9 @@ class AdminController extends Controller
         string $year,
         string $season,
         string $section,
-    ): array | null {
+    ): ?array {
 
-        $examCode = $year . '_' . $season . '_' . $section;
+        $examCode = $year.'_'.$season.'_'.$section;
         $query = Question::where('exam_code', $examCode);
         $result = $query->get();
 

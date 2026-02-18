@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Question;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 
 class QuestionSeeder extends Seeder
@@ -15,7 +14,7 @@ class QuestionSeeder extends Seeder
     public function run(): void
     {
         $path = database_path('seeders/data/questions.json');
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             $this->command->error("File not found: {$path}");
         }
 
@@ -39,7 +38,7 @@ class QuestionSeeder extends Seeder
 
         // データベースに挿入
         Question::insert($questions);
-        $this->command->info("Inserted " . count($questions) . " records into the database.");
+        $this->command->info('Inserted '.count($questions).' records into the database.');
 
         // $examQuestionsDirectory = database_path('exam-questions');
         // $filePathList = File::allFiles($examQuestionsDirectory);

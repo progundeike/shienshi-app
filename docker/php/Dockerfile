@@ -8,7 +8,7 @@ COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update && \
     # --no-install-recommendで不要なパッケージのインストールを防止
-    apt-get -y install --no-install-recommends git zip unzip vim libzip-dev libicu-dev libonig-dev cron mariadb-client && \
+    apt-get -y install --no-install-recommends git zip unzip libzip-dev libicu-dev libonig-dev && \
     # 以下2行でパッケージインストールで使用したキャッシュファイルを削除
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
@@ -18,8 +18,8 @@ RUN apt-get update && \
 # composerをrootで使う警告抑止
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# 共通の php.ini
-COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
+# 本番用の00-base.iniを先にコピーしておく（devは後で上書き）
+COPY ./docker/php/conf.d/00-base.ini /usr/local/etc/php/conf.d/00-base.ini
 
 # =========================================
 # vendor だけ解決（本番用のcomposer --no-dev）
@@ -68,10 +68,20 @@ CMD ["php-fpm"]
 # 開発用イメージ（xdebug / Node あり）
 # =========================================
 FROM base AS dev
+
+# devだけにvim, mariadb-clientを入れる
+RUN apt-get update && \
+    apt-get -y install --no-install-recommends vim mariadb-client && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 # Node 取り込み（ホットリロード等）
 COPY --from=node:20.5 /usr/local/bin /usr/local/bin
 COPY --from=node:20.5 /usr/local/lib /usr/local/lib
 RUN npm install -g npm@10.8.0
+
+# dev用のphp.iniをコピー（本番用を上書き）
+COPY ./docker/php/conf.d/90-dev.ini /usr/local/etc/php/conf.d/90-dev.ini
 
 # xdebug
 RUN pecl install xdebug && docker-php-ext-enable xdebug

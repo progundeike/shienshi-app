@@ -1,4 +1,5 @@
 <?php
+
 return [
     'exam_code' => '2024_haru_2',
     'sentence' => <<<'EOF'

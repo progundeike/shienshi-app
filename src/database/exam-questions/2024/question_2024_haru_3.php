@@ -6,7 +6,7 @@ return [
         'question_number' => 1,
         'sub_question_number' => 1,
         'type' => 'input',
-        'text' => <<<EOF
+        'text' => <<<'EOF'
 [XSSについて]について答えよ。
 (1)本文中の下線1について,図3中のリクエスト内のスクリプトが出力されるのはどの機能か。表1の詳細機能に対する項番を選び答えよ。
 EOF,

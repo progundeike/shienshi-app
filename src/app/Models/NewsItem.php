@@ -17,6 +17,6 @@ class NewsItem extends Model
     ];
 
     protected $casts = [
-        'published_at' => 'datetime'
+        'published_at' => 'datetime',
     ];
 }

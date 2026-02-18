@@ -5,7 +5,7 @@ return [
     [
         'exam_code' => '2024_haru_1',
         'question_code' => '1_1_0',
-        'text' => "ステートレス",
+        'text' => 'ステートレス',
     ],
     [
         'exam_code' => '2024_haru_1',

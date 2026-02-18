@@ -2,25 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use OpenAI\Laravel\Facades\OpenAI;
 use Illuminate\Support\Facades\Log;
-use App\Models\ExamSentence;
-use App\Models\UserAnswer;
-use App\Models\ModelAnswer;
-use App\Models\Question;
-use App\Http\Controllers\ExamController;
-use Illuminate\Support\Facades\Auth;
-
+use OpenAI\Laravel\Facades\OpenAI;
 use OpenAI\Responses\Chat\CreateResponse;
-use OpenAI\Responses\Chat\CreateResponseChoice;
-use OpenAI\Responses\Chat\CreateResponseMessage;
-use OpenAI\Responses\Chat\CreateResponseFunctionCall;
-use OpenAI\Responses\Chat\CreateResponseUsage;
 
 class AiController extends Controller
 {
     const USD_TO_JPY = 156.0;
+
     // protected $model = 'gpt-4o';
     protected $model = 'gpt-3.5-turbo-0125';
     // protected string $model = 'gpt-4o-mini';
@@ -42,7 +31,8 @@ class AiController extends Controller
         } while ($result->choices[0]->finishReason !== 'stop' && $retryCount < $maxRetries);
 
         if ($result->choices[0]->finishReason !== 'stop') {
-            Log::error('finishReason :' . $result->choices[0]->finishReason);
+            Log::error('finishReason :'.$result->choices[0]->finishReason);
+
             return [];
         }
 
@@ -88,7 +78,7 @@ Json;
                 'model' => $this->model,
                 'messages' => $prompt,
                 'functions' => [
-                    $functionParameter
+                    $functionParameter,
                 ],
                 'function_call' => 'auto',
             ]);
@@ -106,7 +96,8 @@ Json;
         } while ($result->choices[0]->finishReason !== 'function_call' && $retryCount < $maxRetries);
 
         if ($result->choices[0]->finishReason !== 'function_call') {
-            Log::error('finishReason :' . $result->choices[0]->finishReason);
+            Log::error('finishReason :'.$result->choices[0]->finishReason);
+
             return [];
         }
 
@@ -136,7 +127,7 @@ Json;
         $totalCost = $promptCost + $completionCost;
         $costs = self::USD_TO_JPY * $totalCost;
 
-        Log::debug('total costs: ¥' . $costs);
-        return;
+        Log::debug('total costs: ¥'.$costs);
+
     }
 }

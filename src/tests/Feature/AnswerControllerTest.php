@@ -3,13 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use App\Models\UserAnswer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class AnswerControllerTest extends TestCase
 {

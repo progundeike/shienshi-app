@@ -2,10 +2,9 @@
 
 namespace App\Http\Responses;
 
-use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\UserResource;
-use Symfony\Component\ErrorHandler\Debug;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
 
 class RegisterResponse implements RegisterResponseContract
 {
@@ -20,6 +19,7 @@ class RegisterResponse implements RegisterResponseContract
         $user = Auth::user();
 
         $request->session()->regenerate();
+
         return response()->json(new UserResource($user), 201);
     }
 }

@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\NewsItem;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class NewsItemPolicy
 {

@@ -51,7 +51,6 @@ export const MyPage: FC = memo(() => {
 
                 {/* メール機能はβ版では実装しない */}
                 {/* {user.emailVerified ? (
-                    // TODO: メールアドレスが登録済みの場合の表示
                     <Box>メールアドレスが登録済みです</Box>
                 ) : (
                     <Box

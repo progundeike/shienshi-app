@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Inquiry;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class InquiryPolicy
 {
@@ -23,7 +22,6 @@ class InquiryPolicy
     // {
     //     //
     // }
-
 
     /**
      * Determine whether the user can delete the model.

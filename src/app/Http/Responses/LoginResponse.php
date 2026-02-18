@@ -3,8 +3,8 @@
 namespace App\Http\Responses;
 
 use App\Http\Resources\UserResource;
-use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 
 class LoginResponse implements LoginResponseContract
 {
@@ -19,6 +19,7 @@ class LoginResponse implements LoginResponseContract
 
         $user = Auth::user();
         $request->session()->regenerate();
+
         return response()->json(new UserResource($user), 200);
     }
 }

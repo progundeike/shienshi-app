@@ -3,10 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\ExamSentence;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
 
 class ExamSentenceSeeder extends Seeder
 {
@@ -16,7 +14,7 @@ class ExamSentenceSeeder extends Seeder
     public function run(): void
     {
         $path = database_path('seeders/data/exam_sentences.json');
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             $this->command->error("File not found: {$path}");
         }
 
@@ -40,7 +38,7 @@ class ExamSentenceSeeder extends Seeder
 
         // データベースに挿入
         ExamSentence::insert($examSentences);
-        $this->command->info("Inserted " . count($examSentences) . " records into the database.");
+        $this->command->info('Inserted '.count($examSentences).' records into the database.');
 
         // $examSentenceFilesDirectory = database_path('exam-sentences');
         // $filePathList = File::allFiles($examSentenceFilesDirectory);
