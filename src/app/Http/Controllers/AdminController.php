@@ -29,6 +29,8 @@ class AdminController extends Controller
             'maxLength' => 'nullable|integer|max:5000',
         ]);
 
+        Log::debug($validated);
+
         // optionsがkey,valueともに空文字列の配列の場合はnullにする
         if (isset($validated['options'])) {
             $checkedOptions = [];
@@ -56,9 +58,9 @@ class AdminController extends Controller
                 ],
                 [
                     'exam_code' => $examCode,
-                    'question_number' => $validated['questionNumber'],
-                    'sub_question_number' => $validated['subQuestionNumber'],
-                    'small_question_number' => $validated['smallQuestionNumber'] ?? null,
+                    'question_number' => (int) $validated['questionNumber'],
+                    'sub_question_number' => (int) $validated['subQuestionNumber'],
+                    'small_question_number' => (int) ($validated['smallQuestionNumber'] ?? 0),
                     'type' => $validated['type'],
                     'text' => $validated['text'] ? $validated['text'] : '',
                     'text_for_ai' => $validated['textForAi'] ? $validated['textForAi'] : '',
