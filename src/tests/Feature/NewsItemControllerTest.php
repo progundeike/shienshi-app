@@ -2,18 +2,19 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\NewsItem;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Support\Facades\Hash;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class NewsItemControllerTest extends TestCase
 {
     use RefreshDatabase;
 
     protected User $adminUser;
+
     protected User $normalUser;
 
     public function setUp(): void
@@ -45,7 +46,7 @@ class NewsItemControllerTest extends TestCase
                 'title' => 'news_item2',
                 'content' => 'This is news item content message for testing.',
                 'published_at' => now(),
-            ]
+            ],
         ]);
     }
 
@@ -123,7 +124,6 @@ class NewsItemControllerTest extends TestCase
             'content' => $target->content,
             'published_at' => \Carbon\Carbon::parse($target->published_at)->format('Y-m-d H:i:s'),
         ];
-
 
         $editTarget = [
             'id' => $target->id,

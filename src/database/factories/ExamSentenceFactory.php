@@ -21,7 +21,7 @@ class ExamSentenceFactory extends Factory
         $section = $this->faker->numberBetween(1, 4);
 
         return [
-            'exam_code' => $year . '_' . $season . '_' . $section,
+            'exam_code' => $year.'_'.$season.'_'.$section,
             'sentence' => $this->faker->text(200),
             'purpose' => $this->faker->text(100),
             'review_comment' => $this->faker->text(100),

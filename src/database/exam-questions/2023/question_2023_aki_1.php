@@ -7,7 +7,7 @@ return [
         'question_number' => 1,
         'sub_question_number' => 1,
         'type' => 'radio',
-        'text' => <<<EOF
+        'text' => <<<'EOF'
             この攻撃で使われた XSS 脆弱性について答えよ。
 
             (1) XSS脆弱性の種類を解答群の中から選び, 記号で答えよ
@@ -40,7 +40,7 @@ return [
         'question_number' => 3,
         'sub_question_number' => 1,
         'type' => 'textarea',
-        'text' => <<<EOF
+        'text' => <<<'EOF'
             図4のスクリプトについて答えよ。
             
             (1) 図4の6~20行目の処理の内容を, 60字以内で答えよ。

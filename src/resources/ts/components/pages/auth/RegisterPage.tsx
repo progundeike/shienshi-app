@@ -50,7 +50,6 @@ export const RegisterPage: FC = memo(() => {
         const errorResponse = await registerUser(data);
         if (!errorResponse) return;
         if ("errors" in errorResponse) {
-            console.log(errorResponse.errors);
             // エラーレスポンスを処理する
             for (const [field, message] of Object.entries(
                 errorResponse.errors
@@ -63,7 +62,7 @@ export const RegisterPage: FC = memo(() => {
                     });
                 } else {
                     // バリデーション以外のエラー
-                    console.log(errorResponse);
+                    console.error(errorResponse);
                 }
             }
         }

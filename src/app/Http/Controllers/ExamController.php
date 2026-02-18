@@ -2,45 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Question;
 use App\Models\ExamSentence;
 use App\Models\ModelAnswer;
+use App\Models\Question;
 use App\Models\SubmittedExam;
 use App\Models\UserAnswer;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 // 試験問題に関する情報を提供するコントローラ
 class ExamController extends Controller
 {
-
     // 設問をjson形式で取得して、httpレスポンスを返す
     // ログイン済みで、答案提出済みの場合は、添削画面を表示する
     public function getExamQuestionsJson(string $year, string $season, string $section)
     {
         $year = (int) $year;
         $section = (int) $section;
-        $examCode = $year . '_' . $season . '_' . $section;
+        $examCode = $year.'_'.$season.'_'.$section;
 
         try {
             $questions = $this->fetchExamQuestionsArray($examCode);
 
             // questionsが取得できない場合は404エラーを返す
-            if (!$questions) {
+            if (! $questions) {
                 return response()->json(['error' => 'Questions not found'], 404);
             }
 
             return response()->json($questions);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
+
             return response()->json(['error' => 'Failed to get questions'], 500);
         }
     }
 
     // 大問または設問番号を指定して設問を取得する
-    public function fetchExamQuestionsArray(string $examCode, ?string $questionCode = null): array | null
+    public function fetchExamQuestionsArray(string $examCode, ?string $questionCode = null): ?array
     {
         $query = Question::where('exam_code', $examCode);
 
@@ -129,22 +128,16 @@ class ExamController extends Controller
     public function fetchSubmittedExams()
     {
         $userId = Auth::id();
-
         $fetchedSubmittedAnswers = SubmittedExam::where('user_id', $userId)
             ->get();
 
         $submittedAnswers = $fetchedSubmittedAnswers->map(function ($exam) {
-
-            // TODO: exam_codeを分解する
-            $examCodeParts = explode('_', $exam->exam_code);
-            $year = (int) $examCodeParts[0];
-            $season = $examCodeParts[1];
-            $section = (int) $examCodeParts[2];
+            [$year, $season, $section] = explode('_', $exam->exam_code);
 
             $submittedExam = [
-                'year' => $year,
+                'year' => (int) $year,
                 'season' => $season,
-                'section' => $section,
+                'section' => (int) $section,
             ];
 
             // seasonを日本語に変換
@@ -155,17 +148,17 @@ class ExamController extends Controller
             } else {
                 // 例外
                 $submittedExam['season_japanese'] = '未登録';
-                Log::error('Unknown season: ' . $submittedExam['season']);
+                Log::error('Unknown season: '.$submittedExam['season']);
             }
 
             // sectionを問いに変換。2023年までは午後I, 午後Ⅱに分ける
             if ($section >= 2023) {
                 // sectionをそのまま問いに変換
-                $submittedExam['section_converted'] = '問' . $section;
+                $submittedExam['section_converted'] = '問'.$section;
             } else {
                 // sectionを午前、午後に分類
                 if ($section < 4) {
-                    $submittedExam['section_converted'] = '午後I 問' . $section;
+                    $submittedExam['section_converted'] = '午後I 問'.$section;
                 } elseif ($section === 4) {
                     $submittedExam['section_converted'] = '午後Ⅱ 問1';
                 } elseif ($section === 5) {
@@ -173,7 +166,7 @@ class ExamController extends Controller
                 } else {
                     // 例外
                     $submittedExam['section_converted'] = '未登録';
-                    Log::error('Unknown section: ' . $submittedExam['section']);
+                    Log::error('Unknown section: '.$submittedExam['section']);
                 }
             }
 
@@ -183,23 +176,23 @@ class ExamController extends Controller
         return response()->json($submittedAnswers, 200);
     }
 
-    # userAnswersは [{"examCode":"2023_aki_3","questionNumber":1,"subQuestionNumber":1,"smallQuestionNumber":0,"user_text":"test"},]の形式
+    // userAnswersは [{"examCode":"2023_aki_3","questionNumber":1,"subQuestionNumber":1,"smallQuestionNumber":0,"user_text":"test"},]の形式
     public function convertUserAnswerToText(array $userAnswers): string
     {
         $length = count($userAnswers);
 
         $userAnswerText = '';
         for ($i = 0; $i < $length; $i++) {
-            $userAnswerText .= '設問' . $userAnswers[$i]['questionNumber'] . ' ';
+            $userAnswerText .= '設問'.$userAnswers[$i]['questionNumber'].' ';
             if ($userAnswers[$i]['subQuestionNumber'] !== 0) {
-                $userAnswerText .= '(' . $userAnswers[$i]['subQuestionNumber'] . ') ';
+                $userAnswerText .= '('.$userAnswers[$i]['subQuestionNumber'].') ';
             }
 
             if ($userAnswers[$i]['user_text']) {
-                $userAnswerText .= $userAnswers[$i]['user_text'] . PHP_EOL;
+                $userAnswerText .= $userAnswers[$i]['user_text'].PHP_EOL;
             } else {
-                $userAnswerText .= '未回答' . PHP_EOL;
-            };
+                $userAnswerText .= '未回答'.PHP_EOL;
+            }
         }
 
         return $userAnswerText;
@@ -208,17 +201,17 @@ class ExamController extends Controller
     // 試験のPDFファイルの存在確認
     public function checkFileExists(string $year, string $season, string $section): JsonResponse
     {
-        $examCode = $year . '_' . $season . '_' . $section;
+        $examCode = $year.'_'.$season.'_'.$section;
 
-        $filePath = storage_path('app/public/pdf/' . $year . '/' . $examCode . '.pdf');
+        $filePath = storage_path('app/public/pdf/'.$year.'/'.$examCode.'.pdf');
 
-        if (!file_exists($filePath)) {
+        if (! file_exists($filePath)) {
             return response()->json(['error' => 'File not found'], 404);
         }
 
         return response()->json([
             'message' => 'File exists',
-            'url' => url('/storage/exam_pdf/'  . $filePath),
+            'url' => url('/storage/exam_pdf/'.$filePath),
         ], 200);
     }
 }

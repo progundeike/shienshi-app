@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AnswerRequest;
-use Illuminate\Http\Request;
-use App\Models\UserAnswer;
 use App\Models\SubmittedExam;
-use Illuminate\Support\Facades\Log;
+use App\Models\UserAnswer;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class AnswerController extends Controller
 {
@@ -18,7 +16,7 @@ class AnswerController extends Controller
         $year = $request->year;
         $season = $request->season;
         $section = $request->section;
-        $examCode = $year . '_' . $season . '_' . $section;
+        $examCode = $year.'_'.$season.'_'.$section;
 
         $examController = new ExamController();
 
@@ -42,11 +40,11 @@ class AnswerController extends Controller
         $prompt = [
             [
                 'role' => 'system',
-                'content' => $this->systemPromptContent . PHP_EOL . $questionPrompt,
+                'content' => $this->systemPromptContent.PHP_EOL.$questionPrompt,
             ],
             [
                 'role' => 'user',
-                'content' => '<UserAnswer>' . $userAnswerText . '</UserAnswer>',
+                'content' => '<UserAnswer>'.$userAnswerText.'</UserAnswer>',
             ],
         ];
 
@@ -59,7 +57,7 @@ class AnswerController extends Controller
         // $evaluations = $arguments['evaluations'];
 
         $evaluations = [
-            ["questionNumber" => 1, "subQuestionNumber" => 1, "rating" => "×", "comment" => "正しいXSS脆弱性の種類が選択されていません。正解は「格納型 XSS」です。模範解答と照らし合わせて再度考えてみてください。"]
+            ['questionNumber' => 1, 'subQuestionNumber' => 1, 'rating' => '×', 'comment' => '正しいXSS脆弱性の種類が選択されていません。正解は「格納型 XSS」です。模範解答と照らし合わせて再度考えてみてください。'],
         ];
 
         $userId = Auth::id();
@@ -70,7 +68,7 @@ class AnswerController extends Controller
             $aiResponse[] = [
                 'user_id' => $userId,
                 'exam_code' => $examCode,
-                'question_code' => $evaluation['questionNumber'] . '_' . $evaluation['subQuestionNumber'] . '_' . $smallQuestionNumber,
+                'question_code' => $evaluation['questionNumber'].'_'.$evaluation['subQuestionNumber'].'_'.$smallQuestionNumber,
                 'ai_rating' => $evaluation['rating'],
                 'ai_text' => $evaluation['comment'],
             ];
@@ -107,7 +105,7 @@ class AnswerController extends Controller
         }
 
         foreach ($userAnswers as $userAnswer) {
-            if (!$userAnswer->user_text && trim($userAnswer->user_text) == '') {
+            if (! $userAnswer->user_text && trim($userAnswer->user_text) == '') {
 
                 UserAnswer::where([
                     'user_id' => $userId,
@@ -115,7 +113,7 @@ class AnswerController extends Controller
                     'question_code' => $userAnswer->question_code,
                 ])->update([
                     'ai_rating' => '×',
-                    'ai_text' => '模範解答: ' . ($modelMap[$userAnswer->question_code] ?? '')
+                    'ai_text' => '模範解答: '.($modelMap[$userAnswer->question_code] ?? ''),
                 ]);
             }
         }
@@ -127,7 +125,7 @@ class AnswerController extends Controller
         $userId = Auth::id();
 
         // ユーザーがログインしていない場合はエラーを返す
-        if (!$userId) {
+        if (! $userId) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
@@ -139,10 +137,9 @@ class AnswerController extends Controller
             return response()->json([], 200);
         }
 
-
-
         $answers = $userAnswers->map(function ($answer) {
             [$q, $sub, $small] = array_map('intval', explode('_', $answer['question_code']));
+
             return [
                 'questionNumber' => $q,
                 'subQuestionNumber' => $sub,
@@ -162,7 +159,7 @@ class AnswerController extends Controller
     {
         $data = $request->validated();
         $userId = Auth::id();
-        $examCode = $data['year'] . '_' . $data['season'] . '_' . $data['section'];
+        $examCode = $data['year'].'_'.$data['season'].'_'.$data['section'];
 
         $answers = $data['answers'];
 
@@ -195,7 +192,7 @@ class AnswerController extends Controller
         $userAnswers = [];
         foreach ($answers as $answer) {
             [$q, $sub, $small] = array_map('intval', explode('_', $answer['questionCode']));
-            $userAnswers[] =  [
+            $userAnswers[] = [
                 'examCode' => $examCode,
                 'questionNumber' => $q,
                 'subQuestionNumber' => $sub,
@@ -213,7 +210,7 @@ class AnswerController extends Controller
         $year = (int) $request->year;
         $season = (string) $request->season;
         $section = (int) $request->section;
-        $examCode = $year . '_' . $season . '_' . $section;
+        $examCode = $year.'_'.$season.'_'.$section;
 
         try {
             $results = UserAnswer::where('user_id', $userId)
@@ -237,11 +234,11 @@ class AnswerController extends Controller
         $questionAndAnswerText = '';
         for ($i = 0; $i < count($examQuestions); $i++) {
             if ($examQuestions[$i]['subQuestionNumber'] === 1) {
-                $questionAndAnswerText .= '設問' . $examQuestions[$i]['questionNumber'] . ' ';
+                $questionAndAnswerText .= '設問'.$examQuestions[$i]['questionNumber'].' ';
             }
 
-            $questionAndAnswerText .= $this->convertQuestionToString($examQuestions[$i]) . PHP_EOL;
-            $questionAndAnswerText .= '[模範解答:' . $modelAnswers[$i]['text'] . ']' . PHP_EOL . PHP_EOL;
+            $questionAndAnswerText .= $this->convertQuestionToString($examQuestions[$i]).PHP_EOL;
+            $questionAndAnswerText .= '[模範解答:'.$modelAnswers[$i]['text'].']'.PHP_EOL.PHP_EOL;
         }
 
         // 参考情報
@@ -267,16 +264,16 @@ class AnswerController extends Controller
 
             $choices = '';
             foreach ($options as $option) {
-                $choices .= '(' . $option['value'] . ') ' . $option['label'] . ', ';
+                $choices .= '('.$option['value'].') '.$option['label'].', ';
             }
 
-            $text .= '[解答群:' . $choices . ']';
+            $text .= '[解答群:'.$choices.']';
         }
 
         return $text;
     }
 
-    private string $systemPromptContent = <<<EOM
+    private string $systemPromptContent = <<<'EOM'
         <SystemPrompt>
         あなたは情報処理安全確保支援士試験に精通したAIです。会話は日本語で解答してください。
         あなたに渡すpromptはSystemPrompt, Question, UserAnswerの3つから構成されます。
@@ -294,39 +291,39 @@ class AnswerController extends Controller
         EOM;
 
     private array $functionParameter =
-    [
-        'name' => 'reviewUserAnswer',
-        'description' => 'AIによる採点とコメントの生成をJson形式で返す。未回答に対しては模範解答を提示する。',
-        'parameters' => [
-            'type' => 'object',
-            'properties' => [
-                'evaluations' => [
-                    'type' => 'array',
-                    'items' => [
-                        'type' => 'object',
-                        'properties' => [
-                            'questionNumber' => [
-                                'type' => 'integer',
-                                'description' => '設問番号',
+        [
+            'name' => 'reviewUserAnswer',
+            'description' => 'AIによる採点とコメントの生成をJson形式で返す。未回答に対しては模範解答を提示する。',
+            'parameters' => [
+                'type' => 'object',
+                'properties' => [
+                    'evaluations' => [
+                        'type' => 'array',
+                        'items' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'questionNumber' => [
+                                    'type' => 'integer',
+                                    'description' => '設問番号',
+                                ],
+                                'subQuestionNumber' => [
+                                    'type' => 'integer',
+                                    'description' => '設問に複数の小問がある場合の小問番号。(1), (2)など。ない場合は0をセット',
+                                ],
+                                'rating' => [
+                                    'type' => 'string',
+                                    'description' => '採点結果。[◯, △, ×]のいずれか',
+                                ],
+                                'comment' => [
+                                    'type' => 'string',
+                                    'description' => '採点根拠を簡潔に記述する',
+                                ],
                             ],
-                            'subQuestionNumber' => [
-                                'type' => 'integer',
-                                'description' => '設問に複数の小問がある場合の小問番号。(1), (2)など。ない場合は0をセット',
-                            ],
-                            'rating' => [
-                                'type' => 'string',
-                                'description' => '採点結果。[◯, △, ×]のいずれか',
-                            ],
-                            'comment' => [
-                                'type' => 'string',
-                                'description' => '採点根拠を簡潔に記述する',
-                            ],
+                            'required' => ['questionNumber', 'subQuestionNumber', 'rating', 'comment'],
                         ],
-                        'required' => ['questionNumber', 'subQuestionNumber', 'rating', 'comment'],
-                    ]
+                    ],
                 ],
+                'required' => ['evaluations'],
             ],
-            'required' => ['evaluations'],
-        ],
-    ];
+        ];
 }

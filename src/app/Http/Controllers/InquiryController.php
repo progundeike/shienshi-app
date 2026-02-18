@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Inquiry;
+use Illuminate\Http\Request;
 
 class InquiryController extends Controller
 {
@@ -24,14 +24,14 @@ class InquiryController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'email', 'max:255'],
-            'message' => ['required', 'string', 'max:5000']
+            'message' => ['required', 'string', 'max:5000'],
         ]);
 
         $data = [
             'user_id' => $user?->id,
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'message' => $validated['message']
+            'message' => $validated['message'],
         ];
 
         Inquiry::create($data);

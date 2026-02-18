@@ -48,6 +48,9 @@ export const EditExamPage: FC = memo(() => {
                     season,
                     parsedSection,
                 );
+
+                console.log(exists);
+
                 setIsPdfExists(exists);
                 setLoading(false);
             } catch (error) {
@@ -85,7 +88,6 @@ export const EditExamPage: FC = memo(() => {
             >
                 {/* 左側のコンテナ */}
                 <Box>
-                    {/* TODO: ファイルがなくてもダウンロードボタンは表示される */}
                     <ExamHeader
                         year={parsedYear}
                         season={season}

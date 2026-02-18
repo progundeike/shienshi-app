@@ -22,6 +22,8 @@ class ExamSentence extends Model
     ];
 
     protected $primaryKey = 'exam_code';
+
     public $incrementing = false;
+
     protected $keyType = 'string';
 }

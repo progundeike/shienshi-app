@@ -2,18 +2,20 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Inquiry;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class InquiryControllerTest extends TestCase
 {
     use RefreshDatabase;
+
     protected User $adminUser;
+
     protected User $normalUser;
 
     public function setUp(): void
@@ -55,7 +57,7 @@ class InquiryControllerTest extends TestCase
                 'message' => 'テスト用のお問い合わせです。2',
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
         ]);
     }
 
@@ -69,7 +71,7 @@ class InquiryControllerTest extends TestCase
         $inquiry = [
             'name' => 'テストユーザー1',
             'email' => null,
-            'message' => 'テスト用のお問い合わせです。'
+            'message' => 'テスト用のお問い合わせです。',
         ];
 
         $response = $this->actingAs($this->normalUser)->postJson('/api/inquiry', $inquiry);
@@ -91,7 +93,7 @@ class InquiryControllerTest extends TestCase
         $inquiry = [
             'name' => 'ゲストユーザー',
             'email' => 'test@email.com',
-            'message' => 'テスト用のお問い合わせです。'
+            'message' => 'テスト用のお問い合わせです。',
         ];
 
         $response = $this->postJson('/api/inquiry', $inquiry);

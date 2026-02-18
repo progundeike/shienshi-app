@@ -1,4 +1,5 @@
 <?php
+
 return [
     [
         'exam_code' => '2023_aki_4',
@@ -6,7 +7,7 @@ return [
         'sub_question_number' => 1,
         'small_question_number' => 1,
         'type' => 'checkbox',
-        'text' => <<<EOF
+        'text' => <<<'EOF'
 表4及び表5中の[空欄 ア] 〜 [空欄 エ]に入れる適切な字句を答えよ。
 [空欄 ア]は,表2中から該当する項番を全て選び,数字で答えよ。該当する項番がない場合は,"なし” と答えよ。
 EOF,
@@ -33,7 +34,7 @@ EOF,
         'sub_question_number' => 1,
         'small_question_number' => 2,
         'type' => 'radio',
-        'text' => "[空欄 イ]は答案用紙の大・中・小のいずれかの文字を○で囲んで示せ。",
+        'text' => '[空欄 イ]は答案用紙の大・中・小のいずれかの文字を○で囲んで示せ。',
         'options' => [
             ['label' => '大', 'value' => '大'],
             ['label' => '中', 'value' => '中'],
@@ -46,7 +47,7 @@ EOF,
         'sub_question_number' => 1,
         'small_question_number' => 3,
         'type' => 'radio',
-        'text' => "[空欄 ウ]は答案用紙のA・B・C・D のいずれかの文字を○で囲んで示せ。",
+        'text' => '[空欄 ウ]は答案用紙のA・B・C・D のいずれかの文字を○で囲んで示せ。',
         'options' => [
             ['label' => 'A', 'value' => 'A'],
             ['label' => 'B', 'value' => 'B'],
@@ -59,7 +60,7 @@ EOF,
         'question_number' => 2,
         'sub_question_number' => 1,
         'type' => 'textarea',
-        'text' => <<<EOF
+        'text' => <<<'EOF'
 次の問いに答えよ。
 (1) 表4中の[空欄 あ]に入れる適切な字句を,本文に示した状況設定に沿う範囲で,あなたの知見に基づき,答えよ。
 EOF,
@@ -70,7 +71,7 @@ EOF,
         'sub_question_number' => 2,
         'small_question_number' => 1,
         'type' => 'input',
-        'text' => <<<EOF
+        'text' => <<<'EOF'
 (2) 解答した[空欄 あ]の内容に基づき,表4及び表5中の[空欄 い]〜[空欄 き]に入れる適切な字句を答えよ。
 [空欄 う]は,表2中から該当する項番を全て選び,数字で答えよ。該当する項番がない場合は,“なし”と答えよ。
 [空欄 え]は答案用紙の大・中・小のいずれかの文字を○で囲んで示せ。
@@ -87,7 +88,7 @@ EOF,
         'sub_question_number' => 2,
         'small_question_number' => 2,
         'type' => 'checkbox',
-        'text' => "[空欄 う]",
+        'text' => '[空欄 う]',
         'options' => [
             ['label' => '1', 'value' => '1'],
             ['label' => '2', 'value' => '2'],
@@ -111,7 +112,7 @@ EOF,
         'sub_question_number' => 2,
         'small_question_number' => 3,
         'type' => 'radio',
-        'text' => "[空欄 え]",
+        'text' => '[空欄 え]',
         'options' => [
             ['label' => '大', 'value' => '大'],
             ['label' => '中', 'value' => '中'],
@@ -124,7 +125,7 @@ EOF,
         'sub_question_number' => 2,
         'small_question_number' => 4,
         'type' => 'radio',
-        'text' => "[空欄 お]",
+        'text' => '[空欄 お]',
         'options' => [
             ['label' => '高', 'value' => '高'],
             ['label' => '中', 'value' => '中'],
@@ -137,7 +138,7 @@ EOF,
         'sub_question_number' => 2,
         'small_question_number' => 5,
         'type' => 'radio',
-        'text' => "[空欄 か]",
+        'text' => '[空欄 か]',
         'options' => [
             ['label' => 'A', 'value' => 'A'],
             ['label' => 'B', 'value' => 'B'],
@@ -151,7 +152,7 @@ EOF,
         'sub_question_number' => 2,
         'small_question_number' => 6,
         'type' => 'input',
-        'text' => "[空欄 き]",
+        'text' => '[空欄 き]',
     ],
     [
         'exam_code' => '2023_aki_4',
@@ -159,7 +160,7 @@ EOF,
         'sub_question_number' => 1,
         'small_question_number' => 1,
         'type' => 'checkbox',
-        'text' => <<<EOF
+        'text' => <<<'EOF'
 表4中の[空欄 a],[空欄 b]に入れる適切な字句について,表2中から該当する項番を全て選び,数字で答えよ。該当する項番がない場合は,“なし”と答えよ。
 [空欄 a]
 EOF,
@@ -186,7 +187,7 @@ EOF,
         'sub_question_number' => 1,
         'small_question_number' => 2,
         'type' => 'checkbox',
-        'text' => "[空欄 b]",
+        'text' => '[空欄 b]',
         'options' => [
             ['label' => '1', 'value' => '1'],
             ['label' => '2', 'value' => '2'],

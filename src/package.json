@@ -3,7 +3,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite --host",
-        "build": "tsc --noEmit && vite build"
+        "build": "tsc --noEmit && vite build",
+        "typecheck": "tsc --noEmit"
     },
     "devDependencies": {
         "@chakra-ui/icons": "^2.1.1",
@@ -38,7 +39,7 @@
     "overrides": {
         "pdfjs-dist": "4.2.67",
         "vite": {
-            "esbuild" : "^0.25.0"
+            "esbuild": "^0.25.0"
         },
         "tar": "^7.5.4"
     }

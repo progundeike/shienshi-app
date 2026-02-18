@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Models\ExamSentence;
 use App\Models\ModelAnswer;
 use App\Models\Question;
-use DragonCode\Contracts\Cashier\Resources\Model;
 use Illuminate\Console\Command;
 
 class ExportExamDataJson extends Command
@@ -44,14 +43,14 @@ class ExportExamDataJson extends Command
             $filePath = "{$path}/{$table}.json";
             $json = json_encode($items, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
-            if (false === file_put_contents($filePath, $json)) {
+            if (file_put_contents($filePath, $json) === false) {
                 $this->error("Failed to write to {$filePath}");
+
                 continue;
             }
 
-            $this->info("Exported {$table}:" . count($items) . "records to {$filePath}");
+            $this->info("Exported {$table}:".count($items)."records to {$filePath}");
         }
 
-        return;
     }
 }

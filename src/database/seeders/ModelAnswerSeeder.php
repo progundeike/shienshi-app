@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\ModelAnswer;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 
@@ -15,7 +14,7 @@ class ModelAnswerSeeder extends Seeder
     public function run(): void
     {
         $path = database_path('seeders/data/model_answers.json');
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             $this->command->error("File not found: {$path}");
         }
 
@@ -39,8 +38,7 @@ class ModelAnswerSeeder extends Seeder
 
         // データベースに挿入
         ModelAnswer::insert($modelAnswers);
-        $this->command->info("Inserted " . count($modelAnswers) . " records into the database.");
-
+        $this->command->info('Inserted '.count($modelAnswers).' records into the database.');
 
         // $modelAnswersFilesDirectory = database_path('model-answers');
         // $filePathList = File::allFiles($modelAnswersFilesDirectory);

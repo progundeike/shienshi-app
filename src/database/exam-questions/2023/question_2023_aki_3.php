@@ -7,7 +7,7 @@ return [
         'question_number' => 1,
         'sub_question_number' => 1,
         'type' => 'checkbox',
-        'text' => "本文中の下線①について,該当するものはどれか。解答群の中から全て選び記号で答えよ。",
+        'text' => '本文中の下線①について,該当するものはどれか。解答群の中から全て選び記号で答えよ。',
         'options' => [
             ['label' => '[ア] CIデーモンのプロセスを中断させる。', 'value' => 'ア'],
             ['label' => '[イ] いずれかのバックエンド上の全プロセスを列挙して攻撃者に送信する。', 'value' => 'イ'],
@@ -22,7 +22,7 @@ return [
         'question_number' => 2,
         'sub_question_number' => 1,
         'type' => 'textarea',
-        'text' => <<<EOF
+        'text' => <<<'EOF'
             [N社のインシデントの発生と対応] について答えよ。
 
             (1) 本文中の下線②について,攻撃者による不正ログインの方法を,50字以内で具体的に答えよ。
@@ -34,7 +34,7 @@ return [
         'question_number' => 2,
         'sub_question_number' => 2,
         'type' => 'radio',
-        'text' => <<<EOF
+        'text' => <<<'EOF'
             (2) 本文中の下線③について,RFC 9162 で規定されている技術を,解答群の中から選び,記号で答えよ。
             EOF,
         'options' => [
@@ -50,7 +50,7 @@ return [
         'question_number' => 2,
         'sub_question_number' => 3,
         'type' => 'radio',
-        'text' => "(3) 本文中の下線④について,このような手法の名称を,解答群の中から選び,記号で答えよ。",
+        'text' => '(3) 本文中の下線④について,このような手法の名称を,解答群の中から選び,記号で答えよ。',
         'options' => [
             ['label' => '[ア] DNS スプーフィング', 'value' => 'ア'],
             ['label' => '[イ] ドメインフロンティング', 'value' => 'イ'],
@@ -64,7 +64,7 @@ return [
         'question_number' => 2,
         'sub_question_number' => 4,
         'type' => 'textarea',
-        'text' => "(4) 本文中の下線⑤について,プロセスYがシークレットを取得するのに使った方法として考えられるものを,35字以内で答えよ。",
+        'text' => '(4) 本文中の下線⑤について,プロセスYがシークレットを取得するのに使った方法として考えられるものを,35字以内で答えよ。',
         'max_length' => 35,
     ],
     [
@@ -72,7 +72,7 @@ return [
         'question_number' => 2,
         'sub_question_number' => 5,
         'type' => 'textarea',
-        'text' => "(5) 図2中の下線⑥について,仮に,利用者が偽サイトでログインを試みてしまっても,攻撃者は不正ログインできない。不正ログインを防ぐWebAuthnの仕組みを,40字以内で答えよ。",
+        'text' => '(5) 図2中の下線⑥について,仮に,利用者が偽サイトでログインを試みてしまっても,攻撃者は不正ログインできない。不正ログインを防ぐWebAuthnの仕組みを,40字以内で答えよ。',
         'max_length' => 40,
     ],
     [
@@ -80,7 +80,7 @@ return [
         'question_number' => 2,
         'sub_question_number' => 6,
         'type' => 'radio',
-        'text' => "(6) 図2中の[空欄a]に入れる適切な字句を,解答群の中から選び,記号で答えよ。",
+        'text' => '(6) 図2中の[空欄a]に入れる適切な字句を,解答群の中から選び,記号で答えよ。',
         'options' => [
             ['label' => '[ア] CAA', 'value' => 'ア'],
             ['label' => '[イ] CNAME', 'value' => 'イ'],
@@ -96,7 +96,7 @@ return [
         'question_number' => 3,
         'sub_question_number' => 1,
         'type' => 'textarea',
-        'text' => <<<EOF
+        'text' => <<<'EOF'
 [N社の顧客での対応] について答えよ。
 
 (1) 本文中の下線⑦について,Kさんが開始した対応を踏まえ,予想される攻撃を,40字以内で答えよ。
@@ -108,7 +108,7 @@ EOF,
         'question_number' => 3,
         'sub_question_number' => 2,
         'type' => 'textarea',
-        'text' => "(2) 本文中の下線⑧について,必要な対応を,20字以内で答えよ。",
+        'text' => '(2) 本文中の下線⑧について,必要な対応を,20字以内で答えよ。',
         'max_length' => 20,
     ],
     [
@@ -116,7 +116,7 @@ EOF,
         'question_number' => 3,
         'sub_question_number' => 3,
         'type' => 'textarea',
-        'text' => "(3) 本文中の下線9について,コード署名を付与する際にHSMを使うことによって得られるセキュリティ上の利点を,20字以内で答えよ。",
+        'text' => '(3) 本文中の下線9について,コード署名を付与する際にHSMを使うことによって得られるセキュリティ上の利点を,20字以内で答えよ。',
         'max_length' => 20,
     ],
     [
@@ -125,7 +125,7 @@ EOF,
         'sub_question_number' => 4,
         'small_question_number' => 1,
         'type' => 'textarea',
-        'text' => "(4) 本文中の下線⑩について,影響と対応を,それぞれ20字以内で答えよ。",
+        'text' => '(4) 本文中の下線⑩について,影響と対応を,それぞれ20字以内で答えよ。',
         'options' => [
             ['label' => '[影響]', 'value' => '影響'],
         ],
@@ -137,7 +137,7 @@ EOF,
         'sub_question_number' => 4,
         'small_question_number' => 2,
         'type' => 'textarea',
-        'text' => "",
+        'text' => '',
         'options' => [
             ['label' => '[対応]', 'value' => '対応'],
         ],

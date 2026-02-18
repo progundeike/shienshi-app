@@ -3,8 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 
 class AnswerRequest extends FormRequest
 {
@@ -55,7 +53,7 @@ class AnswerRequest extends FormRequest
                 'questionCode' => (string) $item['questionCode'],
                 'user_text' => $content,
             ];
-        };
+        }
 
         $this->merge([
             'year' => (int) $this->input('year'),

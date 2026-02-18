@@ -1,4 +1,5 @@
 <?php
+
 // 令和6年春問2
 return [
     [
@@ -6,7 +7,7 @@ return [
         'question_number' => 1,
         'sub_question_number' => 1,
         'type' => 'textarea',
-        'text' => <<<EOF
+        'text' => <<<'EOF'
 [DDoS攻撃に対する調査]について答えよ。
 (1) 表4中の[空欄 a]に入れる攻撃の例を,H社での攻撃対象を示して具体的に答えよ。
 EOF,

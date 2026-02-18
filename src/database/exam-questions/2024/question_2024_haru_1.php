@@ -7,7 +7,7 @@ return [
         'question_number' => 1,
         'sub_question_number' => 1,
         'type' => 'input',
-        'text' => "本文中の[空欄 a]に入れる適切な字句を答えよ。",
+        'text' => '本文中の[空欄 a]に入れる適切な字句を答えよ。',
         'max_length' => null,
     ],
     [
@@ -15,7 +15,7 @@ return [
         'question_number' => 2,
         'sub_question_number' => 1,
         'type' => 'input',
-        'text' => <<<EOF
+        'text' => <<<'EOF'
 [脆弱性診断の結果]について答えよ。
 (1) 表3中の[空欄 b]に入れる適切な数値を,小数点以下を四捨五入して,整数で答えよ。
 EOF,
@@ -27,7 +27,7 @@ EOF,
         'sub_question_number' => 2,
         'small_question_number' => 1,
         'type' => 'textarea',
-        'text' => <<<EOF
+        'text' => <<<'EOF'
 (2) 表5中の下線①について,修正後のライブラリQで行うJWTの検証では,どのようなデータに対してどのような検証を行うか。検証対象となるデータと検証の内容を,それぞれ20字以内で答えよ。
 EOF,
         'max_length' => 20,
@@ -41,7 +41,7 @@ EOF,
         'sub_question_number' => 2,
         'small_question_number' => 2,
         'type' => 'textarea',
-        'text' => "",
+        'text' => '',
         'max_length' => 20,
         'options' => [
             ['label' => '[内容]', 'value' => '内容'],
@@ -76,7 +76,7 @@ EOF,
         'question_number' => 3,
         'sub_question_number' => 1,
         'type' => 'textarea',
-        'text' => <<<EOF
+        'text' => <<<'EOF'
 [新たな脆弱性への対応]について答えよ。
 (1) 図7中の下線③について, テストサーバに実装する仕組みを,35字以内で具体的に答えよ。
 EOF,
@@ -88,7 +88,7 @@ EOF,
         'sub_question_number' => 2,
         'small_question_number' => 1,
         'type' => 'input',
-        'text' => "(2) 表6中の[空欄 e], [空欄 f]に入れる適切な字句を図5中から選び答えよ。",
+        'text' => '(2) 表6中の[空欄 e], [空欄 f]に入れる適切な字句を図5中から選び答えよ。',
         'max_length' => null,
         'options' => [
             ['label' => '[e]', 'value' => 'e'],
@@ -100,7 +100,7 @@ EOF,
         'sub_question_number' => 2,
         'small_question_number' => 2,
         'type' => 'input',
-        'text' => "",
+        'text' => '',
         'max_length' => null,
         'options' => [
             ['label' => '[f]', 'value' => 'f'],

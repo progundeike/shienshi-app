@@ -1,14 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\UserController;
-use App\Http\Controllers\AnswerController;
-use App\Http\Controllers\ExamController;
-use App\Http\Controllers\AiQuestionController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\NewsItemController;
+use App\Http\Controllers\AiQuestionController;
+use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\ExamController;
 use App\Http\Controllers\InquiryController;
+use App\Http\Controllers\NewsItemController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/questions/{year}-{season}-{section}', [ExamController::class, 'getExamQuestionsJson']);
 Route::get('/exam/{year}-{season}-{section}', [ExamController::class, 'checkFileExists']);
@@ -41,7 +40,7 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
 
     Route::get('/questions/{year}-{season}-{section}', [AdminController::class, 'fetchQuestionsForEdit']);
     Route::post('/question', [AdminController::class, 'updateExamQuestion']);
-    Route::delete('/question/{year}-{season}-{section}/{questionId}', [AdminController::class, 'deleteQuestion']);
+    Route::delete('/question/{year}-{season}-{section}/{questionCode}', [AdminController::class, 'deleteQuestion']);
 
     // お知らせ管理
     Route::post('/news', [NewsItemController::class, 'createOrUpdate']);
