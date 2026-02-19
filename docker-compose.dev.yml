@@ -45,16 +45,5 @@ services:
       - MYSQL_USER=${DB_USER}
       - TZ=Asia/Tokyo
 
-  db-testing:
-    image: mysql:8.4
-    volumes:
-      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/z-my.cnf:ro
-    environment:
-      - MYSQL_DATABASE=${DB_NAME}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
-      - MYSQL_USER=${DB_USER}
-      - TZ=Asia/Tokyo
-
 volumes:
   db-volumes:
