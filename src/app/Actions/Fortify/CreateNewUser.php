@@ -36,7 +36,6 @@ class CreateNewUser implements CreatesNewUsers
         $user = User::create([
             'username' => (string) Str::of($input['username'])->trim(),
             'password' => Hash::make($input['password']),
-            'auth_provider' => 'password',
         ]);
 
         return $user;

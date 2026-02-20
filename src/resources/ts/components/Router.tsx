@@ -90,10 +90,10 @@ export const Router: FC = memo(() => {
                 <Route element={<PrivateRoutes />}>
                     <Route path="/my-page" element={<MyPage />} />
                     {/* <Route path="/update-email" element={<UpdateEmailPage />} /> */}
-                    <Route
+                    {/* <Route
                         path="/register-email"
                         element={<RegisterEmailPage />}
-                    />
+                    /> */}
                     {/* <Route
                         path="/delete-account"
                         element={<DeleteAccountPage />}

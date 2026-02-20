@@ -20,8 +20,6 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            $table->enum('auth_provider', ['github', 'x', 'google', 'password']);
-            $table->string('auth_id')->unique()->nullable();
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
@@ -47,9 +45,7 @@ return new class extends Migration
         DB::table('users')->insert([
             'username' => env('TEST_USER_NAME'),
             'password' => Hash::make(env('TEST_USER_PASS')),
-            'auth_provider' => 'password',
             'email_verified_at' => null,
-            'auth_id' => null,
             'is_admin' => true,
             'created_at' => now(),
             'updated_at' => now(),

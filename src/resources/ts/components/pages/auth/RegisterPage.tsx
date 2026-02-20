@@ -52,7 +52,7 @@ export const RegisterPage: FC = memo(() => {
         if ("errors" in errorResponse) {
             // エラーレスポンスを処理する
             for (const [field, message] of Object.entries(
-                errorResponse.errors
+                errorResponse.errors,
             )) {
                 if (["username", "password"].includes(field)) {
                     // バリデーションエラー
@@ -70,7 +70,7 @@ export const RegisterPage: FC = memo(() => {
 
     return (
         <>
-            <Card maxW="lg">
+            <Card maxW="50%">
                 <form onSubmit={onSubmit}>
                     <Center mb="20px">
                         <Heading>ユーザー登録</Heading>
@@ -78,6 +78,7 @@ export const RegisterPage: FC = memo(() => {
                     <Box my="20px">
                         <Text>
                             ユーザー登録をすることで、AI添削機能や学習履歴の保存が利用できます。
+                            <br />
                             当サイトは無料のサービスです。
                         </Text>
                     </Box>
@@ -98,7 +99,7 @@ export const RegisterPage: FC = memo(() => {
                                     validate: (value) => {
                                         // 正規表現を動的に生成する
                                         const regex = new RegExp(
-                                            `^[a-zA-Z0-9_]{${MIN_USERNAME_LENGTH},${MAX_USERNAME_LENGTH}}$`
+                                            `^[a-zA-Z0-9_]{${MIN_USERNAME_LENGTH},${MAX_USERNAME_LENGTH}}$`,
                                         );
                                         if (!regex.test(value)) {
                                             return `${MIN_USERNAME_LENGTH}~${MAX_USERNAME_LENGTH}文字以内の半角英数字とアンダーバーのみで入力してください`;
@@ -134,6 +135,10 @@ export const RegisterPage: FC = memo(() => {
 
                     <FormControl mb={3} isInvalid={Boolean(errors.password)}>
                         <FormLabel htmlFor="password">パスワード</FormLabel>
+                        <Text color="gray.600">
+                            半角英数記号{PASSWORD_MIN_LENGTH}
+                            文字以上で入力してください
+                        </Text>
                         <InputGroup>
                             <Input
                                 type={showPassword ? "text" : "password"}

@@ -10,8 +10,6 @@ entity "users"  {
   username
   password
   email
-  auth_provider
-  auth_id
 }
 
 entity "answer_submits"  {
