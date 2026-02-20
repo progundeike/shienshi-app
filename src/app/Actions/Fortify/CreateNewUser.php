@@ -24,9 +24,9 @@ class CreateNewUser implements CreatesNewUsers
             'username' => [
                 'required',
                 'string',
-                'min:8',
+                'min:1',
                 'max:50',
-                'regex:/^[A-Za-z_0-9]+$/',
+                'regex:/^[a-z0-9_]+$/',
                 Rule::unique(User::class),
             ],
             'password' => $this->passwordRules(),

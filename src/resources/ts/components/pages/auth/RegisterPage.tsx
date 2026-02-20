@@ -24,7 +24,6 @@ import { loadingAtom } from "../../../states/loadingAtom";
 import { Card } from "../../templates/Card";
 import { SubmitButton } from "../../atoms/SubmitButton";
 
-const MIN_USERNAME_LENGTH = 8;
 const MAX_USERNAME_LENGTH = 50;
 
 const PASSWORD_MIN_LENGTH = 8;
@@ -86,8 +85,7 @@ export const RegisterPage: FC = memo(() => {
                     <FormControl mb={3} isInvalid={Boolean(errors.username)}>
                         <FormLabel htmlFor="name">ユーザーID</FormLabel>
                         <Text color="gray.600">
-                            {`${MIN_USERNAME_LENGTH}~${MAX_USERNAME_LENGTH}
-                            文字以内の半角英数字とアンダーバーのみで入力してください`}
+                            半角英小文字、数字、アンダーバーが使用できます
                         </Text>
                         <InputGroup>
                             <Input
@@ -99,10 +97,10 @@ export const RegisterPage: FC = memo(() => {
                                     validate: (value) => {
                                         // 正規表現を動的に生成する
                                         const regex = new RegExp(
-                                            `^[a-zA-Z0-9_]{${MIN_USERNAME_LENGTH},${MAX_USERNAME_LENGTH}}$`,
+                                            `^[a-z0-9_]{1,${MAX_USERNAME_LENGTH}}$`,
                                         );
                                         if (!regex.test(value)) {
-                                            return `${MIN_USERNAME_LENGTH}~${MAX_USERNAME_LENGTH}文字以内の半角英数字とアンダーバーのみで入力してください`;
+                                            return `${MAX_USERNAME_LENGTH}文字以内で半角英小文字、数字、アンダーバーのみ使用できます`;
                                         }
                                     },
                                 })}
@@ -112,8 +110,7 @@ export const RegisterPage: FC = memo(() => {
                                 children={
                                     <Text
                                         color={
-                                            usernameLength <
-                                                MIN_USERNAME_LENGTH ||
+                                            usernameLength === 0 ||
                                             usernameLength > MAX_USERNAME_LENGTH
                                                 ? "red"
                                                 : "gray.600"
@@ -143,7 +140,6 @@ export const RegisterPage: FC = memo(() => {
                             <Input
                                 type={showPassword ? "text" : "password"}
                                 id="password"
-                                placeholder={`半角英数記号${PASSWORD_MIN_LENGTH}文字以上`}
                                 {...register("password", {
                                     required: "入力が必要です",
                                     validate: (value: string) => {

@@ -32,15 +32,15 @@ class UserControllerTest extends TestCase
 
         // テスト用管理者ユーザーを作成
         $this->adminUser = User::factory()->create([
-            // 'username' => 'TestAdminUser',
-            'username' => 'TestAdminUser',
+            // 'username' => 'test_admin_user',
+            'username' => 'test_admin_user',
             'password' => Hash::make('password'),
             'is_admin' => true,
         ]);
 
         // テスト用一般ユーザーを作成
         $this->normalUser = User::factory()->create([
-            'username' => 'NewTestUser',
+            'username' => 'new_test_user',
             'password' => Hash::make('password'),
             'is_admin' => false,
         ]);
@@ -50,16 +50,13 @@ class UserControllerTest extends TestCase
     public function 管理者がログインできる(): void
     {
         $response = $this->postJson('/api/login', [
-            'username' => 'TestAdminUser',
+            'username' => 'test_admin_user',
             'password' => 'password',
         ]);
 
-        $user = User::where('username', 'TestAdminUser')->first();
-        dump($user);
-
         $response->assertStatus(200);
         $responseData = $response->json();
-        $this->assertEquals('TestAdminUser', $responseData['username']);
+        $this->assertEquals('test_admin_user', $responseData['username']);
         $this->assertEquals(true, $responseData['isAdmin']);
     }
 
@@ -67,12 +64,12 @@ class UserControllerTest extends TestCase
     public function 一般ユーザーがログインできる(): void
     {
         $response = $this->postJson('/api/login', [
-            'username' => 'NewTestUser',
+            'username' => 'new_test_user',
             'password' => 'password',
         ]);
         $response->assertStatus(200);
         $responseData = $response->json();
-        $this->assertEquals('NewTestUser', $responseData['username']);
+        $this->assertEquals('new_test_user', $responseData['username']);
         $this->assertEquals(false, $responseData['isAdmin']);
     }
 
@@ -82,7 +79,7 @@ class UserControllerTest extends TestCase
         $response = $this->actingAs($this->normalUser)->get('/api/user');
         $response->assertStatus(200);
         $responseData = $response->json();
-        $this->assertEquals('NewTestUser', $responseData['username']);
+        $this->assertEquals('new_test_user', $responseData['username']);
         $this->assertEquals(false, $responseData['isAdmin']);
     }
 }
