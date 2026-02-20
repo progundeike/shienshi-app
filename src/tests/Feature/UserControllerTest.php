@@ -32,6 +32,7 @@ class UserControllerTest extends TestCase
 
         // テスト用管理者ユーザーを作成
         $this->adminUser = User::factory()->create([
+            // 'username' => 'TestAdminUser',
             'username' => 'TestAdminUser',
             'password' => Hash::make('password'),
             'is_admin' => true,
@@ -52,6 +53,10 @@ class UserControllerTest extends TestCase
             'username' => 'TestAdminUser',
             'password' => 'password',
         ]);
+
+        $user = User::where('username', 'TestAdminUser')->first();
+        dump($user);
+
         $response->assertStatus(200);
         $responseData = $response->json();
         $this->assertEquals('TestAdminUser', $responseData['username']);
