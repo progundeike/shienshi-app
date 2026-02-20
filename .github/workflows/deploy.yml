@@ -34,7 +34,7 @@ jobs:
         working-directory: src
         env:
           APP_ENV: testing
-        run: php artisan test
+        run: cp .env.example .env && php artisan key:generate && php artisan test
       
       - name: Setup Node
         uses: actions/setup-node@v4
