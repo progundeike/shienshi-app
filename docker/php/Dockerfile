@@ -28,7 +28,7 @@ FROM base AS vendor
 WORKDIR /var/www/html
 COPY src/composer.json src/composer.lock ./
 
-RUN composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader
+RUN composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader --no-scripts
 
 # =========================================
 # フロント資産ビルド（Vite）
@@ -53,14 +53,14 @@ COPY src ./
 COPY --from=vendor /var/www/html/vendor ./vendor
 COPY --from=assets /app/public/build ./public/build
 
-RUN composer dump-autoload -o
-
 ENV APP_ENV=production \
     APP_DEBUG=0
 
 # パーミッション & キャッシュクリア
-RUN rm -f bootstrap/cache/*.php
-RUN chown -R www-data:www-data storage bootstrap/cache
+RUN rm -f bootstrap/cache/*.php && \
+    chown -R www-data:www-data storage bootstrap/cache && \
+    php artisan package:discover --ansi
+
 
 CMD ["php-fpm"]
 
