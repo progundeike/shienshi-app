@@ -5,7 +5,7 @@ import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import { useParams } from "react-router-dom";
 
-import { PdfHighlighter, PdfHighlighterHandle } from "./xPdfHighlighter";
+import { PdfHighlighter, PdfHighlighterHandle } from "./PdfHighlighter";
 import {
     AreaHighlight,
     NormRect,

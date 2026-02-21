@@ -14,7 +14,7 @@ import { ExamSentenceResponse, useAdmin } from "../../hooks/useAdmin";
 import { EditExamSentenceForm } from "../molecules/EditExamSentenceForm";
 import { EditPurposeForm } from "../molecules/EditPurposeForm";
 import { EditReviewCommentForm } from "../molecules/EditReviewCommentForm";
-import { PDFUploadFrom } from "../organisms/xPdfUploadFrom";
+import { PDFUploadFrom } from "../organisms/PdfUploadFrom";
 
 export const EditExamPage: FC = memo(() => {
     const [loading, setLoading] = useState(true);
