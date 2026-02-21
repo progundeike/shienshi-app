@@ -23,7 +23,7 @@ import { loadingAtom } from "../../states/loadingAtom";
 import { DisplayAskToAICard } from "../molecules/DisplayAskToAICard";
 import { Correction } from "./QuestionAndAnswerForm";
 import { User } from "../../types/user";
-import { AnswerItem } from "../../types/form";
+import { Answer } from "../../types/form";
 
 type Props = {
     year: number;
@@ -52,7 +52,7 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
         register,
         formState: { errors },
         reset,
-    } = useForm<AnswerItem[]>();
+    } = useForm<Answer[]>();
 
     const { deleteSubmittedAnswer } = useAnswer();
 
@@ -113,7 +113,7 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
                                                 {question.options!.map(
                                                     (
                                                         option: Option,
-                                                        index: number
+                                                        index: number,
                                                     ) => (
                                                         <Radio
                                                             isReadOnly
@@ -137,7 +137,7 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
                                                                 </Box>
                                                             </Flex>
                                                         </Radio>
-                                                    )
+                                                    ),
                                                 )}
                                             </Flex>
                                         </RadioGroup>
@@ -151,7 +151,7 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
                                                     {question.options!.map(
                                                         (
                                                             option: Option,
-                                                            index: number
+                                                            index: number,
                                                         ) => (
                                                             <Checkbox
                                                                 isReadOnly
@@ -176,7 +176,7 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
                                                                     </Box>
                                                                 </Flex>
                                                             </Checkbox>
-                                                        )
+                                                        ),
                                                     )}
                                                 </Flex>
                                             </CheckboxGroup>
@@ -192,7 +192,7 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
                                                         <Box key={index}>
                                                             {option.label}
                                                         </Box>
-                                                    )
+                                                    ),
                                                 )}
                                             </Box>
                                         )}

@@ -31,9 +31,7 @@ import { useAdmin } from "../../hooks/useAdmin";
 import { QuestionFormInputs } from "../../types/form";
 
 type Props = {
-    year: number;
-    season: string;
-    section: number;
+    examCode: string;
     isOpen: boolean;
     onClose: () => void;
     question: QuestionForEdit | null;
@@ -41,8 +39,7 @@ type Props = {
 };
 
 export const EditQuestionModal: FC<Props> = memo((props) => {
-    const { year, season, section, isOpen, onClose, question, onSuccess } =
-        props;
+    const { examCode, isOpen, onClose, question, onSuccess } = props;
     const { updateExamQuestion, deleteQuestion } = useAdmin();
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
@@ -60,10 +57,8 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
         if (!question) return;
         try {
             await deleteQuestion.mutateAsync({
-                year: Number(year),
-                season,
-                section: Number(section),
-                questionId: `${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`,
+                examCode,
+                questionCode: `${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`,
             });
             onSuccess();
             onClose();
@@ -76,13 +71,11 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
 
     // 問題編集用ハンドラー
     const handleUpdateExamQuestion: SubmitHandler<QuestionFormInputs> = async (
-        data
+        data,
     ) => {
         try {
             const response = await updateExamQuestion({
-                year: Number(year),
-                season,
-                section: Number(section),
+                examCode,
                 questionNumber: Number(data.questionNumber),
                 subQuestionNumber: Number(data.subQuestionNumber),
                 smallQuestionNumber: Number(data.smallQuestionNumber) ?? null,
@@ -107,8 +100,8 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
                 const messages = Object.values(errors)
                     .flatMap(
                         (
-                            value // バリデーションエラーのメッセージを項目ごとに一つの配列に変換
-                        ) => (Array.isArray(value) ? value : [value])
+                            value, // バリデーションエラーのメッセージを項目ごとに一つの配列に変換
+                        ) => (Array.isArray(value) ? value : [value]),
                     )
                     .map(String); // 各エラーメッセージを文字列に変換
                 setValidationErrors(messages);
@@ -176,7 +169,7 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
                                                 placeholder="(1)などの設問内の番号"
                                                 autoComplete="off"
                                                 {...register(
-                                                    "subQuestionNumber"
+                                                    "subQuestionNumber",
                                                 )}
                                             />
                                         </InputGroup>
@@ -190,7 +183,7 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
                                             <Input
                                                 autoComplete="off"
                                                 {...register(
-                                                    "smallQuestionNumber"
+                                                    "smallQuestionNumber",
                                                 )}
                                             />
                                         </InputGroup>
@@ -268,7 +261,7 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
                                                             placeholder="[a]"
                                                             autoComplete="off"
                                                             {...register(
-                                                                `options.${index}.label`
+                                                                `options.${index}.label`,
                                                             )}
                                                         />
                                                     </Box>
@@ -282,7 +275,7 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
                                                             placeholder="a"
                                                             autoComplete="off"
                                                             {...register(
-                                                                `options.${index}.value`
+                                                                `options.${index}.value`,
                                                             )}
                                                         />
                                                     </Box>
@@ -343,7 +336,7 @@ export const EditQuestionModal: FC<Props> = memo((props) => {
                                                     <Text key={index}>
                                                         ・{error}
                                                     </Text>
-                                                )
+                                                ),
                                             )}
                                         </Box>
                                     )}

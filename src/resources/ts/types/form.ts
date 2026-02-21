@@ -43,7 +43,7 @@ export type Dialogue = {
     content: string;
 };
 
-export type AnswerItem = {
+export type Answer = {
     questionCode: string;
     content: string | string[];
 };

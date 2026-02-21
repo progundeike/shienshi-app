@@ -16,12 +16,8 @@ class ExamController extends Controller
 {
     // 設問をjson形式で取得して、httpレスポンスを返す
     // ログイン済みで、答案提出済みの場合は、添削画面を表示する
-    public function getExamQuestionsJson(string $year, string $season, string $section)
+    public function getExamQuestionsJson(string $examCode): JsonResponse
     {
-        $year = (int) $year;
-        $section = (int) $section;
-        $examCode = $year.'_'.$season.'_'.$section;
-
         try {
             $questions = $this->fetchExamQuestionsArray($examCode);
 
@@ -65,6 +61,7 @@ class ExamController extends Controller
                 'questionNumber' => $question->question_number,
                 'subQuestionNumber' => $question->sub_question_number,
                 'smallQuestionNumber' => $question->small_question_number,
+                'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
                 'type' => $question->type,
                 'text' => $question->text,
                 'options' => $question->options,

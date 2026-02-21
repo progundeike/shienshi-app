@@ -5,6 +5,7 @@ import { useChakraToast } from "../utils/toastUtils";
 
 export type FetchedQuestion = {
     examCode: string;
+    questionCode: string;
     questionNumber: number;
     subQuestionNumber: number;
     smallQuestionNumber: number;
@@ -16,6 +17,7 @@ export type FetchedQuestion = {
 
 export type QuestionForEdit = {
     examCode: string;
+    questionCode: string;
     questionNumber: number;
     subQuestionNumber: number;
     smallQuestionNumber: number;
@@ -40,9 +42,7 @@ export type SubmittedExam = {
 }
 
 export type UpdateQuestionInputs = {
-        year: number;
-        season: string;
-        section: number;
+        examCode: string;
         questionNumber: number;
         subQuestionNumber: number;
         smallQuestionNumber: number | null;
@@ -61,8 +61,9 @@ export const useExam = () => {
         season: string,
         section: number
     ): Promise<FetchedQuestion[] | null> => {
+        const examCode = `${year}_${season}_${section}`;
         return await axiosInstance
-            .get(`/api/questions/${year}-${season}-${section}`)
+            .get(`/api/questions/${examCode}`)
             .then((response) => {
                 return response.data;
                 

@@ -20,7 +20,7 @@ import { RadioQuestionForm } from "../molecules/RadioQuestionForm";
 import { CheckboxQuestionForm } from "../molecules/CheckboxQuestionForm";
 import { InputQuestionForm } from "../molecules/InputQuestionForm";
 import { TextareaQuestionForm } from "../molecules/TextareaQuestionForm";
-import { AnswerItem } from "../../types/form";
+import { Answer } from "../../types/form";
 
 export type Correction = {
     questionNumber: number;
@@ -51,7 +51,7 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
                 questionCode: `${q.questionNumber}_${q.subQuestionNumber}_${q.smallQuestionNumber}`,
                 content: q.type === "checkbox" ? [] : "",
             })),
-        [questions]
+        [questions],
     );
 
     const {
@@ -59,7 +59,7 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
         reset,
         control,
         formState: { errors },
-    } = useForm<{ answers: AnswerItem[] }>({
+    } = useForm<{ answers: Answer[] }>({
         defaultValues: {
             answers: storedData ? JSON.parse(storedData) : initialAnswers,
         },
@@ -86,13 +86,13 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
         }
     }, [reset]);
 
-    const onSubmit: SubmitHandler<{ answers: AnswerItem[] }> = async (data) => {
+    const onSubmit: SubmitHandler<{ answers: Answer[] }> = async (data) => {
         try {
             const response = await submitAnswer(
                 data.answers,
                 year,
                 season,
-                section
+                section,
             );
 
             // sessionStorageをクリア

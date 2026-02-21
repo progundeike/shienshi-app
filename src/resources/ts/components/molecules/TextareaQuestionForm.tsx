@@ -2,17 +2,23 @@ import { Box, Flex, Text, Textarea } from "@chakra-ui/react";
 import { FC, memo } from "react";
 import { FetchedQuestion } from "../../hooks/useExam";
 import { Control, useController } from "react-hook-form";
-import { AnswerItem } from "../../types/form";
+import { Answer } from "../../types/form";
 
 type Props = {
     question: FetchedQuestion;
-    control: Control<{ answers: AnswerItem[] }>;
+    control: Control<{ answers: Answer[] }>;
     index: number;
 };
 export const TextareaQuestionForm: FC<Props> = (props) => {
     const { question, control, index } = props;
 
-    // 文字数のリアルタイム監視
+    // questionCodeをフォームに固定で持たせる
+    useController({
+        name: `answers.${index}.questionCode`,
+        control,
+        defaultValue: question.questionCode,
+    });
+
     const { field } = useController({
         name: `answers.${index}.content`,
         control,

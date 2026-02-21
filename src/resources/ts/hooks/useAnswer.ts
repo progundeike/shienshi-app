@@ -2,7 +2,7 @@ import { useToast } from "@chakra-ui/react";
 import { useAtom } from "jotai";
 
 import {
-    AnswerItem,
+    Answer,
     ErrorResponse,
 } from "../types/form";
 import { axiosInstance } from "./axiosInstance";
@@ -15,7 +15,7 @@ export const useAnswer = () => {
     const { unexpectedServerErrorToast, toast } = useChakraToast();
 
     const submitAnswer = async (
-        answers: AnswerItem[],
+        answers: Answer[],
         year: number,
         season: string,
         section: number,

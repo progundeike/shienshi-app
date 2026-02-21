@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 import { Page404 } from "./Page404";
 import { DisplayExamPdf } from "../organisms/DisplayExamPdf";
 import { useExam } from "../../hooks/useExam";
-import { RegisterQuestionForm } from "../organisms/RegisterQuestionForm";
+import { QuestionEditorPanel } from "../organisms/QuestionEditorPanel";
 import { ExamSentenceResponse, useAdmin } from "../../hooks/useAdmin";
 import { EditExamSentenceForm } from "../molecules/EditExamSentenceForm";
 import { EditPurposeForm } from "../molecules/EditPurposeForm";
@@ -48,8 +48,6 @@ export const EditExamPage: FC = memo(() => {
                     season,
                     parsedSection,
                 );
-
-                console.log(exists);
 
                 setIsPdfExists(exists);
                 setLoading(false);
@@ -144,10 +142,8 @@ export const EditExamPage: FC = memo(() => {
                     backgroundColor="white"
                     p="20px"
                 >
-                    <RegisterQuestionForm
-                        year={parsedYear}
-                        season={season}
-                        section={parsedSection}
+                    <QuestionEditorPanel
+                        examCode={`${parsedYear}_${season}_${parsedSection}`}
                     />
                 </Box>
             </Split>
