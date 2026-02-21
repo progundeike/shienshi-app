@@ -186,9 +186,7 @@ class AdminControllerTest extends TestCase
     public function 管理者が問題を編集できる(): void
     {
         $data = [
-            'year' => 2099,
-            'season' => 'haru',
-            'section' => 1,
+            'examCode' => '2099_haru_1',
             'questionNumber' => 1,
             'subQuestionNumber' => 1,
             'smallQuestionNumber' => null,

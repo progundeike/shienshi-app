@@ -18,64 +18,44 @@ import { TextareaQuestionForm } from "../molecules/TextareaQuestionForm";
 import { EditQuestionModal } from "./EditQuestionModal";
 import { useAdmin } from "../../hooks/useAdmin";
 import { LoadingPage } from "../pages/LoadingPage";
-import { AnswerInputs } from "../../types/form";
+import { Answer } from "../../types/form";
 
-type Props = {
-    year: number;
-    season: string;
-    section: number;
-};
-
-export const RegisterQuestionForm: FC<Props> = memo((props) => {
-    const { year, season, section } = props;
+export const QuestionEditorPanel: FC<{ examCode: string }> = memo((props) => {
+    const { examCode } = props;
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [editTargetQuestion, setEditTargetQuestion] =
         useState<QuestionForEdit | null>(null);
-    const { handleSubmit, reset, control } = useForm<AnswerInputs>({
-        defaultValues: { answer: { text: {}, checkbox: {} } },
+
+    const { handleSubmit, reset, control } = useForm<{ answers: Answer[] }>({
+        defaultValues: { answers: [] },
     });
     const qc = useQueryClient();
 
-    // 模範解答の取得、更新
     const { getModelAnswers, updateModelAnswers, getQuestionsForEdit } =
         useAdmin();
     const questionsQuery = useQuery({
-        queryKey: ["questions", year, season, section],
-        queryFn: () => getQuestionsForEdit(year, season, section),
+        queryKey: ["questions", examCode],
+        queryFn: () => getQuestionsForEdit(examCode),
     });
     const modelAnswersQuery = useQuery({
-        queryKey: ["modelAnswers", year, season, section],
-        queryFn: () => getModelAnswers(year, season, section),
+        queryKey: ["modelAnswers", examCode],
+        queryFn: () => getModelAnswers(examCode),
     });
 
     // 模範解答提出ハンドラー
-    const onModelAnswerSubmit: SubmitHandler<AnswerInputs> = async (data) => {
-        // フラット化 + 正規化(配列→文字列, 未入力→空文字)
-        const normalized: Record<string, string> = {};
-        Object.entries(data.answer.text).forEach(([key, value]) => {
-            normalized[key] = (value ?? "").toString().trim();
-        });
-        Object.entries(data.answer.checkbox).forEach(([key, value]) => {
-            normalized[key] = Array.isArray(value)
-                ? value.length
-                    ? value.join(",")
-                    : ""
-                : "";
-        });
+    const onModelAnswerSubmit: SubmitHandler<{ answers: Answer[] }> = async (
+        data,
+    ) => {
+        updateModelAnswers.mutate({ examCode, modelAnswers: data } as any, {
+            onSuccess: () => {
+                reset(); // フォームをクリア
 
-        updateModelAnswers.mutate(
-            { year, season, section, modelAnswers: normalized } as any,
-            {
-                onSuccess: () => {
-                    reset(); // フォームをクリア
-
-                    // ReactQueryのキャッシュを無効化して再取得
-                    qc.invalidateQueries({
-                        queryKey: ["modelAnswers", year, season, section],
-                    });
-                },
-            }
-        );
+                // ReactQueryのキャッシュを無効化して再取得
+                qc.invalidateQueries({
+                    queryKey: ["modelAnswers", examCode],
+                });
+            },
+        });
     };
 
     // modelAnswersをフォーム初期値に反映
@@ -84,29 +64,18 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
         if (!questionsData) return;
         const modelAnswersData = modelAnswersQuery.data ?? [];
         const byCode = new Map(
-            modelAnswersData.map((ma) => [ma.questionCode, ma.text])
+            modelAnswersData.map((ma) => [ma.questionCode, ma.text]),
         );
-        const initialValues: AnswerInputs["answer"] = {
-            text: {},
-            checkbox: {},
-        };
 
-        questionsData.forEach((q) => {
-            const code = `${q.questionNumber}_${q.subQuestionNumber}_${q.smallQuestionNumber}`;
-            const answerText = byCode.get(code) ?? "";
-            if (
-                q.type === "textarea" ||
-                q.type === "input" ||
-                q.type === "radio"
-            ) {
-                initialValues.text[code] = answerText;
-            } else if (q.type === "checkbox") {
-                initialValues.checkbox[code] = answerText
-                    ? answerText.split(",")
-                    : [];
-            }
-        });
-        reset({ answer: initialValues });
+        const initialValues: Answer[] = questionsData.map((question) => ({
+            questionCode: question.questionCode,
+            content:
+                question.type === "checkbox"
+                    ? (byCode.get(question.questionCode)?.split(",") ?? [])
+                    : (byCode.get(question.questionCode) ?? ""),
+        }));
+
+        reset({ answers: initialValues });
     }, [modelAnswersQuery.data, questionsQuery.data, reset]);
 
     if (questionsQuery.isLoading || modelAnswersQuery.isLoading) {
@@ -162,6 +131,7 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
                                         <RadioQuestionForm
                                             question={question}
                                             control={control}
+                                            index={index}
                                         />
                                     )}
 
@@ -169,6 +139,7 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
                                         <CheckboxQuestionForm
                                             question={question}
                                             control={control}
+                                            index={index}
                                         />
                                     )}
 
@@ -176,6 +147,7 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
                                         <TextareaQuestionForm
                                             question={question}
                                             control={control}
+                                            index={index}
                                         />
                                     )}
 
@@ -183,6 +155,7 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
                                         <InputQuestionForm
                                             question={question}
                                             control={control}
+                                            index={index}
                                         />
                                     )}
                                 </Box>
@@ -234,16 +207,14 @@ export const RegisterQuestionForm: FC<Props> = memo((props) => {
             </Box>
 
             <EditQuestionModal
-                year={year}
-                season={season}
-                section={section}
+                examCode={examCode}
                 isOpen={isOpen}
                 onClose={onClose}
                 question={editTargetQuestion}
                 onSuccess={async () => {
                     // 問題が追加された後に再度問題を取得
                     qc.invalidateQueries({
-                        queryKey: ["questions", year, season, section],
+                        queryKey: ["questions", examCode],
                     });
                 }}
             />

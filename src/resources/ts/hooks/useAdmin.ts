@@ -2,7 +2,7 @@ import axios from "axios";
 import { axiosInstance } from "./axiosInstance";
 import { useChakraToast } from "../utils/toastUtils";
 import { QuestionForEdit, UpdateQuestionInputs } from "./useExam";
-import { AnswerItem, ErrorResponse, ModelAnswer } from "../types/form";
+import { Answer, ErrorResponse, ModelAnswer } from "../types/form";
 import { useMutation } from "@tanstack/react-query";
 
 export type ExamSentenceResponse = {
@@ -173,12 +173,10 @@ export const useAdmin = () => {
     };
 
     const getModelAnswers = async (
-        year: number,
-        season: string,
-        section: number
+        examCode: string
     ): Promise<ModelAnswer[] | null> => {
         return  await axiosInstance.get<ModelAnswer[] | null>(
-            `/api/admin/model-answers/${year}-${season}-${section}`
+            `/api/admin/model-answers/${examCode}`
         )
             .then((response) => {
                 if (response.status === 200) {
@@ -201,6 +199,11 @@ export const useAdmin = () => {
                     return null;
                 }
 
+                if (error.response && error.response.status === 401) {
+                    // 再ログインの処理が他で走る
+                    return null;
+                }
+
                 toast(unexpectedServerErrorToast);
                 console.error(error);
                 return null;
@@ -209,18 +212,14 @@ export const useAdmin = () => {
     }
 
     type UpdateModelAnswerParams = {
-        modelAnswers: AnswerItem[];
-        year: number;
-        season: string;
-        section: number;
+        modelAnswers: {answers: Answer[]};
+        examCode: string;
     }
 
-    // 模範解答の更新のMutationフック
     const updateModelAnswers = useMutation<void, Error, UpdateModelAnswerParams>({
-        mutationFn: async ({year, season, section, modelAnswers}) => {
-            console.log(year, season, section, modelAnswers)
+        mutationFn: async ({examCode, modelAnswers}) => {
             await axiosInstance.post(
-                `/api/admin/model-answers/${year}-${season}-${section}`,
+                `/api/admin/model-answers/${examCode}`,
                 {modelAnswers}
             );
         },
@@ -236,15 +235,13 @@ export const useAdmin = () => {
     });
 
     type DeleteQuestionIdParams = {
-        questionId: string;
-        year: number;
-        season: string;
-        section: number;
+        questionCode: string;
+        examCode: string;
     }
 
     const deleteQuestion = useMutation<void, Error, DeleteQuestionIdParams>({
-        mutationFn: async ({year, season, section, questionId}) => {
-            await axiosInstance.delete(`/api/admin/question/${year}-${season}-${section}/${questionId}`);
+        mutationFn: async ({examCode, questionCode}) => {
+            await axiosInstance.delete(`/api/admin/question/${examCode}/${questionCode}`);
         },
         onSuccess: () => {
             toast({
@@ -258,12 +255,10 @@ export const useAdmin = () => {
     });
 
     const getQuestionsForEdit = async (
-        year: number,
-        season: string,
-        section: number
+        examCode: string
     ): Promise<QuestionForEdit[] | null> => {
         return await axiosInstance
-            .get(`/api/admin/questions/${year}-${season}-${section}`)
+            .get(`/api/admin/questions/${examCode}`)
             .then((response) => {
                 return response.data;
             })

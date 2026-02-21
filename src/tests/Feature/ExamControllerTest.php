@@ -60,7 +60,7 @@ class ExamControllerTest extends TestCase
             [
                 'exam_code' => '9999_haru_1',
                 'question_code' => '1_2_2',
-                'text' => '模範解答3',
+                'text' => '模範解答チェックボックス,1,2,3',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -68,9 +68,11 @@ class ExamControllerTest extends TestCase
     }
 
     #[Test]
-    public function 模範解答をまとめて取得できる(): void
+    public function 管理者が模範解答を取得できる(): void
     {
-        $response = $this->actingAs($this->adminUser)->getJson('/api/admin/model-answers/9999-haru-1', ['Accept' => 'application/json']);
+        $response = $this->actingAs($this->adminUser)->getJson('/api/admin/model-answers/9999_haru_1', ['Accept' => 'application/json']);
+
+        dump($response->json());
 
         $response->assertStatus(200);
         $this->assertCount(3, $response->json());

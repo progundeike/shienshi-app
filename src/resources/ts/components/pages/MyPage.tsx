@@ -12,8 +12,6 @@ export const MyPage: FC = memo(() => {
     const { fetchSubmittedExams } = useExam();
     const [submittedExams, setSubmittedExams] = useState<SubmittedExam[]>([]);
 
-    console.log(submittedExams);
-
     const navigate = useNavigate();
 
     if (!user) {

@@ -2,26 +2,29 @@ import { Box, Checkbox, CheckboxGroup, Flex, Stack } from "@chakra-ui/react";
 import { FC, memo } from "react";
 import { FetchedQuestion, Option } from "../../hooks/useExam";
 import { Control, useController } from "react-hook-form";
-import { AnswerItem } from "../../types/form";
+import { Answer } from "../../types/form";
 
 type Props = {
     question: FetchedQuestion;
-    control: Control<{ answers: AnswerItem[] }>;
+    control: Control<{ answers: Answer[] }>;
     index: number;
 };
 
 export const CheckboxQuestionForm: FC<Props> = (props) => {
     const { question, control, index } = props;
-    const questionCode = `${question.questionNumber}_${question.subQuestionNumber}_${question.smallQuestionNumber}`;
+
+    // questionCodeをフォームに固定で持たせる
+    useController({
+        name: `answers.${index}.questionCode`,
+        control,
+        defaultValue: question.questionCode,
+    });
+
     const { field } = useController({
         name: `answers.${index}.content`,
         control,
         defaultValue: [],
     });
-
-    const checkboxValues = Array.isArray(field.value)
-        ? field.value
-        : [field.value];
 
     return (
         <Box ml="20px">

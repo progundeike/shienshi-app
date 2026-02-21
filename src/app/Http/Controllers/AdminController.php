@@ -15,9 +15,7 @@ class AdminController extends Controller
     {
         // リクエストのバリデーション
         $validated = $request->validate([
-            'year' => 'required|integer',
-            'season' => 'required|in:haru,aki',
-            'section' => 'required|integer',
+            'examCode' => 'required|string',
             'questionNumber' => 'required|integer|max:20',
             'subQuestionNumber' => 'required|integer|max:20',
             'smallQuestionNumber' => 'nullable|integer|max:20',
@@ -28,8 +26,6 @@ class AdminController extends Controller
             'options.*' => 'required|required_array_keys:label,value',
             'maxLength' => 'nullable|integer|max:5000',
         ]);
-
-        Log::debug($validated);
 
         // optionsがkey,valueともに空文字列の配列の場合はnullにする
         if (isset($validated['options'])) {
@@ -43,21 +39,17 @@ class AdminController extends Controller
             $validated['options'] = $checkedOptions;
         }
 
-        $validated['year'] = (int) $validated['year'];
-        $validated['section'] = (int) $validated['section'];
-        $examCode = $validated['year'].'_'.$validated['season'].'_'.$validated['section'];
-
         // 試験問題の更新処理を実行
         try {
             Question::updateOrCreate(
                 [
-                    'exam_code' => $examCode,
+                    'exam_code' => $validated['examCode'],
                     'question_number' => (int) $validated['questionNumber'],
                     'sub_question_number' => (int) $validated['subQuestionNumber'],
                     'small_question_number' => (int) ($validated['smallQuestionNumber'] ?? 0),
                 ],
                 [
-                    'exam_code' => $examCode,
+                    'exam_code' => $validated['examCode'],
                     'question_number' => (int) $validated['questionNumber'],
                     'sub_question_number' => (int) $validated['subQuestionNumber'],
                     'small_question_number' => (int) ($validated['smallQuestionNumber'] ?? 0),
@@ -171,10 +163,9 @@ class AdminController extends Controller
         }
     }
 
-    public function getModelAnswers(string $year, string $season, string $section): JsonResponse
+    public function getModelAnswers(string $examCode): JsonResponse
     {
         $controller = new ExamController();
-        $examCode = $year.'_'.$season.'_'.$section;
         $modelAnswers = $controller->fetchModelAnswer($examCode);
 
         if (is_null($modelAnswers)) {
@@ -193,18 +184,29 @@ class AdminController extends Controller
         return response()->json($modelMap, 200);
     }
 
-    public function updateModelAnswers(Request $request, string $year, string $season, string $section): JsonResponse
+    public function updateModelAnswers(Request $request, string $examCode): JsonResponse
     {
         // リクエストのバリデーション
         $validated = $request->validate([
             'modelAnswers' => 'required|array',
+            'modelAnswers.answers' => 'required|array',
         ]);
 
-        $examCode = $year.'_'.$season.'_'.$section;
+        Log::debug($validated['modelAnswers']['answers']);
+
+        // checkboxの値が配列で送られてくるため、文字列に変換する
+        $modelAnswers = [];
+        foreach ($validated['modelAnswers']['answers'] as $modelAnswer) {
+            if (is_array($modelAnswer['content'])) {
+                $modelAnswers[$modelAnswer['questionCode']] = implode(',', $modelAnswer['content']);
+            } else {
+                $modelAnswers[$modelAnswer['questionCode']] = $modelAnswer['content'];
+            }
+        }
 
         // 模範解答をアップデート
         try {
-            foreach ($validated['modelAnswers'] as $questionCode => $text) {
+            foreach ($modelAnswers as $questionCode => $text) {
                 ModelAnswer::updateOrCreate(
                     [
                         'exam_code' => $examCode,
@@ -222,10 +224,9 @@ class AdminController extends Controller
         }
     }
 
-    public function deleteQuestion(string $year, string $season, string $section, string $questionCode): JsonResponse
+    public function deleteQuestion(string $examCode, string $questionCode): JsonResponse
     {
         [$questionNumber, $subQuestionNumber, $smallQuestionNumber] = explode('_', $questionCode);
-        $examCode = $year.'_'.$season.'_'.$section;
 
         try {
             // 該当の問題を削除
@@ -251,12 +252,9 @@ class AdminController extends Controller
     // fetchExamQuestionsArrayでは取得しなかったtext_for_aiも取得する
     // 大問または設問番号を指定して設問を取得する
     public function fetchQuestionsForEdit(
-        string $year,
-        string $season,
-        string $section,
+        string $examCode
     ): ?array {
 
-        $examCode = $year.'_'.$season.'_'.$section;
         $query = Question::where('exam_code', $examCode);
         $result = $query->get();
 
@@ -269,6 +267,7 @@ class AdminController extends Controller
         $questions = $result->map(function ($question) {
             return [
                 'examCode' => $question->exam_code,
+                'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
                 'questionNumber' => $question->question_number,
                 'subQuestionNumber' => $question->sub_question_number,
                 'smallQuestionNumber' => $question->small_question_number,

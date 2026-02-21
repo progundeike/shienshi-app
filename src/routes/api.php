@@ -9,7 +9,7 @@ use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\NewsItemController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/questions/{year}-{season}-{section}', [ExamController::class, 'getExamQuestionsJson']);
+Route::get('/questions/{examCode}', [ExamController::class, 'getExamQuestionsJson']);
 Route::get('/exam/{year}-{season}-{section}', [ExamController::class, 'checkFileExists']);
 Route::get('/exam-list', [ExamController::class, 'getExamList']);
 Route::get('/news', [NewsItemController::class, 'index']);
@@ -35,12 +35,12 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::get('/sentence/{year}-{season}-{section}', [AdminController::class, 'fetchExamSentence']);
     Route::put('/sentence', [AdminController::class, 'updateExamSentence']);
     Route::post('/upload-pdf', [AdminController::class, 'uploadExamPdf']);
-    Route::get('/model-answers/{year}-{season}-{section}', [AdminController::class, 'getModelAnswers']);
-    Route::post('/model-answers/{year}-{season}-{section}', [AdminController::class, 'updateModelAnswers']);
+    Route::get('/model-answers/{examCode}', [AdminController::class, 'getModelAnswers']);
+    Route::post('/model-answers/{examCode}', [AdminController::class, 'updateModelAnswers']);
 
-    Route::get('/questions/{year}-{season}-{section}', [AdminController::class, 'fetchQuestionsForEdit']);
+    Route::get('/questions/{examCode}', [AdminController::class, 'fetchQuestionsForEdit']);
     Route::post('/question', [AdminController::class, 'updateExamQuestion']);
-    Route::delete('/question/{year}-{season}-{section}/{questionCode}', [AdminController::class, 'deleteQuestion']);
+    Route::delete('/question/{examCode}/{questionCode}', [AdminController::class, 'deleteQuestion']);
 
     // お知らせ管理
     Route::post('/news', [NewsItemController::class, 'createOrUpdate']);

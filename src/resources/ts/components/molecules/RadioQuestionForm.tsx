@@ -2,16 +2,24 @@ import { Box, Flex, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
 import { FC, memo } from "react";
 import { FetchedQuestion, Option } from "../../hooks/useExam";
 import { Control, useController } from "react-hook-form";
-import { AnswerItem } from "../../types/form";
+import { Answer } from "../../types/form";
 
 type Props = {
     question: FetchedQuestion;
-    control: Control<{ answers: AnswerItem[] }>;
+    control: Control<{ answers: Answer[] }>;
     index: number;
 };
 
 export const RadioQuestionForm: FC<Props> = (props) => {
     const { question, control, index } = props;
+
+    // questionCodeをフォームに固定で持たせる
+    useController({
+        name: `answers.${index}.questionCode`,
+        control,
+        defaultValue: question.questionCode,
+    });
+
     const { field } = useController({
         name: `answers.${index}.content`,
         control,
