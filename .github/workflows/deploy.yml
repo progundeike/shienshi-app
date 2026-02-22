@@ -60,7 +60,7 @@ jobs:
       - name: Login to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build & Push image
+      - name: Build & Push image (app)
         env:
           IMAGE: ghcr.io/${{ github.repository }}
         run: |
@@ -73,8 +73,20 @@ jobs:
             --push \
             .
 
+      - name: Build & Push image (web)
+        env:
+          IMAGE_WEB: ghcr.io/${{ github.repository }}-web
+        run: |
+          TAG=${GITHUB_SHA::7}
+          docker buildx build \
+            -f docker/caddy/Dockerfile \
+            -t "$IMAGE_WEB:$TAG" \
+            -t "$IMAGE_WEB:latest" \
+            --push \
+            .
+
       - name: Remote clone/pull & compose up
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.0
         if: github.event_name == 'workflow_dispatch'
         env:
           GHCR_USER: ${{ github.repository_owner }}
