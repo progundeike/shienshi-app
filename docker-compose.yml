@@ -2,7 +2,6 @@ services:
   app:
     image: ghcr.io/${owner}/${repo}:latest
     volumes:
-      - app-code:/var/www/html
       - ./src/.env:/var/www/html/.env:ro
     environment:
       - DB_CONNECTION=mysql
@@ -16,12 +15,9 @@ services:
       - db
 
   web:
-    image: caddy:2
+    image: ghcr.io/${owner}/${repo}-web:latest
     ports:
       - 80:80
-    volumes:
-      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-      - app-code:/var/www/html:ro
     depends_on:
       - app
 
@@ -41,4 +37,3 @@ services:
 
 volumes:
   db-volumes:
-  app-code:
