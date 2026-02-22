@@ -72,8 +72,6 @@ class ExamControllerTest extends TestCase
     {
         $response = $this->actingAs($this->adminUser)->getJson('/api/admin/model-answers/9999_haru_1', ['Accept' => 'application/json']);
 
-        dump($response->json());
-
         $response->assertStatus(200);
         $this->assertCount(3, $response->json());
     }

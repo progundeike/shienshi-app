@@ -3,6 +3,7 @@ import { userAtom } from "../../states/userAtom";
 import { loadingAtom } from "../../states/loadingAtom";
 import { LoadingPage } from "../pages/LoadingPage";
 import { useAtomValue } from "jotai";
+import { Page404 } from "../pages/Page404";
 
 export const AdminRoutes = () => {
     const user = useAtomValue(userAtom);
@@ -18,5 +19,9 @@ export const AdminRoutes = () => {
         return <Navigate to="/login" state={{ from: location }} />;
     }
 
-    return <Outlet />;
+    if (user.isAdmin) {
+        return <Outlet />;
+    } else {
+        return <Page404 />;
+    }
 };
