@@ -11,17 +11,17 @@ type Props = {
     section: number;
 };
 
-export const PDFUploadFrom: FC<Props> = memo((props) => {
+export const PdfUploadForm: FC<Props> = memo((props) => {
     const { year, season, section } = props;
     const toast = useToast();
-    const { uploadPDF } = useAdmin();
+    const { uploadPdf, deletePdf } = useAdmin();
     const inputRef = useRef<HTMLInputElement>(null);
 
     const onFileInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) return;
 
         try {
-            uploadPDF(year, season, section, e.target.files[0]);
+            uploadPdf(year, season, section, e.target.files[0]);
         } finally {
             // ファイルアップロード後にinputをリセット
             if (inputRef.current) {
@@ -31,7 +31,7 @@ export const PDFUploadFrom: FC<Props> = memo((props) => {
     };
 
     return (
-        <Box w="80%" m="20px" mx="auto" textAlign="center">
+        <Flex gap="50px" justifyContent="center" my="10px">
             <Box position="relative">
                 <Input
                     onChange={onFileInputChange}
@@ -52,9 +52,19 @@ export const PDFUploadFrom: FC<Props> = memo((props) => {
                     }}
                 >
                     <Icon as={FaRegFilePdf} name="upload" mr="10px" />
-                    問題ファイルを登録する
+                    問題ファイルを登録
                 </Button>
             </Box>
-        </Box>
+
+            <Box>
+                <Button
+                    colorScheme="red"
+                    borderRadius="full"
+                    onClick={() => deletePdf(year, season, section)}
+                >
+                    ファイルを削除
+                </Button>
+            </Box>
+        </Flex>
     );
 });

@@ -15,7 +15,6 @@ class Question extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'id',
         'exam_code',
         'question_number',
         'sub_question_number',

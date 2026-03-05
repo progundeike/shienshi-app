@@ -4,17 +4,17 @@ import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import Split from "react-split";
 
-import { ExamHeader } from "../molecules/ExamHeader";
+import { ExamHeader } from "../../molecules/ExamHeader";
 import { useParams } from "react-router-dom";
-import { Page404 } from "./Page404";
-import { DisplayExamPdf } from "../organisms/DisplayExamPdf";
-import { useExam } from "../../hooks/useExam";
-import { QuestionEditorPanel } from "../organisms/QuestionEditorPanel";
-import { ExamSentenceResponse, useAdmin } from "../../hooks/useAdmin";
-import { EditExamSentenceForm } from "../molecules/EditExamSentenceForm";
-import { EditPurposeForm } from "../molecules/EditPurposeForm";
-import { EditReviewCommentForm } from "../molecules/EditReviewCommentForm";
-import { PDFUploadFrom } from "../organisms/PdfUploadFrom";
+import { Page404 } from "../Page404";
+import { DisplayExamPdf } from "../../organisms/DisplayExamPdf";
+import { useExam } from "../../../hooks/useExam";
+import { QuestionEditorPanel } from "../../organisms/QuestionEditorPanel";
+import { ExamSentenceResponse, useAdmin } from "../../../hooks/useAdmin";
+import { EditExamSentenceForm } from "../../molecules/EditExamSentenceForm";
+import { EditPurposeForm } from "../../molecules/EditPurposeForm";
+import { EditReviewCommentForm } from "../../molecules/EditReviewCommentForm";
+import { PdfUploadForm } from "../../organisms/PdfUploadForm";
 
 export const EditExamPage: FC = memo(() => {
     const [loading, setLoading] = useState(true);
@@ -92,7 +92,7 @@ export const EditExamPage: FC = memo(() => {
                         section={parsedSection}
                     />
 
-                    <PDFUploadFrom
+                    <PdfUploadForm
                         year={parsedYear}
                         season={season}
                         section={parsedSection}

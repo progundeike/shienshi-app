@@ -121,7 +121,7 @@ export const useAdmin = () => {
             })
     };
 
-    const uploadPDF = async (
+    const uploadPdf = async (
         year: number,
         season: string,
         section: number,
@@ -139,14 +139,15 @@ export const useAdmin = () => {
                 return;
             }
 
+            const formData = new FormData();
+            formData.append("year", String(year));
+            formData.append("season", season);
+            formData.append("section", String(section));
+            formData.append("file", file)
+
             const response = await axiosInstance.post(
                 "/api/admin/upload-pdf",
-                {year, season, section, file},
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
+                formData
             );
 
             if (response.status === 201) {
@@ -171,6 +172,26 @@ export const useAdmin = () => {
             toast(unexpectedServerErrorToast);
         }
     };
+
+    const deletePdf = async (year: number, season: string, section: number) => {
+        try {
+            const response =  await axiosInstance.delete(`/api/admin/delete-pdf/${year}-${season}-${section}`);
+
+            if (response.status !== 200) {
+                toast({
+                    title: "PDFの削除に失敗しました",
+                    status: "error",
+                    duration: 6000,
+                    isClosable: true,
+                    position: "bottom-right",
+                });
+            }
+        } catch (error) {
+            console.error("PDFの削除に失敗しました", error);
+            toast(unexpectedServerErrorToast);
+        }
+    }
+    
 
     const getModelAnswers = async (
         examCode: string
@@ -285,5 +306,5 @@ export const useAdmin = () => {
 
 
 
-    return { getExamSentence, updateExamSentence, updateExamQuestion, uploadPDF, getModelAnswers, updateModelAnswers, deleteQuestion, getQuestionsForEdit };
+    return { getExamSentence, updateExamSentence, updateExamQuestion, uploadPdf, getModelAnswers, updateModelAnswers, deleteQuestion, getQuestionsForEdit, deletePdf };
 }

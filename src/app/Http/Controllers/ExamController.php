@@ -10,6 +10,7 @@ use App\Models\UserAnswer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 // 試験問題に関する情報を提供するコントローラ
 class ExamController extends Controller
@@ -61,11 +62,10 @@ class ExamController extends Controller
                 'questionNumber' => $question->question_number,
                 'subQuestionNumber' => $question->sub_question_number,
                 'smallQuestionNumber' => $question->small_question_number,
-                'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
+                'questionCode' => $question->question_number . '_' . $question->sub_question_number . '_' . $question->small_question_number,
                 'type' => $question->type,
                 'text' => $question->text,
                 'options' => $question->options,
-                // 'options' => $question->options ? json_decode($question->options) : null,
                 'maxLength' => $question->max_length,
             ];
         });
@@ -88,13 +88,17 @@ class ExamController extends Controller
     }
 
     // 模範解答を取得する
-    public function fetchModelAnswer(string $examCode, ?string $questionCode = null): array
+    public function fetchModelAnswers(string $examCode, ?string $questionCode = null): array
     {
         $query = ModelAnswer::where('exam_code', $examCode);
 
         if ($questionCode) {
-            $query->where('question_code', $questionCode);
+            [$q, $sub, $small] = explode('_', $questionCode);
+            if ($questionCode) {
+                $query->where('question_code', 'like', $q . '\_%');
+            }
         }
+
         $result = $query->get();
 
         $modelAnswer = $result->map(function ($answer) {
@@ -145,17 +149,17 @@ class ExamController extends Controller
             } else {
                 // 例外
                 $submittedExam['season_japanese'] = '未登録';
-                Log::error('Unknown season: '.$submittedExam['season']);
+                Log::error('Unknown season: ' . $submittedExam['season']);
             }
 
             // sectionを問いに変換。2023年までは午後I, 午後Ⅱに分ける
             if ($section >= 2023) {
                 // sectionをそのまま問いに変換
-                $submittedExam['section_converted'] = '問'.$section;
+                $submittedExam['section_converted'] = '問' . $section;
             } else {
                 // sectionを午前、午後に分類
                 if ($section < 4) {
-                    $submittedExam['section_converted'] = '午後I 問'.$section;
+                    $submittedExam['section_converted'] = '午後I 問' . $section;
                 } elseif ($section === 4) {
                     $submittedExam['section_converted'] = '午後Ⅱ 問1';
                 } elseif ($section === 5) {
@@ -163,7 +167,7 @@ class ExamController extends Controller
                 } else {
                     // 例外
                     $submittedExam['section_converted'] = '未登録';
-                    Log::error('Unknown section: '.$submittedExam['section']);
+                    Log::error('Unknown section: ' . $submittedExam['section']);
                 }
             }
 
@@ -173,22 +177,33 @@ class ExamController extends Controller
         return response()->json($submittedAnswers, 200);
     }
 
-    // userAnswersは [{"examCode":"2023_aki_3","questionNumber":1,"subQuestionNumber":1,"smallQuestionNumber":0,"user_text":"test"},]の形式
-    public function convertUserAnswerToText(array $userAnswers): string
+    public function convertUserAnswerToText(array $userAnswers, array $examQuestions): string
     {
         $length = count($userAnswers);
 
+        $mapOptions = array_column($examQuestions, 'options', 'questionCode');
+
+        Log::debug($mapOptions);
+
         $userAnswerText = '';
         for ($i = 0; $i < $length; $i++) {
-            $userAnswerText .= '設問'.$userAnswers[$i]['questionNumber'].' ';
-            if ($userAnswers[$i]['subQuestionNumber'] !== 0) {
-                $userAnswerText .= '('.$userAnswers[$i]['subQuestionNumber'].') ';
+            [$q, $sub, $small] = array_map('intval', explode('_', $userAnswers[$i]['questionCode']));
+            $userAnswerText .= '設問' . $q . ' ';
+            if ($sub !== 0) {
+                $userAnswerText .= '(' . $sub . ') ';
+            }
+
+            if (is_array($mapOptions[$userAnswers[$i]['questionCode']])) {
+                $options = $mapOptions[$userAnswers[$i]['questionCode']][0];
+                if (isset($options['label'])) {
+                    $userAnswerText .= $options['label'];
+                }
             }
 
             if ($userAnswers[$i]['user_text']) {
-                $userAnswerText .= $userAnswers[$i]['user_text'].PHP_EOL;
+                $userAnswerText .= $userAnswers[$i]['user_text'] . PHP_EOL;
             } else {
-                $userAnswerText .= '未回答'.PHP_EOL;
+                $userAnswerText .= '未回答' . PHP_EOL;
             }
         }
 
@@ -198,17 +213,30 @@ class ExamController extends Controller
     // 試験のPDFファイルの存在確認
     public function checkFileExists(string $year, string $season, string $section): JsonResponse
     {
-        $examCode = $year.'_'.$season.'_'.$section;
+        // validation
+        $validator = Validator::make(
+            compact('year', 'season', 'section'),
+            [
+                'year' => ['required', 'regex:/^20\d{2}$/'],
+                'season' => ['required', 'in:haru,aki'],
+                'section' => ['required', 'in:1,2,3,4,5']
+            ]
+        );
 
-        $filePath = storage_path('app/public/pdf/'.$year.'/'.$examCode.'.pdf');
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Invalid parameters'], 422);
+        }
+
+        $examCode = $year . '_' . $season . '_' . $section;
+
+        $filePath = storage_path('app/public/pdf/' . $year . '/' . $examCode . '.pdf');
 
         if (! file_exists($filePath)) {
             return response()->json(['error' => 'File not found'], 404);
         }
 
         return response()->json([
-            'message' => 'File exists',
-            'url' => url('/storage/exam_pdf/'.$filePath),
+            'message' => 'File exists'
         ], 200);
     }
 }

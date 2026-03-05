@@ -3,15 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Log;
+use InvalidArgumentException;
 use OpenAI\Laravel\Facades\OpenAI;
 use OpenAI\Responses\Chat\CreateResponse;
 
 class AiController extends Controller
 {
-    const USD_TO_JPY = 156.0;
+    private const USD_TO_JPY = 156.0;
+    private const PRICES = [
+        "gpt-5-nano" =>  ["in" => 0.05, "cached_in" => 0.01, "out" => 0.40],
+        "gpt-5-mini" =>  ["in" => 0.25, "cached_in" => 0.03, "out" => 2.00],
+        "gpt-4o-mini" =>  ["in" => 1.1, "cached_in" => 0.28, "out" => 4.40],
+    ];
 
-    // protected $model = 'gpt-4o';
-    protected $model = 'gpt-3.5-turbo-0125';
+    protected $model = 'gpt-5-nano';
+    // protected $model = 'gpt-5-mini';
     // protected string $model = 'gpt-4o-mini';
 
     public function chat(array $prompt)
@@ -25,16 +31,18 @@ class AiController extends Controller
                 'model' => $this->model,
                 'messages' => $prompt,
             ]);
-            $this->debugTokenCosts($result->usage->promptTokens, $result->usage->completionTokens);
+            $this->debugTokenCosts($result->usage);
 
             $retryCount++;
         } while ($result->choices[0]->finishReason !== 'stop' && $retryCount < $maxRetries);
 
         if ($result->choices[0]->finishReason !== 'stop') {
-            Log::error('finishReason :'.$result->choices[0]->finishReason);
+            Log::error('finishReason :' . $result->choices[0]->finishReason);
 
             return [];
         }
+
+        Log::debug("chat_result", ['result' => json_decode(json_encode($result), true)]);
 
         return $result;
     }
@@ -45,34 +53,6 @@ class AiController extends Controller
         $maxRetries = 3;
         $result = null;
 
-        $dummyJson = <<<'Json'
-{
-  "id":"chatcmpl-BvxZ8G2dKAZqRHdB9sEFna4uKE818",
-  "object":"chat.completion",
-  "created":1753153366,
-  "model":"gpt-3.5-turbo-0125",
-  "choices":[
-    {
-      "index":0,
-      "message":{
-        "role":"assistant",
-        "content":null,
-        "function_call":{
-          "name":"reviewUserAnswer",
-          "arguments":"{\"evaluations\":[{\"questionNumber\":1,\"subQuestionNumber\":1,\"rating\":\"×\",\"comment\":\"正解は「イ」です。...\"}]}"
-        }
-      },
-      "finish_reason":"function_call"
-    }
-  ],
-  "usage":{
-    "prompt_tokens":4134,
-    "completion_tokens":424,
-    "total_tokens":4558
-  }
-}
-Json;
-
         do {
             $result = OpenAI::chat()->create([
                 'model' => $this->model,
@@ -80,54 +60,46 @@ Json;
                 'functions' => [
                     $functionParameter,
                 ],
-                'function_call' => 'auto',
+                'function_call' => ['name' => $functionParameter['name']],
             ]);
-
-            // コスト削減のため、取得したresultを出力する
-            // $data = json_decode($dummyJson, true);
-            // // $result = CreateResponse::from($data, null);
-            // OpenAI::fake([
-            //     CreateResponse::fake()
-            // ]);
-
-            $this->debugTokenCosts($result->usage->promptTokens, $result->usage->completionTokens);
 
             $retryCount++;
         } while ($result->choices[0]->finishReason !== 'function_call' && $retryCount < $maxRetries);
 
         if ($result->choices[0]->finishReason !== 'function_call') {
-            Log::error('finishReason :'.$result->choices[0]->finishReason);
-
-            return [];
+            Log::error('finishReason :' . $result->choices[0]->finishReason);
+            return null;
         }
 
         return $result;
     }
 
-    private function debugTokenCosts(int $promptTokens, int $completionTokens): void
+    private function debugTokenCosts(object $usage): void
     {
-        // apiの料金を場合分する
-        // cost: $/1M tokens
-        if (in_array($this->model, ['gpt-3.5-turbo', 'gpt-3.5-turbo-0125'])) {
-            $promptCostPerMillion = 0.5;
-            $completionCostPerMillion = 1.5;
-        } elseif ($this->model === 'gpt-4o') {
-            $promptCostPerMillion = 5;
-            $completionCostPerMillion = 15;
-        } elseif ($this->model === 'gpt-4o-mini') {
-            $promptCostPerMillion = 0.15;
-            $completionCostPerMillion = 0.6;
-        } else {
-            return;
+        $usage = (array) $usage;
+
+        if (!isset(self::PRICES[$this->model])) {
+            throw new InvalidArgumentException("Unknown model pricing: {$this->model}");
         }
 
-        // 計算する処理
-        $promptCost = ($promptTokens / 1_000_000) * $promptCostPerMillion;
-        $completionCost = ($completionTokens / 1_000_000) * $completionCostPerMillion;
-        $totalCost = $promptCost + $completionCost;
-        $costs = self::USD_TO_JPY * $totalCost;
+        $price = self::PRICES[$this->model];
 
-        Log::debug('total costs: ¥'.$costs);
+        $inputTokens = (int) ($usage['inputTokens'] ?? $usage['promptTokens'] ?? 0);
+        $outputTokens = (int) ($usage['outputTokens'] ?? $usage['completionTokens'] ?? 0);
 
+        $cachedTokens = 0;
+        if (isset($usage['inputTokensDetails']['cachedTokens'])) {
+            $cachedTokens = (int) $usage['inputTokensDetails']['cachedTokens'];
+        } elseif (isset($usage['promptTokensDetails']['cachedTokens'])) {
+            $cachedTokens = (int) $usage['promptTokensDetails']['cachedTokens'];
+        }
+
+        $nonCached = max(0, $inputTokens - $cachedTokens);
+
+        // 単価は100万トークン当たりなので、最後に100万で割ってドルにする
+        $costUsd = (($nonCached * $price['in']) + ($cachedTokens * $price['cached_in']) + ($outputTokens * $price['out'])) / 1_000_000;
+        $costJpy = $costUsd * self::USD_TO_JPY;
+
+        Log::debug('openai_cost', ['jpy' => $costJpy]);
     }
 }

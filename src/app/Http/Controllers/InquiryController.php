@@ -27,14 +27,11 @@ class InquiryController extends Controller
             'message' => ['required', 'string', 'max:5000'],
         ]);
 
-        $data = [
-            'user_id' => $user?->id,
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'message' => $validated['message'],
-        ];
+        Inquiry::create($validated);
 
-        Inquiry::create($data);
+        $inquiry = new Inquiry($validated);
+        $inquiry->user_id = $request->user()?->id;
+        $inquiry->save();
 
         return response()->json(['message' => 'ok'], 201);
     }

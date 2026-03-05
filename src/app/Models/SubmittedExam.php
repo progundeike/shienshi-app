@@ -15,7 +15,6 @@ class SubmittedExam extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'id',
         'exam_code',
         'user_id',
     ];
