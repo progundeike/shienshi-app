@@ -15,8 +15,7 @@ class UserAnswer extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        // 'id',
-        'user_id',
+        // 'user_id',
         'exam_code',
         'question_code',
         'user_text',

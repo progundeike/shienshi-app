@@ -25,7 +25,7 @@ import { RegisterEmailPage } from "./pages/auth/RegisterEmailPage";
 import { ForgotPasswordPage } from "./pages/auth/ForgotPasswordPage";
 import { AdminPage } from "./pages/admin/AdminPage";
 import { AdminRoutes } from "./templates/AdminRoutes";
-import { EditExamPage } from "./pages/EditExamPage";
+import { EditExamPage } from "./pages/admin/EditExamPage";
 import { NewsItemPage } from "./pages/admin/NewsItemPage";
 import { InquiryPage } from "./pages/admin/InquiryPage";
 import { EditExamListPage } from "./pages/admin/EditExamListPage";

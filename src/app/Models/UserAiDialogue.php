@@ -15,7 +15,6 @@ class UserAiDialogue extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'id',
         'exam_code',
         'question_code',
         'user_id',

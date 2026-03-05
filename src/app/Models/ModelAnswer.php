@@ -15,11 +15,7 @@ class ModelAnswer extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'id',
         'exam_code',
-        // 'question_number',
-        // 'sub_question_number',
-        // 'small_question_number',
         'question_code',
         'text',
     ];

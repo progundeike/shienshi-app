@@ -10,10 +10,8 @@ class NewsItem extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id',
         'title',
         'content',
-        'published_at',
     ];
 
     protected $casts = [

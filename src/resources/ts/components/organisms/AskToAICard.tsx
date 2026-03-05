@@ -28,6 +28,7 @@ type Input = {
 
 export const AskToAICard: FC<Props> = memo((props) => {
     const { questionCode, examCode, onClose } = props;
+    const [isAwaitingChatResponse, setIsAwaitingChatResponse] = useState(false);
 
     const [isLoading, setIsLoading] = useState(false);
     const { sendChat, fetchDialogues, deleteDialogues } = useQuestion();
@@ -41,26 +42,35 @@ export const AskToAICard: FC<Props> = memo((props) => {
     };
 
     const onSubmit = async (data: Input) => {
-        setDialogues((prevDialogues) => [
-            ...prevDialogues,
-            { role: "user", content: data.message },
-        ]);
+        setIsAwaitingChatResponse(true);
+        try {
+            setDialogues((prevDialogues) => [
+                ...prevDialogues,
+                { role: "user", content: data.message },
+            ]);
 
-        const response = await sendChat(examCode, questionCode, data.message);
+            reset(); //入力フォームを先にリセット
 
-        reset(); //入力フォームをリセット
+            const response = await sendChat(
+                examCode,
+                questionCode,
+                data.message,
+            );
 
-        if (!response) {
-            return;
+            if (!response) {
+                return;
+            }
+
+            setDialogues((prevDialogues) => [
+                ...prevDialogues,
+                {
+                    role: "assistant",
+                    content: response,
+                },
+            ]);
+        } finally {
+            setIsAwaitingChatResponse(false);
         }
-
-        setDialogues((prevDialogues) => [
-            ...prevDialogues,
-            {
-                role: "assistant",
-                content: response,
-            },
-        ]);
     };
 
     useEffect(() => {
@@ -101,10 +111,17 @@ export const AskToAICard: FC<Props> = memo((props) => {
                             {dialogues.map((dialogue, index) => (
                                 <DialogueBox key={index} dialogue={dialogue} />
                             ))}
-                            <Textarea
-                                {...register("message")}
-                                placeholder="質問を入力してください"
-                            />
+                            {isAwaitingChatResponse ? (
+                                <Center>
+                                    <Spinner size="xl" />
+                                </Center>
+                            ) : (
+                                <Textarea
+                                    {...register("message")}
+                                    placeholder="質問を入力してください"
+                                />
+                            )}
+
                             <Flex>
                                 {dialogues.length > 0 && (
                                     <Button
