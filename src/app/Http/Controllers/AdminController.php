@@ -64,7 +64,7 @@ class AdminController extends Controller
 
             return response()->json(['message' => 'Exam question updated successfully'], 201);
         } catch (\Exception $e) {
-            Log::error('Failed to update exam question: ' . $e->getMessage());
+            Log::error('Failed to update exam question: '.$e->getMessage());
 
             return response()->json(['error' => 'Failed to update exam question'], 500);
         }
@@ -75,7 +75,7 @@ class AdminController extends Controller
     {
         // 試験文の取得
         try {
-            $examSentence = ExamSentence::where('exam_code', $year . '_' . $season . '_' . $section)
+            $examSentence = ExamSentence::where('exam_code', $year.'_'.$season.'_'.$section)
                 ->first();
 
             if (! $examSentence) {
@@ -93,7 +93,7 @@ class AdminController extends Controller
                 'reviewComment' => $examSentence->review_comment,
             ], 200);
         } catch (\Exception $e) {
-            Log::error('Failed to fetch exam sentences: ' . $e->getMessage());
+            Log::error('Failed to fetch exam sentences: '.$e->getMessage());
 
             return response()->json(['error' => 'Failed to fetch exam sentences'], 500);
         }
@@ -126,11 +126,11 @@ class AdminController extends Controller
                 $updateData['review_comment'] = $validated['reviewComment'];
             }
 
-            ExamSentence::updateOrCreate(['exam_code' => $validated['year'] . '_' . $validated['season'] . '_' . $validated['section']], $updateData);
+            ExamSentence::updateOrCreate(['exam_code' => $validated['year'].'_'.$validated['season'].'_'.$validated['section']], $updateData);
 
             return response()->json(['message' => 'Exam sentence updated successfully'], 200);
         } catch (\Exception $e) {
-            Log::error('Failed to update exam sentence: ' . $e->getMessage());
+            Log::error('Failed to update exam sentence: '.$e->getMessage());
 
             return response()->json(['error' => 'Failed to update exam sentence'], 500);
         }
@@ -144,16 +144,16 @@ class AdminController extends Controller
             [
                 'year' => ['required', 'regex:/^20\d{2}$/'],
                 'season' => ['required', 'in:haru,aki'],
-                'section' => ['required', 'in:1,2,3,4,5']
+                'section' => ['required', 'in:1,2,3,4,5'],
             ]
         );
         if ($validator->fails()) {
             return response()->json(['error' => 'Invalid Parameters'], 422);
         }
 
-        $examCode = $year . '_' . $season . '_' . $section;
+        $examCode = $year.'_'.$season.'_'.$section;
 
-        $relativePath = 'pdf/' . $year . '/' . $examCode . '.pdf';
+        $relativePath = 'pdf/'.$year.'/'.$examCode.'.pdf';
         $deleted = \Illuminate\Support\Facades\Storage::disk('public')->delete($relativePath);
 
         if (! $deleted) {
@@ -173,7 +173,7 @@ class AdminController extends Controller
             'file' => 'required|file|mimes:pdf|max:4096', // 最大4MBのPDFファイル
         ]);
 
-        $directory = 'pdf/' . $validated['year'];
+        $directory = 'pdf/'.$validated['year'];
 
         // ファイルの保存処理 既存ファイルがある場合、勝手に上書きされる
         try {
@@ -185,7 +185,7 @@ class AdminController extends Controller
 
             return response()->json(['message' => 'PDF uploaded successfully'], 201);
         } catch (\Exception $e) {
-            Log::error('Failed to upload PDF: ' . $e->getMessage());
+            Log::error('Failed to upload PDF: '.$e->getMessage());
 
             return response()->json(['error' => 'Failed to upload PDF'], 500);
         }
@@ -244,7 +244,7 @@ class AdminController extends Controller
 
             return response()->json(['message' => 'Model answers updated successfully'], 200);
         } catch (\Exception $e) {
-            Log::error('Failed to update model answers: ' . $e->getMessage());
+            Log::error('Failed to update model answers: '.$e->getMessage());
 
             return response()->json(['error' => 'Failed to update model answers'], 500);
         }
@@ -269,7 +269,7 @@ class AdminController extends Controller
 
             return response()->json(['message' => 'Question deleted successfully'], 200);
         } catch (\Exception $e) {
-            Log::error('Failed to delete question: ' . $e->getMessage());
+            Log::error('Failed to delete question: '.$e->getMessage());
 
             return response()->json(['error' => 'Failed to delete question'], 500);
         }
@@ -293,7 +293,7 @@ class AdminController extends Controller
         $questions = $result->map(function ($question) {
             return [
                 'examCode' => $question->exam_code,
-                'questionCode' => $question->question_number . '_' . $question->sub_question_number . '_' . $question->small_question_number,
+                'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
                 'questionNumber' => $question->question_number,
                 'subQuestionNumber' => $question->sub_question_number,
                 'smallQuestionNumber' => $question->small_question_number,
