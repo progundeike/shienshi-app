@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 use OpenAI\Laravel\Facades\OpenAI;
-use OpenAI\Responses\Chat\CreateResponse;
 
 class AiController extends Controller
 {
     private const USD_TO_JPY = 156.0;
+
     private const PRICES = [
-        "gpt-5-nano" =>  ["in" => 0.05, "cached_in" => 0.01, "out" => 0.40],
-        "gpt-5-mini" =>  ["in" => 0.25, "cached_in" => 0.03, "out" => 2.00],
-        "gpt-4o-mini" =>  ["in" => 1.1, "cached_in" => 0.28, "out" => 4.40],
+        'gpt-5-nano' => ['in' => 0.05, 'cached_in' => 0.01, 'out' => 0.40],
+        'gpt-5-mini' => ['in' => 0.25, 'cached_in' => 0.03, 'out' => 2.00],
+        'gpt-4o-mini' => ['in' => 1.1, 'cached_in' => 0.28, 'out' => 4.40],
     ];
 
     protected $model = 'gpt-5-nano';
@@ -37,12 +37,12 @@ class AiController extends Controller
         } while ($result->choices[0]->finishReason !== 'stop' && $retryCount < $maxRetries);
 
         if ($result->choices[0]->finishReason !== 'stop') {
-            Log::error('finishReason :' . $result->choices[0]->finishReason);
+            Log::error('finishReason :'.$result->choices[0]->finishReason);
 
             return [];
         }
 
-        Log::debug("chat_result", ['result' => json_decode(json_encode($result), true)]);
+        Log::debug('chat_result', ['result' => json_decode(json_encode($result), true)]);
 
         return $result;
     }
@@ -67,7 +67,8 @@ class AiController extends Controller
         } while ($result->choices[0]->finishReason !== 'function_call' && $retryCount < $maxRetries);
 
         if ($result->choices[0]->finishReason !== 'function_call') {
-            Log::error('finishReason :' . $result->choices[0]->finishReason);
+            Log::error('finishReason :'.$result->choices[0]->finishReason);
+
             return null;
         }
 
@@ -78,7 +79,7 @@ class AiController extends Controller
     {
         $usage = (array) $usage;
 
-        if (!isset(self::PRICES[$this->model])) {
+        if (! isset(self::PRICES[$this->model])) {
             throw new InvalidArgumentException("Unknown model pricing: {$this->model}");
         }
 
