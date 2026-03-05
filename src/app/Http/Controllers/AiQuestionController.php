@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\AiResponseException;
 use App\Http\Requests\QuestionRequest;
 use App\Models\Question;
 use App\Models\UserAiDialogue;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 // TODO: smallQuestionNumberを追加する
 
@@ -14,109 +17,117 @@ class AiQuestionController extends Controller
 {
     public function run(QuestionRequest $request)
     {
-        $request = $request->validated();
+        try {
+            $request = $request->validated();
 
-        // リクエストの例
-        // [
-        //     'examCode' => 2023_aki_1,
-        //     'questionCode' => 1_1_0,
-        //     'message' => 'test',
-        // ];
+            // リクエストの例
+            // [
+            //     'examCode' => 2023_aki_1,
+            //     'questionCode' => 1_1_0,
+            //     'message' => 'test',
+            // ];
 
-        // 試験回とどの設問への質問かを取得
-        $examCode = request('examCode');
-        $questionCode = request('questionCode');
-        $userMessage = request('message');
+            // 試験回とどの設問への質問かを取得
+            $examCode = request('examCode');
+            $questionCode = request('questionCode');
+            $userMessage = request('message');
 
-        // ユーザーIDを取得
-        $userId = Auth::id();
+            // ユーザーIDを取得
+            $userId = Auth::id();
 
-        // 問題文を取得
-        $examController = new ExamController();
-        $examSentence = $examController->fetchExamSentences($examCode);
+            // 問題文を取得
+            $examController = new ExamController();
+            $examSentence = $examController->fetchExamSentences($examCode);
 
-        // 質問された設問を取得
-        [$q, $sub, $small] = array_map('intval', explode('_', $questionCode));
-        $result = Question::where('exam_code', $examCode)
-            ->where('question_number', $q)
-            ->get();
+            // 質問された設問を取得
+            [$q, $sub, $small] = array_map('intval', explode('_', $questionCode));
+            $result = Question::where('exam_code', $examCode)
+                ->where('question_number', $q)
+                ->get();
 
-        if ($result->isEmpty()) {
-            // 例外処理
-        }
+            if ($result->isEmpty()) {
+                // 例外処理
+            }
 
-        // 必要なデータだけを取り出す
-        $examQuestions = $result->map(function ($question) {
-            return [
-                'questionNumber' => $question->question_number,
-                'subQuestionNumber' => $question->sub_question_number,
-                'smallQuestionNumber' => $question->small_question_number,
-                'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
-                'type' => $question->type,
-                'text' => $question->text,
-                'options' => $question->options,
-                'textForAi' => $question->text_for_ai ?? null,
+            // 必要なデータだけを取り出す
+            $examQuestions = $result->map(function ($question) {
+                return [
+                    'questionNumber' => $question->question_number,
+                    'subQuestionNumber' => $question->sub_question_number,
+                    'smallQuestionNumber' => $question->small_question_number,
+                    'questionCode' => $question->question_number . '_' . $question->sub_question_number . '_' . $question->small_question_number,
+                    'type' => $question->type,
+                    'text' => $question->text,
+                    'options' => $question->options,
+                    'textForAi' => $question->text_for_ai ?? null,
+                ];
+            })->toArray();
+
+            // 模範解答を取得
+            $modelAnswers = $examController->fetchModelAnswers($examCode, $questionCode);
+
+            // ユーザーの回答を取得
+            $userAnswer = $examController->fetchUserAnswer($userId, $examCode, $questionCode);
+            $userAnswerContent = $examController->convertUserAnswerToText([$userAnswer], $examQuestions);
+
+            // これまでの質問とその回答を取得
+            $dialogues = $this->fetchDialogues($examCode, $questionCode);
+
+            // これまでの質問とその回答に新しい質問を追加してAIに投げる
+            $dialogues[] =
+                [
+                    'role' => 'user',
+                    'content' => $userMessage,
+                ];
+
+            // プロンプトを組み立てる
+            $answerController = new AnswerController;
+            $questionPrompt = $answerController->buildQuestionPrompt($examSentence, $examQuestions, $modelAnswers);
+
+            $prompt = [
+                [
+                    'role' => 'system',
+                    'content' => $this->systemPromptContent . PHP_EOL . $questionPrompt,
+                ],
+                [
+                    'role' => 'user',
+                    'content' => '<ユーザーの解答>' . $userAnswerContent . '</ユーザーの解答>',
+                ],
             ];
-        })->toArray();
 
-        // 模範解答を取得
-        $modelAnswers = $examController->fetchModelAnswers($examCode, $questionCode);
+            // dialoguesをpromptに追加
+            $prompt = array_merge($prompt, $dialogues);
 
-        // ユーザーの回答を取得
-        $userAnswer = $examController->fetchUserAnswer($userId, $examCode, $questionCode);
-        $userAnswerContent = $examController->convertUserAnswerToText([$userAnswer], $examQuestions);
+            // AIに投げる
+            $controller = new AiController();
+            $result = $controller->chat($prompt);
 
-        // これまでの質問とその回答を取得
-        $dialogues = $this->fetchDialogues($examCode, $questionCode);
+            if ($result->choices[0]->message->content) {
+                $aiMessage = $result->choices[0]->message->content;
+            } else {
+                $aiMessage = 'Response Error';
+            }
 
-        // これまでの質問とその回答に新しい質問を追加してAIに投げる
-        $dialogues[] =
-            [
-                'role' => 'user',
-                'content' => $userMessage,
-            ];
+            [$q, $sub, $small] = array_map('intval', explode('_', $questionCode));
 
-        // プロンプトを組み立てる
-        $answerController = new AnswerController;
-        $questionPrompt = $answerController->buildQuestionPrompt($examSentence, $examQuestions, $modelAnswers);
+            // ユーザーの質問とAIの回答をDBに保存
+            $latestDialogue = UserAiDialogue::create([
+                'user_id' => $userId,
+                'exam_code' => $examCode,
+                'question_code' => $questionCode,
+                'user_question' => $userMessage,
+                'ai_answer' => $aiMessage,
+            ]);
 
-        $prompt = [
-            [
-                'role' => 'system',
-                'content' => $this->systemPromptContent.PHP_EOL.$questionPrompt,
-            ],
-            [
-                'role' => 'user',
-                'content' => '<ユーザーの解答>'.$userAnswerContent.'</ユーザーの解答>',
-            ],
-        ];
-
-        // dialoguesをpromptに追加
-        $prompt = array_merge($prompt, $dialogues);
-
-        // AIに投げる
-        $controller = new AiController();
-        $result = $controller->chat($prompt);
-
-        if ($result->choices[0]->message->content) {
-            $aiMessage = $result->choices[0]->message->content;
-        } else {
-            $aiMessage = 'Response Error';
+            // AIの回答を返す
+            return response()->json($aiMessage, 200);
+        } catch (AiResponseException $e) {
+            Log::error('AI response failed', ['error' => $e->getMessage()]);
+            return response()->json(['message' => 'AI service is unavailable'], 502);
+        } catch (Throwable $e) {
+            Log::error('Unexpected error in AiQuestionController::run', ['error' => $e]);
+            return response()->json(['message' => 'Failed to process chat'], 500);
         }
-
-        [$q, $sub, $small] = array_map('intval', explode('_', $questionCode));
-
-        // ユーザーの質問とAIの回答をDBに保存
-        $latestDialogue = UserAiDialogue::create([
-            'user_id' => $userId,
-            'exam_code' => $examCode,
-            'question_code' => $questionCode,
-            'user_question' => $userMessage,
-            'ai_answer' => $aiMessage,
-        ]);
-
-        // AIの回答を返す
-        return response()->json($aiMessage, 200);
     }
 
     public function getDialogues(string $examCode, string $questionCode)

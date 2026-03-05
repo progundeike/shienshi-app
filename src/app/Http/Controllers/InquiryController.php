@@ -18,16 +18,11 @@ class InquiryController extends Controller
 
     public function store(Request $request)
     {
-        // ユーザー情報を確認
-        $user = $request->user();
-
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'email', 'max:255'],
             'message' => ['required', 'string', 'max:5000'],
         ]);
-
-        Inquiry::create($validated);
 
         $inquiry = new Inquiry($validated);
         $inquiry->user_id = $request->user()?->id;
