@@ -12,6 +12,7 @@ class NewsItem extends Model
     protected $fillable = [
         'title',
         'content',
+        'published_at',
     ];
 
     protected $casts = [
