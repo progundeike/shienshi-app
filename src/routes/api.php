@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/questions/{examCode}', [ExamController::class, 'getExamQuestionsJson']);
 Route::get('/exam/{year}-{season}-{section}', [ExamController::class, 'checkFileExists']);
-Route::get('/exam-list', [ExamController::class, 'getExamList']);
 Route::get('/news', [NewsItemController::class, 'index']);
 Route::post('/inquiry', [InquiryController::class, 'store']);
 

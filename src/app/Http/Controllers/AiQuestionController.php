@@ -6,26 +6,24 @@ use App\Exceptions\AiResponseException;
 use App\Http\Requests\QuestionRequest;
 use App\Models\Question;
 use App\Models\UserAiDialogue;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-// TODO: smallQuestionNumberを追加する
-
 class AiQuestionController extends Controller
 {
+    // リクエストの例
+    // [
+    //     'examCode' => 2023_aki_1,
+    //     'questionCode' => 1_1_0,
+    //     'message' => 'test',
+    // ];
     public function run(QuestionRequest $request)
     {
         try {
             $request = $request->validated();
-
-            // リクエストの例
-            // [
-            //     'examCode' => 2023_aki_1,
-            //     'questionCode' => 1_1_0,
-            //     'message' => 'test',
-            // ];
 
             // 試験回とどの設問への質問かを取得
             $examCode = request('examCode');
@@ -40,6 +38,7 @@ class AiQuestionController extends Controller
             $examSentence = $examController->fetchExamSentences($examCode);
 
             // 質問された設問を取得
+            // 小問だけを渡すと、大問の情報が抜けてしまうため、questionCodeから大問番号を抽出して、その大問に属する設問をすべて取得する
             [$q, $sub, $small] = array_map('intval', explode('_', $questionCode));
             $result = Question::where('exam_code', $examCode)
                 ->where('question_number', $q)
@@ -121,6 +120,13 @@ class AiQuestionController extends Controller
 
             // AIの回答を返す
             return response()->json($aiMessage, 200);
+        } catch (ModelNotFoundException $e) {
+            Log::error('Required resource not found in AiQuestionController:run', [
+                'examCode' => $examCode,
+                'questionCode' => $questionCode
+            ]);
+
+            return response()->json(['message' => 'Required exam data not found'], 404);
         } catch (AiResponseException $e) {
             Log::error('AI response failed', ['error' => $e->getMessage()]);
             return response()->json(['message' => 'AI service is unavailable'], 502);
