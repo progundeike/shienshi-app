@@ -20,6 +20,7 @@ services:
       - TZ=Asia/Tokyo
     depends_on:
       - db
+      - redis
 
   web:
     image: caddy:2
@@ -45,5 +46,12 @@ services:
       - MYSQL_USER=${DB_USER}
       - TZ=Asia/Tokyo
 
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis-volumes:/data
+
 volumes:
   db-volumes:
+  redis-volumes:

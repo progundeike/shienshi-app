@@ -25,9 +25,9 @@ class AiQuestionController extends Controller
             $request = $request->validated();
 
             // 試験回とどの設問への質問かを取得
-            $examCode = request('examCode');
-            $questionCode = request('questionCode');
-            $userMessage = request('message');
+            $examCode = $request->validated('examCode');
+            $questionCode = $request->validated('questionCode');
+            $userMessage = $request->validated('message');
 
             // ユーザーIDを取得
             $userId = Auth::id();
@@ -105,8 +105,6 @@ class AiQuestionController extends Controller
             } else {
                 $aiMessage = 'Response Error';
             }
-
-            // $q = (int) explode('_', $questionCode)[0];
 
             // ユーザーの質問とAIの回答をDBに保存
             UserAiDialogue::create([
