@@ -62,7 +62,7 @@ class ExamController extends Controller
                 'questionNumber' => $question->question_number,
                 'subQuestionNumber' => $question->sub_question_number,
                 'smallQuestionNumber' => $question->small_question_number,
-                'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
+                'questionCode' => $question->question_number . '_' . $question->sub_question_number . '_' . $question->small_question_number,
                 'type' => $question->type,
                 'text' => $question->text,
                 'options' => $question->options,
@@ -78,7 +78,7 @@ class ExamController extends Controller
     public function fetchExamSentences(string $examCode): array
     {
         $examData = ExamSentence::where('exam_code', $examCode)
-            ->first();
+            ->firstOrFail();
 
         return [
             'sentence' => $examData->sentence,
@@ -95,7 +95,7 @@ class ExamController extends Controller
         if ($questionCode) {
             [$q, $sub, $small] = explode('_', $questionCode);
             if ($questionCode) {
-                $query->where('question_code', 'like', $q.'\_%');
+                $query->where('question_code', 'like', $q . '\_%');
             }
         }
 
@@ -117,7 +117,7 @@ class ExamController extends Controller
         $answer = UserAnswer::where('user_id', $userId)
             ->where('exam_code', $examCode)
             ->where('question_code', $questionCode)
-            ->first();
+            ->firstOrFail();
 
         return [
             'questionCode' => $answer->question_code,
@@ -149,17 +149,17 @@ class ExamController extends Controller
             } else {
                 // 例外
                 $submittedExam['season_japanese'] = '未登録';
-                Log::error('Unknown season: '.$submittedExam['season']);
+                Log::error('Unknown season: ' . $submittedExam['season']);
             }
 
             // sectionを問いに変換。2023年までは午後I, 午後Ⅱに分ける
-            if ($section >= 2023) {
+            if ($year >= 2023) {
                 // sectionをそのまま問いに変換
-                $submittedExam['section_converted'] = '問'.$section;
+                $submittedExam['section_converted'] = '問' . $section;
             } else {
                 // sectionを午前、午後に分類
                 if ($section < 4) {
-                    $submittedExam['section_converted'] = '午後I 問'.$section;
+                    $submittedExam['section_converted'] = '午後I 問' . $section;
                 } elseif ($section === 4) {
                     $submittedExam['section_converted'] = '午後Ⅱ 問1';
                 } elseif ($section === 5) {
@@ -167,7 +167,7 @@ class ExamController extends Controller
                 } else {
                     // 例外
                     $submittedExam['section_converted'] = '未登録';
-                    Log::error('Unknown section: '.$submittedExam['section']);
+                    Log::error('Unknown section: ' . $submittedExam['section']);
                 }
             }
 
@@ -188,22 +188,22 @@ class ExamController extends Controller
         $userAnswerText = '';
         for ($i = 0; $i < $length; $i++) {
             [$q, $sub, $small] = array_map('intval', explode('_', $userAnswers[$i]['questionCode']));
-            $userAnswerText .= '設問'.$q.' ';
+            $userAnswerText .= '設問' . $q . ' ';
             if ($sub !== 0) {
-                $userAnswerText .= '('.$sub.') ';
+                $userAnswerText .= '(' . $sub . ') ';
             }
 
-            if (is_array($mapOptions[$userAnswers[$i]['questionCode']])) {
-                $options = $mapOptions[$userAnswers[$i]['questionCode']][0];
-                if (isset($options['label'])) {
-                    $userAnswerText .= $options['label'];
-                }
+            $questionCode = $userAnswers[$i]['questionCode'] ??  '';
+            $optionsForQuestion = $mapOptions[$questionCode] ?? null;
+
+            if (is_array($optionsForQuestion) && isset($optionsForQuestion[0]['label'])) {
+                $userAnswerText .= $optionsForQuestion[0]['label'];
             }
 
             if ($userAnswers[$i]['user_text']) {
-                $userAnswerText .= $userAnswers[$i]['user_text'].PHP_EOL;
+                $userAnswerText .= $userAnswers[$i]['user_text'] . PHP_EOL;
             } else {
-                $userAnswerText .= '未回答'.PHP_EOL;
+                $userAnswerText .= '未回答' . PHP_EOL;
             }
         }
 
@@ -227,9 +227,9 @@ class ExamController extends Controller
             return response()->json(['error' => 'Invalid parameters'], 422);
         }
 
-        $examCode = $year.'_'.$season.'_'.$section;
+        $examCode = $year . '_' . $season . '_' . $section;
 
-        $filePath = storage_path('app/public/pdf/'.$year.'/'.$examCode.'.pdf');
+        $filePath = storage_path('app/public/pdf/' . $year . '/' . $examCode . '.pdf');
 
         if (! file_exists($filePath)) {
             return response()->json(['error' => 'File not found'], 404);

@@ -29,9 +29,6 @@ class AiController extends Controller
         $result = null;
 
         try {
-
-
-
             do {
                 $result = OpenAI::chat()->create([
                     'model' => $this->model,
@@ -45,10 +42,13 @@ class AiController extends Controller
             throw new AiResponseException('OpenAI request failed', 0, $e);
         }
 
-        if (! $result || $result->choices[0]->finishReason !== 'stop') {
-            throw new AiResponseException(
-                'Unexpected finishReason: ' . $result->choices[0]->finishReason ?? 'unknown'
-            );
+        $finishReason = 'unknown';
+        if ($result && isset($result->choices[0]->finishReason)) {
+            $finishReason = $result->choices[0]->finishReason;
+        }
+
+        if (! $result || $finishReason !== 'stop') {
+            throw new AiResponseException('Unexpected finishReason: ' . $finishReason);
         }
 
         return $result;
@@ -60,23 +60,31 @@ class AiController extends Controller
         $maxRetries = 3;
         $result = null;
 
-        do {
-            $result = OpenAI::chat()->create([
-                'model' => $this->model,
-                'messages' => $prompt,
-                'functions' => [
-                    $functionParameter,
-                ],
-                'function_call' => ['name' => $functionParameter['name']],
-            ]);
+        try {
 
-            $retryCount++;
-        } while ($result->choices[0]->finishReason !== 'function_call' && $retryCount < $maxRetries);
+            do {
+                $result = OpenAI::chat()->create([
+                    'model' => $this->model,
+                    'messages' => $prompt,
+                    'functions' => [
+                        $functionParameter,
+                    ],
+                    'function_call' => ['name' => $functionParameter['name']],
+                ]);
 
-        if ($result->choices[0]->finishReason !== 'function_call') {
-            Log::error('finishReason :' . $result->choices[0]->finishReason);
+                $retryCount++;
+            } while ($result->choices[0]->finishReason !== 'function_call' && $retryCount < $maxRetries);
+        } catch (Throwable $e) {
+            throw new AiResponseException('OpenAI request failed', 0, $e);
+        }
 
-            return null;
+        $finishReason = 'unknown';
+        if ($result && isset($result->choices[0]->finishReason)) {
+            $finishReason = $result->choices[0]->finishReason;
+        }
+
+        if (! $result || $finishReason !== 'function_call') {
+            throw new AiResponseException('Unexpected finishReason: ' . $finishReason);
         }
 
         return $result;
