@@ -107,7 +107,7 @@ class AiQuestionController extends Controller
                 $aiMessage = 'Response Error';
             }
 
-            [$q, $sub, $small] = array_map('intval', explode('_', $questionCode));
+            $q = (int) explode('_', $questionCode)[0];
 
             // ユーザーの質問とAIの回答をDBに保存
             $latestDialogue = UserAiDialogue::create([
