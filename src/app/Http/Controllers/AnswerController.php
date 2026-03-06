@@ -34,7 +34,7 @@ class AnswerController extends Controller
             // 設問を取得
             $result = Question::where('exam_code', $examCode)->get();
             if ($result->isEmpty()) {
-                // 例外処理
+                throw new ModelNotFoundException('Questions not found for examCode: ' . $examCode);
             }
 
             // 必要なデータだけを取り出す
@@ -123,7 +123,7 @@ class AnswerController extends Controller
             Log::error('AI response failed', ['error' => $e->getMessage()]);
             return response()->json(['message' => 'AI service is unavailable'], 502);
         } catch (Throwable $e) {
-            Log::error('Unexpected error in AnswerController::run', ['error' => $e]);
+            Log::error('Unexpected error in AnswerController::answerSubmit', ['error' => $e]);
             return response()->json(['message' => 'Failed to process chat'], 500);
         } finally {
             $elapsedSec = round(microtime(true) - $start, 3);

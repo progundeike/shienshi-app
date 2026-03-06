@@ -23,7 +23,7 @@ class QuestionRequest extends FormRequest
     {
         return [
             'examCode' => 'required|string',
-            'questionCode' => 'required|string',
+            'questionCode' => 'required|string|regex:/^\d+_\d+_\d+$/',
             'message' => 'required|string',
         ];
     }

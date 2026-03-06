@@ -7,7 +7,6 @@ use App\Http\Requests\QuestionRequest;
 use App\Models\Question;
 use App\Models\UserAiDialogue;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -39,13 +38,13 @@ class AiQuestionController extends Controller
 
             // 質問された設問を取得
             // 小問だけを渡すと、大問の情報が抜けてしまうため、questionCodeから大問番号を抽出して、その大問に属する設問をすべて取得する
-            [$q, $sub, $small] = array_map('intval', explode('_', $questionCode));
+            $q = (int) explode('_', $questionCode)[0];
             $result = Question::where('exam_code', $examCode)
                 ->where('question_number', $q)
                 ->get();
 
             if ($result->isEmpty()) {
-                // 例外処理
+                throw new ModelNotFoundException('Questions not found for examCode: ' . $examCode . ' and questionNumber: ' . $q);
             }
 
             // 必要なデータだけを取り出す
@@ -107,10 +106,10 @@ class AiQuestionController extends Controller
                 $aiMessage = 'Response Error';
             }
 
-            $q = (int) explode('_', $questionCode)[0];
+            // $q = (int) explode('_', $questionCode)[0];
 
             // ユーザーの質問とAIの回答をDBに保存
-            $latestDialogue = UserAiDialogue::create([
+            UserAiDialogue::create([
                 'user_id' => $userId,
                 'exam_code' => $examCode,
                 'question_code' => $questionCode,
