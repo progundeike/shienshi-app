@@ -114,7 +114,7 @@ class AnswerController extends Controller
 
             return response()->json(['message' => 'Answer submitted successfully'], 201);
         } catch (ModelNotFoundException $e) {
-            Log::error('Required resource not found in AiQuestionController:run', [
+            Log::error('Required resource not found in AnswerController::answerSubmit', [
                 'examCode' => $examCode
             ]);
 
@@ -149,8 +149,8 @@ class AnswerController extends Controller
         }
 
         foreach ($userAnswers as $userAnswer) {
-            if (! $userAnswer->user_text && trim($userAnswer->user_text) == '') {
-
+            $userText = trim((string) $userAnswer->user_text ?? '');
+            if ($userText === '') {
                 UserAnswer::where([
                     'user_id' => $userId,
                     'exam_code' => $examCode,
