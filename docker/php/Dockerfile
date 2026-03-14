@@ -13,7 +13,9 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     # PHPの拡張ライブラリをインストール
-    docker-php-ext-install intl pdo_mysql bcmath zip mbstring
+    docker-php-ext-install intl pdo_mysql bcmath zip mbstring && \
+    pecl install redis && \
+    docker-php-ext-enable redis
 
 # composerをrootで使う警告抑止
 ENV COMPOSER_ALLOW_SUPERUSER=1
