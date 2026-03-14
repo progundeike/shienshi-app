@@ -44,7 +44,7 @@ class AiQuestionController extends Controller
                 ->get();
 
             if ($result->isEmpty()) {
-                throw new ModelNotFoundException('Questions not found for examCode: ' . $examCode . ' and questionNumber: ' . $q);
+                throw new ModelNotFoundException('Questions not found for examCode: '.$examCode.' and questionNumber: '.$q);
             }
 
             // 必要なデータだけを取り出す
@@ -53,7 +53,7 @@ class AiQuestionController extends Controller
                     'questionNumber' => $question->question_number,
                     'subQuestionNumber' => $question->sub_question_number,
                     'smallQuestionNumber' => $question->small_question_number,
-                    'questionCode' => $question->question_number . '_' . $question->sub_question_number . '_' . $question->small_question_number,
+                    'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
                     'type' => $question->type,
                     'text' => $question->text,
                     'options' => $question->options,
@@ -85,11 +85,11 @@ class AiQuestionController extends Controller
             $prompt = [
                 [
                     'role' => 'system',
-                    'content' => $this->systemPromptContent . PHP_EOL . $questionPrompt,
+                    'content' => $this->systemPromptContent.PHP_EOL.$questionPrompt,
                 ],
                 [
                     'role' => 'user',
-                    'content' => '<ユーザーの解答>' . $userAnswerContent . '</ユーザーの解答>',
+                    'content' => '<ユーザーの解答>'.$userAnswerContent.'</ユーザーの解答>',
                 ],
             ];
 
@@ -120,15 +120,17 @@ class AiQuestionController extends Controller
         } catch (ModelNotFoundException $e) {
             Log::error('Required resource not found in AiQuestionController:run', [
                 'examCode' => $examCode,
-                'questionCode' => $questionCode
+                'questionCode' => $questionCode,
             ]);
 
             return response()->json(['message' => 'Required exam data not found'], 404);
         } catch (AiResponseException $e) {
             Log::error('AI response failed', ['error' => $e->getMessage()]);
+
             return response()->json(['message' => 'AI service is unavailable'], 502);
         } catch (Throwable $e) {
             Log::error('Unexpected error in AiQuestionController::run', ['error' => $e]);
+
             return response()->json(['message' => 'Failed to process chat'], 500);
         }
     }

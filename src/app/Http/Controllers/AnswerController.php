@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\AiResponseException;
 use App\Exceptions\AiRequestInProgressException;
+use App\Exceptions\AiResponseException;
 use App\Http\Requests\AnswerRequest;
 use App\Models\Question;
 use App\Models\SubmittedExam;
@@ -25,7 +25,7 @@ class AnswerController extends Controller
             $year = $request->year;
             $season = $request->season;
             $section = $request->section;
-            $examCode = $year . '_' . $season . '_' . $section;
+            $examCode = $year.'_'.$season.'_'.$section;
 
             $examController = new ExamController();
 
@@ -35,7 +35,7 @@ class AnswerController extends Controller
             // 設問を取得
             $result = Question::where('exam_code', $examCode)->get();
             if ($result->isEmpty()) {
-                throw new ModelNotFoundException('Questions not found for examCode: ' . $examCode);
+                throw new ModelNotFoundException('Questions not found for examCode: '.$examCode);
             }
 
             // 必要なデータだけを取り出す
@@ -44,7 +44,7 @@ class AnswerController extends Controller
                     'questionNumber' => $question->question_number,
                     'subQuestionNumber' => $question->sub_question_number,
                     'smallQuestionNumber' => $question->small_question_number,
-                    'questionCode' => $question->question_number . '_' . $question->sub_question_number . '_' . $question->small_question_number,
+                    'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
                     'type' => $question->type,
                     'text' => $question->text,
                     'options' => $question->options,
@@ -70,11 +70,11 @@ class AnswerController extends Controller
             $prompt = [
                 [
                     'role' => 'system',
-                    'content' => $this->systemPromptContent . PHP_EOL . $questionPrompt,
+                    'content' => $this->systemPromptContent.PHP_EOL.$questionPrompt,
                 ],
                 [
                     'role' => 'user',
-                    'content' => '<UserAnswer>' . $userAnswerText . '</UserAnswer>',
+                    'content' => '<UserAnswer>'.$userAnswerText.'</UserAnswer>',
                 ],
             ];
 
@@ -97,7 +97,7 @@ class AnswerController extends Controller
                 $aiResponse[] = [
                     'user_id' => $userId,
                     'exam_code' => $examCode,
-                    'question_code' => $evaluation['questionNumber'] . '_' . $evaluation['subQuestionNumber'] . '_' . $smallQuestionNumber,
+                    'question_code' => $evaluation['questionNumber'].'_'.$evaluation['subQuestionNumber'].'_'.$smallQuestionNumber,
                     'ai_rating' => $evaluation['rating'],
                     'ai_text' => $evaluation['comment'],
                 ];
@@ -116,17 +116,21 @@ class AnswerController extends Controller
             return response()->json(['message' => 'Answer submitted successfully'], 201);
         } catch (AiRequestInProgressException $e) {
             Log::warning('AI request in progress', ['error' => $e->getMessage()]);
+
             return response()->json(['message' => '前のAI処理がまだ実行中です。少し待ってから再度お試しください'], 429);
         } catch (ModelNotFoundException $e) {
             Log::error('Required resource not found in AnswerController::answerSubmit', [
-                'examCode' => $examCode
+                'examCode' => $examCode,
             ]);
+
             return response()->json(['message' => 'Required exam data not found'], 404);
         } catch (AiResponseException $e) {
             Log::error('AI response failed', ['error' => $e->getMessage()]);
+
             return response()->json(['message' => 'AI service is unavailable'], 502);
         } catch (Throwable $e) {
             Log::error('Unexpected error in AnswerController::answerSubmit', ['error' => $e]);
+
             return response()->json(['message' => 'Failed to process chat'], 500);
         } finally {
             $elapsedSec = round(microtime(true) - $start, 3);
@@ -160,7 +164,7 @@ class AnswerController extends Controller
                     'question_code' => $userAnswer->question_code,
                 ])->update([
                     'ai_rating' => '×',
-                    'ai_text' => '模範解答: ' . ($modelMap[$userAnswer->question_code] ?? ''),
+                    'ai_text' => '模範解答: '.($modelMap[$userAnswer->question_code] ?? ''),
                 ]);
             }
         }
@@ -206,7 +210,7 @@ class AnswerController extends Controller
     {
         $data = $request->validated();
         $userId = Auth::id();
-        $examCode = $data['year'] . '_' . $data['season'] . '_' . $data['section'];
+        $examCode = $data['year'].'_'.$data['season'].'_'.$data['section'];
 
         $answers = $data['answers'];
 
@@ -254,7 +258,7 @@ class AnswerController extends Controller
         $year = (int) $request->year;
         $season = (string) $request->season;
         $section = (int) $request->section;
-        $examCode = $year . '_' . $season . '_' . $section;
+        $examCode = $year.'_'.$season.'_'.$section;
 
         try {
             $results = UserAnswer::where('user_id', $userId)
@@ -279,12 +283,12 @@ class AnswerController extends Controller
         $questionAndAnswerText = '';
         for ($i = 0; $i < count($examQuestions); $i++) {
             if ($examQuestions[$i]['subQuestionNumber'] === 1 && $examQuestions[$i]['smallQuestionNumber'] < 2) {
-                $questionAndAnswerText .= '設問' . $examQuestions[$i]['questionNumber'] . ' ';
+                $questionAndAnswerText .= '設問'.$examQuestions[$i]['questionNumber'].' ';
             }
 
             // text_for_aiも渡す
             if ($examQuestions[$i]['textForAi']) {
-                $questionAndAnswerText .= '[AI添削用の設問への補足:' . $examQuestions[$i]['textForAi'] . ']';
+                $questionAndAnswerText .= '[AI添削用の設問への補足:'.$examQuestions[$i]['textForAi'].']';
             }
 
             $modelText = $modelMap[$examQuestions[$i]['questionCode']] ?? '(模範解答なし)';
@@ -296,7 +300,7 @@ class AnswerController extends Controller
                 $questionAndAnswerText .= $examQuestions[$i]['options'][0]['label'];
             }
 
-            $questionAndAnswerText .= '[模範解答:' . $modelText . ']' . PHP_EOL;
+            $questionAndAnswerText .= '[模範解答:'.$modelText.']'.PHP_EOL;
         }
 
         // 参考情報
@@ -322,10 +326,10 @@ class AnswerController extends Controller
 
             $choices = '';
             foreach ($options as $option) {
-                $choices .= '(' . $option['value'] . ') ' . $option['label'] . ', ';
+                $choices .= '('.$option['value'].') '.$option['label'].', ';
             }
 
-            $text .= '[解答群:' . $choices . ']';
+            $text .= '[解答群:'.$choices.']';
         }
 
         return $text;
@@ -374,43 +378,43 @@ class AnswerController extends Controller
         EOM;
 
     private array $functionParameter =
-    [
-        'name' => 'reviewUserAnswer',
-        'description' => 'AIによる採点とコメントの生成をJson形式で返す。未回答に対しては模範解答を提示する。',
-        'parameters' => [
-            'type' => 'object',
-            'properties' => [
-                'evaluations' => [
-                    'type' => 'array',
-                    'items' => [
-                        'type' => 'object',
-                        'properties' => [
-                            'questionNumber' => [
-                                'type' => 'integer',
-                                'description' => '設問番号',
+        [
+            'name' => 'reviewUserAnswer',
+            'description' => 'AIによる採点とコメントの生成をJson形式で返す。未回答に対しては模範解答を提示する。',
+            'parameters' => [
+                'type' => 'object',
+                'properties' => [
+                    'evaluations' => [
+                        'type' => 'array',
+                        'items' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'questionNumber' => [
+                                    'type' => 'integer',
+                                    'description' => '設問番号',
+                                ],
+                                'subQuestionNumber' => [
+                                    'type' => 'integer',
+                                    'description' => '設問に複数の小問がある場合の小問番号。(1), (2)など。ない場合は0をセット',
+                                ],
+                                'smallQuestionNumber' => [
+                                    'type' => 'integer',
+                                    'description' => '設問にさらに枝番号がある場合の番号。ない場合は0',
+                                ],
+                                'rating' => [
+                                    'type' => 'string',
+                                    'description' => '採点結果。[◯, △, ×]のいずれか',
+                                ],
+                                'comment' => [
+                                    'type' => 'string',
+                                    'description' => '採点根拠を簡潔に記述する',
+                                ],
                             ],
-                            'subQuestionNumber' => [
-                                'type' => 'integer',
-                                'description' => '設問に複数の小問がある場合の小問番号。(1), (2)など。ない場合は0をセット',
-                            ],
-                            'smallQuestionNumber' => [
-                                'type' => 'integer',
-                                'description' => '設問にさらに枝番号がある場合の番号。ない場合は0',
-                            ],
-                            'rating' => [
-                                'type' => 'string',
-                                'description' => '採点結果。[◯, △, ×]のいずれか',
-                            ],
-                            'comment' => [
-                                'type' => 'string',
-                                'description' => '採点根拠を簡潔に記述する',
-                            ],
+                            'required' => ['questionNumber', 'subQuestionNumber', 'rating', 'comment'],
                         ],
-                        'required' => ['questionNumber', 'subQuestionNumber', 'rating', 'comment'],
                     ],
                 ],
+                'required' => ['evaluations'],
             ],
-            'required' => ['evaluations'],
-        ],
-    ];
+        ];
 }

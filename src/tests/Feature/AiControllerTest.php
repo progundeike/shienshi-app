@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Exceptions\AiRequestInProgressException;
 use App\Exceptions\AiResponseException;
 use App\Http\Controllers\AiController;
 use Illuminate\Contracts\Cache\Lock;
@@ -29,7 +30,7 @@ class AiControllerTest extends TestCase
 
         $controller = new AiController();
 
-        $this->expectException(AiResponseException::class);
+        $this->expectException(AiRequestInProgressException::class);
         $this->expectExceptionMessage('Another request is in progress. Please try again later.');
 
         $controller->chat([
@@ -59,9 +60,9 @@ class AiControllerTest extends TestCase
                 {
                     public function create(array $payload): object
                     {
-                        return (object)[
+                        return (object) [
                             'choices' => [
-                                (object)['finishReason' => 'stop'],
+                                (object) ['finishReason' => 'stop'],
                             ],
                             'usage' => (object) [],
                         ];
