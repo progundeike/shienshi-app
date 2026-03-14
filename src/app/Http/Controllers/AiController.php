@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\AiRequestInProgressException;
 use App\Exceptions\AiResponseException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 use OpenAI\Laravel\Facades\OpenAI;
@@ -22,72 +25,96 @@ class AiController extends Controller
     // protected $model = 'gpt-5-mini';
     // protected string $model = 'gpt-4o-mini';
 
-    public function chat(array $prompt)
+    private function withUserLock(callable $callback)
     {
-        $retryCount = 0;
-        $maxRetries = 3;
-        $result = null;
+        $userId = Auth::id();
+        if (! $userId) {
+            throw new AiResponseException('User not authenticated');
+        }
+
+        $lock = Cache::lock("openai:user:{$userId}", 120); // 120秒のロック
+
+        if (! $lock->get()) {
+            throw new AiRequestInProgressException('Another request is in progress. Please try again later.');
+        }
 
         try {
-            do {
-                $result = OpenAI::chat()->create([
-                    'model' => $this->model,
-                    'messages' => $prompt,
-                ]);
-                $this->debugTokenCosts($result->usage);
-
-                $retryCount++;
-            } while ($result->choices[0]->finishReason !== 'stop' && $retryCount < $maxRetries);
-        } catch (Throwable $e) {
-            throw new AiResponseException('OpenAI request failed', 0, $e);
+            return $callback();
+        } finally {
+            $lock->release();
         }
+    }
 
-        $finishReason = 'unknown';
-        if ($result && isset($result->choices[0]->finishReason)) {
-            $finishReason = $result->choices[0]->finishReason;
-        }
+    public function chat(array $prompt)
+    {
+        return $this->withUserLock(function () use ($prompt) {
 
-        if (! $result || $finishReason !== 'stop') {
-            throw new AiResponseException('Unexpected finishReason: ' . $finishReason);
-        }
+            $retryCount = 0;
+            $maxRetries = 3;
+            $result = null;
 
-        return $result;
+            try {
+                do {
+                    $result = OpenAI::chat()->create([
+                        'model' => $this->model,
+                        'messages' => $prompt,
+                    ]);
+                    $this->debugTokenCosts($result->usage);
+
+                    $retryCount++;
+                } while ($result->choices[0]->finishReason !== 'stop' && $retryCount < $maxRetries);
+            } catch (Throwable $e) {
+                throw new AiResponseException('OpenAI request failed', 0, $e);
+            }
+
+            $finishReason = 'unknown';
+            if ($result && isset($result->choices[0]->finishReason)) {
+                $finishReason = $result->choices[0]->finishReason;
+            }
+
+            if (! $result || $finishReason !== 'stop') {
+                throw new AiResponseException('Unexpected finishReason: ' . $finishReason);
+            }
+
+            return $result;
+        });
     }
 
     public function useFunctionCall(array $prompt, array $functionParameter)
     {
-        $retryCount = 0;
-        $maxRetries = 3;
-        $result = null;
+        return $this->withUserLock(function () use ($prompt, $functionParameter) {
+            $retryCount = 0;
+            $maxRetries = 3;
+            $result = null;
 
-        try {
+            try {
+                do {
+                    $result = OpenAI::chat()->create([
+                        'model' => $this->model,
+                        'messages' => $prompt,
+                        'functions' => [
+                            $functionParameter,
+                        ],
+                        'function_call' => ['name' => $functionParameter['name']],
+                    ]);
 
-            do {
-                $result = OpenAI::chat()->create([
-                    'model' => $this->model,
-                    'messages' => $prompt,
-                    'functions' => [
-                        $functionParameter,
-                    ],
-                    'function_call' => ['name' => $functionParameter['name']],
-                ]);
+                    $retryCount++;
+                } while ($result->choices[0]->finishReason !== 'function_call' && $retryCount < $maxRetries);
+            } catch (Throwable $e) {
+                throw new AiResponseException('OpenAI request failed', 0, $e);
+            }
 
-                $retryCount++;
-            } while ($result->choices[0]->finishReason !== 'function_call' && $retryCount < $maxRetries);
-        } catch (Throwable $e) {
-            throw new AiResponseException('OpenAI request failed', 0, $e);
-        }
+            $finishReason = 'unknown';
+            if ($result && isset($result->choices[0]->finishReason)) {
+                $finishReason = $result->choices[0]->finishReason;
+            }
 
-        $finishReason = 'unknown';
-        if ($result && isset($result->choices[0]->finishReason)) {
-            $finishReason = $result->choices[0]->finishReason;
-        }
+            if (! $result || $finishReason !== 'function_call') {
+                throw new AiResponseException('Unexpected finishReason: ' . $finishReason);
+            }
 
-        if (! $result || $finishReason !== 'function_call') {
-            throw new AiResponseException('Unexpected finishReason: ' . $finishReason);
-        }
-
-        return $result;
+            return $result;
+        });
     }
 
     private function debugTokenCosts(object $usage): void

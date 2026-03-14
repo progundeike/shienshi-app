@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\AiResponseException;
+use App\Exceptions\AiRequestInProgressException;
 use App\Http\Requests\AnswerRequest;
 use App\Models\Question;
 use App\Models\SubmittedExam;
@@ -113,11 +114,13 @@ class AnswerController extends Controller
             $this->editAiTextToModelAnswer($userId, $examCode, $modelAnswers);
 
             return response()->json(['message' => 'Answer submitted successfully'], 201);
+        } catch (AiRequestInProgressException $e) {
+            Log::warning('AI request in progress', ['error' => $e->getMessage()]);
+            return response()->json(['message' => '前のAI処理がまだ実行中です。少し待ってから再度お試しください'], 429);
         } catch (ModelNotFoundException $e) {
             Log::error('Required resource not found in AnswerController::answerSubmit', [
                 'examCode' => $examCode
             ]);
-
             return response()->json(['message' => 'Required exam data not found'], 404);
         } catch (AiResponseException $e) {
             Log::error('AI response failed', ['error' => $e->getMessage()]);
