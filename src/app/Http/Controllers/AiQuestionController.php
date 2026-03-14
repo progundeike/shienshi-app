@@ -44,7 +44,7 @@ class AiQuestionController extends Controller
                 ->get();
 
             if ($result->isEmpty()) {
-                throw new ModelNotFoundException('Questions not found for examCode: '.$examCode.' and questionNumber: '.$q);
+                throw new ModelNotFoundException('Questions not found for examCode: ' . $examCode . ' and questionNumber: ' . $q);
             }
 
             // 必要なデータだけを取り出す
@@ -53,7 +53,7 @@ class AiQuestionController extends Controller
                     'questionNumber' => $question->question_number,
                     'subQuestionNumber' => $question->sub_question_number,
                     'smallQuestionNumber' => $question->small_question_number,
-                    'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
+                    'questionCode' => $question->question_number . '_' . $question->sub_question_number . '_' . $question->small_question_number,
                     'type' => $question->type,
                     'text' => $question->text,
                     'options' => $question->options,
@@ -85,11 +85,11 @@ class AiQuestionController extends Controller
             $prompt = [
                 [
                     'role' => 'system',
-                    'content' => $this->systemPromptContent.PHP_EOL.$questionPrompt,
+                    'content' => $this->systemPromptContent . PHP_EOL . $questionPrompt,
                 ],
                 [
                     'role' => 'user',
-                    'content' => '<ユーザーの解答>'.$userAnswerContent.'</ユーザーの解答>',
+                    'content' => '<ユーザーの解答>' . $userAnswerContent . '</ユーザーの解答>',
                 ],
             ];
 
@@ -175,16 +175,14 @@ class AiQuestionController extends Controller
         $userId = Auth::id();
 
         try {
-            $results = UserAiDialogue::where('user_id', $userId)
+            UserAiDialogue::where('user_id', $userId)
                 ->where('exam_code', $examCode)
                 ->where('question_code', $questionCode)
                 ->delete();
 
-            if ($results === 0) {
-                return response()->json(['message' => 'No records found to delete'], 404);
-            } else {
-                return response()->noContent();
-            }
+            // 対象の対話がなかった場合も、削除後は空の状態なので成功とみなす
+
+            return response()->noContent();
         } catch (\Exception $e) {
             Log::error($e);
 
