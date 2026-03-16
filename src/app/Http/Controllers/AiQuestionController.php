@@ -22,12 +22,12 @@ class AiQuestionController extends Controller
     public function run(QuestionRequest $request)
     {
         try {
-            $request = $request->validated();
+            $validated = $request->validated();
 
             // 試験回とどの設問への質問かを取得
-            $examCode = $request->validated('examCode');
-            $questionCode = $request->validated('questionCode');
-            $userMessage = $request->validated('message');
+            $examCode = $validated['examCode'];
+            $questionCode = $validated['questionCode'];
+            $userMessage = $validated['message'];
 
             // ユーザーIDを取得
             $userId = Auth::id();
