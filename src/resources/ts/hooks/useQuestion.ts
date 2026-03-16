@@ -65,8 +65,6 @@ export const useQuestion = () => {
         try {
             const response = await axiosInstance
             .delete<Dialogue[]>(`/api/dialogues/${examCode}/${questionCode}`)
-
-            console.log(response);
         } catch (error) {
             console.log(error);
             toast(unexpectedServerErrorToast);

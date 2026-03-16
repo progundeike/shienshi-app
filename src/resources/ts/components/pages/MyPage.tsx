@@ -47,37 +47,6 @@ export const MyPage: FC = memo(() => {
                     </Flex>
                 </Flex>
 
-                {/* メール機能はβ版では実装しない */}
-                {/* {user.emailVerified ? (
-                    <Box>メールアドレスが登録済みです</Box>
-                ) : (
-                    <Box
-                        // outline="0.5px solid"
-                        p="10px"
-                        borderRadius="10px"
-                        backgroundColor="blue.100"
-                        padding="20px"
-                    >
-                        <Flex alignItems="center">
-                            <FaExclamationCircle size="25px" />
-
-                            <Box ml="10px">
-                                メールアドレスが未登録です。メールアドレスを登録することで、パスワードを忘れても再設定が可能になります。
-                            </Box>
-                            <Link to="/register-email">
-                                <Button
-                                    borderRadius="full"
-                                    ml="10px"
-                                    outline="1px solid"
-                                    shadow="md"
-                                >
-                                    メールアドレスを登録
-                                </Button>
-                            </Link>
-                        </Flex>
-                    </Box>
-                )} */}
-
                 {/* 学習履歴 */}
                 <Box>
                     <Box my="10px">
@@ -88,17 +57,19 @@ export const MyPage: FC = memo(() => {
                     ) : (
                         <Flex flexDirection="column" gap="10px">
                             {submittedExams.map((exam) => (
-                                <Link
+                                <Button
+                                    outline="0.5px solid"
+                                    borderRadius="100px"
                                     key={`${exam.year}-${exam.season}-${exam.section}`}
-                                    to={`/exams/${exam.year}/${exam.season}/${exam.section}`}
+                                    maxW="300px"
+                                    shadow="md"
                                 >
-                                    <Button
-                                        outline="0.5px solid"
-                                        borderRadius="100px"
+                                    <Link
+                                        to={`/exams/${exam.year}/${exam.season}/${exam.section}`}
                                     >
                                         {`${exam.year}年 ${exam.season_japanese} ${exam.section_converted}`}
-                                    </Button>
-                                </Link>
+                                    </Link>
+                                </Button>
                             ))}
                         </Flex>
                     )}
