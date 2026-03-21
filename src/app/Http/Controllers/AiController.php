@@ -73,7 +73,7 @@ class AiController extends Controller
             }
 
             if (! $result || $finishReason !== 'stop') {
-                throw new AiResponseException('Unexpected finishReason: ' . $finishReason);
+                throw new AiResponseException('Unexpected finishReason: '.$finishReason);
             }
 
             return $result;
@@ -113,7 +113,7 @@ class AiController extends Controller
             }
 
             if (! $result || $finishReason !== 'function_call') {
-                throw new AiResponseException('Unexpected finishReason: ' . $finishReason);
+                throw new AiResponseException('Unexpected finishReason: '.$finishReason);
             }
 
             return $result;
