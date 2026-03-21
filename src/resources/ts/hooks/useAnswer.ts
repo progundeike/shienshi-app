@@ -1,5 +1,6 @@
 import { useToast } from "@chakra-ui/react";
 import { useAtom } from "jotai";
+import axios from "axios";
 
 import {
     Answer,
@@ -39,7 +40,20 @@ export const useAnswer = () => {
             return null;
         } catch (error) {
             console.log(error);
-            // 認証エラー
+            
+            // 429 Too Many Requests（多重送信）エラーのときは特別なトーストを表示
+            if (axios.isAxiosError(error) && error.response?.status === 429) {
+                    toast({
+                    title: "他の処理が進行中です",
+                    description:
+                        "AIが現在あなたの答案を添削しています。少し待ってから再度提出してください。",
+                    status: "warning",
+                    duration: 6000,
+                    isClosable: true,
+                    position: "bottom-right",
+                });
+                return null;
+            }
 
             toast(unexpectedServerErrorToast);
             console.error(error);
@@ -95,5 +109,21 @@ export const useAnswer = () => {
         }
     }
 
-    return { submitAnswer, fetchCorrection, deleteSubmittedAnswer };
+    const checkAnswerProcessingStatus = async (
+        year: number,
+        season: string,
+        section: number
+    ): Promise<'processing' | 'idle'> => {
+        try {
+            const response = await axiosInstance
+            .get<{ status: 'processing' | 'idle' }>(`/api/answer-processing-status/${year}_${season}_${section}`);
+            return response.data.status;
+        } catch (error) {
+            toast(unexpectedServerErrorToast);
+            console.error(error);
+            return 'idle';
+        }
+    }
+
+    return { submitAnswer, fetchCorrection, deleteSubmittedAnswer, checkAnswerProcessingStatus };
 };

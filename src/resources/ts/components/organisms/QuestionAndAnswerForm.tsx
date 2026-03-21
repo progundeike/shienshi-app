@@ -7,8 +7,16 @@ import {
     Center,
     Divider,
 } from "@chakra-ui/react";
-import { FC, memo, useEffect, useState, Fragment, useMemo } from "react";
-import { SubmitHandler, useForm, useWatch } from "react-hook-form";
+import {
+    FC,
+    memo,
+    useEffect,
+    useState,
+    Fragment,
+    useMemo,
+    useCallback,
+} from "react";
+import { set, SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { useAtom, useAtomValue } from "jotai";
 
 import { userAtom } from "../../states/userAtom";
@@ -21,6 +29,7 @@ import { CheckboxQuestionForm } from "../molecules/CheckboxQuestionForm";
 import { InputQuestionForm } from "../molecules/InputQuestionForm";
 import { TextareaQuestionForm } from "../molecules/TextareaQuestionForm";
 import { Answer } from "../../types/form";
+import { CorrectionLoadingSpinner } from "../molecules/CorrectionLoadingSpinner";
 
 export type Correction = {
     questionNumber: number;
@@ -42,6 +51,7 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
     const { year, season, section, questions, refetchCorrections } = props;
     const user = useAtomValue(userAtom);
     const [isLoading, setIsLoading] = useAtom(loadingAtom);
+    const [isCorrecting, setIsCorrecting] = useState(false);
     const STORAGE_KEY = `formData-${year}-${season}-${section}`;
     const storedData = sessionStorage.getItem(STORAGE_KEY);
 
@@ -65,7 +75,67 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
         },
     });
 
-    const { submitAnswer } = useAnswer();
+    const { submitAnswer, checkAnswerProcessingStatus } = useAnswer();
+
+    const checkProcessingStatus = useCallback(async (): Promise<boolean> => {
+        console.log("Checking answer processing status");
+        try {
+            const status = await checkAnswerProcessingStatus(
+                year,
+                season,
+                section,
+            );
+
+            if (status === "processing") {
+                setIsCorrecting(true);
+                return true;
+            }
+
+            setIsCorrecting(false);
+            return false;
+        } catch (error) {
+            console.error(error);
+            setIsCorrecting(false);
+            return false;
+        }
+    }, [checkAnswerProcessingStatus, year, season, section]);
+
+    // 初回のprocessing状態の確認とポーリング
+    useEffect(() => {
+        if (!user) {
+            return;
+        }
+
+        let intervalId: number | null = null;
+        let cancelled = false;
+
+        const startPolling = async () => {
+            const isProcessing = await checkProcessingStatus();
+
+            if (cancelled || !isProcessing) {
+                return;
+            }
+
+            intervalId = window.setInterval(async () => {
+                const stillProcessing = await checkProcessingStatus();
+
+                if (!stillProcessing && intervalId) {
+                    window.clearInterval(intervalId);
+                    intervalId = null;
+                    refetchCorrections();
+                }
+            }, 5000);
+        };
+
+        void startPolling();
+
+        return () => {
+            cancelled = true;
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+        };
+    }, [year, season, section, user, refetchCorrections]);
 
     // 入力が変更されたらsessionStorageに保存
     const answersWatch = useWatch({
@@ -87,31 +157,28 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
     }, [reset]);
 
     const onSubmit: SubmitHandler<{ answers: Answer[] }> = async (data) => {
+        setIsCorrecting(true);
         try {
-            const response = await submitAnswer(
-                data.answers,
-                year,
-                season,
-                section,
-            );
-
-            // sessionStorageをクリア
-            sessionStorage.removeItem(STORAGE_KEY);
-
+            await submitAnswer(data.answers, year, season, section);
             refetchCorrections();
         } catch (e) {
             console.error(e);
+        } finally {
+            setIsCorrecting(false);
         }
-
-        return;
     };
 
-    if (isLoading) {
+    if (isLoading && !isCorrecting) {
         return (
             <Center mt="20px">
                 <Spinner size="xl" />
             </Center>
         );
+    }
+
+    // 添削中に表示するメッセージ
+    if (isCorrecting) {
+        return <CorrectionLoadingSpinner />;
     }
 
     if (!isLoading && !questions) {
