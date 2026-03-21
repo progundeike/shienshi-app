@@ -184,8 +184,6 @@ class ExamController extends Controller
 
         $mapOptions = array_column($examQuestions, 'options', 'questionCode');
 
-        Log::debug($mapOptions);
-
         $userAnswerText = '';
         for ($i = 0; $i < $length; $i++) {
             [$q, $sub, $small] = array_map('intval', explode('_', $userAnswers[$i]['questionCode']));

@@ -11,6 +11,8 @@ use App\Models\UserAnswer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -19,41 +21,27 @@ class AnswerController extends Controller
     public function answerSubmit(AnswerRequest $request)
     {
         $start = microtime(true);
+        $processingKey = null;
 
         try {
-            // 試験回を取得
-            $year = $request->year;
-            $season = $request->season;
-            $section = $request->section;
-            $examCode = $year.'_'.$season.'_'.$section;
+            $examCode = $request->year . '_' . $request->season . '_' . $request->section;
+            $userId = Auth::id();
+
+            $processingKey = "answer_processing:{$userId}:{$examCode}";
+            $ttlSecond = 180;
+
+            $acquired = Cache::store('redis')->add($processingKey, true, now()->addSeconds($ttlSecond));
+            if (! $acquired) {
+                throw new AiRequestInProgressException('他の処理がまだ実行中です。少し待ってから再度お試しください。');
+            }
 
             $examController = new ExamController();
 
-            // 問題文を取得
             $examSentence = $examController->fetchExamSentences($examCode);
-
-            // 設問を取得
-            $result = Question::where('exam_code', $examCode)->get();
-            if ($result->isEmpty()) {
-                throw new ModelNotFoundException('Questions not found for examCode: '.$examCode);
-            }
-
-            // 必要なデータだけを取り出す
-            $examQuestions = $result->map(function ($question) {
-                return [
-                    'questionNumber' => $question->question_number,
-                    'subQuestionNumber' => $question->sub_question_number,
-                    'smallQuestionNumber' => $question->small_question_number,
-                    'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
-                    'type' => $question->type,
-                    'text' => $question->text,
-                    'options' => $question->options,
-                    'textForAi' => $question->text_for_ai ?? null,
-                ];
-            })->toArray();
+            $examQuestions = $this->fetchExamQuestions($examCode);
 
             // ユーザーの回答
-            $userAnswers = $this->storeAnswerInput($request);
+            $userAnswers = $this->formatUserAnswers($request->validated('answers'), $examCode);
             $userAnswerText = $examController->convertUserAnswerToText($userAnswers, $examQuestions);
 
             // 模範解答を取得
@@ -70,48 +58,38 @@ class AnswerController extends Controller
             $prompt = [
                 [
                     'role' => 'system',
-                    'content' => $this->systemPromptContent.PHP_EOL.$questionPrompt,
+                    'content' => $this->systemPromptContent . PHP_EOL . $questionPrompt,
                 ],
                 [
                     'role' => 'user',
-                    'content' => '<UserAnswer>'.$userAnswerText.'</UserAnswer>',
+                    'content' => '<UserAnswer>' . $userAnswerText . '</UserAnswer>',
                 ],
             ];
 
             // AIに投げる
             $controller = new AiController();
-            $aiResponse = $controller->useFunctionCall($prompt, $this->functionParameter);
-            if (! $aiResponse) {
+            $openAiResponse = $controller->useFunctionCall($prompt, $this->functionParameter);
+            if (! $openAiResponse) {
                 return response()->json(['message' => 'AI grading failed'], 500);
             }
 
             // レスポンスを整形
-            $arguments = json_decode($aiResponse->choices[0]->message->functionCall->arguments, true);
+            $arguments = json_decode($openAiResponse->choices[0]->message->functionCall->arguments, true);
             $evaluations = $arguments['evaluations'];
 
-            $userId = Auth::id();
-            $aiResponse = [];
-            foreach ($evaluations as $evaluation) {
-                $smallQuestionNumber = $evaluation['smallQuestionNumber'] ?? 0;
+            $aiResponseMap = $this->buildAiResponseMap($evaluations);
+            $rows = $this->buildUpsertRows($userAnswers, $aiResponseMap, $modelAnswers, $examCode, $userId);
 
-                $aiResponse[] = [
-                    'user_id' => $userId,
-                    'exam_code' => $examCode,
-                    'question_code' => $evaluation['questionNumber'].'_'.$evaluation['subQuestionNumber'].'_'.$smallQuestionNumber,
-                    'ai_rating' => $evaluation['rating'],
-                    'ai_text' => $evaluation['comment'],
-                ];
-            }
+            DB::transaction(function () use ($rows, $userId, $examCode) {
+                UserAnswer::upsert($rows, ['user_id', 'exam_code', 'question_code'], ['user_text', 'ai_rating', 'ai_text', 'updated_at']);
 
-            UserAnswer::upsert(
-                $aiResponse,
-                // キー
-                ['user_id', 'exam_code', 'question_code'],
-                // 更新するカラム
-                ['ai_rating', 'ai_text']
-            );
-
-            $this->editAiTextToModelAnswer($userId, $examCode, $modelAnswers);
+                SubmittedExam::updateOrCreate(
+                    [
+                        'user_id' => $userId,
+                        'exam_code' => $examCode,
+                    ]
+                );
+            });
 
             return response()->json(['message' => 'Answer submitted successfully'], 201);
         } catch (AiRequestInProgressException $e) {
@@ -133,41 +111,116 @@ class AnswerController extends Controller
 
             return response()->json(['message' => 'Failed to process chat'], 500);
         } finally {
+            if ($processingKey) {
+                Cache::store('redis')->forget($processingKey);
+            }
+
             $elapsedSec = round(microtime(true) - $start, 3);
             Log::debug('answerSubmit elapsed', ['sec' => $elapsedSec]);
         }
     }
 
-    // ユーザーが無回答の問題はai_textを模範解答で上書きする
-    // ai_textが取得できなかった場合も模範解答を返す
-    private function editAiTextToModelAnswer(int $userId, string $examCode, $modelAnswers)
+    public function fetchAnswerProcessingStatus(string $examCode)
     {
-        // ユーザーの答案と添削を取得
-        $userAnswers = UserAnswer::where('user_id', $userId)
-            ->where('exam_code', $examCode)
-            ->get();
+        $userId = Auth::id();
+        $processingKey = "answer_processing:{$userId}:{$examCode}";
+        $isProcessing = Cache::store('redis')->has($processingKey);
 
-        // $modelAnswerのマップ
-        $modelMap = [];
+        return response()->json(['status' => $isProcessing ? 'processing' : 'idle'], 200);
+    }
 
-        foreach ($modelAnswers as $modelAnswer) {
-            $questionCode = $modelAnswer['questionCode'];
-            $modelMap[$questionCode] = $modelAnswer['text'];
+    private function fetchExamQuestions(string $examCode): array
+    {
+        // 設問を取得
+        $result = Question::where('exam_code', $examCode)->get();
+        if ($result->isEmpty()) {
+            throw new ModelNotFoundException('Questions not found for examCode: ' . $examCode);
         }
 
-        foreach ($userAnswers as $userAnswer) {
-            $userText = trim((string) $userAnswer->user_text ?? '');
+        // 必要なデータだけを取り出す
+        $examQuestions = $result->map(function ($question) {
+            return [
+                'questionNumber' => $question->question_number,
+                'subQuestionNumber' => $question->sub_question_number,
+                'smallQuestionNumber' => $question->small_question_number,
+                'questionCode' => $question->question_number . '_' . $question->sub_question_number . '_' . $question->small_question_number,
+                'type' => $question->type,
+                'text' => $question->text,
+                'options' => $question->options,
+                'textForAi' => $question->text_for_ai ?? null,
+            ];
+        })->toArray();
+
+        return $examQuestions;
+    }
+
+    private function formatUserAnswers(array $answers, string $examCode): array
+    {
+        $userAnswers = [];
+
+        foreach ($answers as $answer) {
+            $userAnswers[] = [
+                'examCode' => $examCode,
+                'questionCode' => $answer['questionCode'],
+                'user_text' => $answer['user_text'],
+            ];
+        }
+
+        return $userAnswers;
+    }
+
+    private function buildAiResponseMap(array $evaluations): array
+    {
+        $aiResponseMap = [];
+        foreach ($evaluations as $evaluation) {
+            $smallQuestionNumber = $evaluation['smallQuestionNumber'] ?? 0;
+            $questionCode = $evaluation['questionNumber'] . '_' . $evaluation['subQuestionNumber'] . '_' . $smallQuestionNumber;
+
+            $aiResponseMap[$questionCode] = [
+                'ai_rating' => $evaluation['rating'],
+                'ai_text' => $evaluation['comment'],
+            ];
+        }
+
+        return $aiResponseMap;
+    }
+
+    private function buildUpsertRows(
+        array $userAnswers,
+        array $aiResponseMap,
+        array $modelAnswers,
+        string $examCode,
+        int $userId
+    ): array {
+        $modelMap = array_column($modelAnswers, 'text', 'questionCode');
+        $now = now();
+        $rows = [];
+
+        foreach ($userAnswers as $answer) {
+            // ユーザーが無回答の問題はai_textを模範解答で上書きする
+            // ai_textが取得できなかった場合も模範解答を返す
+            $userText = trim((string) $answer['user_text']);
+            $aiRating = $aiResponseMap[$answer['questionCode']]['ai_rating'] ?? '-';
+            $aiText = $aiResponseMap[$answer['questionCode']]['ai_text'] ?? ('模範解答: ' . ($modelMap[$answer['questionCode']] ?? ''));
+
             if ($userText === '') {
-                UserAnswer::where([
-                    'user_id' => $userId,
-                    'exam_code' => $examCode,
-                    'question_code' => $userAnswer->question_code,
-                ])->update([
-                    'ai_rating' => '×',
-                    'ai_text' => '模範解答: '.($modelMap[$userAnswer->question_code] ?? ''),
-                ]);
+                $aiRating = '×';
+                $aiText = '模範解答: ' . ($modelMap[$answer['questionCode']] ?? '');
             }
+
+            $rows[] = [
+                'user_id' => $userId,
+                'exam_code' => $examCode,
+                'question_code' => $answer['questionCode'],
+                'user_text' => $answer['user_text'],
+                'ai_rating' => $aiRating,
+                'ai_text' => $aiText,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
         }
+
+        return $rows;
     }
 
     // ユーザーの回答とAIの添削を取得する
@@ -204,61 +257,13 @@ class AnswerController extends Controller
         return response()->json($answers, 200);
     }
 
-    // ユーザーの回答を保存,更新する
-    // 提出済み試験に追加する
-    private function storeAnswerInput(AnswerRequest $request): array
-    {
-        $data = $request->validated();
-        $userId = Auth::id();
-        $examCode = $data['year'].'_'.$data['season'].'_'.$data['section'];
-
-        $answers = $data['answers'];
-
-        // SubmittedExamsテーブルを更新
-        SubmittedExam::updateOrCreate(
-            [
-                'user_id' => $userId,
-                'exam_code' => $examCode,
-            ]
-        );
-
-        // user_id, exam_code, question_codeを複合主キーとして更新
-        $rows = [];
-        foreach ($answers as $answer) {
-            $rows[] = [
-                'user_id' => $userId,
-                'exam_code' => $examCode,
-                'question_code' => $answer['questionCode'],
-                'user_text' => $answer['user_text'],
-                'ai_rating' => null,
-                'ai_text' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-        }
-
-        UserAnswer::upsert($rows, ['user_id', 'exam_code', 'question_code'], ['user_text', 'ai_rating', 'ai_text', 'updated_at']);
-
-        // 返却用
-        $userAnswers = [];
-        foreach ($answers as $answer) {
-            $userAnswers[] = [
-                'examCode' => $examCode,
-                'questionCode' => $answer['questionCode'],
-                'user_text' => $answer['user_text'],
-            ];
-        }
-
-        return $userAnswers;
-    }
-
     public function deleteSubmittedAnswer(Request $request)
     {
         $userId = Auth::id();
         $year = (int) $request->year;
         $season = (string) $request->season;
         $section = (int) $request->section;
-        $examCode = $year.'_'.$season.'_'.$section;
+        $examCode = $year . '_' . $season . '_' . $section;
 
         try {
             $results = UserAnswer::where('user_id', $userId)
@@ -283,12 +288,12 @@ class AnswerController extends Controller
         $questionAndAnswerText = '';
         for ($i = 0; $i < count($examQuestions); $i++) {
             if ($examQuestions[$i]['subQuestionNumber'] === 1 && $examQuestions[$i]['smallQuestionNumber'] < 2) {
-                $questionAndAnswerText .= '設問'.$examQuestions[$i]['questionNumber'].' ';
+                $questionAndAnswerText .= '設問' . $examQuestions[$i]['questionNumber'] . ' ';
             }
 
             // text_for_aiも渡す
             if ($examQuestions[$i]['textForAi']) {
-                $questionAndAnswerText .= '[AI添削用の設問への補足:'.$examQuestions[$i]['textForAi'].']';
+                $questionAndAnswerText .= '[AI添削用の設問への補足:' . $examQuestions[$i]['textForAi'] . ']';
             }
 
             $modelText = $modelMap[$examQuestions[$i]['questionCode']] ?? '(模範解答なし)';
@@ -300,7 +305,7 @@ class AnswerController extends Controller
                 $questionAndAnswerText .= $examQuestions[$i]['options'][0]['label'];
             }
 
-            $questionAndAnswerText .= '[模範解答:'.$modelText.']'.PHP_EOL;
+            $questionAndAnswerText .= '[模範解答:' . $modelText . ']' . PHP_EOL;
         }
 
         // 参考情報
@@ -326,10 +331,10 @@ class AnswerController extends Controller
 
             $choices = '';
             foreach ($options as $option) {
-                $choices .= '('.$option['value'].') '.$option['label'].', ';
+                $choices .= '(' . $option['value'] . ') ' . $option['label'] . ', ';
             }
 
-            $text .= '[解答群:'.$choices.']';
+            $text .= '[解答群:' . $choices . ']';
         }
 
         return $text;
@@ -378,43 +383,43 @@ class AnswerController extends Controller
         EOM;
 
     private array $functionParameter =
-        [
-            'name' => 'reviewUserAnswer',
-            'description' => 'AIによる採点とコメントの生成をJson形式で返す。未回答に対しては模範解答を提示する。',
-            'parameters' => [
-                'type' => 'object',
-                'properties' => [
-                    'evaluations' => [
-                        'type' => 'array',
-                        'items' => [
-                            'type' => 'object',
-                            'properties' => [
-                                'questionNumber' => [
-                                    'type' => 'integer',
-                                    'description' => '設問番号',
-                                ],
-                                'subQuestionNumber' => [
-                                    'type' => 'integer',
-                                    'description' => '設問に複数の小問がある場合の小問番号。(1), (2)など。ない場合は0をセット',
-                                ],
-                                'smallQuestionNumber' => [
-                                    'type' => 'integer',
-                                    'description' => '設問にさらに枝番号がある場合の番号。ない場合は0',
-                                ],
-                                'rating' => [
-                                    'type' => 'string',
-                                    'description' => '採点結果。[◯, △, ×]のいずれか',
-                                ],
-                                'comment' => [
-                                    'type' => 'string',
-                                    'description' => '採点根拠を簡潔に記述する',
-                                ],
+    [
+        'name' => 'reviewUserAnswer',
+        'description' => 'AIによる採点とコメントの生成をJson形式で返す。未回答に対しては模範解答を提示する。',
+        'parameters' => [
+            'type' => 'object',
+            'properties' => [
+                'evaluations' => [
+                    'type' => 'array',
+                    'items' => [
+                        'type' => 'object',
+                        'properties' => [
+                            'questionNumber' => [
+                                'type' => 'integer',
+                                'description' => '設問番号',
                             ],
-                            'required' => ['questionNumber', 'subQuestionNumber', 'rating', 'comment'],
+                            'subQuestionNumber' => [
+                                'type' => 'integer',
+                                'description' => '設問に複数の小問がある場合の小問番号。(1), (2)など。ない場合は0をセット',
+                            ],
+                            'smallQuestionNumber' => [
+                                'type' => 'integer',
+                                'description' => '設問にさらに枝番号がある場合の番号。ない場合は0',
+                            ],
+                            'rating' => [
+                                'type' => 'string',
+                                'description' => '採点結果。[◯, △, ×]のいずれか',
+                            ],
+                            'comment' => [
+                                'type' => 'string',
+                                'description' => '採点根拠を簡潔に記述する',
+                            ],
                         ],
+                        'required' => ['questionNumber', 'subQuestionNumber', 'rating', 'comment'],
                     ],
                 ],
-                'required' => ['evaluations'],
             ],
-        ];
+            'required' => ['evaluations'],
+        ],
+    ];
 }

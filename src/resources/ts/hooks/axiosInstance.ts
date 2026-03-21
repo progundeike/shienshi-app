@@ -1,5 +1,12 @@
 import axios from "axios";
 
+declare module "axios" {
+    interface AxiosRequestConfig {
+        _retry?: boolean; // トークンリフレッシュの再試行フラグ
+        _authExpired?: boolean; // 認証切れイベント発火のフラグ
+    }
+}
+
 async function refreshToken() {
     try {
         await axios.get("/sanctum/csrf-cookie");
@@ -22,8 +29,15 @@ axiosInstance.interceptors.response.use(
     (response) => {
         return response;
     },
-    async (error: any) => {
+    async (error: unknown) => {
+        if(!axios.isAxiosError(error)) {
+            return Promise.reject(error);
+        }
+
         const originalRequest = error.config;
+        if (!originalRequest){
+            return Promise.reject(error);
+        }
         
         // 419エラーが発生した場合、トークンを更新してリクエストを再試行する
         if (error.response?.status === 419 && !originalRequest._retry) {
