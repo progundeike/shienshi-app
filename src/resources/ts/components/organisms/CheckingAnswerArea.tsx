@@ -32,7 +32,6 @@ type Props = {
     questions: FetchedQuestion[];
     corrections: Correction[];
     refetchCollections: () => void;
-    user: User;
 };
 
 // 添削結果を表示するコンポーネント

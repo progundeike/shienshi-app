@@ -1,7 +1,7 @@
-import { FC, memo } from "react";
+import { FC, memo, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 
 import { Correction, QuestionAndAnswerForm } from "./QuestionAndAnswerForm";
 import { FetchedQuestion, useExam } from "../../hooks/useExam";
@@ -21,7 +21,6 @@ export const AnswerAndCorrectionForm: FC<Props> = memo((props) => {
     const user = useAtomValue(userAtom);
     const { fetchQuestions } = useExam();
     const { fetchCorrection } = useAnswer();
-
     const {
         data: questions,
         isLoading: questionsLoading,
@@ -49,36 +48,32 @@ export const AnswerAndCorrectionForm: FC<Props> = memo((props) => {
     });
 
     // ローディング/エラー表示
-    if (questionsLoading || (user && correctionsLoading)) {
+    if (questionsLoading || correctionsLoading) {
         return <LoadingPage />;
     }
+
     if (questionError || !questions) {
         return <Box>設問を取得できませんでした</Box>;
     }
 
-    // console.log(corrections);
-
-    return (
-        <>
-            {corrections && user ? (
-                <CheckingAnswerArea
-                    year={year}
-                    season={season}
-                    section={section}
-                    questions={questions}
-                    corrections={corrections}
-                    refetchCollections={refetchCorrections}
-                    user={user}
-                />
-            ) : (
-                <QuestionAndAnswerForm
-                    year={year}
-                    season={season}
-                    section={section}
-                    questions={questions}
-                    refetchCorrections={refetchCorrections}
-                />
-            )}
-        </>
+    return user && corrections ? (
+        // 添削後に表示するコンポーネント
+        <CheckingAnswerArea
+            year={year}
+            season={season}
+            section={section}
+            questions={questions}
+            corrections={corrections}
+            refetchCollections={refetchCorrections}
+        />
+    ) : (
+        // 添削前に表示するコンポーネント
+        <QuestionAndAnswerForm
+            year={year}
+            season={season}
+            section={section}
+            questions={questions}
+            refetchCorrections={refetchCorrections}
+        />
     );
 });
