@@ -1,4 +1,8 @@
-:80 {
+www.shienshi.com {
+	redir https://shienshi.com{uri} permanent
+}
+
+shienshi.com {
 	root * /var/www/html/public
 	encode zstd gzip
 
@@ -6,11 +10,6 @@
 		path /build/*
 	}
 	header @vite_build Cache-Control "public, max-age=2592000"
-
-	@html {
-		path / index.html
-	}
-	header @html Cache-Control "no-store"
 
 	# Laravelへ
 	php_fastcgi app:9000
