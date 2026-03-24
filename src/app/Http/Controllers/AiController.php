@@ -83,9 +83,6 @@ class AiController extends Controller
     public function useFunctionCall(array $prompt, array $functionParameter)
     {
         return $this->withUserLock(function () use ($prompt, $functionParameter) {
-            // sleep(30);
-            // return;
-
             $retryCount = 0;
             $maxRetries = 3;
             $result = null;

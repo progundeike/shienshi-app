@@ -71,5 +71,20 @@ export const useQuestion = () => {
         }
     }
 
-    return { sendChat, fetchDialogues, deleteDialogues };
+    const checkChatProcessingStatus = async (
+        examCode: string,
+        questionCode: string,
+    ): Promise<'processing' | 'idle'> => {
+        try {
+            const response = await axiosInstance
+            .get<{ status: 'processing' | 'idle' }>(`/api/chat-processing-status/${examCode}/${questionCode}`);
+            return response.data.status;
+        } catch (error) {
+            toast(unexpectedServerErrorToast);
+            console.error(error);
+            return 'idle';
+        }
+    }
+
+    return { sendChat, fetchDialogues, deleteDialogues, checkChatProcessingStatus };
 };

@@ -48,7 +48,6 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
     const STORAGE_KEY = `formData-${year}-${season}-${section}`;
 
     const {
-        register,
         formState: { errors },
         reset,
     } = useForm<Answer[]>();

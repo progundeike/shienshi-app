@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\AiRequestInProgressException;
 use App\Exceptions\AiResponseException;
 use App\Http\Requests\QuestionRequest;
 use App\Models\Question;
 use App\Models\UserAiDialogue;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -21,6 +23,9 @@ class AiQuestionController extends Controller
     // ];
     public function run(QuestionRequest $request)
     {
+        $start = microtime(true);
+        $processingKey = null;
+
         try {
             $validated = $request->validated();
 
@@ -31,6 +36,15 @@ class AiQuestionController extends Controller
 
             // ユーザーIDを取得
             $userId = Auth::id();
+
+            // processingの管理
+            $processingKey = "ai_question_processing:{$userId}:{$examCode}_{$questionCode}";
+            $ttlSecond = 180;
+
+            $acquired = Cache::store('redis')->add($processingKey, true, now()->addSeconds($ttlSecond));
+            if (! $acquired) {
+                throw new AiRequestInProgressException('他の処理がまだ実行中です。少し待ってから再度お試しください。');
+            }
 
             // 問題文を取得
             $examController = new ExamController();
@@ -132,7 +146,23 @@ class AiQuestionController extends Controller
             Log::error('Unexpected error in AiQuestionController::run', ['error' => $e]);
 
             return response()->json(['message' => 'Failed to process chat'], 500);
+        } finally {
+            if ($processingKey) {
+                Cache::store('redis')->forget($processingKey);
+            }
+
+            $elapsedSec = round(microtime(true) - $start, 3);
+            Log::debug('answerSubmit elapsed', ['sec' => $elapsedSec]);
         }
+    }
+
+    public function fetchChatProcessingStatus(string $examCode, string $questionCode)
+    {
+        $userId = Auth::id();
+        $processingKey = "ai_question_processing:{$userId}:{$examCode}_{$questionCode}";
+        $isProcessing = Cache::store('redis')->has($processingKey);
+
+        return response()->json(['status' => $isProcessing ? 'processing' : 'idle'], 200);
     }
 
     public function getDialogues(string $examCode, string $questionCode)
