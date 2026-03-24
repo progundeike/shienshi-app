@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/dialogues/{examCode}/{questionCode}', [AiQuestionController::class, 'deleteDialogues']);
     Route::get('/corrections/{examCode}', [AnswerController::class, 'fetchCorrection']);
     Route::get('/answer-processing-status/{examCode}', [AnswerController::class, 'fetchAnswerProcessingStatus']);
+    Route::get('/chat-processing-status/{examCode}/{questionCode}', [AiQuestionController::class, 'fetchChatProcessingStatus']);
 });
 
 // 管理者用のルート

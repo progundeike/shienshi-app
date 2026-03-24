@@ -78,7 +78,6 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
     const { submitAnswer, checkAnswerProcessingStatus } = useAnswer();
 
     const checkProcessingStatus = useCallback(async (): Promise<boolean> => {
-        console.log("Checking answer processing status");
         try {
             const status = await checkAnswerProcessingStatus(
                 year,

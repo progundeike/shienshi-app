@@ -8,13 +8,14 @@ import {
     Spinner,
     Center,
 } from "@chakra-ui/react";
-import { FC, memo, useState, useEffect } from "react";
+import { FC, memo, useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { LuSend } from "react-icons/lu";
 import { RiCloseLargeFill } from "react-icons/ri";
 import { useQuestion } from "../../hooks/useQuestion";
 import { Dialogue } from "../../types/form";
 import { DialogueBox } from "../atoms/DialogueBox";
+import { ChatLoadingSpinner } from "../molecules/ChatLoadingSpinner";
 
 type Props = {
     examCode: string;
@@ -31,14 +32,22 @@ export const AskToAICard: FC<Props> = memo((props) => {
     const [isAwaitingChatResponse, setIsAwaitingChatResponse] = useState(false);
 
     const [isLoading, setIsLoading] = useState(false);
-    const { sendChat, fetchDialogues, deleteDialogues } = useQuestion();
+    const {
+        sendChat,
+        fetchDialogues,
+        deleteDialogues,
+        checkChatProcessingStatus,
+    } = useQuestion();
     const [dialogues, setDialogues] = useState<Dialogue[]>([]);
     const { register, handleSubmit, reset } = useForm<Input>();
 
-    const onClickDeleteDialogues = () => {
-        deleteDialogues(examCode, questionCode);
-
-        setDialogues([]);
+    const onClickDeleteDialogues = async () => {
+        try {
+            await deleteDialogues(examCode, questionCode);
+            setDialogues([]);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const onSubmit = async (data: Input) => {
@@ -68,6 +77,8 @@ export const AskToAICard: FC<Props> = memo((props) => {
                     content: response,
                 },
             ]);
+        } catch (error) {
+            console.error(error);
         } finally {
             setIsAwaitingChatResponse(false);
         }
@@ -85,8 +96,66 @@ export const AskToAICard: FC<Props> = memo((props) => {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
-    //
+    }, [examCode, questionCode]);
+
+    const checkProcessingStatus = useCallback(async (): Promise<boolean> => {
+        try {
+            const status = await checkChatProcessingStatus(
+                examCode,
+                questionCode,
+            );
+
+            if (status === "processing") {
+                setIsAwaitingChatResponse(true);
+                return true;
+            }
+
+            setIsAwaitingChatResponse(false);
+            return false;
+        } catch (error) {
+            console.error(error);
+            setIsAwaitingChatResponse(false);
+            return false;
+        }
+    }, [checkChatProcessingStatus, examCode, questionCode]);
+
+    // 初回のprocessing状態の確認とポーリング
+    useEffect(() => {
+        let intervalId: number | null = null;
+        let cancelled = false;
+
+        const startPolling = async () => {
+            const isProcessing = await checkProcessingStatus();
+
+            if (cancelled || !isProcessing) {
+                return;
+            }
+
+            intervalId = window.setInterval(async () => {
+                const stillProcessing = await checkProcessingStatus();
+
+                if (!stillProcessing && intervalId) {
+                    window.clearInterval(intervalId);
+                    intervalId = null;
+                    fetchDialogues(examCode, questionCode).then((data) => {
+                        if (data) {
+                            setDialogues(data);
+                        }
+                    });
+                }
+            }, 5000);
+        };
+
+        void startPolling();
+
+        return () => {
+            cancelled = true;
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+        };
+    }, [examCode, questionCode]);
+
     return (
         <Card px="10px" pb="10px" backgroundColor="yellow.50" mb="10px">
             <Box>
@@ -112,35 +181,35 @@ export const AskToAICard: FC<Props> = memo((props) => {
                                 <DialogueBox key={index} dialogue={dialogue} />
                             ))}
                             {isAwaitingChatResponse ? (
-                                <Center>
-                                    <Spinner size="xl" />
-                                </Center>
+                                <ChatLoadingSpinner />
                             ) : (
-                                <Textarea
-                                    {...register("message")}
-                                    placeholder="質問を入力してください"
-                                />
+                                <>
+                                    <Textarea
+                                        {...register("message")}
+                                        placeholder="質問を入力してください"
+                                    />
+
+                                    <Flex>
+                                        {dialogues.length > 0 && (
+                                            <Button
+                                                onClick={onClickDeleteDialogues}
+                                                mr="10px"
+                                            >
+                                                質問履歴を削除
+                                            </Button>
+                                        )}
+
+                                        <Button
+                                            rightIcon={<LuSend size="1.5rem" />}
+                                            onClick={handleSubmit(onSubmit)}
+                                            ml="auto"
+                                            borderRadius="100px"
+                                        >
+                                            質問を送信
+                                        </Button>
+                                    </Flex>
+                                </>
                             )}
-
-                            <Flex>
-                                {dialogues.length > 0 && (
-                                    <Button
-                                        onClick={onClickDeleteDialogues}
-                                        mr="10px"
-                                    >
-                                        質問履歴を削除
-                                    </Button>
-                                )}
-
-                                <Button
-                                    rightIcon={<LuSend size="1.5rem" />}
-                                    onClick={handleSubmit(onSubmit)}
-                                    ml="auto"
-                                    borderRadius="100px"
-                                >
-                                    質問を送信
-                                </Button>
-                            </Flex>
                         </>
                     )}
                 </Flex>
