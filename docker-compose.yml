@@ -1,6 +1,6 @@
 services:
   app:
-    image: ghcr.io/${owner}/${repo}:latest
+    image: ghcr.io/progundeike/spa-exams:latest
     volumes:
       - ./src/.env:/var/www/html/.env:ro
     environment:
@@ -16,7 +16,7 @@ services:
       - redis
 
   web:
-    image: ghcr.io/${owner}/${repo}-web:latest
+    image: ghcr.io/progundeike/spa-exams-web:latest
     ports:
       - 80:80
       - 443:443

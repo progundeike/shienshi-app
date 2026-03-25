@@ -25,6 +25,7 @@ class AiQuestionController extends Controller
     {
         $start = microtime(true);
         $processingKey = null;
+        $lockAcquired = false;
 
         try {
             $validated = $request->validated();
@@ -39,10 +40,10 @@ class AiQuestionController extends Controller
 
             // processingの管理
             $processingKey = "ai_question_processing:{$userId}:{$examCode}_{$questionCode}";
-            $ttlSecond = 180;
+            $ttlSec = 180;
 
-            $acquired = Cache::store('redis')->add($processingKey, true, now()->addSeconds($ttlSecond));
-            if (! $acquired) {
+            $lockAcquired = Cache::store('redis')->add($processingKey, true, $ttlSec);
+            if (! $lockAcquired) {
                 throw new AiRequestInProgressException('他の処理がまだ実行中です。少し待ってから再度お試しください。');
             }
 
@@ -58,7 +59,7 @@ class AiQuestionController extends Controller
                 ->get();
 
             if ($result->isEmpty()) {
-                throw new ModelNotFoundException('Questions not found for examCode: '.$examCode.' and questionNumber: '.$q);
+                throw new ModelNotFoundException('Questions not found for examCode: ' . $examCode . ' and questionNumber: ' . $q);
             }
 
             // 必要なデータだけを取り出す
@@ -67,7 +68,7 @@ class AiQuestionController extends Controller
                     'questionNumber' => $question->question_number,
                     'subQuestionNumber' => $question->sub_question_number,
                     'smallQuestionNumber' => $question->small_question_number,
-                    'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
+                    'questionCode' => $question->question_number . '_' . $question->sub_question_number . '_' . $question->small_question_number,
                     'type' => $question->type,
                     'text' => $question->text,
                     'options' => $question->options,
@@ -99,11 +100,11 @@ class AiQuestionController extends Controller
             $prompt = [
                 [
                     'role' => 'system',
-                    'content' => $this->systemPromptContent.PHP_EOL.$questionPrompt,
+                    'content' => $this->systemPromptContent . PHP_EOL . $questionPrompt,
                 ],
                 [
                     'role' => 'user',
-                    'content' => '<ユーザーの解答>'.$userAnswerContent.'</ユーザーの解答>',
+                    'content' => '<ユーザーの解答>' . $userAnswerContent . '</ユーザーの解答>',
                 ],
             ];
 
@@ -131,6 +132,8 @@ class AiQuestionController extends Controller
 
             // AIの回答を返す
             return response()->json($aiMessage, 200);
+        } catch (AiRequestInProgressException $e) {
+            return response()->json(['message' => '前のAI処理がまだ実行中です。少し待ってから再度お試しください'], 429);
         } catch (ModelNotFoundException $e) {
             Log::error('Required resource not found in AiQuestionController:run', [
                 'examCode' => $examCode,
@@ -147,7 +150,7 @@ class AiQuestionController extends Controller
 
             return response()->json(['message' => 'Failed to process chat'], 500);
         } finally {
-            if ($processingKey) {
+            if ($processingKey !== null && $lockAcquired) {
                 Cache::store('redis')->forget($processingKey);
             }
 
