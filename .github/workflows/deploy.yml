@@ -114,6 +114,7 @@ jobs:
             echo "$GHCR_PAT" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
             COMPOSE="$DEST/docker-compose.yml"
             [ -f "$COMPOSE" ] || { echo "compose file not found: $COMPOSE"; ls -la "$DEST"; exit 1; }
+            docker compose -f "$COMPOSE" exec -T app php artisan down --render="errors::503" || true
             docker compose -f "$COMPOSE" pull
             docker compose -f "$COMPOSE" up -d --remove-orphans
             docker image prune -f
