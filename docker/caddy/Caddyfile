@@ -3,10 +3,6 @@ www.shienshi.com {
 }
 
 shienshi.com {
-	basic_auth {
-		devprogundeike $2a$14$KisKC2KrBijcMkM3laundOXMAiLtyxHUE3MQPt1fkrsPIV1QDGRnC
-	}
-
 	root * /var/www/html/public
 	encode zstd gzip
 
