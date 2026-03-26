@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\NewsItem;
+use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call(QuestionSeeder::class);
         $this->call(ModelAnswerSeeder::class);
         $this->call(ExamSentenceSeeder::class);
+        $this->call(UserSeeder::class);
 
         NewsItem::factory()->count(10)->create();
     }

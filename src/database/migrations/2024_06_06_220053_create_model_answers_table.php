@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('question_code');
             $table->text('text')->nullable();
             $table->timestamps();
+            $table->unique(['exam_code', 'question_code']);
         });
     }
 

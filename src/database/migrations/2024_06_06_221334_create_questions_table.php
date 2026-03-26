@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('type', ['textarea', 'radio', 'input', 'checkbox']);
             $table->json('options')->nullable();
             $table->integer('max_length')->nullable();
+            $table->longText('text_for_ai')->nullable();
             $table->timestamps();
             $table->unique(['exam_code', 'question_number', 'sub_question_number', 'small_question_number'], 'uq_question_composite');
         });

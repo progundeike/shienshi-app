@@ -38,19 +38,6 @@ class ExamSentenceSeeder extends Seeder
 
         // データベースに挿入
         ExamSentence::insert($examSentences);
-        $this->command->info('Inserted '.count($examSentences).' records into the database.');
-
-        // $examSentenceFilesDirectory = database_path('exam-sentences');
-        // $filePathList = File::allFiles($examSentenceFilesDirectory);
-
-        // foreach ($filePathList as $filePath) {
-        //     // ファイル名にsampleが含まれている場合はスキップ
-        //     if (str_contains($filePath->getFilename(), 'sample')) {
-        //         continue;
-        //     }
-
-        //     $examSentence = include $filePath->getPathname();
-        //     ExamSentence::create($examSentence);
-        // }
+        $this->command->info('Inserted ' . count($examSentences) . ' records into the database.');
     }
 }

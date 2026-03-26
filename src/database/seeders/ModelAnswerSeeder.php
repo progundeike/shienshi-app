@@ -38,20 +38,6 @@ class ModelAnswerSeeder extends Seeder
 
         // データベースに挿入
         ModelAnswer::insert($modelAnswers);
-        $this->command->info('Inserted '.count($modelAnswers).' records into the database.');
-
-        // $modelAnswersFilesDirectory = database_path('model-answers');
-        // $filePathList = File::allFiles($modelAnswersFilesDirectory);
-        // foreach ($filePathList as $filePath) {
-        //     // ファイル名にsampleが含まれている場合はスキップ
-        //     if (str_contains($filePath->getFilename(), 'sample')) {
-        //         continue;
-        //     }
-
-        //     $modelAnswers = include $filePath->getRealPath();
-        //     foreach ($modelAnswers as $modelAnswer) {
-        //         ModelAnswer::create($modelAnswer);
-        //     }
-        // }
+        $this->command->info('Inserted ' . count($modelAnswers) . ' records into the database.');
     }
 }

@@ -59,7 +59,7 @@ class AiQuestionController extends Controller
                 ->get();
 
             if ($result->isEmpty()) {
-                throw new ModelNotFoundException('Questions not found for examCode: '.$examCode.' and questionNumber: '.$q);
+                throw new ModelNotFoundException('Questions not found for examCode: ' . $examCode . ' and questionNumber: ' . $q);
             }
 
             // 必要なデータだけを取り出す
@@ -68,7 +68,7 @@ class AiQuestionController extends Controller
                     'questionNumber' => $question->question_number,
                     'subQuestionNumber' => $question->sub_question_number,
                     'smallQuestionNumber' => $question->small_question_number,
-                    'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
+                    'questionCode' => $question->question_number . '_' . $question->sub_question_number . '_' . $question->small_question_number,
                     'type' => $question->type,
                     'text' => $question->text,
                     'options' => $question->options,
@@ -100,11 +100,11 @@ class AiQuestionController extends Controller
             $prompt = [
                 [
                     'role' => 'system',
-                    'content' => $this->systemPromptContent.PHP_EOL.$questionPrompt,
+                    'content' => $this->systemPromptContent . PHP_EOL . $questionPrompt,
                 ],
                 [
                     'role' => 'user',
-                    'content' => '<ユーザーの解答>'.$userAnswerContent.'</ユーザーの解答>',
+                    'content' => '<ユーザーの解答>' . $userAnswerContent . '</ユーザーの解答>',
                 ],
             ];
 
@@ -148,14 +148,14 @@ class AiQuestionController extends Controller
         } catch (Throwable $e) {
             Log::error('Unexpected error in AiQuestionController::run', ['error' => $e]);
 
-            return response()->json(['message' => 'Failed to process chat'], 500);
+            return response()->json(['message' => 'Failed to process AI Question'], 500);
         } finally {
             if ($processingKey !== null && $lockAcquired) {
                 Cache::store('redis')->forget($processingKey);
             }
 
             $elapsedSec = round(microtime(true) - $start, 3);
-            Log::debug('answerSubmit elapsed', ['sec' => $elapsedSec]);
+            Log::debug('AI question run elapsed', ['sec' => $elapsedSec]);
         }
     }
 
@@ -185,19 +185,16 @@ class AiQuestionController extends Controller
             ->where('question_code', $questionCode)
             ->get();
 
-        if ($results->isEmpty()) {
-            $dialogues = [];
-        } else {
-            foreach ($results as $result) {
-                $dialogues[] = [
-                    'role' => 'user',
-                    'content' => $result->user_question,
-                ];
-                $dialogues[] = [
-                    'role' => 'assistant',
-                    'content' => $result->ai_answer,
-                ];
-            }
+        $dialogues = [];
+        foreach ($results as $result) {
+            $dialogues[] = [
+                'role' => 'user',
+                'content' => $result->user_question,
+            ];
+            $dialogues[] = [
+                'role' => 'assistant',
+                'content' => $result->ai_answer,
+            ];
         }
 
         return $dialogues;

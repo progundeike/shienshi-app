@@ -38,20 +38,6 @@ class QuestionSeeder extends Seeder
 
         // データベースに挿入
         Question::insert($questions);
-        $this->command->info('Inserted '.count($questions).' records into the database.');
-
-        // $examQuestionsDirectory = database_path('exam-questions');
-        // $filePathList = File::allFiles($examQuestionsDirectory);
-        // foreach ($filePathList as $filePath) {
-        //     // ファイル名にsampleが含まれている場合はスキップ
-        //     if (str_contains($filePath->getFilename(), 'sample')) {
-        //         continue;
-        //     }
-
-        //     $examQuestions = include $filePath->getRealPath();
-        //     foreach ($examQuestions as $question) {
-        //         Question::create($question);
-        //     }
-        // }
+        $this->command->info('Inserted ' . count($questions) . ' records into the database.');
     }
 }
