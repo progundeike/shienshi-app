@@ -20,6 +20,7 @@ export type InquiryInput = {
     name: string;
     email: string | null;
     message: string;
+    company?: string; // スパム対策のための隠しフィールド
 };
 
 export type Inquiry = {

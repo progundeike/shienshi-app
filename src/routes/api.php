@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/questions/{examCode}', [ExamController::class, 'getExamQuestionsJson']);
 Route::get('/exam/{year}-{season}-{section}', [ExamController::class, 'checkFileExists']);
 Route::get('/news', [NewsItemController::class, 'index']);
-Route::post('/inquiry', [InquiryController::class, 'store']);
+Route::post('/inquiry', [InquiryController::class, 'store'])->middleware('throttle:3,30'); // 30分間で3回まで
 
 Route::middleware('auth:sanctum')->group(function () {
     // ユーザー情報

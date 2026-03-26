@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
     Box,
     Flex,
@@ -31,10 +31,14 @@ export const AboutPage = () => {
 
     const { unexpectedServerErrorToast, toast } = useChakraToast();
     const qc = useQueryClient();
+    const openedAt = useMemo(() => Math.floor(Date.now() / 1000), []); // ページが開かれた日時
 
     const sendInquiry = useMutation({
         mutationFn: async (data: InquiryInput) => {
-            const res = await axiosInstance.post("/api/inquiry", data);
+            const res = await axiosInstance.post("/api/inquiry", {
+                opened_at: openedAt,
+                ...data,
+            });
 
             return res.data;
         },
@@ -132,7 +136,18 @@ export const AboutPage = () => {
                                     {errors.message && errors.message.message}
                                 </FormErrorMessage>
                             </FormControl>
-
+                            <Box display="none" aria-hidden="true">
+                                <FormControl>
+                                    <FormLabel>company</FormLabel>
+                                    <Input
+                                        id="company"
+                                        type="text"
+                                        autoComplete="off"
+                                        tabIndex={-1}
+                                        {...register("company")}
+                                    />
+                                </FormControl>
+                            </Box>
                             <SubmitButton>送信</SubmitButton>
                         </Flex>
                     </form>

@@ -22,9 +22,26 @@ class InquiryController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'email', 'max:255'],
             'message' => ['required', 'string', 'max:5000'],
+
+            'opened_at' => ['required', 'integer'], // honneypot
+            'company' => ['nullable', 'string', 'max:255'], // honeypot
         ]);
 
-        $inquiry = new Inquiry($validated);
+        // honeypotのチェック
+        $now = time();
+        if (($now - $validated['opened_at']) < 5) { // フォームが開かれてから5秒未満で送信された場合はスパムとみなす
+            return response()->json(['message' => 'ok'], 201); // honeypot用レスポンス
+        }
+        if (! empty($validated['company'])) {
+            return response()->json(['message' => 'ok'], 201); // honeypot用レスポンス
+        }
+
+        $inquiryData = [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'message' => $validated['message'],
+        ];
+        $inquiry = new Inquiry($inquiryData);
         $inquiry->user_id = $request->user()?->id;
         $inquiry->save();
 
