@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\ExamSentence;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\File;
 
 class ExamSentenceSeeder extends Seeder
 {
@@ -38,6 +37,6 @@ class ExamSentenceSeeder extends Seeder
 
         // データベースに挿入
         ExamSentence::insert($examSentences);
-        $this->command->info('Inserted ' . count($examSentences) . ' records into the database.');
+        $this->command->info('Inserted '.count($examSentences).' records into the database.');
     }
 }

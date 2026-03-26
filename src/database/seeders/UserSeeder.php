@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,7 +16,7 @@ class UserSeeder extends Seeder
         $username = config('app.initial_admin_name');
         $password = config('app.initial_admin_password');
 
-        if (!$username || !$password) {
+        if (! $username || ! $password) {
             throw new \RuntimeException('Initial admin credentials are not set.');
         }
 

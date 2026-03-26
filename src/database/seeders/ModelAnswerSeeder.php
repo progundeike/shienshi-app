@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\ModelAnswer;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\File;
 
 class ModelAnswerSeeder extends Seeder
 {
@@ -38,6 +37,6 @@ class ModelAnswerSeeder extends Seeder
 
         // データベースに挿入
         ModelAnswer::insert($modelAnswers);
-        $this->command->info('Inserted ' . count($modelAnswers) . ' records into the database.');
+        $this->command->info('Inserted '.count($modelAnswers).' records into the database.');
     }
 }

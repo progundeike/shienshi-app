@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Question;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\File;
 
 class QuestionSeeder extends Seeder
 {
@@ -38,6 +37,6 @@ class QuestionSeeder extends Seeder
 
         // データベースに挿入
         Question::insert($questions);
-        $this->command->info('Inserted ' . count($questions) . ' records into the database.');
+        $this->command->info('Inserted '.count($questions).' records into the database.');
     }
 }

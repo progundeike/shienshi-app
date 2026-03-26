@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\AiRequestInProgressException;
 use App\Exceptions\AiResponseException;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 use OpenAI\Laravel\Facades\OpenAI;
@@ -51,7 +48,7 @@ class AiController extends Controller
         }
 
         if (! $result || $finishReason !== 'stop') {
-            throw new AiResponseException('Unexpected finishReason: ' . $finishReason);
+            throw new AiResponseException('Unexpected finishReason: '.$finishReason);
         }
 
         return $result;
@@ -86,7 +83,7 @@ class AiController extends Controller
         }
 
         if (! $result || $finishReason !== 'function_call') {
-            throw new AiResponseException('Unexpected finishReason: ' . $finishReason);
+            throw new AiResponseException('Unexpected finishReason: '.$finishReason);
         }
 
         return $result;
