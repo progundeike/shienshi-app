@@ -40,7 +40,7 @@ class InquiryControllerTest extends TestCase
             'is_admin' => false,
         ]);
 
-        // テスト用の模範解答を作成
+        // テスト用の問い合わせを作成
         DB::table('inquiries')->insert([
             [
                 'user_id' => null,
@@ -72,6 +72,8 @@ class InquiryControllerTest extends TestCase
             'name' => 'テストユーザー1',
             'email' => null,
             'message' => 'テスト用のお問い合わせです。',
+            'opened_at' => time() - 10, // honeypot用のフィールド
+            'company' => '', // honeypot用のフィールド
         ];
 
         $response = $this->actingAs($this->normalUser)->postJson('/api/inquiry', $inquiry);
@@ -94,6 +96,8 @@ class InquiryControllerTest extends TestCase
             'name' => 'ゲストユーザー',
             'email' => 'test@email.com',
             'message' => 'テスト用のお問い合わせです。',
+            'opened_at' => time() - 10, // honeypot用のフィールド
+            'company' => '', // honeypot用のフィールド
         ];
 
         $response = $this->postJson('/api/inquiry', $inquiry);
