@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches: [ "main" ]
-  workflow_dispatch:
+  # workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -87,7 +87,7 @@ jobs:
 
       - name: Remote clone/pull & compose up
         uses: appleboy/ssh-action@v1.2.0
-        if: github.event_name == 'workflow_dispatch'
+        # if: github.event_name == 'workflow_dispatch'
         env:
           GHCR_USER: ${{ github.repository_owner }}
           GHCR_PAT: ${{ secrets.GHCR_PAT }}
@@ -117,5 +117,5 @@ jobs:
             docker compose -f "$COMPOSE" exec -T app php artisan down --render="errors::503" || true
             docker compose -f "$COMPOSE" pull
             docker compose -f "$COMPOSE" up -d --remove-orphans
-            docker compose -f "$COMPOSE" exec -T app php migrate --force
+            docker compose -f "$COMPOSE" exec -T app php artisan migrate --force
             docker image prune -f
