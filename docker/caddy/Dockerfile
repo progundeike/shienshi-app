@@ -11,6 +11,9 @@ WORKDIR /var/www/html
 # Laravel public
 COPY src/public ./public
 
+RUN rm -rf public/storage \
+    && ln -s ../storage/app/public public/storage
+
 # Vite build成果物
 COPY --from=assets /app/public/build ./public/build
 
