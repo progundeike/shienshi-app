@@ -3,6 +3,7 @@ services:
     image: ghcr.io/progundeike/spa-exams:latest
     volumes:
       - ./src/.env:/var/www/html/.env:ro
+      - /srv/spa-exam/src/storage/app/public:/var/www/html/storage/app/public/
     environment:
       - DB_CONNECTION=mysql
       - DB_HOST=db
@@ -24,6 +25,7 @@ services:
     volumes:
       - caddy-data:/data
       - caddy-config:/config
+      - /srv/spa-exam/src/storage/app/public:/var/www/html/storage/app/public/:ro
     depends_on:
       - app
 
