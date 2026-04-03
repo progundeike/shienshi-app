@@ -37,6 +37,6 @@ class QuestionSeeder extends Seeder
 
         // データベースに挿入
         Question::upsert($questions, ['exam_code', 'question_number', 'sub_question_number', 'small_question_number']);
-        $this->command->info('Inserted ' . count($questions) . ' records into the database.');
+        $this->command->info('Inserted '.count($questions).' records into the database.');
     }
 }

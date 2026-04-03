@@ -37,6 +37,6 @@ class ExamSentenceSeeder extends Seeder
 
         // データベースに挿入
         ExamSentence::upsert($examSentences, ['exam_code']);
-        $this->command->info('Inserted ' . count($examSentences) . ' records into the database.');
+        $this->command->info('Inserted '.count($examSentences).' records into the database.');
     }
 }
