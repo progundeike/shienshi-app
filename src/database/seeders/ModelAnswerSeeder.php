@@ -36,7 +36,7 @@ class ModelAnswerSeeder extends Seeder
         }, $modelAnswers);
 
         // データベースに挿入
-        ModelAnswer::insert($modelAnswers);
-        $this->command->info('Inserted '.count($modelAnswers).' records into the database.');
+        ModelAnswer::upsert($modelAnswers, ['exam_code', 'question_code']);
+        $this->command->info('Inserted ' . count($modelAnswers) . ' records into the database.');
     }
 }

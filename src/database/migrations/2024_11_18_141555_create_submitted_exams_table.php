@@ -16,8 +16,7 @@ return new class extends Migration
             $table->string('exam_code');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
-
-            $table->unique(['exam_code']);
+            $table->unique(['user_id', 'exam_code']);
         });
     }
 
