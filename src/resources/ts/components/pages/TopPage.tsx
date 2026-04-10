@@ -1,16 +1,26 @@
-import { Box, Flex, Heading, Text, Image } from "@chakra-ui/react";
+import {
+    Box,
+    Flex,
+    Heading,
+    Text,
+    Image,
+    HStack,
+    Button,
+    list,
+} from "@chakra-ui/react";
 import { FC, memo } from "react";
 
 import { Card } from "../atoms/Card";
 import { dateUtils } from "../../utils/dateUtils";
 import { DisplayNewsItemList } from "../organisms/DisplayNewsItemList";
 import { LuBell } from "react-icons/lu";
+import { Link } from "react-router-dom";
 
 export const TopPage: FC = memo(() => {
     const { examYear, examMonth, examDate } = dateUtils();
 
     return (
-        <Box w="80%" my="20px" mx="auto">
+        <Box maxW="1200px" w="100%" mx="auto" px={{ base: 4, md: 6 }} mb="50px">
             <Flex gap="20px" direction="column">
                 {/* CBT方式への移行に伴い試験日表示は一旦非表示
                 <Box>
@@ -20,49 +30,132 @@ export const TopPage: FC = memo(() => {
                     </Heading>
                     <Box>コンテンツ</Box>
                 </Box> */}
-
-                {/* サービス説明 */}
                 <Box my="50px" textColor="baseColor">
-                    <Flex>
-                        <Box>
-                            <Text fontSize="80px" fontWeight="bold">
+                    {/* ヒーローセクション */}
+                    <Flex
+                        direction={{ base: "column", md: "row" }}
+                        gap="20px"
+                        alignItems="center"
+                    >
+                        {/* 左コンテンツ */}
+                        <Flex flex="1" direction="column">
+                            <Text
+                                fontSize={{ base: "4xl", md: "6xl" }}
+                                fontWeight="bold"
+                                lineHeight="1.2"
+                                maxW="560px"
+                            >
                                 解く→添削→訊く。
                             </Text>
-                            <Text fontSize="2xl" mb="20px">
-                                「支援士対策室」は、情報処理安全確保支援士試験の科目B(旧午後試験)対策に特化した学習支援サービスです。
+                            <Text
+                                fontSize={{ base: "md", md: "lg" }}
+                                lineHeight="1.9"
+                                maxW="560px"
+                            >
+                                「支援士対策室」は、情報処理安全確保支援士試験の科目B対策に特化した学習支援サービスです。
                                 <br />
-                                AIを活用した添削機能と質問機能により、効率的な学習をサポートします。
-                                <br />
-                                ユーザー登録は無料で、すぐに学習を始めることができます。
-                                <br />
-                                ぜひご活用ください。
+                                過去問演習、AI添削、AIへの質問をひとつの流れで行えます。
                             </Text>
-                        </Box>
+                        </Flex>
+                        {/* 右コンテンツ */}
                         <Image
-                            src="/images/main_visual.png"
-                            w="30%"
-                            objectFit="cover"
+                            src="/images/main_visual_1.png"
+                            maxW="520px"
                             alt="メインビジュアル"
+                            display="block"
                         />
                     </Flex>
 
-                    <Box w="80%" mx="auto" my="30px" textAlign="center">
+                    {/* CTAボタン */}
+                    <HStack
+                        mt="8"
+                        spacing="4"
+                        flexWrap="wrap"
+                        justify={{ base: "center", md: "flex-start" }}
+                    >
+                        <Link to="/register">
+                            <Button
+                                size="lg"
+                                bg="baseColor"
+                                colorScheme="blue"
+                                borderRadius="full"
+                                _hover={{ bg: "blue.600", boxShadow: "lg" }}
+                            >
+                                無料で始める
+                            </Button>
+                        </Link>
+                        <Link to="/exams">
+                            <Button
+                                size="lg"
+                                bg="white"
+                                variant="outline"
+                                borderRadius="full"
+                                outline="0.5px solid"
+                                _hover={{
+                                    bg: "gray.200",
+                                    boxShadow: "lg",
+                                }}
+                            >
+                                問題を見る
+                            </Button>
+                        </Link>
+                    </HStack>
+
+                    {/* サービスの特徴 */}
+
+                    <Box mx="auto" my="100px" textAlign="center">
+                        <Heading size="xl" color="baseColor" mb="20px">
+                            情報処理安全確保支援士試験突破のための3つのステップ
+                        </Heading>
                         <Flex direction="row" justifyContent="space-between">
-                            <Card>
-                                過去問を解く
-                                <Image
-                                    src="/images/sample1.svg"
-                                    h="100px"
-                                    objectFit="cover"
-                                    alt="過去問を解く"
-                                />
+                            <Card w="30%">
+                                <Box textAlign="center" mx="auto">
+                                    <Text fontSize="2xl">過去問を解く</Text>
+
+                                    <Image
+                                        src="/images/image_card_1.png"
+                                        h="160px"
+                                        objectFit="cover"
+                                        alt="過去問を解く"
+                                        mx="auto"
+                                        display="block"
+                                    />
+                                    <Text>
+                                        試験対策には過去問を解いて、実際の試験形式に慣れることが重要です。
+                                    </Text>
+                                </Box>
                             </Card>
-                            <Card>添削する</Card>
-                            <Card>質問する</Card>
+                            <Card w="30%">
+                                <Text fontSize="2xl">AIで添削</Text>
+                                <Image
+                                    src="/images/image_card_2.png"
+                                    h="160px"
+                                    objectFit="cover"
+                                    alt="AIに質問"
+                                    mx="auto"
+                                    display="block"
+                                />
+                                <Text>
+                                    記述式の問題が多い科目B試験をAIのフィードバックでサポートします。
+                                </Text>
+                            </Card>
+                            <Card w="30%">
+                                <Text fontSize="2xl">AIに質問</Text>
+                                <Image
+                                    src="/images/image_card_3.png"
+                                    h="160px"
+                                    objectFit="cover"
+                                    alt="AIに質問"
+                                    mx="auto"
+                                    display="block"
+                                />
+                                <Text>
+                                    設問を把握したAIに分からなかった箇所を質問することで、学習が進みます
+                                </Text>
+                            </Card>
                         </Flex>
                     </Box>
                 </Box>
-
                 {/* 試験概要 */}
                 <Card>
                     <Flex gap="30px" direction="column">
@@ -82,7 +175,6 @@ export const TopPage: FC = memo(() => {
                         </Box>
                     </Flex>
                 </Card>
-
                 {/* お知らせ */}
                 <Card>
                     <Box mb="20px">

@@ -79,6 +79,7 @@ class AnswerController extends Controller
             $evaluations = $arguments['evaluations'];
 
             $aiResponseMap = $this->buildAiResponseMap($evaluations);
+            Log::debug('AI response map', ['aiResponseMap' => $aiResponseMap]);
             $rows = $this->buildUpsertRows($userAnswers, $aiResponseMap, $modelAnswers, $examCode, $userId);
 
             DB::transaction(function () use ($rows, $userId, $examCode) {
@@ -102,9 +103,7 @@ class AnswerController extends Controller
 
             return response()->json(['message' => 'Required exam data not found'], 404);
         } catch (AiResponseException $e) {
-            Log::error('AI response failed', ['error' => $e->getMessage()]);
-
-            return response()->json(['message' => 'AI service is unavailable'], 502);
+            return response()->json(['message' => 'AIとの接続に不具合が生じております。しばらく経ってから再度お試しください。'], 502);
         } catch (Throwable $e) {
             Log::error('Unexpected error in AnswerController::answerSubmit', ['error' => $e]);
 
@@ -159,9 +158,8 @@ class AnswerController extends Controller
 
         foreach ($answers as $answer) {
             $userAnswers[] = [
-                'examCode' => $examCode,
                 'questionCode' => $answer['questionCode'],
-                'user_text' => $answer['user_text'],
+                'userText' => $answer['user_text'],
             ];
         }
 
@@ -170,16 +168,16 @@ class AnswerController extends Controller
 
     private function buildAiResponseMap(array $evaluations): array
     {
+        Log::debug('Building AI response map', ['evaluations' => $evaluations]);
         $aiResponseMap = [];
         foreach ($evaluations as $evaluation) {
-            $smallQuestionNumber = $evaluation['smallQuestionNumber'] ?? 0;
-            $questionCode = $evaluation['questionNumber'].'_'.$evaluation['subQuestionNumber'].'_'.$smallQuestionNumber;
-
-            $aiResponseMap[$questionCode] = [
+            $aiResponseMap[$evaluation['questionCode']] = [
                 'ai_rating' => $evaluation['rating'],
                 'ai_text' => $evaluation['comment'],
             ];
         }
+
+        Log::debug('AI response map', ['map' => $aiResponseMap]);
 
         return $aiResponseMap;
     }
@@ -198,7 +196,7 @@ class AnswerController extends Controller
         foreach ($userAnswers as $answer) {
             // ユーザーが無回答の問題はai_textを模範解答で上書きする
             // ai_textが取得できなかった場合も模範解答を返す
-            $userText = trim((string) $answer['user_text']);
+            $userText = trim((string) $answer['userText']);
             $aiRating = $aiResponseMap[$answer['questionCode']]['ai_rating'] ?? '-';
             $aiText = $aiResponseMap[$answer['questionCode']]['ai_text'] ?? ('模範解答: '.($modelMap[$answer['questionCode']] ?? ''));
 
@@ -211,7 +209,7 @@ class AnswerController extends Controller
                 'user_id' => $userId,
                 'exam_code' => $examCode,
                 'question_code' => $answer['questionCode'],
-                'user_text' => $answer['user_text'],
+                'user_text' => $answer['userText'],
                 'ai_rating' => $aiRating,
                 'ai_text' => $aiText,
                 'created_at' => $now,
@@ -345,17 +343,16 @@ class AnswerController extends Controller
         あなたに渡すpromptはSystemPrompt, Question, UserAnswerの3つから構成されます。
         SystemPromptでは解答方法について定義します。
         Questionは,過去の試験問題です。問題文や設問,模範解答が記述されています。
-        UserAnswerはこの過去問を勉強したユーザーが提出した解答です。
+        UserAnswerはこの過去問を勉強したユーザーが提出した解答です。各設問を一意に特定するためのquestionCodeを付与しています。これは実際の出題には存在しないためユーザーへの返答には含めてはいけません。
 
         【目的】
         あなたは,QuestionとUseAnswerを照合し,模範解答を参考にしてUserAnswerを採点してください。
 
         【出力ルール（重要）】
-        - 出力は必ずreviewUserAnswer関数の引数（JSON）として返すこと。本文テキストを出力してはいけない。
         - evaluationsはQuestionに含まれる設問すべてに対して作成する。
         - ratingは必ず[◯, △, ×]のいずれか。
         - commentは採点根拠を簡潔に記述する。
-        - 未回答の場合はratingを×とし,commentに模範解答を提示する。
+        - 未回答の場合はratingを×とし,commentは模範解答を提示する。
 
         【採点ルール】
         - ◯：模範解答の要点を満たしている。
@@ -393,17 +390,9 @@ class AnswerController extends Controller
                         'items' => [
                             'type' => 'object',
                             'properties' => [
-                                'questionNumber' => [
-                                    'type' => 'integer',
-                                    'description' => '設問番号',
-                                ],
-                                'subQuestionNumber' => [
-                                    'type' => 'integer',
-                                    'description' => '設問に複数の小問がある場合の小問番号。(1), (2)など。ない場合は0をセット',
-                                ],
-                                'smallQuestionNumber' => [
-                                    'type' => 'integer',
-                                    'description' => '設問にさらに枝番号がある場合の番号。ない場合は0',
+                                'questionCode' => [
+                                    'type' => 'string',
+                                    'description' => '設問を一意に識別するために,各設問に対して事前に付与されている"1_1_0"の形式のコード',
                                 ],
                                 'rating' => [
                                     'type' => 'string',
@@ -414,7 +403,7 @@ class AnswerController extends Controller
                                     'description' => '採点根拠を簡潔に記述する',
                                 ],
                             ],
-                            'required' => ['questionNumber', 'subQuestionNumber', 'rating', 'comment'],
+                            'required' => ['questionCode', 'rating', 'comment'],
                         ],
                     ],
                 ],

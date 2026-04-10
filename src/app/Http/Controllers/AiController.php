@@ -28,6 +28,7 @@ class AiController extends Controller
         $maxRetries = 3;
         $result = null;
 
+        // TODO: finishReasonだけで判定しているが、普通に接続がタイムアウトなどが考慮されていない
         try {
             do {
                 $result = OpenAI::chat()->create([
@@ -39,6 +40,7 @@ class AiController extends Controller
                 $retryCount++;
             } while ($result->choices[0]->finishReason !== 'stop' && $retryCount < $maxRetries);
         } catch (Throwable $e) {
+            Log::error('OpenAI request failed', ['error' => $e->getMessage()]);
             throw new AiResponseException('OpenAI request failed', 0, $e);
         }
 
@@ -74,6 +76,7 @@ class AiController extends Controller
                 $retryCount++;
             } while ($result->choices[0]->finishReason !== 'function_call' && $retryCount < $maxRetries);
         } catch (Throwable $e) {
+            Log::error('OpenAI request failed', ['exception' => $e]);
             throw new AiResponseException('OpenAI request failed', 0, $e);
         }
 
@@ -91,6 +94,7 @@ class AiController extends Controller
 
     private function debugTokenCosts(object $usage): void
     {
+        Log::debug('run debugTokenCosts');
         $usage = (array) $usage;
 
         if (! isset(self::PRICES[$this->model])) {

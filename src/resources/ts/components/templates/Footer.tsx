@@ -1,10 +1,18 @@
-import { Box } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { FC, memo } from "react";
 
 export const Footer: FC = memo(() => {
     return (
-        <Box as="footer" w="100%" h="30px" textAlign="center" m="5px">
+        <Flex
+            as="footer"
+            w="100%"
+            h="30px"
+            backgroundColor="#EDEFF4"
+            justify="center"
+            align="center"
+            color="footerTextColor"
+        >
             © 2026 支援士対策室
-        </Box>
+        </Flex>
     );
 });

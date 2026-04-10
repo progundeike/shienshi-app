@@ -11,7 +11,6 @@ import { TopPage } from "./pages/TopPage";
 import { Page404 } from "./pages/Page404";
 import { ExamPage } from "./pages/ExamPage";
 import { Layout } from "./templates/Layout";
-import { AboutPage } from "./pages/AboutPage";
 import { ExamsListPage } from "./pages/ExamsListPage";
 import { RegisterPage } from "./pages/auth/RegisterPage";
 import { LoginPage } from "./pages/auth/LoginPage";
@@ -21,7 +20,6 @@ import { MyPage } from "./pages/MyPage";
 import { useAuth } from "../hooks/useAuth";
 import { PreAuthRoutes } from "./templates/PreAuthRoutes";
 import { UpdatePasswordPage } from "./pages/auth/UpdatePasswordPage";
-import { RegisterEmailPage } from "./pages/auth/RegisterEmailPage";
 import { ForgotPasswordPage } from "./pages/auth/ForgotPasswordPage";
 import { AdminPage } from "./pages/admin/AdminPage";
 import { AdminRoutes } from "./templates/AdminRoutes";
@@ -31,6 +29,8 @@ import { InquiryPage } from "./pages/admin/InquiryPage";
 import { EditExamListPage } from "./pages/admin/EditExamListPage";
 import { useAtom } from "jotai";
 import { userAtom } from "../states/userAtom";
+import { ContactPage } from "./pages/ContactPage";
+import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 
 export const Router: FC = memo(() => {
     const { getUser } = useAuth();
@@ -71,29 +71,21 @@ export const Router: FC = memo(() => {
                     path="/exams/:year/:season/:section"
                     element={<ExamPage />}
                 />
-                <Route path="/exams_list" element={<ExamsListPage />} />
+                <Route path="/exams" element={<ExamsListPage />} />
 
-                <Route path="/about" element={<AboutPage />} />
                 <Route path="/terms" element={<TermsPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/privacy" element={<PrivacyPolicyPage />} />
 
                 {/* ログイン前 */}
                 <Route element={<PreAuthRoutes />}>
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/login" element={<LoginPage />} />
-                    <Route
-                        path="/forgot-password"
-                        element={<ForgotPasswordPage />}
-                    />
                 </Route>
 
                 {/* ログイン後 */}
                 <Route element={<PrivateRoutes />}>
                     <Route path="/my-page" element={<MyPage />} />
-                    {/* <Route path="/update-email" element={<UpdateEmailPage />} /> */}
-                    {/* <Route
-                        path="/register-email"
-                        element={<RegisterEmailPage />}
-                    /> */}
                     {/* <Route
                         path="/delete-account"
                         element={<DeleteAccountPage />}

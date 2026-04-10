@@ -194,18 +194,21 @@ export const AskToAICard: FC<Props> = memo((props) => {
                                             <Button
                                                 onClick={onClickDeleteDialogues}
                                                 mr="10px"
+                                                borderRadius="full"
                                             >
-                                                質問履歴を削除
+                                                履歴を削除
                                             </Button>
                                         )}
 
                                         <Button
-                                            rightIcon={<LuSend size="1.5rem" />}
+                                            backgroundColor="#60A5FA"
+                                            color="white"
                                             onClick={handleSubmit(onSubmit)}
                                             ml="auto"
                                             borderRadius="100px"
                                         >
-                                            質問を送信
+                                            {/* <LuSend size="1.5rem" /> */}
+                                            送信
                                         </Button>
                                     </Flex>
                                 </>

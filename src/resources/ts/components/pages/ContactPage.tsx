@@ -20,7 +20,7 @@ import { SubmitButton } from "../atoms/SubmitButton";
 import { InquiryInput } from "../../types/form";
 import { axiosInstance } from "../../hooks/axiosInstance";
 
-export const AboutPage = () => {
+export const ContactPage = () => {
     const {
         register,
         handleSubmit,
@@ -80,16 +80,6 @@ export const AboutPage = () => {
         <Box w="80%" m="20px auto">
             <Heading size="lg">管理者について</Heading>
             <Box m="20px">ここに説明</Box>
-
-            <Box my="20px">
-                <Heading>利用規約</Heading>
-                <Box>ここに利用規約</Box>
-            </Box>
-
-            <Box my="20px">
-                <Heading>プライバシーポリシー</Heading>
-                <Box>個人情報に関する声明</Box>
-            </Box>
 
             <Card maxW="80%">
                 <Box textAlign="center">

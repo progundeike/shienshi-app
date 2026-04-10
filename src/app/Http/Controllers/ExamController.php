@@ -121,7 +121,7 @@ class ExamController extends Controller
 
         return [
             'questionCode' => $answer->question_code,
-            'user_text' => $answer->user_text,
+            'userText' => $answer->user_text,
         ];
     }
 
@@ -186,6 +186,7 @@ class ExamController extends Controller
 
         $userAnswerText = '';
         for ($i = 0; $i < $length; $i++) {
+            $userAnswerText .= '[questionCode:'.$userAnswers[$i]['questionCode'].']';
             [$q, $sub, $small] = array_map('intval', explode('_', $userAnswers[$i]['questionCode']));
             $userAnswerText .= '設問'.$q.' ';
             if ($sub !== 0) {
@@ -199,8 +200,8 @@ class ExamController extends Controller
                 $userAnswerText .= $optionsForQuestion[0]['label'];
             }
 
-            if ($userAnswers[$i]['user_text']) {
-                $userAnswerText .= $userAnswers[$i]['user_text'].PHP_EOL;
+            if ($userAnswers[$i]['userText']) {
+                $userAnswerText .= $userAnswers[$i]['userText'].PHP_EOL;
             } else {
                 $userAnswerText .= '未回答'.PHP_EOL;
             }

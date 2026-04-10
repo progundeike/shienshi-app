@@ -1,15 +1,40 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { FC, memo } from "react";
-import { Link } from "react-router-dom";
-import { GrCircleInformation } from "react-icons/gr";
-import { AiOutlineUser } from "react-icons/ai";
-import { FaList, FaUserCircle, FaHome } from "react-icons/fa";
+import { Box, Button, Flex, Heading, Text, Image } from "@chakra-ui/react";
+import React, { FC, memo } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { useAtomValue } from "jotai";
-import { TbCircleKey } from "react-icons/tb";
 
 import { userAtom } from "../../states/userAtom";
-import { IconLink } from "../atoms/IconLink";
 import { dateUtils } from "../../utils/dateUtils";
+
+const HeaderButton: FC<{ children: React.ReactNode }> = memo(({ children }) => {
+    return (
+        <Button
+            backgroundColor="baseColor"
+            color="accentTextColor"
+            borderRadius="full"
+            p="20px"
+        >
+            {children}
+        </Button>
+    );
+});
+
+const HeaderLink: FC<{ children: React.ReactNode; to: string }> = memo(
+    ({ children, to }) => {
+        return (
+            <Text
+                as={RouterLink}
+                to={to}
+                fontWeight="bold"
+                fontSize={{ base: "md", md: "lg" }}
+                _hover={{ textDecoration: "underline" }}
+                textUnderlineOffset="5px"
+            >
+                {children}
+            </Text>
+        );
+    },
+);
 
 export const Header: FC = memo(() => {
     const user = useAtomValue(userAtom);
@@ -28,67 +53,75 @@ export const Header: FC = memo(() => {
             top="0"
             zIndex="sticky"
         >
-            <Box w="90%" m="auto" py="5px" px={{ base: 4, md: 6 }}>
+            <Box m="auto" py="5px" px={{ base: 4, md: 6 }}>
                 <Flex
                     justifyContent="space-between"
                     wrap="wrap"
                     alignItems="center"
                 >
                     {/* 左バナー */}
-                    <Link to="/">
-                        <Flex direction="row" alignItems="center" gap="10px">
-                            <Box>
+                    <RouterLink to="/">
+                        <Flex direction="row" alignItems="center">
+                            <Image
+                                src="/images/top_icon.png"
+                                alt="支援士対策室ロゴ"
+                                h="60px"
+                            />
+                            <Box display={{ base: "none", md: "block" }}>
                                 <Heading
                                     as="h1"
                                     size="md"
-                                    fontSize="50px"
-                                    fontWeight="400"
-                                    color="baseTextColor"
-                                    textShadow="1px 1px 1px gray"
+                                    fontSize={{ base: "32px", md: "36px" }}
+                                    fontWeight="700"
+                                    letterSpacing="0.02em"
                                 >
                                     支援士対策室
                                 </Heading>
                             </Box>
-                            <Box>
-                                <Text fontSize="18px" color="baseTextColor">
-                                    情報処理安全確保支援士 科目B(旧午後試験)対策
-                                </Text>
-                            </Box>
                         </Flex>
-                    </Link>
+                    </RouterLink>
                     {/* <Box fontSize="20px">
                         試験まで残り{daysUntilNextExam()}日
                     </Box> */}
 
                     {/* 右メニュー */}
                     {/* {isMobileView ? <MobileMenu /> : <PcMenu />} */}
-                    <Flex gap="20px">
-                        <IconLink url="/" icon={FaHome}>
-                            TOP
-                        </IconLink>
-                        <IconLink url="/exams_list" icon={FaList}>
-                            過去問一覧
-                        </IconLink>
-                        <IconLink url="/about" icon={GrCircleInformation}>
-                            ABOUT
-                        </IconLink>
+                    <Flex gap="30px" alignItems="center">
+                        <HeaderLink to="/">ホーム</HeaderLink>
+                        <HeaderLink to="/exams">過去問一覧</HeaderLink>
+                        {/* <HeaderLink to="/about">ABOUT</HeaderLink> */}
 
                         {user ? (
-                            <IconLink url="/my-page" icon={FaUserCircle}>
-                                MyPage
-                            </IconLink>
+                            <HeaderLink to="/my-page">MyPage</HeaderLink>
                         ) : (
                             <>
-                                <IconLink url="/login" icon={AiOutlineUser}>
+                                <Button
+                                    as={RouterLink}
+                                    to="/register"
+                                    backgroundColor="#60A5FA"
+                                    color="accentTextColor"
+                                    _hover={{ bg: "#4F94F7" }}
+                                    borderRadius="full"
+                                    p="20px"
+                                    textShadow="0 1px 2px rgba(0, 0, 0, 0.3)"
+                                >
+                                    無料で始める
+                                </Button>
+                                <Button
+                                    as={RouterLink}
+                                    to="/login"
+                                    backgroundColor="white"
+                                    color="baseColor"
+                                    borderRadius="full"
+                                    p="20px"
+                                >
                                     ログイン
-                                </IconLink>
+                                </Button>
                             </>
                         )}
 
                         {user?.isAdmin && (
-                            <IconLink url="/admin" icon={TbCircleKey}>
-                                管理ページ
-                            </IconLink>
+                            <RouterLink to="/admin">管理ページ</RouterLink>
                         )}
                     </Flex>
                 </Flex>
