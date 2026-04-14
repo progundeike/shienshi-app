@@ -10,16 +10,13 @@ class SlackNotification extends Notification
 {
     use Queueable;
 
-    protected string $channel;
-
     protected string $message;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($message)
+    public function __construct(string $message)
     {
-        $this->channel = config('services.slack.channel');
         $this->message = $message;
     }
 
@@ -42,7 +39,6 @@ class SlackNotification extends Notification
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
-            ->to($this->channel)
             ->content($this->message);
     }
 

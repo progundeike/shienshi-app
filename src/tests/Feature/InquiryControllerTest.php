@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
+use Mockery\Matcher\Not;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -21,6 +23,7 @@ class InquiryControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        Notification::fake(); // 通知をモックして実際の通知が送信されないようにする
         $this->withoutExceptionHandling();
 
         // 初期データをシード
