@@ -8,7 +8,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
-use Mockery\Matcher\Not;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
