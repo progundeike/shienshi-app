@@ -36,12 +36,12 @@ export const DisplayNewsItemList: FC = memo(() => {
                                         month: "numeric",
                                         day: "numeric",
                                         timeZone: "Asia/Tokyo",
-                                    }
+                                    },
                                 )}
                             </Box>
                             <Box>
                                 {item.content ? (
-                                    <Accordion allowToggle>
+                                    <Accordion allowToggle defaultIndex={[0]}>
                                         <AccordionItem
                                             border="none"
                                             padding="0"
@@ -52,7 +52,10 @@ export const DisplayNewsItemList: FC = memo(() => {
                                                 </Box>
                                                 <AccordionIcon />
                                             </AccordionButton>
-                                            <AccordionPanel pb={4}>
+                                            <AccordionPanel
+                                                textAlign="left"
+                                                pb={4}
+                                            >
                                                 {item.content}
                                             </AccordionPanel>
                                         </AccordionItem>

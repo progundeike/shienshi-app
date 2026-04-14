@@ -13,6 +13,7 @@
         "laravel/fortify": "^1.21",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
+        "laravel/slack-notification-channel": "^3.8",
         "laravel/tinker": "^2.9",
         "openai-php/laravel": "^0.9.1"
     },

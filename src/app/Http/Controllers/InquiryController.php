@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inquiry;
+use App\Notifications\SlackNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 
 class InquiryController extends Controller
 {
@@ -29,7 +32,7 @@ class InquiryController extends Controller
 
         // honeypotのチェック
         $now = time();
-        if (($now - $validated['opened_at']) < 5) { // フォームが開かれてから5秒未満で送信された場合はスパムとみなす
+        if (($now - $validated['opened_at']) < 1) { // フォームが開かれてから1秒未満で送信された場合はスパムとみなす
             return response()->json(['message' => 'ok'], 201); // honeypot用レスポンス
         }
         if (! empty($validated['company'])) {
@@ -44,6 +47,18 @@ class InquiryController extends Controller
         $inquiry = new Inquiry($inquiryData);
         $inquiry->user_id = $request->user()?->id;
         $inquiry->save();
+
+        try {
+            Notification::route('slack', config('services.slack.webhook_url'))
+                ->notify(new SlackNotification(
+                    "新しいお問い合わせです。 \n
+                    お名前: {$inquiry->name}\n
+                    email:{$inquiry->email}\n
+                    内容:{$inquiry->message}"
+                ));
+        } catch (\Exception $e) {
+            Log::error('Error occurred while sending Slack notification: '.$e->getMessage());
+        }
 
         return response()->json(['message' => 'ok'], 201);
     }

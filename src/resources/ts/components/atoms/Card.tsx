@@ -16,7 +16,6 @@ export const Card: FC<Props> = memo(({ children, w }) => {
             textAlign="center"
             shadow="md"
             p="30px"
-            minH="300px"
             w={w ? w : "100%"}
         >
             {children}
