@@ -1,6 +1,7 @@
 services:
   app:
     image: ghcr.io/progundeike/spa-exams:latest
+    restart: unless-stopped
     volumes:
       - ./src/.env:/var/www/html/.env:ro
       - /srv/spa-exam/src/storage/app/public:/var/www/html/storage/app/public/
@@ -18,6 +19,7 @@ services:
 
   web:
     image: ghcr.io/progundeike/spa-exams-web:latest
+    restart: unless-stopped
     ports:
       - 80:80
       - 443:443
@@ -31,6 +33,7 @@ services:
 
   db:
     image: mysql:8.4
+    restart: unless-stopped
     ports:
       - 127.0.0.1:3306:3306
     volumes:
