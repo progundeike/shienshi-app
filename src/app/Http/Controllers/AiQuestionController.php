@@ -111,8 +111,6 @@ class AiQuestionController extends Controller
             // dialoguesをpromptに追加
             $prompt = array_merge($prompt, $dialogues);
 
-            return response()->json('ダミーメッセージ', 200);
-
             // AIに投げる
             $controller = new AiController();
             $result = $controller->chat($prompt);

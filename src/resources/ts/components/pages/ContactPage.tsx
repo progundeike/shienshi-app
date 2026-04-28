@@ -78,9 +78,6 @@ export const ContactPage = () => {
 
     return (
         <Box w="80%" m="20px auto">
-            <Heading size="lg">管理者について</Heading>
-            <Box m="20px">ここに説明</Box>
-
             <Card maxW="80%">
                 <Box textAlign="center">
                     <Box my="20px">
