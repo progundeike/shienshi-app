@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ExamSentence;
-use App\Models\ModelAnswer;
-use App\Models\Question;
 use App\Models\SubmittedExam;
-use App\Models\UserAnswer;
+use App\Services\ExamDataService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -15,12 +12,16 @@ use Illuminate\Support\Facades\Validator;
 // 試験問題に関する情報を提供するコントローラ
 class ExamController extends Controller
 {
+    public function __construct(private readonly ExamDataService $examDataService)
+    {
+    }
+
     // 設問をjson形式で取得して、httpレスポンスを返す
     // ログイン済みで、答案提出済みの場合は、添削画面を表示する
     public function getExamQuestionsJson(string $examCode): JsonResponse
     {
         try {
-            $questions = $this->fetchExamQuestionsArray($examCode);
+            $questions = $this->examDataService->fetchExamQuestionsForPublic($examCode);
 
             // questionsが取得できない場合は404エラーを返す
             if (! $questions) {
@@ -35,96 +36,6 @@ class ExamController extends Controller
         }
     }
 
-    // 大問または設問番号を指定して設問を取得する
-    public function fetchExamQuestionsArray(string $examCode, ?string $questionCode = null): ?array
-    {
-        $query = Question::where('exam_code', $examCode);
-
-        // 特定の設問を取得する場合は条件を追加
-        if ($questionCode) {
-            [$q, $sub, $small] = array_map('intval', explode('_', $questionCode));
-            $query->where('question_number', $q)
-                ->where('sub_question_number', $sub)
-                ->where('small_question_number', $small);
-        }
-        $result = $query->get();
-
-        // questionsが取得できない場合はnullを返す
-        if ($result->isEmpty()) {
-            return null;
-        }
-
-        // 必要なデータだけを取り出す
-        $questions = $result->map(function ($question) {
-
-            return [
-                'examCode' => $question->exam_code,
-                'questionNumber' => $question->question_number,
-                'subQuestionNumber' => $question->sub_question_number,
-                'smallQuestionNumber' => $question->small_question_number,
-                'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
-                'type' => $question->type,
-                'text' => $question->text,
-                'options' => $question->options,
-                'maxLength' => $question->max_length,
-            ];
-        });
-
-        return $questions->toArray();
-    }
-
-    // 指定した大問の問題文, 出題趣旨、講評を取得する
-    // 現在は問題文のみを返す
-    public function fetchExamSentences(string $examCode): array
-    {
-        $examData = ExamSentence::where('exam_code', $examCode)
-            ->firstOrFail();
-
-        return [
-            'sentence' => $examData->sentence,
-            // 'purpose' => $examData->purpose,
-            // 'review_comment' => $examData->review_comment,
-        ];
-    }
-
-    // 模範解答を取得する
-    public function fetchModelAnswers(string $examCode, ?string $questionCode = null): array
-    {
-        $query = ModelAnswer::where('exam_code', $examCode);
-
-        if ($questionCode) {
-            [$q, $sub, $small] = explode('_', $questionCode);
-            if ($questionCode) {
-                $query->where('question_code', 'like', $q.'\_%');
-            }
-        }
-
-        $result = $query->get();
-
-        $modelAnswer = $result->map(function ($answer) {
-            return [
-                'questionCode' => $answer->question_code,
-                'text' => $answer->text,
-            ];
-        });
-
-        return $modelAnswer->toArray();
-    }
-
-    // 指定した問題のユーザーの回答を取得する
-    public function fetchUserAnswer(int $userId, string $examCode, string $questionCode): array
-    {
-        $answer = UserAnswer::where('user_id', $userId)
-            ->where('exam_code', $examCode)
-            ->where('question_code', $questionCode)
-            ->firstOrFail();
-
-        return [
-            'questionCode' => $answer->question_code,
-            'userText' => $answer->user_text,
-        ];
-    }
-
     // 提出済みの試験一覧を取得する
     public function fetchSubmittedExams()
     {
@@ -135,11 +46,13 @@ class ExamController extends Controller
 
         $submittedAnswers = $fetchedSubmittedAnswers->map(function ($exam) {
             [$year, $season, $section] = explode('_', $exam->exam_code);
+            $year = (int) $year;
+            $section = (int) $section;
 
             $submittedExam = [
-                'year' => (int) $year,
+                'year' => $year,
                 'season' => $season,
-                'section' => (int) $section,
+                'section' => $section,
             ];
 
             // seasonを日本語に変換
@@ -176,38 +89,6 @@ class ExamController extends Controller
         });
 
         return response()->json($submittedAnswers, 200);
-    }
-
-    public function convertUserAnswerToText(array $userAnswers, array $examQuestions): string
-    {
-        $length = count($userAnswers);
-
-        $mapOptions = array_column($examQuestions, 'options', 'questionCode');
-
-        $userAnswerText = '';
-        for ($i = 0; $i < $length; $i++) {
-            $userAnswerText .= '[questionCode:'.$userAnswers[$i]['questionCode'].']';
-            [$q, $sub, $small] = array_map('intval', explode('_', $userAnswers[$i]['questionCode']));
-            $userAnswerText .= '設問'.$q.' ';
-            if ($sub !== 0) {
-                $userAnswerText .= '('.$sub.') ';
-            }
-
-            $questionCode = $userAnswers[$i]['questionCode'] ?? '';
-            $optionsForQuestion = $mapOptions[$questionCode] ?? null;
-
-            if (is_array($optionsForQuestion) && isset($optionsForQuestion[0]['label'])) {
-                $userAnswerText .= $optionsForQuestion[0]['label'];
-            }
-
-            if ($userAnswers[$i]['userText']) {
-                $userAnswerText .= $userAnswers[$i]['userText'].PHP_EOL;
-            } else {
-                $userAnswerText .= '未回答'.PHP_EOL;
-            }
-        }
-
-        return $userAnswerText;
     }
 
     // 試験のPDFファイルの存在確認

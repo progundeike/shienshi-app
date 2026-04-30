@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
 use App\Exceptions\AiResponseException;
 use Illuminate\Support\Facades\Log;
@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use OpenAI\Laravel\Facades\OpenAI;
 use Throwable;
 
-class AiController extends Controller
+class AiClientService
 {
     private const USD_TO_JPY = 156.0;
 
@@ -45,11 +45,11 @@ class AiController extends Controller
         }
 
         $finishReason = 'unknown';
-        if ($result && isset($result->choices[0]->finishReason)) {
+        if (isset($result->choices[0]->finishReason)) {
             $finishReason = $result->choices[0]->finishReason;
         }
 
-        if (! $result || $finishReason !== 'stop') {
+        if ($finishReason !== 'stop') {
             throw new AiResponseException('Unexpected finishReason: '.$finishReason);
         }
 
@@ -81,11 +81,11 @@ class AiController extends Controller
         }
 
         $finishReason = 'unknown';
-        if ($result && isset($result->choices[0]->finishReason)) {
+        if (isset($result->choices[0]->finishReason)) {
             $finishReason = $result->choices[0]->finishReason;
         }
 
-        if (! $result || $finishReason !== 'function_call') {
+        if ($finishReason !== 'function_call') {
             throw new AiResponseException('Unexpected finishReason: '.$finishReason);
         }
 

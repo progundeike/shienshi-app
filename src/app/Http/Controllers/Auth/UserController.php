@@ -17,24 +17,23 @@ class UserController extends Controller
 
     public function deleteUser(Request $request)
     {
-        /** @var User $user */
+        /** @var User|null $user */
         $user = Auth::user();
 
-        if ($user) {
-
-            // ログアウト
-            Auth::guard('web')->logout();
-
-            // ユーザー削除
-            $user->delete();
-
-            // セッションの無効化
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
-            return response()->json(['message' => 'User deleted'], 200);
-        } else {
-            return response()->json(['message' => 'User not found'], 404);
+        if (! $user) {
+            return response()->json(['message' => 'User not authenticated'], 401);
         }
+
+        // ログアウト
+        Auth::guard('web')->logout();
+
+        // ユーザー削除
+        $user->delete();
+
+        // セッションの無効化
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()->json(['message' => 'User deleted'], 200);
     }
 }

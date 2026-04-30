@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Exceptions\AiRequestInProgressException;
 use App\Exceptions\AiResponseException;
 use App\Http\Requests\QuestionRequest;
-use App\Models\Question;
 use App\Models\UserAiDialogue;
+use App\Services\AiClientService;
+use App\Services\AnswerBuildService;
+use App\Services\ExamDataService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -15,6 +17,13 @@ use Throwable;
 
 class AiQuestionController extends Controller
 {
+    public function __construct(
+        private readonly ExamDataService $examDataService,
+        private readonly AnswerBuildService $answerBuildService,
+        private readonly AiClientService $aiClientService
+    ) {
+    }
+
     // リクエストの例
     // [
     //     'examCode' => 2023_aki_1,
@@ -48,40 +57,15 @@ class AiQuestionController extends Controller
             }
 
             // 問題文を取得
-            $examController = new ExamController();
-            $examSentence = $examController->fetchExamSentences($examCode);
-
-            // 質問された設問を取得
-            // 小問だけを渡すと、大問の情報が抜けてしまうため、questionCodeから大問番号を抽出して、その大問に属する設問をすべて取得する
-            $q = (int) explode('_', $questionCode)[0];
-            $result = Question::where('exam_code', $examCode)
-                ->where('question_number', $q)
-                ->get();
-
-            if ($result->isEmpty()) {
-                throw new ModelNotFoundException('Questions not found for examCode: '.$examCode.' and questionNumber: '.$q);
-            }
-
-            // 必要なデータだけを取り出す
-            $examQuestions = $result->map(function ($question) {
-                return [
-                    'questionNumber' => $question->question_number,
-                    'subQuestionNumber' => $question->sub_question_number,
-                    'smallQuestionNumber' => $question->small_question_number,
-                    'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
-                    'type' => $question->type,
-                    'text' => $question->text,
-                    'options' => $question->options,
-                    'textForAi' => $question->text_for_ai ?? null,
-                ];
-            })->toArray();
+            $examSentence = $this->examDataService->fetchExamSentences($examCode);
+            $examQuestions = $this->examDataService->fetchExamQuestionsForAi($examCode, $questionCode);
 
             // 模範解答を取得
-            $modelAnswers = $examController->fetchModelAnswers($examCode, $questionCode);
+            $modelAnswers = $this->examDataService->fetchModelAnswers($examCode, $questionCode);
 
             // ユーザーの回答を取得
-            $userAnswer = $examController->fetchUserAnswer($userId, $examCode, $questionCode);
-            $userAnswerContent = $examController->convertUserAnswerToText([$userAnswer], $examQuestions);
+            $userAnswer = $this->examDataService->fetchUserAnswer($userId, $examCode, $questionCode);
+            $userAnswerContent = $this->examDataService->convertUserAnswerToText([$userAnswer], $examQuestions);
 
             // これまでの質問とその回答を取得
             $dialogues = $this->fetchDialogues($examCode, $questionCode);
@@ -94,8 +78,7 @@ class AiQuestionController extends Controller
                 ];
 
             // プロンプトを組み立てる
-            $answerController = new AnswerController;
-            $questionPrompt = $answerController->buildQuestionPrompt($examSentence, $examQuestions, $modelAnswers);
+            $questionPrompt = $this->answerBuildService->buildQuestionPrompt($examSentence, $examQuestions, $modelAnswers);
 
             $prompt = [
                 [
@@ -112,8 +95,7 @@ class AiQuestionController extends Controller
             $prompt = array_merge($prompt, $dialogues);
 
             // AIに投げる
-            $controller = new AiController();
-            $result = $controller->chat($prompt);
+            $result = $this->aiClientService->chat($prompt);
 
             if ($result->choices[0]->message->content) {
                 $aiMessage = $result->choices[0]->message->content;

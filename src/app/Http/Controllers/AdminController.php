@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ExamSentence;
 use App\Models\ModelAnswer;
 use App\Models\Question;
+use App\Services\ExamDataService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -12,6 +13,11 @@ use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
+    public function __construct(
+        private readonly ExamDataService $examDataService,
+    ) {
+    }
+
     public function updateExamQuestion(Request $request): JsonResponse
     {
         // リクエストのバリデーション
@@ -193,10 +199,9 @@ class AdminController extends Controller
 
     public function getModelAnswers(string $examCode): JsonResponse
     {
-        $controller = new ExamController();
-        $modelAnswers = $controller->fetchModelAnswers($examCode);
+        $modelAnswers = $this->examDataService->fetchModelAnswers($examCode);
 
-        if (is_null($modelAnswers)) {
+        if (empty($modelAnswers)) {
             return response()->json(['error' => 'Model answers not found'], 404);
         }
 

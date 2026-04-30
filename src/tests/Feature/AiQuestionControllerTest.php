@@ -47,10 +47,11 @@ class AiQuestionControllerTest extends TestCase
         $response = $this->actingAs($this->normalUser)->get('/api/dialogues/2099_haru_1/1_1_0');
 
         $response->assertStatus(200);
-        $this->assertEquals('user', $response[0]['role']);
-        $this->assertEquals('これはユーザーが投稿したAIへの質問のサンプルです。', $response[0]['content']);
-        $this->assertEquals('assistant', $response[1]['role']);
-        $this->assertEquals('これはAIからのダミーの回答です。', $response[1]['content']);
+        $data = $response->json();
+        $this->assertEquals('user', $data[0]['role']);
+        $this->assertEquals('これはユーザーが投稿したAIへの質問のサンプルです。', $data[0]['content']);
+        $this->assertEquals('assistant', $data[1]['role']);
+        $this->assertEquals('これはAIからのダミーの回答です。', $data[1]['content']);
     }
 
     #[Test]

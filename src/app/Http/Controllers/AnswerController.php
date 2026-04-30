@@ -8,6 +8,9 @@ use App\Http\Requests\AnswerRequest;
 use App\Models\Question;
 use App\Models\SubmittedExam;
 use App\Models\UserAnswer;
+use App\Services\AiClientService;
+use App\Services\AnswerBuildService;
+use App\Services\ExamDataService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +21,13 @@ use Throwable;
 
 class AnswerController extends Controller
 {
+    public function __construct(
+        private readonly ExamDataService $examDataService,
+        private readonly AnswerBuildService $answerBuildService,
+        private readonly AiClientService $aiClientService
+    ) {
+    }
+
     public function answerSubmit(AnswerRequest $request)
     {
         $start = microtime(true);
@@ -36,17 +46,15 @@ class AnswerController extends Controller
                 throw new AiRequestInProgressException('他の処理がまだ実行中です。少し待ってから再度お試しください。');
             }
 
-            $examController = new ExamController();
-
-            $examSentence = $examController->fetchExamSentences($examCode);
-            $examQuestions = $this->fetchExamQuestions($examCode);
+            $examSentence = $this->examDataService->fetchExamSentences($examCode);
+            $examQuestions = $this->examDataService->fetchExamQuestionsForAi($examCode);
 
             // ユーザーの回答
             $userAnswers = $this->formatUserAnswers($request->validated('answers'), $examCode);
-            $userAnswerText = $examController->convertUserAnswerToText($userAnswers, $examQuestions);
+            $userAnswerText = $this->examDataService->convertUserAnswerToText($userAnswers, $examQuestions);
 
             // 模範解答を取得
-            $modelAnswers = $examController->fetchModelAnswers($examCode);
+            $modelAnswers = $this->examDataService->fetchModelAnswers($examCode);
 
             if (count($examQuestions) !== count($modelAnswers)) {
                 return response()->json(['message' => 'Failed to get questions and answers'], 500);
@@ -54,7 +62,7 @@ class AnswerController extends Controller
 
             // プロンプトを組み立てる
             // プロンプトは <SystemPrompt> <Question> <UserAnswer> の3つから構成される
-            $questionPrompt = $this->buildQuestionPrompt($examSentence, $examQuestions, $modelAnswers);
+            $questionPrompt = $this->answerBuildService->buildQuestionPrompt($examSentence, $examQuestions, $modelAnswers);
 
             $prompt = [
                 [
@@ -68,8 +76,7 @@ class AnswerController extends Controller
             ];
 
             // AIに投げる
-            $controller = new AiController();
-            $openAiResponse = $controller->useFunctionCall($prompt, $this->functionParameter);
+            $openAiResponse = $this->aiClientService->useFunctionCall($prompt, $this->functionParameter);
             if (! $openAiResponse) {
                 return response()->json(['message' => 'AI grading failed'], 500);
             }
@@ -125,31 +132,6 @@ class AnswerController extends Controller
         $isProcessing = Cache::store('redis')->has($processingKey);
 
         return response()->json(['status' => $isProcessing ? 'processing' : 'idle'], 200);
-    }
-
-    private function fetchExamQuestions(string $examCode): array
-    {
-        // 設問を取得
-        $result = Question::where('exam_code', $examCode)->get();
-        if ($result->isEmpty()) {
-            throw new ModelNotFoundException('Questions not found for examCode: '.$examCode);
-        }
-
-        // 必要なデータだけを取り出す
-        $examQuestions = $result->map(function ($question) {
-            return [
-                'questionNumber' => $question->question_number,
-                'subQuestionNumber' => $question->sub_question_number,
-                'smallQuestionNumber' => $question->small_question_number,
-                'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
-                'type' => $question->type,
-                'text' => $question->text,
-                'options' => $question->options,
-                'textForAi' => $question->text_for_ai ?? null,
-            ];
-        })->toArray();
-
-        return $examQuestions;
     }
 
     private function formatUserAnswers(array $answers, string $examCode): array
@@ -275,66 +257,6 @@ class AnswerController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to delete'], 500);
         }
-    }
-
-    public function buildQuestionPrompt(array $examSentence, array $examQuestions, array $modelAnswers): string
-    {
-        $sentence = $examSentence['sentence']; // 問題文
-        $modelMap = array_column($modelAnswers, 'text', 'questionCode');
-
-        $questionAndAnswerText = '';
-        for ($i = 0; $i < count($examQuestions); $i++) {
-            if ($examQuestions[$i]['subQuestionNumber'] === 1 && $examQuestions[$i]['smallQuestionNumber'] < 2) {
-                $questionAndAnswerText .= '設問'.$examQuestions[$i]['questionNumber'].' ';
-            }
-
-            // text_for_aiも渡す
-            if ($examQuestions[$i]['textForAi']) {
-                $questionAndAnswerText .= '[AI添削用の設問への補足:'.$examQuestions[$i]['textForAi'].']';
-            }
-
-            $modelText = $modelMap[$examQuestions[$i]['questionCode']] ?? '(模範解答なし)';
-
-            $questionAndAnswerText .= $this->convertQuestionToString($examQuestions[$i]);
-
-            // labelがあれば追加
-            if ($examQuestions[$i]['options'] && isset($examQuestions[$i]['options'][0]['label'])) {
-                $questionAndAnswerText .= $examQuestions[$i]['options'][0]['label'];
-            }
-
-            $questionAndAnswerText .= '[模範解答:'.$modelText.']'.PHP_EOL;
-        }
-
-        // 参考情報
-        // $purpose = $examData['purpose']; // 出題趣旨
-        // $reviewComment = $examData['review_comment']; // 採点講評
-
-        return <<<EOF
-                <Question>
-                <問題文>{$sentence}</問題文>
-                <設問と解答>{$questionAndAnswerText}</設問と解答>
-                </Question>
-                EOF;
-    }
-
-    // 設問を文字列に変換する
-    public function convertQuestionToString(array $questionArray): string
-    {
-        $text = $questionArray['text'];
-
-        // 選択肢の問題の場合は選択肢をデコードする
-        if ($questionArray['type'] === 'radio') {
-            $options = $questionArray['options'];
-
-            $choices = '';
-            foreach ($options as $option) {
-                $choices .= '('.$option['value'].') '.$option['label'].', ';
-            }
-
-            $text .= '[解答群:'.$choices.']';
-        }
-
-        return $text;
     }
 
     private string $systemPromptContent = <<<'EOM'

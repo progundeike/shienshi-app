@@ -34,9 +34,8 @@ class SlackNotification extends Notification
      * Get the Slack representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \IlluminateNotifications\SlackMessage
      */
-    public function toSlack($notifiable)
+    public function toSlack($notifiable): SlackMessage
     {
         return (new SlackMessage)
             ->content($this->message);
