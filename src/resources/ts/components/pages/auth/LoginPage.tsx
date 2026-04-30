@@ -44,16 +44,12 @@ export const LoginPage: FC = memo(() => {
     } = useForm<LoginFormInput>();
 
     const onSubmit = handleSubmit(async (data) => {
-        const errorResponse = await login(
-            data.username,
-            data.password,
-            emailVerifyQuery
-        );
+        const errorResponse = await login(data.username, data.password);
         if (!errorResponse) return;
         if ("errors" in errorResponse) {
             // エラーレスポンスを処理する
             for (const [field, message] of Object.entries(
-                errorResponse.errors
+                errorResponse.errors,
             )) {
                 if (["username", "password"].includes(field)) {
                     // バリデーションエラー
