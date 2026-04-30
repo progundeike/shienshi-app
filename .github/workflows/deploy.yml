@@ -29,6 +29,10 @@ jobs:
       - name: Pint(check)
         working-directory: src
         run: vendor/bin/pint --test
+
+      - name: PHPStan
+        working-directory: src
+        run: vendor/bin/phpstan analyse --no-progress
       
       - name: PHPUnit
         working-directory: src

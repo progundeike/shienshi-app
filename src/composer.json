@@ -43,7 +43,8 @@
     },
     "scripts": {
         "test": "php artisan test",
-        "pint:test": "vendor/bin/pint --test",
+        "pint": "vendor/bin/pint",
+        "phpstan": "vendor/bin/phpstan analyse",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
