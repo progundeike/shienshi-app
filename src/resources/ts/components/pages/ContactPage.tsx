@@ -29,7 +29,7 @@ export const ContactPage = () => {
         formState: { errors },
     } = useForm<InquiryInput>();
 
-    const { unexpectedServerErrorToast, toast } = useChakraToast();
+    const { showServerErrorToast, showSuccessToast } = useChakraToast();
     const qc = useQueryClient();
     const openedAt = useMemo(() => Math.floor(Date.now() / 1000), []); // ページが開かれた日時
 
@@ -44,13 +44,7 @@ export const ContactPage = () => {
         },
 
         onSuccess: () => {
-            toast({
-                title: "お問い合わせを送信しました",
-                status: "success",
-                duration: 6000,
-                isClosable: true,
-            });
-
+            showSuccessToast("お問い合わせを送信しました");
             reset();
         },
 
@@ -58,7 +52,7 @@ export const ContactPage = () => {
         onError: (err: AxiosError<any>) => {
             const errors = err.response?.data?.errors;
             if (!errors) {
-                toast(unexpectedServerErrorToast);
+                showServerErrorToast("お問い合わせの送信に失敗しました");
                 return;
             }
             Object.entries(errors).forEach(([field, messages]) => {

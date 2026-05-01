@@ -9,21 +9,20 @@ export type ExamSentenceResponse = {
     sentence: string;
     purpose: string;
     reviewComment: string;
-}
+};
 
 export const useAdmin = () => {
-    // const [isLoading, setIsLoading] = useAtom(loadingAtom);
-    const { unexpectedServerErrorToast, toast } = useChakraToast();
+    const { showServerErrorToast, showSuccessToast } = useChakraToast();
 
     // examSentenceを取得
     const getExamSentence = async (
         year: number,
         season: string,
-        section: number
+        section: number,
     ): Promise<ExamSentenceResponse | null> => {
         try {
             const response = await axiosInstance.get<ExamSentenceResponse>(
-                `/api/admin/sentence/${year}-${season}-${section}`
+                `/api/admin/sentence/${year}-${season}-${section}`,
             );
 
             return response.data;
@@ -31,17 +30,11 @@ export const useAdmin = () => {
             console.error("examSentenceの取得に失敗しました", error);
             if (axios.isAxiosError(error) && error.response) {
                 // サーバーからのエラーメッセージを表示
-                toast({
-                    title: "examSentenceの取得エラー",
-                    description: error.response.data,
-                    status: "error",
-                    duration: 6000,
-                    isClosable: true,
-                    position: "bottom-right",
-                });
+                showServerErrorToast("examSentenceの取得に失敗しました");
+                console.error("axiosエラー:", error.response.data);
                 return null;
             } else {
-                toast(unexpectedServerErrorToast);
+                showServerErrorToast("examSentenceの取得に失敗しました");
                 console.error(error);
                 return null;
             }
@@ -53,60 +46,44 @@ export const useAdmin = () => {
         year: number,
         season: string,
         section: number,
-        sentence: string|null,
-        purpose: string|null,
-        reviewComment: string|null,
+        sentence: string | null,
+        purpose: string | null,
+        reviewComment: string | null,
     ): Promise<void> => {
         // setIsLoading(true);
         try {
-            const response = await axiosInstance.put(
-                '/api/admin/sentence',
-                { year, season, section, sentence, purpose, reviewComment }
-            );
+            const response = await axiosInstance.put("/api/admin/sentence", {
+                year,
+                season,
+                section,
+                sentence,
+                purpose,
+                reviewComment,
+            });
             if (response.status === 200) {
-                toast({
-                    title: "examSentenceの更新に成功しました",
-                    status: "success",
-                    duration: 6000,
-                    isClosable: true,
-                });
+                showSuccessToast("examSentenceを更新しました");
             }
         } catch (error) {
             console.error("問題文の更新に失敗しました", error);
             if (axios.isAxiosError(error) && error.response) {
                 // サーバーからのエラーメッセージを表示
-                toast({
-                    title: "問題文の更新エラー",
-                    description: error.response.data,
-                    status: "error",
-
-                    duration: 6000,
-                    isClosable: true,
-                    position: "bottom-right",
-                });
+                showServerErrorToast("問題文の更新に失敗しました");
+                console.error("axiosエラー:", error.response.data);
             } else {
-                toast(unexpectedServerErrorToast);
+                showServerErrorToast("問題文の更新に失敗しました");
                 console.error(error);
             }
         }
     };
 
-    const updateExamQuestion = async (
-        data: UpdateQuestionInputs
-    ) => {
+    const updateExamQuestion = async (data: UpdateQuestionInputs) => {
         return await axiosInstance
             .post<ErrorResponse | string | null>("/api/admin/question", data)
             .then((response) => {
                 if (response.status !== 201) {
                     console.log(response.status);
-                    toast({
-                        title: "問題の更新に失敗しました",
-                        description: "サーバーからの応答が不正です",
-                        status: "error",
-                        duration: 6000,
-                        isClosable: true,
-                        position: "bottom-right",
-                    });
+                    showServerErrorToast("問題の更新に失敗しました");
+                    return null;
                 }
                 return response;
             })
@@ -115,27 +92,21 @@ export const useAdmin = () => {
                     // バリデーションエラー
                     return error;
                 } else {
-                    toast(unexpectedServerErrorToast);
+                    showServerErrorToast("問題の更新に失敗しました");
                     return null;
                 }
-            })
+            });
     };
 
     const uploadPdf = async (
         year: number,
         season: string,
         section: number,
-        file: File
+        file: File,
     ): Promise<void> => {
         try {
             if (!file || file.type !== "application/pdf") {
-                toast({
-                    title: "PDFファイルを選択してください",
-                    status: "warning",
-                    duration: 6000,
-                    isClosable: true,
-                    position: "bottom-right",
-                });
+                showServerErrorToast("PDFファイルを選択してください");
                 return;
             }
 
@@ -143,80 +114,54 @@ export const useAdmin = () => {
             formData.append("year", String(year));
             formData.append("season", season);
             formData.append("section", String(section));
-            formData.append("file", file)
+            formData.append("file", file);
 
             const response = await axiosInstance.post(
                 "/api/admin/upload-pdf",
-                formData
+                formData,
             );
 
             if (response.status === 201) {
-                toast({
-                    title: "PDFが正常にアップロードされました",
-                    status: "success",
-                    duration: 6000,
-                    isClosable: true,
-                    position: "bottom-right",
-                });
+                showSuccessToast("PDFが正常にアップロードされました");
             } else {
-                toast({
-                    title: "PDFのアップロードに失敗しました",
-                    status: "error",
-                    duration: 6000,
-                    isClosable: true,
-                    position: "bottom-right",
-                });
+                showServerErrorToast("PDFのアップロードに失敗しました");
             }
         } catch (error) {
             console.error("PDFのアップロードに失敗しました", error);
-            toast(unexpectedServerErrorToast);
+            showServerErrorToast("PDFのアップロードに失敗しました");
         }
     };
 
     const deletePdf = async (year: number, season: string, section: number) => {
         try {
-            const response =  await axiosInstance.delete(`/api/admin/delete-pdf/${year}-${season}-${section}`);
+            const response = await axiosInstance.delete(
+                `/api/admin/delete-pdf/${year}-${season}-${section}`,
+            );
 
             if (response.status !== 200) {
-                toast({
-                    title: "PDFの削除に失敗しました",
-                    status: "error",
-                    duration: 6000,
-                    isClosable: true,
-                    position: "bottom-right",
-                });
+                showServerErrorToast("PDFの削除に失敗しました");
             }
         } catch (error) {
             console.error("PDFの削除に失敗しました", error);
-            toast(unexpectedServerErrorToast);
+            showServerErrorToast("PDFの削除に失敗しました");
         }
-    }
-    
+    };
 
     const getModelAnswers = async (
-        examCode: string
+        examCode: string,
     ): Promise<ModelAnswer[] | null> => {
-        return  await axiosInstance.get<ModelAnswer[] | null>(
-            `/api/admin/model-answers/${examCode}`
-        )
+        return await axiosInstance
+            .get<ModelAnswer[] | null>(`/api/admin/model-answers/${examCode}`)
             .then((response) => {
                 if (response.status === 200) {
                     return response.data;
                 }
-                console.log(response)
+                console.log(response);
                 return null;
-            }
-            )
+            })
             .catch((error) => {
                 if (error.response && error.response.status === 404) {
-                    toast({
-                        title: "模範解答が見つかりません",
-                        description: "指定された試験の模範解答が存在しません。",
-                        status: "error",
-                        duration: 6000,
-                        isClosable: true,
-                        position: "bottom-right",
-                    });
+                    showServerErrorToast("模範解答が見つかりません");
                     return null;
                 }
 
@@ -225,58 +170,52 @@ export const useAdmin = () => {
                     return null;
                 }
 
-                toast(unexpectedServerErrorToast);
+                showServerErrorToast("模範解答の取得に失敗しました");
                 console.error(error);
                 return null;
-            }
-        );  
-    }
+            });
+    };
 
     type UpdateModelAnswerParams = {
-        modelAnswers: {answers: Answer[]};
+        modelAnswers: { answers: Answer[] };
         examCode: string;
-    }
+    };
 
-    const updateModelAnswers = useMutation<void, Error, UpdateModelAnswerParams>({
-        mutationFn: async ({examCode, modelAnswers}) => {
-            await axiosInstance.post(
-                `/api/admin/model-answers/${examCode}`,
-                {modelAnswers}
-            );
-        },
-        onSuccess: () => {
-            toast({
-                title: "模範解答の更新に成功しました",
-                status: "success",
-                duration: 6000,
-                isClosable: true,
+    const updateModelAnswers = useMutation<
+        void,
+        Error,
+        UpdateModelAnswerParams
+    >({
+        mutationFn: async ({ examCode, modelAnswers }) => {
+            await axiosInstance.post(`/api/admin/model-answers/${examCode}`, {
+                modelAnswers,
             });
         },
-        onError: () => toast(unexpectedServerErrorToast),
+        onSuccess: () => {
+            showServerErrorToast("模範解答を更新しました");
+        },
+        onError: () => showServerErrorToast("模範解答の更新に失敗しました"),
     });
 
     type DeleteQuestionIdParams = {
         questionCode: string;
         examCode: string;
-    }
+    };
 
     const deleteQuestion = useMutation<void, Error, DeleteQuestionIdParams>({
-        mutationFn: async ({examCode, questionCode}) => {
-            await axiosInstance.delete(`/api/admin/question/${examCode}/${questionCode}`);
+        mutationFn: async ({ examCode, questionCode }) => {
+            await axiosInstance.delete(
+                `/api/admin/question/${examCode}/${questionCode}`,
+            );
         },
         onSuccess: () => {
-            toast({
-                title: "問題の削除に成功しました",
-                status: "success",
-                duration: 6000,
-                isClosable: true,
-            });
+            showSuccessToast("問題を削除しました");
         },
-        onError: () => toast(unexpectedServerErrorToast),
+        onError: () => showServerErrorToast("問題の削除に失敗しました"),
     });
 
     const getQuestionsForEdit = async (
-        examCode: string
+        examCode: string,
     ): Promise<QuestionForEdit[] | null> => {
         return await axiosInstance
             .get(`/api/admin/questions/${examCode}`)
@@ -285,26 +224,25 @@ export const useAdmin = () => {
             })
             .catch((error) => {
                 if (error.response && error.response.status === 404) {
-                    toast({
-                        title: "設問が見つかりません",
-                        description: "指定された試験の設問が存在しません。",
-                        status: "error",
-                        duration: 6000,
-                        isClosable: true,
-                        position: "bottom-right",
-                    });
+                    showServerErrorToast("設問が見つかりません");
                     return null;
                 }
 
-                toast(unexpectedServerErrorToast);
+                showServerErrorToast("設問の取得に失敗しました");
                 console.error(error);
                 return null;
             });
     };
 
-
-
-
-
-    return { getExamSentence, updateExamSentence, updateExamQuestion, uploadPdf, getModelAnswers, updateModelAnswers, deleteQuestion, getQuestionsForEdit, deletePdf };
-}
+    return {
+        getExamSentence,
+        updateExamSentence,
+        updateExamQuestion,
+        uploadPdf,
+        getModelAnswers,
+        updateModelAnswers,
+        deleteQuestion,
+        getQuestionsForEdit,
+        deletePdf,
+    };
+};

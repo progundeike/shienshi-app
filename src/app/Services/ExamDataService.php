@@ -7,10 +7,11 @@ use App\Models\ModelAnswer;
 use App\Models\Question;
 use App\Models\UserAnswer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
 
 class ExamDataService
 {
-    // // 大問または設問番号を指定して設問を取得する
+    // 大問または設問番号を指定して設問を取得する
     public function fetchExamQuestionsForPublic(string $examCode, ?string $questionCode = null): ?array
     {
         $query = Question::where('exam_code', $examCode);
@@ -141,6 +142,8 @@ class ExamDataService
 
         $mapOptions = array_column($examQuestions, 'options', 'questionCode');
 
+        Log::debug('Mapping of questionCode to options', ['mapOptions' => $mapOptions]);
+
         $userAnswerText = '';
         for ($i = 0; $i < $length; $i++) {
             $userAnswerText .= '[questionCode:'.$userAnswers[$i]['questionCode'].']';
@@ -154,7 +157,11 @@ class ExamDataService
             $optionsForQuestion = $mapOptions[$questionCode] ?? null;
 
             if (is_array($optionsForQuestion) && isset($optionsForQuestion[0]['label'])) {
-                $userAnswerText .= $optionsForQuestion[0]['label'];
+                // 設問識別のためのlabelをユーザー回答テキストの先頭に追加
+                // 設問識別用ラベルはoptionsのcountが1のみ存在する前提
+                if (count($optionsForQuestion) === 1) {
+                    $userAnswerText .= $optionsForQuestion[0]['label'];
+                }
             }
 
             if ($userAnswers[$i]['userText']) {

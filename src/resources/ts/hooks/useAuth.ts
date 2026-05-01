@@ -1,4 +1,3 @@
-import { useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
@@ -8,29 +7,14 @@ import { User } from "../types/user";
 import { axiosInstance } from "./axiosInstance";
 import { loadingAtom } from "../states/loadingAtom";
 import { userAtom } from "../states/userAtom";
-
-const showServerErrorToast = (
-    toast: ReturnType<typeof useToast>,
-    title: string,
-) => {
-    toast({
-        title: title,
-        description:
-            "サーバーに不具合が発生しています。しばらく経ってから再度お試しください",
-        status: "error",
-        duration: 6000,
-        isClosable: true,
-        position: "bottom-right",
-    });
-};
+import { useChakraToast } from "../utils/toastUtils";
 
 export const useAuth = () => {
     const [, setIsLoading] = useAtom(loadingAtom);
-
     const [, setUser] = useAtom(userAtom);
+    const { showServerErrorToast, showSuccessToast } = useChakraToast();
 
     const navigate = useNavigate();
-    const toast = useToast();
 
     const login = async (
         username: string,
@@ -49,18 +33,23 @@ export const useAuth = () => {
             if (axios.isAxiosError(error)) {
                 const status = error.response?.status;
 
+                // 401
+                if (status === 401) {
+                    console.log("useAuth: 401");
+                }
+
                 // バリデーション、認証失敗
                 if (status === 422) {
                     return (error.response?.data as ErrorResponse) ?? null;
                 }
 
                 // その他HTTPエラー
-                showServerErrorToast(toast, "ログインエラー");
+                showServerErrorToast("ログインエラー");
                 return null;
             }
 
             // Axios以外の予期しないエラー
-            showServerErrorToast(toast, "ログインエラー");
+            showServerErrorToast("ログインエラー");
             return null;
         }
     };
@@ -83,7 +72,7 @@ export const useAuth = () => {
                 }
 
                 // その他HTTPエラー
-                showServerErrorToast(toast, "ログアウトに失敗しました");
+                showServerErrorToast("ログアウトに失敗しました");
             }
         }
     };
@@ -110,11 +99,11 @@ export const useAuth = () => {
                     return (error.response?.data as ErrorResponse) ?? null;
                 }
                 // その他HTTPエラー
-                showServerErrorToast(toast, "ユーザー登録エラー");
+                showServerErrorToast("ユーザー登録エラー");
                 return null;
             }
             // Axios以外の予期しないエラー
-            showServerErrorToast(toast, "ユーザー登録エラー");
+            showServerErrorToast("ユーザー登録エラー");
             return null;
         }
     };
@@ -149,23 +138,9 @@ export const useAuth = () => {
             await axiosInstance.delete("/api/user");
             setUser(null);
             navigate("/");
-            toast({
-                title: "アカウントを削除しました。",
-                status: "success",
-                duration: 6000,
-                isClosable: true,
-                position: "bottom-right",
-            });
+            showSuccessToast("アカウントを削除しました。");
         } catch (error: unknown) {
-            toast({
-                title: "アカウントの削除に失敗しました",
-                description:
-                    "サーバーに不具合が発生しています。しばらく経ってから再度お試しください",
-                status: "error",
-                duration: 9000,
-                isClosable: true,
-                position: "bottom-right",
-            });
+            showServerErrorToast("アカウントの削除に失敗しました");
         } finally {
             setIsLoading(false);
         }
@@ -182,13 +157,7 @@ export const useAuth = () => {
                 new_password,
                 new_password_confirmation,
             });
-            toast({
-                title: "パスワードを変更しました",
-                status: "success",
-                duration: 9000,
-                isClosable: true,
-                position: "bottom-right",
-            });
+            showSuccessToast("パスワードを変更しました。");
             navigate("/my-page");
             return null;
         } catch (error: unknown) {
@@ -201,15 +170,8 @@ export const useAuth = () => {
             }
 
             // その他のエラー
-            toast({
-                title: "パスワードの変更に失敗しました",
-                description:
-                    "サーバーに不具合が発生しています。しばらく経ってから再度お試しください",
-                status: "error",
-                duration: 9000,
-                isClosable: true,
-                position: "bottom-right",
-            });
+            showServerErrorToast("パスワードの変更に失敗しました");
+
             return null;
         }
     };

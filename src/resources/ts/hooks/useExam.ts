@@ -12,7 +12,7 @@ export type FetchedQuestion = {
     type: "radio" | "checkbox" | "input" | "textarea";
     text: string;
     options: Option[] | null; // JSON文字列
-    maxLength: number | null
+    maxLength: number | null;
 };
 
 export type QuestionForEdit = {
@@ -25,13 +25,13 @@ export type QuestionForEdit = {
     text: string;
     textForAi: string | null;
     options: Option[] | null; // JSON文字列
-    maxLength: number | null
+    maxLength: number | null;
 };
 
 export type Option = {
     label: string;
     value: string;
-}
+};
 
 export type SubmittedExam = {
     year: number;
@@ -39,51 +39,43 @@ export type SubmittedExam = {
     section: number;
     season_japanese: string;
     section_converted: string;
-}
+};
 
 export type UpdateQuestionInputs = {
-        examCode: string;
-        questionNumber: number;
-        subQuestionNumber: number;
-        smallQuestionNumber: number | null;
-        type: "radio" | "checkbox" | "input" | "textarea";
-        text: string;
-        textForAi: string | null;
-        options: Option[] | null; // JSON文字列
-        maxLength: number | null;
-    };
+    examCode: string;
+    questionNumber: number;
+    subQuestionNumber: number;
+    smallQuestionNumber: number | null;
+    type: "radio" | "checkbox" | "input" | "textarea";
+    text: string;
+    textForAi: string | null;
+    options: Option[] | null; // JSON文字列
+    maxLength: number | null;
+};
 
 export const useExam = () => {
-    const { unexpectedServerErrorToast, toast } = useChakraToast();
+    const { showServerErrorToast } = useChakraToast();
 
     const fetchQuestions = async (
         year: number,
         season: string,
-        section: number
+        section: number,
     ): Promise<FetchedQuestion[] | null> => {
         const examCode = `${year}_${season}_${section}`;
         return await axiosInstance
             .get(`/api/questions/${examCode}`)
             .then((response) => {
                 return response.data;
-                
             })
             .catch((error) => {
                 if (error.response && error.response.status === 404) {
-                    toast({
-                        title: "設問が見つかりません",
-                        description: "指定された試験の設問が存在しません。",
-                        status: "error",
-                        duration: 6000,
-                        isClosable: true,
-                        position: "bottom-right",
-                    });
+                    showServerErrorToast("設問が見つかりません");
                     return null;
                 }
 
-                toast(unexpectedServerErrorToast);
+                showServerErrorToast("設問の取得に失敗しました");
                 return null;
-            })
+            });
     };
 
     // 提出済みの試験一覧を取得
@@ -94,16 +86,16 @@ export const useExam = () => {
                 return response.data;
             })
             .catch((error) => {
-                toast(unexpectedServerErrorToast);
+                showServerErrorToast("提出済み試験の取得に失敗しました");
                 console.error(error);
                 return null;
-            })
-    }
+            });
+    };
 
     const checkPdfExists = async (
         year: number,
         season: string,
-        section: number
+        section: number,
     ) => {
         return await axiosInstance
             .get(`/api/exam/${year}-${season}-${section}`)
@@ -119,13 +111,11 @@ export const useExam = () => {
                     return false;
                 }
 
-                toast(unexpectedServerErrorToast);
+                showServerErrorToast("PDFの確認に失敗しました");
                 console.error(error);
                 return null;
             });
-    }
-
-    
+    };
 
     return { fetchQuestions, fetchSubmittedExams, checkPdfExists };
 };

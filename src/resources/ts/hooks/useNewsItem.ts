@@ -5,7 +5,7 @@ import { axiosInstance } from "./axiosInstance";
 import { get } from "react-hook-form";
 
 export const useNewsItem = () => {
-    const { unexpectedServerErrorToast, toast } = useChakraToast();
+    const { showServerErrorToast, showSuccessToast } = useChakraToast();
 
     const qc = useQueryClient();
 
@@ -15,30 +15,22 @@ export const useNewsItem = () => {
         queryFn: async () => {
             const response = await axiosInstance.get(`/api/news`);
             return response.data;
-        }
+        },
     });
-    
+
     const updateNewsItem = useMutation({
-            mutationFn: async (data: NewsItem) => {
-                await axiosInstance.post(
-                    `/api/admin/news`,
-                    data
-                );
-            },
-            onSuccess: () => {
-                qc.invalidateQueries({ queryKey: ["newsItems"] });
-                toast({
-                    title: "お知らせを保存しました",
-                    status: "success",
-                    duration: 6000,
-                    isClosable: true,
-                });
-            },
-            onError: (err: any) => {
-                if (err?.response?.status === 422) throw err;
-                toast(unexpectedServerErrorToast);
-            } 
-        });
+        mutationFn: async (data: NewsItem) => {
+            await axiosInstance.post(`/api/admin/news`, data);
+        },
+        onSuccess: () => {
+            qc.invalidateQueries({ queryKey: ["newsItems"] });
+            showSuccessToast("お知らせを保存しました");
+        },
+        onError: (err: any) => {
+            if (err?.response?.status === 422) throw err;
+            showServerErrorToast("お知らせの保存に失敗しました");
+        },
+    });
 
     const deleteNewsItem = useMutation({
         mutationFn: async (id: number) => {
@@ -46,18 +38,16 @@ export const useNewsItem = () => {
         },
         onSuccess: () => {
             qc.invalidateQueries({ queryKey: ["newsItems"] });
-            toast({
-                title: "お知らせを削除しました",
-                status: "success",
-                duration: 6000,
-                isClosable: true,
-            });
+            showSuccessToast("お知らせを削除しました");
         },
-        onError: () => toast(unexpectedServerErrorToast),
+        onError: () => {
+            showServerErrorToast("お知らせの削除に失敗しました");
+        },
     });
 
-
     return {
-        newsItemList, updateNewsItem, deleteNewsItem
+        newsItemList,
+        updateNewsItem,
+        deleteNewsItem,
     };
-}
+};

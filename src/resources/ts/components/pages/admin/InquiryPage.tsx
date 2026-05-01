@@ -7,7 +7,7 @@ import { useChakraToast } from "../../../utils/toastUtils";
 import { Inquiry } from "../../../types/form";
 
 export const InquiryPage: FC = memo(() => {
-    const { unexpectedServerErrorToast, toast } = useChakraToast();
+    const { showServerErrorToast, showSuccessToast } = useChakraToast();
     const qc = useQueryClient();
 
     const { data: inquiries = [] } = useQuery({
@@ -24,16 +24,10 @@ export const InquiryPage: FC = memo(() => {
         },
         onSuccess: () => {
             qc.invalidateQueries({ queryKey: ["inquiries"] });
-            toast({
-                title: `お問い合わせを削除しました`,
-                status: "success",
-                duration: 4000,
-                isClosable: true,
-                position: "bottom-right",
-            });
+            showSuccessToast("お問い合わせを削除しました");
         },
         onError: () => {
-            toast(unexpectedServerErrorToast);
+            showServerErrorToast("お問い合わせの削除に失敗しました");
         },
     });
 
@@ -59,7 +53,7 @@ export const InquiryPage: FC = memo(() => {
                                         minute: "2-digit",
                                         hour12: false,
                                         timeZone: "Asia/Tokyo",
-                                    }
+                                    },
                                 )}
                             </Text>
                             <Text>お名前: {inquiry.name}</Text>

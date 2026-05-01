@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Exceptions\AiRequestInProgressException;
 use App\Exceptions\AiResponseException;
 use App\Http\Requests\AnswerRequest;
-use App\Models\Question;
 use App\Models\SubmittedExam;
 use App\Models\UserAnswer;
 use App\Services\AiClientService;
@@ -30,6 +29,7 @@ class AnswerController extends Controller
 
     public function answerSubmit(AnswerRequest $request)
     {
+        Log::debug('raw answers payload', ['answers' => $request->validated('answers')]);
         $start = microtime(true);
         $processingKey = null;
         $lockAcquired = false;
@@ -75,6 +75,8 @@ class AnswerController extends Controller
                 ],
             ];
 
+            // Log::debug('AI grading prompt', ['prompt' => $prompt]);
+
             // AIに投げる
             $openAiResponse = $this->aiClientService->useFunctionCall($prompt, $this->functionParameter);
             if (! $openAiResponse) {
@@ -86,7 +88,6 @@ class AnswerController extends Controller
             $evaluations = $arguments['evaluations'];
 
             $aiResponseMap = $this->buildAiResponseMap($evaluations);
-            Log::debug('AI response map', ['aiResponseMap' => $aiResponseMap]);
             $rows = $this->buildUpsertRows($userAnswers, $aiResponseMap, $modelAnswers, $examCode, $userId);
 
             DB::transaction(function () use ($rows, $userId, $examCode) {
@@ -105,11 +106,13 @@ class AnswerController extends Controller
             return response()->json(['message' => '前のAI処理がまだ実行中です。少し待ってから再度お試しください'], 429);
         } catch (ModelNotFoundException $e) {
             Log::error('Required resource not found in AnswerController::answerSubmit', [
-                'examCode' => $examCode,
+                'error' => $e,
             ]);
 
             return response()->json(['message' => 'Required exam data not found'], 404);
         } catch (AiResponseException $e) {
+            Log::error('AI response error in AnswerController::answerSubmit', ['error' => $e]);
+
             return response()->json(['message' => 'AIとの接続に不具合が生じております。しばらく経ってから再度お試しください。'], 502);
         } catch (Throwable $e) {
             Log::error('Unexpected error in AnswerController::answerSubmit', ['error' => $e]);
@@ -150,7 +153,6 @@ class AnswerController extends Controller
 
     private function buildAiResponseMap(array $evaluations): array
     {
-        Log::debug('Building AI response map', ['evaluations' => $evaluations]);
         $aiResponseMap = [];
         foreach ($evaluations as $evaluation) {
             $aiResponseMap[$evaluation['questionCode']] = [
@@ -158,8 +160,6 @@ class AnswerController extends Controller
                 'ai_text' => $evaluation['comment'],
             ];
         }
-
-        Log::debug('AI response map', ['map' => $aiResponseMap]);
 
         return $aiResponseMap;
     }

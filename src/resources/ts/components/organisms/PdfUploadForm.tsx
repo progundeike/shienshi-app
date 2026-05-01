@@ -13,7 +13,6 @@ type Props = {
 
 export const PdfUploadForm: FC<Props> = memo((props) => {
     const { year, season, section } = props;
-    const toast = useToast();
     const { uploadPdf, deletePdf } = useAdmin();
     const inputRef = useRef<HTMLInputElement>(null);
 
