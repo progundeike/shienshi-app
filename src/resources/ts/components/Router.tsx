@@ -31,11 +31,13 @@ import { useAtom } from "jotai";
 import { userAtom } from "../states/userAtom";
 import { ContactPage } from "./pages/ContactPage";
 import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
+import { useChakraToast } from "../utils/toastUtils";
 
 export const Router: FC = memo(() => {
     const { getUser } = useAuth();
-    const [user, setUser] = useAtom(userAtom);
+    const [, setUser] = useAtom(userAtom);
     const navigate = useNavigate();
+    const { showWarningToast } = useChakraToast();
 
     useEffect(() => {
         getUser();
@@ -45,6 +47,10 @@ export const Router: FC = memo(() => {
         const onExpired = () => {
             console.log("Authentication expired.");
             setUser(null);
+
+            showWarningToast(
+                "認証の有効期限が切れました。再度ログインしてください。",
+            );
 
             navigate("/login", {
                 replace: true,

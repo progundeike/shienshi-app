@@ -44,23 +44,26 @@ export const useAnswer = () => {
         } catch (error) {
             console.log(error);
 
-            // 401 Unauthorized（認証切れ）エラーのときは特別なトーストを表示
-            if (axios.isAxiosError(error) && error.response?.status === 401) {
-                console.log("answer: Authentication expired ");
-                return null;
-            }
+            // axiosのエラー処理
+            if (axios.isAxiosError(error)) {
+                // 401 Unauthorized（認証切れ
+                if (error.response?.status === 401) {
+                    return null;
+                }
 
-            // 429 Too Many Requests（多重送信）エラーのときは特別なトーストを表示
-            if (axios.isAxiosError(error) && error.response?.status === 429) {
-                toast({
-                    title: "他の処理が進行中です",
-                    description:
-                        "AIが現在あなたの答案を添削しています。少し待ってから再度提出してください。",
-                    status: "warning",
-                    duration: 6000,
-                    isClosable: true,
-                    position: "bottom-right",
-                });
+                // 429 Too Many Requests（多重送信）エラーのときは特別なトーストを表示
+                if (error.response?.status === 429) {
+                    toast({
+                        title: "他の処理が進行中です",
+                        description:
+                            "AIが現在あなたの答案を添削しています。少し待ってから再度提出してください。",
+                        status: "warning",
+                        duration: 6000,
+                        isClosable: true,
+                        position: "bottom-right",
+                    });
+                }
+
                 return null;
             }
 
@@ -101,7 +104,11 @@ export const useAnswer = () => {
 
             return null;
         } catch (error) {
-            console.log("fetchCorrection error");
+            // 401認証切れのときはRouterのイベントリスナーで捕捉するため、ここではトーストを表示せずnullを返す
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                return null;
+            }
+
             showServerErrorToast("添削結果の取得に失敗しました");
             console.error(error);
             return null;
@@ -120,6 +127,11 @@ export const useAnswer = () => {
                 `/api/answer/${year}-${season}-${section}`,
             );
         } catch (error) {
+            // 401認証切れのときはRouterのイベントリスナーで捕捉するため、ここではトーストを表示せずnullを返す
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                return;
+            }
+
             showServerErrorToast("答案の削除に失敗しました");
             console.error(error);
         }
@@ -129,13 +141,18 @@ export const useAnswer = () => {
         year: number,
         season: string,
         section: number,
-    ): Promise<"processing" | "idle"> => {
+    ): Promise<"processing" | "idle" | null> => {
         try {
             const response = await axiosInstance.get<{
                 status: "processing" | "idle";
             }>(`/api/answer-processing-status/${year}_${season}_${section}`);
             return response.data.status;
         } catch (error) {
+            // 401認証切れのときはRouterのイベントリスナーで捕捉するため、ここではトーストを表示せずnullを返す
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                return null;
+            }
+
             showServerErrorToast("処理状況の取得に失敗しました");
             console.error(error);
             return "idle";

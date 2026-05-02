@@ -33,9 +33,8 @@ export const useAuth = () => {
             if (axios.isAxiosError(error)) {
                 const status = error.response?.status;
 
-                // 401
                 if (status === 401) {
-                    console.log("useAuth: 401");
+                    return null;
                 }
 
                 // バリデーション、認証失敗
@@ -94,6 +93,8 @@ export const useAuth = () => {
             if (axios.isAxiosError(error)) {
                 const status = error.response?.status;
 
+                if (status === 401) return null;
+
                 // バリデーションエラー
                 if (status === 422) {
                     return (error.response?.data as ErrorResponse) ?? null;
@@ -122,6 +123,7 @@ export const useAuth = () => {
                 if (status === 401) {
                     // 未ログイン状態と判定
                     setUser(null);
+                    return null;
                 }
             } else {
                 console.error("ユーザー情報の取得に失敗しました", error);

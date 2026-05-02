@@ -1,4 +1,5 @@
 import { useAtom } from "jotai";
+import axios from "axios";
 
 import { axiosInstance } from "./axiosInstance";
 import { useChakraToast } from "../utils/toastUtils";
@@ -68,9 +69,13 @@ export const useExam = () => {
                 return response.data;
             })
             .catch((error) => {
-                if (error.response && error.response.status === 404) {
-                    showServerErrorToast("設問が見つかりません");
-                    return null;
+                // axiosのエラー
+                if (axios.isAxiosError(error)) {
+                    if (error.response?.status === 401) return null;
+                    if (error.response?.status === 404) {
+                        showServerErrorToast("設問が見つかりません");
+                        return null;
+                    }
                 }
 
                 showServerErrorToast("設問の取得に失敗しました");
@@ -86,6 +91,8 @@ export const useExam = () => {
                 return response.data;
             })
             .catch((error) => {
+                if (axios.isAxiosError(error) && error.response?.status === 401)
+                    return null;
                 showServerErrorToast("提出済み試験の取得に失敗しました");
                 console.error(error);
                 return null;
@@ -107,7 +114,10 @@ export const useExam = () => {
                 return null;
             })
             .catch((error) => {
-                if (error.response && error.response.status === 404) {
+                if (
+                    axios.isAxiosError(error) &&
+                    error.response?.status === 404
+                ) {
                     return false;
                 }
 
