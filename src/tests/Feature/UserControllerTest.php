@@ -82,4 +82,31 @@ class UserControllerTest extends TestCase
         $this->assertEquals('new_test_user', $responseData['username']);
         $this->assertEquals(false, $responseData['isAdmin']);
     }
+
+    #[Test]
+    public function ユーザー登録ができる(): void
+    {
+        $response = $this->postJson('/api/register', [
+            'username' => 'new_user',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ]);
+
+        $response->assertStatus(201);
+        $responseData = $response->json();
+        $this->assertEquals('new_user', $responseData['username']);
+        $this->assertEquals(false, $responseData['isAdmin']);
+    }
+
+    #[Test]
+    public function パスワード再入力を誤るとユーザー登録ができない(): void
+    {
+        $response = $this->postJson('/api/register', [
+            'username' => 'new_user2',
+            'password' => 'password',
+            'password_confirmation' => 'wrong_password',
+        ]);
+
+        $response->assertStatus(422);
+    }
 }

@@ -14,7 +14,7 @@ import {
     InputRightElement,
     Text,
 } from "@chakra-ui/react";
-import { memo, FC, useEffect, useState } from "react";
+import { memo, FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
 import { Link } from "react-router-dom";

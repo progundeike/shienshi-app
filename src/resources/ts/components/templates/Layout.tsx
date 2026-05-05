@@ -16,7 +16,7 @@ export const Layout: FC<Props> = memo(({ children }) => {
     return (
         <Flex direction="column" minH="100vh" overflow="hidden">
             <Header />
-            <Box minH="80vh">{children}</Box>
+            <Box flex="1">{children}</Box>
             <Divider />
             {!isTopPage ? <Footer /> : <TopPageFooter />}
         </Flex>

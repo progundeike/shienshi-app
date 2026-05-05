@@ -20,6 +20,7 @@ export const useAuth = () => {
         username: string,
         password: string,
     ): Promise<ErrorResponse | null> => {
+        setIsLoading(true);
         try {
             const response = await axiosInstance.post<User>("/api/login", {
                 username,
@@ -50,6 +51,8 @@ export const useAuth = () => {
             // Axios以外の予期しないエラー
             showServerErrorToast("ログインエラー");
             return null;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -79,11 +82,13 @@ export const useAuth = () => {
     const registerUser = async (
         props: RegisterFormInput,
     ): Promise<ErrorResponse | null> => {
-        const { username, password } = props;
+        const { username, password, password_confirmation } = props;
+        setIsLoading(true);
         try {
             const response = await axiosInstance.post<User>("/api/register", {
                 username: username,
                 password: password,
+                password_confirmation: password_confirmation,
             });
             setUser(response.data);
             navigate("/my-page");
@@ -106,6 +111,8 @@ export const useAuth = () => {
             // Axios以外の予期しないエラー
             showServerErrorToast("ユーザー登録エラー");
             return null;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -135,8 +142,8 @@ export const useAuth = () => {
     };
 
     const deleteUser = async () => {
+        setIsLoading(true);
         try {
-            setIsLoading(true);
             await axiosInstance.delete("/api/user");
             setUser(null);
             navigate("/");
@@ -153,6 +160,7 @@ export const useAuth = () => {
         new_password: string,
         new_password_confirmation: string,
     ): Promise<ErrorResponse | null> => {
+        setIsLoading(true);
         try {
             await axiosInstance.put("/api/user/password", {
                 current_password,
@@ -175,6 +183,8 @@ export const useAuth = () => {
             showServerErrorToast("パスワードの変更に失敗しました");
 
             return null;
+        } finally {
+            setIsLoading(false);
         }
     };
 

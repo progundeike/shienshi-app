@@ -139,12 +139,16 @@ class AnswerControllerTest extends TestCase
         ];
 
         // ロックを解除しておく
-        $examCode = $payLoad['year'] . '_' . $payLoad['season'] . '_' . $payLoad['section'];
+        $examCode = $payLoad['year'].'_'.$payLoad['season'].'_'.$payLoad['section'];
         $processingKey = "answer_processing:{$user->id}:{$examCode}";
         Cache::store('redis')->forget($processingKey);
 
         $this->mock(AiClientService::class, function (MockInterface $mock) {
-            $mock->allows('useFunctionCall')
+            /** @var \Mockery\Expectation $exception */
+            $exception = $mock->shouldReceive('useFunctionCall');
+
+            $exception
+                ->once()
                 ->andThrow(new AiResponseException('AI failed'));
         });
 

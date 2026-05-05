@@ -14,4 +14,9 @@ small_question_number = 2以降はtextは’’で空文字を格納する。opt
 
 ## デプロイ
 
-デプロイ前にappコンテナで./scripts/preflight.shでCIを実行
+デプロイ前にappコンテナ内で./scripts/preflight.shでCIを実行
+
+## バックアップ
+
+php artisan export:exam-data
+questions, exam_sentences, model_answersテーブルをjsonで、database/seeders/dataにエクスポートする

@@ -12,6 +12,10 @@ class AiClientService
 {
     private const USD_TO_JPY = 156.0;
 
+    private const MAX_RETRIES = 3;
+
+    private const RETRY_SLEEP_SECONDS = 1;
+
     private const PRICES = [
         'gpt-5-nano' => ['in' => 0.05, 'cached_in' => 0.01, 'out' => 0.40],
         'gpt-5-mini' => ['in' => 0.25, 'cached_in' => 0.03, 'out' => 2.00],
@@ -24,36 +28,50 @@ class AiClientService
 
     public function chat(array $prompt)
     {
-        $retryCount = 0;
-        $maxRetries = 3;
-        $result = null;
+        $lastFinishReason = 'unknown';
+        $lastException = null;
 
-        // TODO: finishReasonだけで判定しているが、普通に接続がタイムアウトなどが考慮されていない
-        try {
-            do {
+        for ($attempt = 1; $attempt <= self::MAX_RETRIES; $attempt++) {
+            try {
                 $result = OpenAI::chat()->create([
                     'model' => $this->model,
                     'messages' => $prompt,
                 ]);
-                $this->debugTokenCosts($result->usage);
 
-                $retryCount++;
-            } while ($result->choices[0]->finishReason !== 'stop' && $retryCount < $maxRetries);
-        } catch (Throwable $e) {
-            Log::error('OpenAI request failed', ['error' => $e->getMessage()]);
-            throw new AiResponseException('OpenAI request failed', 0, $e);
+                // トークンコストを一時的にデバッグ
+                $this->debugTokenCosts($result);
+
+                $finishReason = $result->choices[0]->finishReason ?? 'unknown';
+                $lastFinishReason = $finishReason;
+
+                if ($finishReason === 'stop') {
+                    return $result;
+                }
+
+                Log::warning('OpenAI returned unexpected finishReason', [
+                    'finish_reason' => $lastFinishReason,
+                    'attempt' => $attempt,
+                ]);
+            } catch (Throwable $e) {
+                $lastException = $e;
+
+                Log::warning('OpenAI request attempt failed', [
+                    'attempt' => $attempt,
+                    'exception' => $e::class,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+
+            if ($attempt < self::MAX_RETRIES) {
+                sleep(self::RETRY_SLEEP_SECONDS); // 指定された秒数待ってリトライ
+            }
         }
 
-        $finishReason = 'unknown';
-        if (isset($result->choices[0]->finishReason)) {
-            $finishReason = $result->choices[0]->finishReason;
+        if ($lastException !== null) {
+            throw new AiResponseException('OpenAI request failed', 0, $lastException);
         }
 
-        if ($finishReason !== 'stop') {
-            throw new AiResponseException('Unexpected finishReason: '.$finishReason);
-        }
-
-        return $result;
+        throw new AiResponseException('Unexpected finishReason: '.$lastFinishReason);
     }
 
     public function useFunctionCall(array $prompt, array $functionParameter)
@@ -92,10 +110,16 @@ class AiClientService
         return $result;
     }
 
-    private function debugTokenCosts(object $usage): void
+    private function debugTokenCosts(object $result): void
     {
+        if (! isset($result->usage)) {
+            Log::debug('No usage data available for token cost calculation');
+
+            return;
+        }
+
         Log::debug('run debugTokenCosts');
-        $usage = (array) $usage;
+        $usage = (array) $result->usage;
 
         if (! isset(self::PRICES[$this->model])) {
             throw new InvalidArgumentException("Unknown model pricing: {$this->model}");
