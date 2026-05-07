@@ -76,6 +76,7 @@ class AnswerController extends Controller
             ];
 
             // Log::debug('AI grading prompt', ['prompt' => $prompt]);
+            // return response()->json(['message' => 'dummy response'], 201);
 
             // AIに投げる
             $openAiResponse = $this->aiClientService->useFunctionCall($prompt, $this->functionParameter);

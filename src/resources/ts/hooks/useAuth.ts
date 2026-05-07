@@ -22,10 +22,16 @@ export const useAuth = () => {
     ): Promise<ErrorResponse | null> => {
         setIsLoading(true);
         try {
-            const response = await axiosInstance.post<User>("/api/login", {
-                username,
-                password,
-            });
+            const response = await axiosInstance.post<User>(
+                "/api/login",
+                {
+                    username,
+                    password,
+                },
+                {
+                    meta: { silent401: true }, // 401エラーでイベントを発火させない
+                },
+            );
 
             setUser(response.data);
             return null;
@@ -58,7 +64,13 @@ export const useAuth = () => {
 
     const logout = async () => {
         try {
-            await axiosInstance.post<User>("/api/logout");
+            await axiosInstance.post<User>(
+                "/api/logout",
+                {},
+                {
+                    meta: { silent401: true }, // 401エラーでイベントを発火させない
+                },
+            );
             setUser(null);
             navigate("/");
         } catch (error: unknown) {
@@ -98,6 +110,7 @@ export const useAuth = () => {
             if (axios.isAxiosError(error)) {
                 const status = error.response?.status;
 
+                // TODO: 想定外の401エラーのハンドリング
                 if (status === 401) return null;
 
                 // バリデーションエラー
@@ -119,23 +132,21 @@ export const useAuth = () => {
     const getUser = async () => {
         setIsLoading(true);
         try {
-            const response = await axiosInstance.get<User>("/api/user");
+            const response = await axiosInstance.get<User>("/api/user", {
+                meta: { silent401: true }, // 401エラーでイベントを発火させない
+            });
             if (response.data.username) {
                 setUser(response.data);
             }
         } catch (error: unknown) {
-            if (axios.isAxiosError(error)) {
-                const status = error.response?.status;
-
-                if (status === 401) {
-                    // 未ログイン状態と判定
-                    setUser(null);
-                    return null;
-                }
-            } else {
-                console.error("ユーザー情報の取得に失敗しました", error);
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                // 未ログイン状態と判定
                 setUser(null);
+                return null;
             }
+
+            console.error("ユーザー情報の取得に失敗しました", error);
+            setUser(null);
         } finally {
             setIsLoading(false);
         }

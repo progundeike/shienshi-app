@@ -58,7 +58,10 @@ export const Router: FC = memo(() => {
             });
         };
 
-        window.addEventListener("auth:Expired", onExpired as EventListener);
+        window.addEventListener(
+            "auth:Unauthenticated",
+            onExpired as EventListener,
+        );
 
         return () => {
             window.removeEventListener(

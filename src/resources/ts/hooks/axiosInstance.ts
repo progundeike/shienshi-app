@@ -3,7 +3,10 @@ import axios from "axios";
 declare module "axios" {
     interface AxiosRequestConfig {
         _retry?: boolean; // トークンリフレッシュの再試行フラグ
-        _authExpired?: boolean; // 認証切れイベント発火のフラグ
+        _authNotified?: boolean; // 認証切れイベント発火のフラグ
+        meta?: {
+            silent401?: boolean; // trueの場合、401イベントを発火しない
+        };
     }
 }
 
@@ -30,32 +33,43 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     async (error: unknown) => {
-        if(!axios.isAxiosError(error)) {
+        if (!axios.isAxiosError(error)) {
             return Promise.reject(error);
         }
 
         const originalRequest = error.config;
-        if (!originalRequest){
+        if (!originalRequest) {
             return Promise.reject(error);
         }
-        
+
+        const status = error.response?.status;
+
         // 419エラーが発生した場合、トークンを更新してリクエストを再試行する
-        if (error.response?.status === 419 && !originalRequest._retry) {
+        if (status === 419 && !originalRequest._retry) {
             originalRequest._retry = true;
 
-            await refreshToken();
-            return axiosInstance(originalRequest);
+            try {
+                await refreshToken();
+                return axiosInstance(originalRequest);
+            } catch (refreshError) {
+                // トークンのリフレッシュに失敗した場合は、認証切れイベントを発火させる
+                if (!originalRequest._authNotified) {
+                    originalRequest._authNotified = true;
+                    window.dispatchEvent(new CustomEvent("auth:Expired"));
+                    return Promise.reject(refreshError);
+                }
+            }
         }
 
         // 401エラーが発生したら、カスタムイベントを投げる
-        if (error.response?.status === 401) {
-            if (!originalRequest._authExpired) {
-                originalRequest._authExpired = true;
-                window.dispatchEvent(new CustomEvent("auth:Expired"));
+        if (status === 401) {
+            const silent401 = originalRequest.meta?.silent401 === true;
+            if (!silent401 && !originalRequest._authNotified) {
+                originalRequest._authNotified = true;
+                window.dispatchEvent(new CustomEvent("auth:Unauthenticated"));
             }
         }
 
         return Promise.reject(error);
-    }
+    },
 );
-
