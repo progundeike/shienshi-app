@@ -1,11 +1,5 @@
-import { FC, memo, useEffect } from "react";
-import {
-    Navigate,
-    replace,
-    Route,
-    Routes,
-    useNavigate,
-} from "react-router-dom";
+import { FC, useEffect } from "react";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 import { TopPage } from "./pages/TopPage";
 import { Page404 } from "./pages/Page404";
@@ -33,10 +27,11 @@ import { ContactPage } from "./pages/ContactPage";
 import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 import { useChakraToast } from "../utils/toastUtils";
 
-export const Router: FC = memo(() => {
+export const Router = () => {
     const { getUser } = useAuth();
     const [, setUser] = useAtom(userAtom);
     const navigate = useNavigate();
+    const location = useLocation();
     const { showWarningToast } = useChakraToast();
 
     useEffect(() => {
@@ -65,7 +60,7 @@ export const Router: FC = memo(() => {
 
         return () => {
             window.removeEventListener(
-                "auth:Expired",
+                "auth:Unauthenticated",
                 onExpired as EventListener,
             );
         };
@@ -123,4 +118,4 @@ export const Router: FC = memo(() => {
             </Routes>
         </Layout>
     );
-});
+};
