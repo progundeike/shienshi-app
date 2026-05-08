@@ -15,18 +15,16 @@ import {
     ModalContent,
     ModalOverlay,
     Text,
-    FormLabel,
 } from "@chakra-ui/react";
 import { FC, memo, useEffect, useState } from "react";
 import {
     Controller,
-    set,
     SubmitHandler,
     useFieldArray,
     useForm,
 } from "react-hook-form";
 import { MainColorButton } from "../atoms/MainColorButton";
-import { FetchedQuestion, QuestionForEdit, useExam } from "../../hooks/useExam";
+import { QuestionForEdit } from "../../hooks/useExam";
 import { useAdmin } from "../../hooks/useAdmin";
 import { QuestionFormInputs } from "../../types/form";
 
