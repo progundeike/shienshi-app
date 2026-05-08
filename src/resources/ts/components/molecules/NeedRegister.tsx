@@ -9,22 +9,23 @@ export const NeedRegister: FC = memo(() => {
                 <Text>答え合わせをするためにはログインが必要です</Text>
             </Box>
             <Flex justifyContent="center" gap="20px">
-                <Link to="/login">
-                    <Button
-                        backgroundColor={"baseColor"}
-                        color={"baseTextColor"}
-                    >
-                        ログイン
-                    </Button>
-                </Link>
-                <Link to="/register">
-                    <Button
-                        backgroundColor={"accentColor"}
-                        color={"accentTextColor"}
-                    >
-                        ユーザー登録
-                    </Button>
-                </Link>
+                <Button
+                    as={Link}
+                    to="/login"
+                    backgroundColor={"baseColor"}
+                    color={"baseTextColor"}
+                >
+                    ログイン
+                </Button>
+
+                <Button
+                    as={Link}
+                    to="/register"
+                    backgroundColor={"accentColor"}
+                    color={"accentTextColor"}
+                >
+                    ユーザー登録
+                </Button>
             </Flex>
         </>
     );

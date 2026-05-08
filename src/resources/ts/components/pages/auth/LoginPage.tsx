@@ -72,8 +72,13 @@ export const LoginPage: FC = memo(() => {
             <Center my="10px">
                 <Heading size="sm">
                     AI添削機能にはログインが必要です。登録がお済みでない場合は、
-                    <Box as="span" textDecoration="underline" color="blue.600">
-                        <Link to="/register">ユーザー登録</Link>
+                    <Box
+                        as={Link}
+                        textDecoration="underline"
+                        color="blue.600"
+                        to="/register"
+                    >
+                        ユーザー登録
                     </Box>
                     をしてください。
                 </Heading>
@@ -142,18 +147,18 @@ export const LoginPage: FC = memo(() => {
                     <Text textAlign="center">
                         アカウントをお持ちでない方はこちら
                     </Text>
-                    <Link to="/register">
-                        <Button
-                            w="100%"
-                            my="10px"
-                            borderRadius="full"
-                            backgroundColor="accentColor"
-                            color="accentTextColor"
-                            shadow="md"
-                        >
-                            ユーザー登録
-                        </Button>
-                    </Link>
+                    <Button
+                        as={Link}
+                        to="/register"
+                        w="100%"
+                        my="10px"
+                        borderRadius="full"
+                        backgroundColor="accentColor"
+                        color="accentTextColor"
+                        shadow="md"
+                    >
+                        ユーザー登録
+                    </Button>
                 </form>
             </Card>
         </>

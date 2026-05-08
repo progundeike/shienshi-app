@@ -63,6 +63,7 @@ export const useAuth = () => {
     };
 
     const logout = async () => {
+        setIsLoading(true);
         try {
             await axiosInstance.post<User>(
                 "/api/logout",
@@ -88,6 +89,8 @@ export const useAuth = () => {
                 // その他HTTPエラー
                 showServerErrorToast("ログアウトに失敗しました");
             }
+        } finally {
+            setIsLoading(false);
         }
     };
 

@@ -73,32 +73,32 @@ export const TopPage: FC = memo(() => {
                         flexWrap="wrap"
                         justify={{ base: "center", md: "flex-start" }}
                     >
-                        <Link to="/register">
-                            <Button
-                                size="lg"
-                                bg="baseColor"
-                                colorScheme="blue"
-                                borderRadius="full"
-                                _hover={{ bg: "blue.600", boxShadow: "lg" }}
-                            >
-                                無料で始める
-                            </Button>
-                        </Link>
-                        <Link to="/exams">
-                            <Button
-                                size="lg"
-                                bg="white"
-                                variant="outline"
-                                borderRadius="full"
-                                outline="0.5px solid"
-                                _hover={{
-                                    bg: "gray.200",
-                                    boxShadow: "lg",
-                                }}
-                            >
-                                問題を見る
-                            </Button>
-                        </Link>
+                        <Button
+                            as={Link}
+                            to="/register"
+                            size="lg"
+                            bg="baseColor"
+                            colorScheme="blue"
+                            borderRadius="full"
+                            _hover={{ bg: "blue.600", boxShadow: "lg" }}
+                        >
+                            無料で始める
+                        </Button>
+                        <Button
+                            as={Link}
+                            to="/exams"
+                            size="lg"
+                            bg="white"
+                            variant="outline"
+                            borderRadius="full"
+                            outline="0.5px solid"
+                            _hover={{
+                                bg: "gray.200",
+                                boxShadow: "lg",
+                            }}
+                        >
+                            問題を見る
+                        </Button>
                     </HStack>
 
                     {/* サービスの特徴 */}

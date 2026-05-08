@@ -11,11 +11,14 @@ type Props = {
 export const EditExamLinkButton: FC<Props> = memo(
     ({ children, url, color }) => {
         return (
-            <Link to={"/admin/edit/" + url}>
-                <Button colorScheme={color} w="80%">
-                    {children}
-                </Button>
-            </Link>
+            <Button
+                colorScheme={color}
+                w="80%"
+                as={Link}
+                to={"/admin/edit/" + url}
+            >
+                {children}
+            </Button>
         );
-    }
+    },
 );

@@ -56,8 +56,8 @@ axiosInstance.interceptors.response.use(
                 if (!originalRequest._authNotified) {
                     originalRequest._authNotified = true;
                     window.dispatchEvent(new CustomEvent("auth:Expired"));
-                    return Promise.reject(refreshError);
                 }
+                return Promise.reject(refreshError);
             }
         }
 

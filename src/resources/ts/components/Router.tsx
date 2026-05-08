@@ -63,7 +63,7 @@ export const Router = () => {
                 onExpired as EventListener,
             );
         };
-    }, [navigate, location.pathname, showWarningToast]);
+    }, [navigate, location.pathname, showWarningToast, setUser]);
 
     return (
         <Layout>

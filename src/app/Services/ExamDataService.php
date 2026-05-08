@@ -7,7 +7,6 @@ use App\Models\ModelAnswer;
 use App\Models\Question;
 use App\Models\UserAnswer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Log;
 
 class ExamDataService
 {
@@ -141,8 +140,6 @@ class ExamDataService
         $length = count($userAnswers);
 
         $mapOptions = array_column($examQuestions, 'options', 'questionCode');
-
-        Log::debug('Mapping of questionCode to options', ['mapOptions' => $mapOptions]);
 
         $userAnswerText = '';
         for ($i = 0; $i < $length; $i++) {

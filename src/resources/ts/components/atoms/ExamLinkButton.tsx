@@ -9,14 +9,14 @@ type Props = {
 
 export const ExamLinkButton: FC<Props> = memo(({ children, url }) => {
     return (
-        <Link to={"/exams/" + url}>
-            <Button
-                backgroundColor="accentColor"
-                w="80%"
-                color="accentTextColor"
-            >
-                {children}
-            </Button>
-        </Link>
+        <Button
+            as={Link}
+            to={"/exams/" + url}
+            backgroundColor="accentColor"
+            w="80%"
+            color="accentTextColor"
+        >
+            {children}
+        </Button>
     );
 });

@@ -29,7 +29,6 @@ class AnswerController extends Controller
 
     public function answerSubmit(AnswerRequest $request)
     {
-        Log::debug('raw answers payload', ['answers' => $request->validated('answers')]);
         $start = microtime(true);
         $processingKey = null;
         $lockAcquired = false;

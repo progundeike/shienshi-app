@@ -34,15 +34,15 @@ export const MyPage: FC = memo(() => {
                 <Flex justify={"space-between"} alignItems={"center"}>
                     <Heading size="md">{user.username}さんのマイページ</Heading>
                     <Flex gap="10px">
-                        <Link to="/update-password">
-                            <Button
-                                borderRadius="full"
-                                shadow="md"
-                                outline={"1px solid"}
-                            >
-                                パスワード変更
-                            </Button>
-                        </Link>
+                        <Button
+                            as={Link}
+                            to="/update-password"
+                            borderRadius="full"
+                            shadow="md"
+                            outline={"1px solid"}
+                        >
+                            パスワード変更
+                        </Button>
                         <LogoutButton />
                     </Flex>
                 </Flex>
@@ -58,17 +58,15 @@ export const MyPage: FC = memo(() => {
                         <Flex flexDirection="column" gap="10px">
                             {submittedExams.map((exam) => (
                                 <Button
+                                    as={Link}
+                                    to={`/exams/${exam.year}/${exam.season}/${exam.section}`}
                                     outline="0.5px solid"
                                     borderRadius="100px"
                                     key={`${exam.year}-${exam.season}-${exam.section}`}
                                     maxW="300px"
                                     shadow="md"
                                 >
-                                    <Link
-                                        to={`/exams/${exam.year}/${exam.season}/${exam.section}`}
-                                    >
-                                        {`${exam.year}年 ${exam.season_japanese} ${exam.section_converted}`}
-                                    </Link>
+                                    {`${exam.year}年 ${exam.season_japanese} ${exam.section_converted}`}
                                 </Button>
                             ))}
                         </Flex>
