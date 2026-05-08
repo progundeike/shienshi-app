@@ -40,7 +40,6 @@ export const Router = () => {
 
     useEffect(() => {
         const onExpired = () => {
-            console.log("Authentication expired.");
             setUser(null);
 
             showWarningToast(
@@ -64,7 +63,7 @@ export const Router = () => {
                 onExpired as EventListener,
             );
         };
-    }, [navigate, location.pathname]);
+    }, [navigate, location.pathname, showWarningToast]);
 
     return (
         <Layout>

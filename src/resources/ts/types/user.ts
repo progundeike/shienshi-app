@@ -1,5 +1,5 @@
 export type User = {
     username: string | null;
-    emailVerified: boolean;
+    // emailVerified: boolean;
     isAdmin: boolean;
 };
