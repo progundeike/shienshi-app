@@ -12,12 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('model_answers', function (Blueprint $table) {
-            $table->id();
             $table->string('exam_code');
             $table->string('question_code');
             $table->text('text')->nullable();
             $table->timestamps();
-            $table->unique(['exam_code', 'question_code']);
+            $table->primary(['exam_code', 'question_code']);
         });
     }
 

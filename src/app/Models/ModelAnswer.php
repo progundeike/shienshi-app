@@ -9,6 +9,9 @@ class ModelAnswer extends Model
 {
     use HasFactory;
 
+    // 自動増分idではないことを明示
+    protected $keyType = 'string';
+
     /**
      * The attributes that are mass assignable.
      *

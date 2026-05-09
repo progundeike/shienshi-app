@@ -29,9 +29,9 @@ class ExportExamDataJson extends Command
     public function handle()
     {
         $path = base_path($this->option('path'));
-        $questions = Question::orderBy('id')->get();
+        $questions = Question::orderBy('exam_code')->orderBy('question_code')->get();
         $examSentences = ExamSentence::orderBy('exam_code')->get();
-        $modelAnswers = ModelAnswer::orderBy('id')->get();
+        $modelAnswers = ModelAnswer::orderBy('exam_code')->orderBy('question_code')->get();
 
         $data = [
             'questions' => $questions->toArray(),
@@ -49,8 +49,7 @@ class ExportExamDataJson extends Command
                 continue;
             }
 
-            $this->info("Exported {$table}:".count($items)."records to {$filePath}");
+            $this->info("Exported {$table}:" . count($items) . "records to {$filePath}");
         }
-
     }
 }

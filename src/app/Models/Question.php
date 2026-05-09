@@ -9,6 +9,8 @@ class Question extends Model
 {
     use HasFactory;
 
+    protected $keyType = 'string';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -16,9 +18,7 @@ class Question extends Model
      */
     protected $fillable = [
         'exam_code',
-        'question_number',
-        'sub_question_number',
-        'small_question_number',
+        'question_code',
         'type',
         'text',
         'options',
