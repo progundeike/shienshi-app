@@ -25,9 +25,6 @@ class QuestionSeeder extends Seeder
                 $question['options'] = json_encode($question['options'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             }
 
-            // idは自動増分なので除外
-            unset($question['id']);
-
             // タイムスタンプは更新
             $question['created_at'] = now();
             $question['updated_at'] = now();
@@ -37,6 +34,6 @@ class QuestionSeeder extends Seeder
 
         // データベースに挿入
         Question::upsert($questions, ['exam_code', 'question_code']);
-        $this->command->info('Inserted ' . count($questions) . ' records into the database.');
+        $this->command->info('Inserted '.count($questions).' records into the database.');
     }
 }

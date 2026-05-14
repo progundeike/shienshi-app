@@ -46,20 +46,18 @@ class AdminController extends Controller
             $validated['options'] = $checkedOptions;
         }
 
+        $questionCode = "{$validated['questionNumber']}_{$validated['subQuestionNumber']}_{$validated['smallQuestionNumber']}";
+
         // 試験問題の更新処理を実行
         try {
             Question::updateOrCreate(
                 [
                     'exam_code' => $validated['examCode'],
-                    'question_number' => (int) $validated['questionNumber'],
-                    'sub_question_number' => (int) $validated['subQuestionNumber'],
-                    'small_question_number' => (int) ($validated['smallQuestionNumber'] ?? 0),
+                    'question_code' => $questionCode,
                 ],
                 [
                     'exam_code' => $validated['examCode'],
-                    'question_number' => (int) $validated['questionNumber'],
-                    'sub_question_number' => (int) $validated['subQuestionNumber'],
-                    'small_question_number' => (int) ($validated['smallQuestionNumber'] ?? 0),
+                    'question_code' => $questionCode,
                     'type' => $validated['type'],
                     'text' => $validated['text'] ? $validated['text'] : '',
                     'text_for_ai' => $validated['textForAi'] ? $validated['textForAi'] : '',
@@ -257,14 +255,10 @@ class AdminController extends Controller
 
     public function deleteQuestion(string $examCode, string $questionCode): JsonResponse
     {
-        [$questionNumber, $subQuestionNumber, $smallQuestionNumber] = explode('_', $questionCode);
-
         try {
             // 該当の問題を削除
             Question::where('exam_code', $examCode)
-                ->where('question_number', $questionNumber)
-                ->where('sub_question_number', $subQuestionNumber)
-                ->where('small_question_number', $smallQuestionNumber)
+                ->where('question_code', $questionCode)
                 ->delete();
 
             // 模範解答もあれば削除する
@@ -295,13 +289,19 @@ class AdminController extends Controller
         }
 
         // 必要なデータだけを取り出す
-        $questions = $result->map(function ($question) {
+        $questions = $result->map(function ($question): array {
+
+            [$questionNumber, $subQuestionNumber, $smallQuestionNumber] = array_map(
+                'intval',
+                explode('_', $question->question_code)
+            );
+
             return [
                 'examCode' => $question->exam_code,
-                'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
-                'questionNumber' => $question->question_number,
-                'subQuestionNumber' => $question->sub_question_number,
-                'smallQuestionNumber' => $question->small_question_number,
+                'questionCode' => $question->question_code,
+                'questionNumber' => $questionNumber,
+                'subQuestionNumber' => $subQuestionNumber,
+                'smallQuestionNumber' => $smallQuestionNumber,
                 'type' => $question->type,
                 'text' => $question->text,
                 'textForAi' => $question->text_for_ai,

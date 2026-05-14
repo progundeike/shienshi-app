@@ -49,7 +49,7 @@ class ExportExamDataJson extends Command
                 continue;
             }
 
-            $this->info("Exported {$table}:" . count($items) . "records to {$filePath}");
+            $this->info("Exported {$table}:".count($items)."records to {$filePath}");
         }
     }
 }

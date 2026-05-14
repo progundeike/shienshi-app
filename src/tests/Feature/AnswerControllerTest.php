@@ -49,9 +49,7 @@ class AnswerControllerTest extends TestCase
         DB::table('questions')->insert([
             [
                 'exam_code' => '9999_haru_1',
-                'question_number' => '1',
-                'sub_question_number' => '1',
-                'small_question_number' => '1',
+                'question_code' => '1_1_1',
                 'text' => 'テスト用の設問1',
                 'type' => 'input',
                 'options' => null,

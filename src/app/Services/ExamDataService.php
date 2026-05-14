@@ -17,10 +17,7 @@ class ExamDataService
 
         // 特定の設問を取得する場合は条件を追加
         if ($questionCode) {
-            [$q, $sub, $small] = array_map('intval', explode('_', $questionCode));
-            $query->where('question_number', $q)
-                ->where('sub_question_number', $sub)
-                ->where('small_question_number', $small);
+            $query->where('question_code', $questionCode);
         }
         $result = $query->get();
 
@@ -32,12 +29,17 @@ class ExamDataService
         // 必要なデータだけを取り出す
         $questions = $result->map(function ($question) {
 
+            [$questionNumber, $subQuestionNumber, $smallQuestionNumber] = array_map(
+                'intval',
+                explode('_', $question->question_code)
+            );
+
             return [
                 'examCode' => $question->exam_code,
-                'questionNumber' => $question->question_number,
-                'subQuestionNumber' => $question->sub_question_number,
-                'smallQuestionNumber' => $question->small_question_number,
-                'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
+                'questionCode' => $question->question_code,
+                'questionNumber' => $questionNumber,
+                'subQuestionNumber' => $subQuestionNumber,
+                'smallQuestionNumber' => $smallQuestionNumber,
                 'type' => $question->type,
                 'text' => $question->text,
                 'options' => $question->options,
@@ -70,11 +72,17 @@ class ExamDataService
 
         // 必要なデータだけを取り出す
         $examQuestions = $result->map(function ($question) {
+
+            [$questionNumber, $subQuestionNumber, $smallQuestionNumber] = array_map(
+                'intval',
+                explode('_', $question->question_code)
+            );
+
             return [
-                'questionNumber' => $question->question_number,
-                'subQuestionNumber' => $question->sub_question_number,
-                'smallQuestionNumber' => $question->small_question_number,
-                'questionCode' => $question->question_number.'_'.$question->sub_question_number.'_'.$question->small_question_number,
+                'questionNumber' => $questionNumber,
+                'subQuestionNumber' => $subQuestionNumber,
+                'smallQuestionNumber' => $smallQuestionNumber,
+                'questionCode' => $question->question_code,
                 'type' => $question->type,
                 'text' => $question->text,
                 'options' => $question->options,
