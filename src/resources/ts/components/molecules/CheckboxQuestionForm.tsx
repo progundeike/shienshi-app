@@ -1,8 +1,8 @@
 import { Box, Checkbox, CheckboxGroup, Flex, Stack } from "@chakra-ui/react";
-import { FC, memo } from "react";
-import { FetchedQuestion, Option } from "../../hooks/useExam";
+import { FC } from "react";
 import { Control, useController } from "react-hook-form";
 import { Answer } from "../../types/form";
+import { FetchedQuestion, Option } from "../../types/exam";
 
 type Props = {
     question: FetchedQuestion;

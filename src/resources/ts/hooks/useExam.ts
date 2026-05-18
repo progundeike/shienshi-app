@@ -3,58 +3,15 @@ import axios from "axios";
 
 import { axiosInstance } from "./axiosInstance";
 import { useChakraToast } from "../utils/toastUtils";
-
-export type FetchedQuestion = {
-    examCode: string;
-    questionCode: string;
-    questionNumber: number;
-    subQuestionNumber: number;
-    smallQuestionNumber: number;
-    type: "radio" | "checkbox" | "input" | "textarea";
-    text: string;
-    options: Option[] | null; // JSON文字列
-    maxLength: number | null;
-};
-
-export type QuestionForEdit = {
-    examCode: string;
-    questionCode: string;
-    questionNumber: number;
-    subQuestionNumber: number;
-    smallQuestionNumber: number;
-    type: "radio" | "checkbox" | "input" | "textarea";
-    text: string;
-    textForAi: string | null;
-    options: Option[] | null; // JSON文字列
-    maxLength: number | null;
-};
-
-export type Option = {
-    label: string;
-    value: string;
-};
-
-export type SubmittedExam = {
-    year: number;
-    season: string;
-    section: number;
-    season_japanese: string;
-    section_converted: string;
-};
-
-export type UpdateQuestionInputs = {
-    examCode: string;
-    questionNumber: number;
-    subQuestionNumber: number;
-    smallQuestionNumber: number | null;
-    type: "radio" | "checkbox" | "input" | "textarea";
-    text: string;
-    textForAi: string | null;
-    options: Option[] | null; // JSON文字列
-    maxLength: number | null;
-};
+import { loadingAtom } from "../states/loadingAtom";
+import {
+    FetchedQuestion,
+    PurposeAndReviewComment,
+    SubmittedExam,
+} from "../types/exam";
 
 export const useExam = () => {
+    const [, setIsLoading] = useAtom(loadingAtom);
     const { showServerErrorToast } = useChakraToast();
 
     const fetchQuestions = async (
@@ -127,5 +84,31 @@ export const useExam = () => {
             });
     };
 
-    return { fetchQuestions, fetchSubmittedExams, checkPdfExists };
+    const fetchPurposeAndReviewComment = async (
+        year: number,
+        season: string,
+        section: number,
+    ): Promise<PurposeAndReviewComment> => {
+        setIsLoading(true);
+        try {
+            const response = await axiosInstance.get(
+                `/api/exam/${year}_${season}_${section}/review`,
+            );
+
+            console.log(response.data);
+
+            return response.data;
+        } catch (error: unknown) {
+            throw error;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return {
+        fetchQuestions,
+        fetchSubmittedExams,
+        checkPdfExists,
+        fetchPurposeAndReviewComment,
+    };
 };

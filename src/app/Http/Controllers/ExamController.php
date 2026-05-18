@@ -120,4 +120,21 @@ class ExamController extends Controller
             'message' => 'File exists',
         ], 200);
     }
+
+    // 出題趣旨、採点講評を返す
+    public function getPurposeAndReviewComment(string $examCode): JsonResponse
+    {
+        try {
+            $purposeAndReviewComment = $this->examDataService->fetchPurposeAndReviewComment($examCode);
+
+            return response()->json([
+                'purpose' => $purposeAndReviewComment['purpose'],
+                'reviewComment' => $purposeAndReviewComment['reviewComment'],
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+
+            return response()->json(['error' => '採点講評, 出題趣旨の取得に失敗しました'], 500);
+        }
+    }
 }

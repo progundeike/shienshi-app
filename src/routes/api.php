@@ -29,6 +29,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/corrections/{examCode}', [AnswerController::class, 'fetchCorrection']);
     Route::get('/answer-processing-status/{examCode}', [AnswerController::class, 'fetchAnswerProcessingStatus']);
     Route::get('/chat-processing-status/{examCode}/{questionCode}', [AiQuestionController::class, 'fetchChatProcessingStatus']);
+
+    // 採点講評、出題趣旨
+    Route::get('/exam/{examCode}/review', [ExamController::class, 'getPurposeAndReviewComment']);
 });
 
 // 管理者用のルート

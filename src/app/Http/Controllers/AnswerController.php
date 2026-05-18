@@ -75,6 +75,7 @@ class AnswerController extends Controller
             ];
 
             // Log::debug('AI grading prompt', ['prompt' => $prompt]);
+            // sleep(20);
             // return response()->json(['message' => 'dummy response'], 201);
 
             // AIに投げる

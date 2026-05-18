@@ -1,7 +1,7 @@
 import { Box, Text } from "@chakra-ui/react";
 import { FC, memo } from "react";
 
-import { Correction } from "./QuestionAndAnswerForm";
+import { Correction } from "./QuestionAndAnswerInput";
 
 type Props = {
     corrections: Correction[];
@@ -22,7 +22,7 @@ export const DisplayAIResponse: FC<Props> = memo((Props) => {
         (res: any) =>
             res.questionNumber === questionNumber &&
             res.subQuestionNumber === subQuestionNumber &&
-            res.smallQuestionNumber === smallQuestionNumber
+            res.smallQuestionNumber === smallQuestionNumber,
     );
 
     if (!response) return null;

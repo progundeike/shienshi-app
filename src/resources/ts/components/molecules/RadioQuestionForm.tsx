@@ -1,6 +1,6 @@
 import { Box, Flex, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
 import { FC, memo } from "react";
-import { FetchedQuestion, Option } from "../../hooks/useExam";
+import { FetchedQuestion, Option } from "../../types/exam";
 import { Control, useController } from "react-hook-form";
 import { Answer } from "../../types/form";
 

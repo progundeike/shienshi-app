@@ -12,18 +12,18 @@ import {
     Radio,
     RadioGroup,
 } from "@chakra-ui/react";
-import { FC, memo, useEffect, useState, Fragment } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useAtom, useAtomValue } from "jotai";
+import { FC, memo, Fragment } from "react";
+import { useForm } from "react-hook-form";
+import { useAtom } from "jotai";
 
 import { useAnswer } from "../../hooks/useAnswer";
-import { FetchedQuestion, Option, useExam } from "../../hooks/useExam";
 import { DisplayAIResponse } from "./DisplayAIResponse";
 import { loadingAtom } from "../../states/loadingAtom";
 import { DisplayAskToAICard } from "../molecules/DisplayAskToAICard";
-import { Correction } from "./QuestionAndAnswerForm";
-import { User } from "../../types/user";
 import { Answer } from "../../types/form";
+import { Correction } from "./QuestionAndAnswerInput";
+import { FetchedQuestion, Option } from "../../types/exam";
+import { DisplayPurposeAndReviewComment } from "../molecules/DisplayPurposeAndReviewComment";
 
 type Props = {
     year: number;
@@ -32,10 +32,12 @@ type Props = {
     questions: FetchedQuestion[];
     corrections: Correction[];
     refetchCollections: () => void;
+    purpose: string | null;
+    reviewComment: string | null;
 };
 
 // 添削結果を表示するコンポーネント
-export const CheckingAnswerArea: FC<Props> = memo((props) => {
+export const DisplayCorrections: FC<Props> = memo((props) => {
     const {
         year,
         season,
@@ -43,6 +45,8 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
         questions,
         corrections,
         refetchCollections,
+        purpose,
+        reviewComment,
     } = props;
     const [isLoading, setIsLoading] = useAtom(loadingAtom);
     const STORAGE_KEY = `formData-${year}-${season}-${section}`;
@@ -80,6 +84,12 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
 
     return (
         <>
+            <Box mb="20px">
+                <DisplayPurposeAndReviewComment
+                    purpose={purpose}
+                    reviewComment={reviewComment}
+                />
+            </Box>
             <form autoComplete="off">
                 <VStack align="stretch">
                     {/* 設問をループ */}
@@ -219,7 +229,7 @@ export const CheckingAnswerArea: FC<Props> = memo((props) => {
                             <Button
                                 backgroundColor="green.200"
                                 borderRadius="100px"
-                                w="80%"
+                                w="100%"
                                 onClick={onReset}
                             >
                                 解き直す

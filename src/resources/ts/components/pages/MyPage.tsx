@@ -4,8 +4,9 @@ import { LogoutButton } from "../atoms/LogoutButton";
 import { userAtom } from "../../states/userAtom";
 import { Link, useNavigate } from "react-router-dom";
 import { useAtomValue } from "jotai";
-import { SubmittedExam, useExam } from "../../hooks/useExam";
+import { SubmittedExam } from "../../types/exam";
 import { AccountDeleteModal } from "../organisms/AccountDeleteModal";
+import { useExam } from "../../hooks/useExam";
 
 export const MyPage: FC = memo(() => {
     const user = useAtomValue(userAtom);

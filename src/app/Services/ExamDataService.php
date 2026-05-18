@@ -178,4 +178,22 @@ class ExamDataService
 
         return $userAnswerText;
     }
+
+    // 出題趣旨、採点講評を取得する
+    public function fetchPurposeAndReviewComment(string $examCode): array
+    {
+        $examData = ExamSentence::where('exam_code', $examCode)->first();
+
+        if (! $examData) {
+            return [
+                'purpose' => null,
+                'reviewComment' => null,
+            ];
+        }
+
+        return [
+            'purpose' => $examData->purpose ?? '',
+            'reviewComment' => $examData->review_comment ?? '',
+        ];
+    }
 }

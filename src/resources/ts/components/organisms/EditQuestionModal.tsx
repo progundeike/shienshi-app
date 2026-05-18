@@ -24,7 +24,7 @@ import {
     useForm,
 } from "react-hook-form";
 import { MainColorButton } from "../atoms/MainColorButton";
-import { QuestionForEdit } from "../../hooks/useExam";
+import { QuestionForEdit } from "../../types/exam";
 import { useAdmin } from "../../hooks/useAdmin";
 import { QuestionFormInputs } from "../../types/form";
 

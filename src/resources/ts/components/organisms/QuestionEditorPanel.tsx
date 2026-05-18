@@ -8,9 +8,9 @@ import {
 } from "@chakra-ui/react";
 import { FC, Fragment, memo, useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { SubmitHandler, useForm, useWatch } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 
-import { FetchedQuestion, QuestionForEdit, useExam } from "../../hooks/useExam";
+import { QuestionForEdit } from "../../types/exam";
 import { CheckboxQuestionForm } from "../molecules/CheckboxQuestionForm";
 import { InputQuestionForm } from "../molecules/InputQuestionForm";
 import { RadioQuestionForm } from "../molecules/RadioQuestionForm";

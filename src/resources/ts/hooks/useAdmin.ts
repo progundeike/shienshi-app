@@ -1,9 +1,9 @@
 import axios from "axios";
 import { axiosInstance } from "./axiosInstance";
 import { useChakraToast } from "../utils/toastUtils";
-import { QuestionForEdit, UpdateQuestionInputs } from "./useExam";
 import { Answer, ErrorResponse, ModelAnswer } from "../types/form";
 import { useMutation } from "@tanstack/react-query";
+import { QuestionForEdit, UpdateQuestionInputs } from "../types/exam";
 
 export type ExamSentenceResponse = {
     sentence: string;

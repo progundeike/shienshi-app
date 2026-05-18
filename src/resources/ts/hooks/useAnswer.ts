@@ -5,8 +5,8 @@ import axios from "axios";
 import { Answer, ErrorResponse } from "../types/form";
 import { axiosInstance } from "./axiosInstance";
 import { loadingAtom } from "../states/loadingAtom";
-import { Correction } from "../components/organisms/QuestionAndAnswerForm";
 import { useChakraToast } from "../utils/toastUtils";
+import { Correction } from "../components/organisms/QuestionAndAnswerInput";
 
 export const useAnswer = () => {
     const [, setIsLoading] = useAtom(loadingAtom);

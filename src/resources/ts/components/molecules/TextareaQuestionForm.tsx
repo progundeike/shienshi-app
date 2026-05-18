@@ -1,6 +1,6 @@
 import { Box, Flex, Text, Textarea } from "@chakra-ui/react";
 import { FC, memo } from "react";
-import { FetchedQuestion } from "../../hooks/useExam";
+import { FetchedQuestion } from "../../types/exam";
 import { Control, useController } from "react-hook-form";
 import { Answer } from "../../types/form";
 

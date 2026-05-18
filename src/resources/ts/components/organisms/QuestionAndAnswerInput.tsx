@@ -1,35 +1,16 @@
-import {
-    VStack,
-    Button,
-    Box,
-    Text,
-    Spinner,
-    Center,
-    Divider,
-} from "@chakra-ui/react";
-import {
-    FC,
-    memo,
-    useEffect,
-    useState,
-    Fragment,
-    useMemo,
-    useCallback,
-} from "react";
-import { set, SubmitHandler, useForm, useWatch } from "react-hook-form";
-import { useAtom, useAtomValue } from "jotai";
+import { VStack, Button, Box, Text, Divider } from "@chakra-ui/react";
+import { FC, memo, useEffect, Fragment, useMemo } from "react";
+import { SubmitHandler, useForm, useWatch } from "react-hook-form";
+import { useAtomValue } from "jotai";
 
 import { userAtom } from "../../states/userAtom";
-import { useAnswer } from "../../hooks/useAnswer";
-import { FetchedQuestion } from "../../hooks/useExam";
-import { loadingAtom } from "../../states/loadingAtom";
 import { NeedRegister } from "../molecules/NeedRegister";
 import { RadioQuestionForm } from "../molecules/RadioQuestionForm";
 import { CheckboxQuestionForm } from "../molecules/CheckboxQuestionForm";
 import { InputQuestionForm } from "../molecules/InputQuestionForm";
 import { TextareaQuestionForm } from "../molecules/TextareaQuestionForm";
 import { Answer } from "../../types/form";
-import { CorrectionLoadingSpinner } from "../molecules/CorrectionLoadingSpinner";
+import { FetchedQuestion } from "../../types/exam";
 
 export type Correction = {
     questionNumber: number;
@@ -44,16 +25,15 @@ type Props = {
     season: string;
     section: number;
     questions: FetchedQuestion[];
-    refetchCorrections: () => void;
+    onSubmitAnswer: (answers: Answer[]) => Promise<void>;
+    isCorrecting: boolean;
 };
 
-export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
-    const { year, season, section, questions, refetchCorrections } = props;
+export const QuestionAndAnswerInput: FC<Props> = memo((props) => {
+    const { year, season, section, questions, onSubmitAnswer, isCorrecting } =
+        props;
     const user = useAtomValue(userAtom);
-    const [isLoading, setIsLoading] = useAtom(loadingAtom);
-    const [isCorrecting, setIsCorrecting] = useState(false);
     const STORAGE_KEY = `formData-${year}-${season}-${section}`;
-    const storedData = sessionStorage.getItem(STORAGE_KEY);
 
     const initialAnswers = useMemo(
         () =>
@@ -64,77 +44,39 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
         [questions],
     );
 
+    const defaultAnswers = useMemo(() => {
+        const storedData = sessionStorage.getItem(STORAGE_KEY);
+
+        if (!storedData) {
+            return initialAnswers;
+        }
+
+        try {
+            return JSON.parse(storedData) as Answer[];
+        } catch {
+            sessionStorage.removeItem(STORAGE_KEY);
+            return initialAnswers;
+        }
+    }, [STORAGE_KEY, initialAnswers]);
+
     const {
         handleSubmit,
-        reset,
         control,
         formState: { errors },
+        reset,
     } = useForm<{ answers: Answer[] }>({
         defaultValues: {
-            answers: storedData ? JSON.parse(storedData) : initialAnswers,
+            answers: defaultAnswers,
         },
     });
 
-    const { submitAnswer, checkAnswerProcessingStatus } = useAnswer();
+    const onSubmit: SubmitHandler<{ answers: Answer[] }> = async (data) => {
+        await onSubmitAnswer(data.answers);
 
-    const checkProcessingStatus = useCallback(async (): Promise<boolean> => {
-        try {
-            const status = await checkAnswerProcessingStatus(
-                year,
-                season,
-                section,
-            );
-
-            if (status === "processing") {
-                setIsCorrecting(true);
-                return true;
-            }
-
-            setIsCorrecting(false);
-            return false;
-        } catch (error) {
-            console.error(error);
-            setIsCorrecting(false);
-            return false;
-        }
-    }, [checkAnswerProcessingStatus, year, season, section]);
-
-    // 初回のprocessing状態の確認とポーリング
-    useEffect(() => {
-        if (!user) {
-            return;
-        }
-
-        let intervalId: number | null = null;
-        let cancelled = false;
-
-        const startPolling = async () => {
-            const isProcessing = await checkProcessingStatus();
-
-            if (cancelled || !isProcessing) {
-                return;
-            }
-
-            intervalId = window.setInterval(async () => {
-                const stillProcessing = await checkProcessingStatus();
-
-                if (!stillProcessing && intervalId) {
-                    window.clearInterval(intervalId);
-                    intervalId = null;
-                    refetchCorrections();
-                }
-            }, 5000);
-        };
-
-        void startPolling();
-
-        return () => {
-            cancelled = true;
-            if (intervalId) {
-                clearInterval(intervalId);
-            }
-        };
-    }, [year, season, section, user, refetchCorrections]);
+        // 提出後にフォームをリセット
+        sessionStorage.removeItem(STORAGE_KEY);
+        reset({ answers: initialAnswers });
+    };
 
     // 入力が変更されたらsessionStorageに保存
     const answersWatch = useWatch({
@@ -146,47 +88,7 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
         if (answersWatch) {
             sessionStorage.setItem(STORAGE_KEY, JSON.stringify(answersWatch));
         }
-    }, [answersWatch]);
-
-    // sessionStorageからデータを復元
-    useEffect(() => {
-        if (storedData) {
-            reset({ answers: JSON.parse(storedData) });
-        }
-    }, [reset]);
-
-    const onSubmit: SubmitHandler<{ answers: Answer[] }> = async (data) => {
-        setIsCorrecting(true);
-        try {
-            await submitAnswer(data.answers, year, season, section);
-            refetchCorrections();
-        } catch (e) {
-            console.error(e);
-        } finally {
-            setIsCorrecting(false);
-        }
-    };
-
-    if (isLoading && !isCorrecting) {
-        return (
-            <Center mt="20px">
-                <Spinner size="xl" />
-            </Center>
-        );
-    }
-
-    // 添削中に表示するメッセージ
-    if (isCorrecting) {
-        return <CorrectionLoadingSpinner />;
-    }
-
-    if (!isLoading && !questions) {
-        return (
-            <Box>
-                設問が取得できませんでした。しばらく経ってから再度お試しください
-            </Box>
-        );
-    }
+    }, [answersWatch, STORAGE_KEY]);
 
     return (
         <>
@@ -263,6 +165,8 @@ export const QuestionAndAnswerForm: FC<Props> = memo((props) => {
                                 backgroundColor="green.200"
                                 borderRadius="100px"
                                 w="80%"
+                                isLoading={isCorrecting}
+                                isDisabled={isCorrecting}
                             >
                                 答え合わせ
                             </Button>
