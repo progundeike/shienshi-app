@@ -42,7 +42,6 @@ export const AnswerAndCorrectionForm: FC<Props> = memo((props) => {
     const {
         data: corrections,
         isLoading: correctionsLoading,
-        isError: correctionError,
         refetch: refetchCorrections,
     } = useQuery<Correction[] | null, Error>({
         queryKey: ["corrections", year, season, section],

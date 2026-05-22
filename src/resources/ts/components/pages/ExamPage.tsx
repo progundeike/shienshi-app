@@ -1,5 +1,5 @@
-import { Box } from "@chakra-ui/react";
-import { FC, memo, useEffect, useState, useRef, useCallback } from "react";
+import { Box, Link, useBreakpointValue } from "@chakra-ui/react";
+import { FC, memo, useEffect, useState } from "react";
 import Split from "react-split";
 
 import { ExamHeader } from "../molecules/ExamHeader";
@@ -8,16 +8,18 @@ import { Page404 } from "./Page404";
 import { DisplayExamPdf } from "../organisms/DisplayExamPdf";
 import { AnswerAndCorrectionForm } from "../organisms/AnswerAndCorrectionForm";
 import { useExam } from "../../hooks/useExam";
-import { LoadingPage } from "./LoadingPage";
 
 export const ExamPage: FC = memo(() => {
-    const [loading, setLoading] = useState(true);
-    const [isPdfExists, setIsPdfExists] = useState<boolean | null>(null);
+    const [, setLoading] = useState(true);
+    const [, setIsPdfExists] = useState<boolean | null>(null);
     const { year, season, section } = useParams();
+    const isMobile = useBreakpointValue({ base: true, md: false });
 
     // year, sectionを10進数でcastする
     const parsedYear = parseInt(year ?? "", 10);
     const parsedSection = parseInt(section ?? "", 10);
+    const examCode = `${parsedYear}_${season}_${parsedSection}`;
+    const pdfUrl = `/storage/pdf/${parsedYear}/$${examCode}.pdf`;
 
     const { checkPdfExists } = useExam();
     const navigate = useNavigate();
@@ -46,6 +48,24 @@ export const ExamPage: FC = memo(() => {
         };
         checkPdf();
     }, []);
+
+    if (isMobile) {
+        return (
+            <Box minH="100vh" p="16px">
+                <ExamHeader
+                    year={parsedYear}
+                    season={season}
+                    section={parsedSection}
+                />
+
+                <AnswerAndCorrectionForm
+                    year={parsedYear}
+                    season={season}
+                    section={parsedSection}
+                />
+            </Box>
+        );
+    }
 
     return (
         <Box h="100vh" overflow="hidden" minH={0}>

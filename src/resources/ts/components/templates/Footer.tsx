@@ -11,6 +11,7 @@ export const Footer: FC = memo(() => {
             justify="center"
             align="center"
             color="footerTextColor"
+            fontSize={{ base: "sm", md: "md" }}
         >
             © 2026 支援士対策室
         </Flex>

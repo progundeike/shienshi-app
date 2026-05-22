@@ -1,5 +1,12 @@
-import { Flex, Heading, Button, Box, Link } from "@chakra-ui/react";
-import { FC, memo, useEffect } from "react";
+import {
+    Flex,
+    Heading,
+    Button,
+    Box,
+    Link,
+    useBreakpointValue,
+} from "@chakra-ui/react";
+import { FC, memo } from "react";
 import { IoMdDownload } from "react-icons/io";
 
 type Props = {
@@ -10,6 +17,7 @@ type Props = {
 
 export const ExamHeader: FC<Props> = memo((props) => {
     const { year, season, section } = props;
+    const isMobile = useBreakpointValue({ base: true, md: false });
 
     const yearToJapaneseCalender = (year: number) => {
         if (year >= 2019) {
@@ -50,13 +58,18 @@ export const ExamHeader: FC<Props> = memo((props) => {
             h="50px"
         >
             <Flex justifyContent="space-between" alignItems="center">
-                <Heading as="h2" size="md">
-                    {`${year}年 (${yearToJapaneseCalender(
-                        year,
-                    )}年) ${seasonToJapanese(season)} ${sectionToTitle(
-                        section,
-                        year,
-                    )}`}
+                <Heading as="h2" size={{ base: "sm", md: "md" }}>
+                    {isMobile
+                        ? `${year}年  ${seasonToJapanese(season)} ${sectionToTitle(
+                              section,
+                              year,
+                          )}`
+                        : `${year}年 (${yearToJapaneseCalender(
+                              year,
+                          )}年) ${seasonToJapanese(season)} ${sectionToTitle(
+                              section,
+                              year,
+                          )}`}
                 </Heading>
                 <Box>
                     <Button
@@ -65,7 +78,7 @@ export const ExamHeader: FC<Props> = memo((props) => {
                         download
                         // backgroundColor="accentColor"
                         // color="accentTextColor"
-                        // borderRadius="full"
+                        borderRadius="full"
                     >
                         問題をダウンロード
                         <IoMdDownload />

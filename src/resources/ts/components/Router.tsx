@@ -14,7 +14,7 @@ import { MyPage } from "./pages/MyPage";
 import { useAuth } from "../hooks/useAuth";
 import { PreAuthRoutes } from "./templates/PreAuthRoutes";
 import { UpdatePasswordPage } from "./pages/auth/UpdatePasswordPage";
-import { ForgotPasswordPage } from "./pages/auth/ForgotPasswordPage";
+// import { ForgotPasswordPage } from "./pages/auth/ForgotPasswordPage";
 import { AdminPage } from "./pages/admin/AdminPage";
 import { AdminRoutes } from "./templates/AdminRoutes";
 import { EditExamPage } from "./pages/admin/EditExamPage";

@@ -8,20 +8,21 @@ import {
     FormErrorMessage,
     FormLabel,
     Heading,
-    Icon,
     Input,
     InputGroup,
     InputRightElement,
     Text,
+    Link as ChakraLink,
+    IconButton,
+    Icon,
 } from "@chakra-ui/react";
 import { memo, FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { useAtomValue } from "jotai";
 
 import { useAuth } from "../../../hooks/useAuth";
-import { userAtom } from "../../../states/userAtom";
 import { LoginFormInput } from "../../../types/form";
 import { loadingAtom } from "../../../states/loadingAtom";
 import { LoadingPage } from "../LoadingPage";
@@ -29,13 +30,11 @@ import { Card } from "../../templates/Card";
 import { SubmitButton } from "../../atoms/SubmitButton";
 
 export const LoginPage: FC = memo(() => {
-    const user = useAtomValue(userAtom);
-
-    const [emailVerifyQuery, setEmailVerifyQuery] = useState("");
     const { login } = useAuth();
     const isLoading = useAtomValue(loadingAtom);
     const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleClickShowPassword = () =>
+        setShowPassword((current) => !current);
     const {
         register,
         handleSubmit,
@@ -68,35 +67,43 @@ export const LoginPage: FC = memo(() => {
     if (isLoading) return <LoadingPage />;
 
     return (
-        <>
-            <Center my="10px">
-                <Heading size="sm">
-                    AI添削機能にはログインが必要です。登録がお済みでない場合は、
-                    <Box
-                        as={Link}
+        <Box p={2} m={1} fontSize={{ base: "sm", md: "md" }}>
+            <Center my={3} lineHeight="1.8">
+                <Text>
+                    AI添削機能の利用にはログインが必要です。
+                    登録がお済みでない場合は、
+                    <ChakraLink
+                        as={RouterLink}
                         textDecoration="underline"
                         color="blue.600"
                         to="/register"
                     >
                         ユーザー登録
-                    </Box>
+                    </ChakraLink>
                     をしてください。
-                </Heading>
+                </Text>
             </Center>
-            <Card maxW="50%">
+            <Card maxW="480px">
                 <form onSubmit={onSubmit}>
-                    <Center mb="20px">
-                        <Heading>ログイン</Heading>
+                    <Center mb={5}>
+                        <Heading size={{ base: "md", md: "lg" }}>
+                            ログイン
+                        </Heading>
                     </Center>
                     <FormControl
                         mb={3}
                         isInvalid={Boolean(errors.username)}
-                        fontSize={{ base: "11px", md: "md" }}
+                        fontSize={{ base: "sm", md: "md" }}
                     >
-                        <FormLabel>ユーザーID</FormLabel>
+                        <FormLabel
+                            htmlFor="username"
+                            fontSize={{ base: "sm", md: "md" }}
+                        >
+                            ユーザーID
+                        </FormLabel>
                         <Input
                             type="text"
-                            id="string"
+                            id="username"
                             {...register("username", {
                                 required: "入力が必要です",
                             })}
@@ -108,12 +115,19 @@ export const LoginPage: FC = memo(() => {
 
                     <FormControl mb={3} isInvalid={Boolean(errors.password)}>
                         <Flex justify="space-between">
-                            <FormLabel htmlFor="password">パスワード</FormLabel>
-                            <Link to="/forgot-password">
-                                <Text fontSize={{ base: "13px", md: "16px" }}>
-                                    パスワードをお忘れですか？
-                                </Text>
-                            </Link>
+                            <FormLabel
+                                htmlFor="password"
+                                fontSize={{ base: "sm", md: "md" }}
+                            >
+                                パスワード
+                            </FormLabel>
+                            <ChakraLink
+                                as={RouterLink}
+                                to="/forgot-password"
+                                fontSize={{ base: "xs", md: "sm" }}
+                            >
+                                パスワードをお忘れですか？
+                            </ChakraLink>
                         </Flex>
                         <InputGroup>
                             <Input
@@ -124,15 +138,34 @@ export const LoginPage: FC = memo(() => {
                                 })}
                             />
                             <InputRightElement width="3rem">
-                                <Icon
-                                    as={
+                                <IconButton
+                                    aria-label={
                                         showPassword
-                                            ? HiOutlineEyeOff
-                                            : HiOutlineEye
+                                            ? "パスワードを隠す"
+                                            : "パスワードを表示"
                                     }
-                                    fontSize="20px"
+                                    icon={
+                                        showPassword ? (
+                                            <Icon
+                                                as={HiOutlineEyeOff}
+                                                boxSize={{
+                                                    base: 4,
+                                                    md: 6,
+                                                }}
+                                            />
+                                        ) : (
+                                            <Icon
+                                                as={HiOutlineEye}
+                                                boxSize={{
+                                                    base: 4,
+                                                    md: 6,
+                                                }}
+                                            />
+                                        )
+                                    }
+                                    size="sm"
+                                    variant="ghost"
                                     onClick={handleClickShowPassword}
-                                    cursor="pointer"
                                 />
                             </InputRightElement>
                         </InputGroup>
@@ -148,10 +181,10 @@ export const LoginPage: FC = memo(() => {
                         アカウントをお持ちでない方はこちら
                     </Text>
                     <Button
-                        as={Link}
+                        as={RouterLink}
                         to="/register"
                         w="100%"
-                        my="10px"
+                        my={2}
                         borderRadius="full"
                         backgroundColor="accentColor"
                         color="accentTextColor"
@@ -161,6 +194,6 @@ export const LoginPage: FC = memo(() => {
                     </Button>
                 </form>
             </Card>
-        </>
+        </Box>
     );
 });

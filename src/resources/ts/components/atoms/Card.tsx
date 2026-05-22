@@ -10,12 +10,12 @@ export const Card: FC<Props> = memo(({ children, w }) => {
     return (
         <Box
             backgroundColor="white"
-            borderRadius="20px"
+            borderRadius={5}
             border="1px solid"
             borderColor="#CCCCCC"
             textAlign="center"
             shadow="md"
-            p="30px"
+            p={{ base: 4, md: 7 }}
             w={w ? w : "100%"}
         >
             {children}

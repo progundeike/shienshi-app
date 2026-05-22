@@ -7,15 +7,21 @@ export const TopPageFooter: FC = memo(() => {
         <Flex
             as="footer"
             w="100%"
-            h="100px"
+            minH="80px"
             backgroundColor="#EDEFF4"
             direction="column"
             justify="center"
             align="center"
             color="footerTextColor"
+            fontSize={{ base: "sm", md: "md" }}
         >
-            <Flex direction="column" align="center" gap="30px">
-                <Flex gap="60px" justify="center">
+            <Flex direction="column" align="center" gap={{ base: 1, md: 5 }}>
+                <Flex
+                    direction={{ base: "column", md: "row" }}
+                    gap={{ base: 1, md: 20 }}
+                    justify="center"
+                    textAlign="center"
+                >
                     <Link to="/privacy">プライバシーポリシー</Link>
                     <Link to="/terms">利用規約</Link>
                     <Link to="/contact">お問い合わせ</Link>

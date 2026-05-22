@@ -6,31 +6,37 @@ import {
     Image,
     HStack,
     Button,
-    list,
 } from "@chakra-ui/react";
-import { FC, memo } from "react";
+import React, { FC, memo } from "react";
 
-import { Card } from "../atoms/Card";
 import { dateUtils } from "../../utils/dateUtils";
 import { DisplayNewsItemList } from "../organisms/DisplayNewsItemList";
 import { LuBell } from "react-icons/lu";
 import { Link } from "react-router-dom";
+import { Card } from "../atoms/Card";
+
+const LearningStepCard: FC<{ children: React.ReactNode }> = ({ children }) => {
+    return (
+        <Box
+            backgroundColor="white"
+            borderRadius={5}
+            border="1px solid"
+            borderColor="#CCCCCC"
+            textAlign="center"
+            shadow="md"
+            p={7}
+            w={{ base: "100%", md: "30%" }}
+        >
+            {children}
+        </Box>
+    );
+};
 
 export const TopPage: FC = memo(() => {
-    const { examYear, examMonth, examDate } = dateUtils();
-
     return (
         <Box maxW="1200px" w="100%" mx="auto" px={{ base: 4, md: 6 }} mb="50px">
-            <Flex gap="20px" direction="column">
-                {/* CBT方式への移行に伴い試験日表示は一旦非表示
-                <Box>
-                    <Heading size="md">
-                        次の試験日は
-                        {`${examYear}年 ${examMonth}月 ${examDate}日`}
-                    </Heading>
-                    <Box>コンテンツ</Box>
-                </Box> */}
-                <Box my="50px" textColor="baseColor">
+            <Flex gap={5} direction="column">
+                <Box my={10} textColor="baseColor">
                     {/* ヒーローセクション */}
                     <Flex
                         direction={{ base: "column", md: "row" }}
@@ -44,6 +50,8 @@ export const TopPage: FC = memo(() => {
                                 fontWeight="bold"
                                 lineHeight="1.2"
                                 maxW="560px"
+                                textAlign="center"
+                                mb={2}
                             >
                                 解く→添削→訊く。
                             </Text>
@@ -60,23 +68,26 @@ export const TopPage: FC = memo(() => {
                         {/* 右コンテンツ */}
                         <Image
                             src="/images/main_visual_1.png"
-                            maxW="520px"
+                            // maxW="520px"
+                            maxW={{ base: "100%", md: "520px" }}
                             alt="メインビジュアル"
                             display="block"
                         />
                     </Flex>
 
                     {/* CTAボタン */}
-                    <HStack
-                        mt="8"
-                        spacing="4"
+                    <Flex
+                        my="50px"
+                        gap={{ base: 4, md: 12 }}
                         flexWrap="wrap"
-                        justify={{ base: "center", md: "flex-start" }}
+                        direction={{ base: "column", md: "row" }}
+                        justifyContent="center"
+                        alignItems="center"
                     >
                         <Button
                             as={Link}
                             to="/register"
-                            size="lg"
+                            w={{ base: "80%", md: "300px" }}
                             bg="baseColor"
                             colorScheme="blue"
                             borderRadius="full"
@@ -87,7 +98,7 @@ export const TopPage: FC = memo(() => {
                         <Button
                             as={Link}
                             to="/exams"
-                            size="lg"
+                            w={{ base: "80%", md: "300px" }}
                             bg="white"
                             variant="outline"
                             borderRadius="full"
@@ -99,16 +110,23 @@ export const TopPage: FC = memo(() => {
                         >
                             問題を見る
                         </Button>
-                    </HStack>
+                    </Flex>
 
                     {/* サービスの特徴 */}
-
-                    <Box mx="auto" my="100px" textAlign="center">
-                        <Heading size="xl" color="baseColor" mb="20px">
+                    <Box mx="auto" my={7} textAlign="center">
+                        <Heading
+                            size={{ base: "md", md: "xl" }}
+                            color="baseColor"
+                            mb={5}
+                        >
                             情報処理安全確保支援士試験突破のための3つのステップ
                         </Heading>
-                        <Flex direction="row" justifyContent="space-between">
-                            <Card w="30%">
+                        <Flex
+                            direction={{ base: "column", md: "row" }}
+                            justifyContent="space-between"
+                            gap={5}
+                        >
+                            <LearningStepCard>
                                 <Box textAlign="center" mx="auto">
                                     <Text fontSize="2xl">過去問を解く</Text>
 
@@ -124,8 +142,8 @@ export const TopPage: FC = memo(() => {
                                         試験対策には過去問を解いて、実際の試験形式に慣れることが重要です。
                                     </Text>
                                 </Box>
-                            </Card>
-                            <Card w="30%">
+                            </LearningStepCard>
+                            <LearningStepCard>
                                 <Text fontSize="2xl">AIで添削</Text>
                                 <Image
                                     src="/images/image_card_2.png"
@@ -138,8 +156,8 @@ export const TopPage: FC = memo(() => {
                                 <Text>
                                     記述式の問題が多い科目B試験をAIのフィードバックでサポートします。
                                 </Text>
-                            </Card>
-                            <Card w="30%">
+                            </LearningStepCard>
+                            <LearningStepCard>
                                 <Text fontSize="2xl">AIに質問</Text>
                                 <Image
                                     src="/images/image_card_3.png"
@@ -152,16 +170,20 @@ export const TopPage: FC = memo(() => {
                                 <Text>
                                     設問を把握したAIに分からなかった箇所を質問することで、学習が進みます
                                 </Text>
-                            </Card>
+                            </LearningStepCard>
                         </Flex>
                     </Box>
                 </Box>
                 {/* 試験概要 */}
+                <Heading
+                    size={{ base: "md", md: "xl" }}
+                    color="baseColor"
+                    textAlign="center"
+                >
+                    情報処理安全確保支援士試験とは
+                </Heading>
                 <Card>
-                    <Flex gap="30px" direction="column">
-                        <Heading size="xl" color="baseColor">
-                            情報処理安全確保支援士試験とは
-                        </Heading>
+                    <Flex gap={7} direction="column">
                         <Box textAlign="left">
                             <Text>
                                 情報処理安全確保支援士試験は、ーーーーな試験です。
@@ -177,13 +199,16 @@ export const TopPage: FC = memo(() => {
                 </Card>
                 {/* お知らせ */}
                 <Card>
-                    <Box mb="20px">
-                        <Heading size="xl" color="baseColor">
+                    <Box mb={5}>
+                        <Heading
+                            size={{ base: "md", md: "xl" }}
+                            color="baseColor"
+                        >
                             <LuBell
                                 style={{
                                     display: "inline",
                                     marginBottom: "-4px",
-                                    marginRight: "8px",
+                                    marginRight: 2,
                                 }}
                             />
                             お知らせ
