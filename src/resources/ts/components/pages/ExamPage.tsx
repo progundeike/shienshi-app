@@ -51,7 +51,7 @@ export const ExamPage: FC = memo(() => {
 
     if (isMobile) {
         return (
-            <Box minH="100vh" p="16px">
+            <Box minH="100vh" p={4} fontSize="sm">
                 <ExamHeader
                     year={parsedYear}
                     season={season}
@@ -104,7 +104,7 @@ export const ExamPage: FC = memo(() => {
                     height="100vh"
                     overflowY="auto"
                     backgroundColor="white"
-                    p="20px"
+                    p={5}
                 >
                     <AnswerAndCorrectionForm
                         year={parsedYear}

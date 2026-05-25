@@ -12,7 +12,7 @@ export const MainColorButton: FC<Props> = memo(({ children, type }) => {
             backgroundColor="baseColor"
             color="baseTextColor"
             w="100%"
-            my="10px"
+            my={2}
             borderRadius="full"
             shadow="md"
             type={type}

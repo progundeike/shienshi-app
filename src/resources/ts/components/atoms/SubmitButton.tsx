@@ -12,7 +12,7 @@ export const SubmitButton: FC<Props> = memo(({ children }) => {
             backgroundColor="baseColor"
             color="baseTextColor"
             w="100%"
-            my="10px"
+            my={2}
             borderRadius="full"
             shadow="md"
         >

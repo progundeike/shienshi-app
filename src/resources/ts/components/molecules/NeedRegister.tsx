@@ -5,15 +5,16 @@ import { Link } from "react-router-dom";
 export const NeedRegister: FC = memo(() => {
     return (
         <>
-            <Box mb="10px">
-                <Text>答え合わせをするためにはログインが必要です</Text>
+            <Box mb={2}>
+                <Text>添削にはログインが必要です</Text>
             </Box>
-            <Flex justifyContent="center" gap="20px">
+            <Flex justifyContent="center" gap={5}>
                 <Button
                     as={Link}
                     to="/login"
                     backgroundColor={"baseColor"}
                     color={"baseTextColor"}
+                    borderRadius="full"
                 >
                     ログイン
                 </Button>
@@ -23,6 +24,7 @@ export const NeedRegister: FC = memo(() => {
                     to="/register"
                     backgroundColor={"accentColor"}
                     color={"accentTextColor"}
+                    borderRadius="full"
                 >
                     ユーザー登録
                 </Button>

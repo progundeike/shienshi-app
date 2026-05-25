@@ -13,12 +13,12 @@ export const Card: FC<Props> = memo(({ children, maxW }) => {
             maxW={{ base: "100%", md: maxW }}
             backgroundColor="white"
             mx="auto"
-            my="20px"
+            my={5}
             rounded="lg"
             boxShadow="lg"
-            p="20px"
+            p={5}
             spacing={6}
-            borderRadius="10px"
+            borderRadius="md"
         >
             {children}
         </Stack>

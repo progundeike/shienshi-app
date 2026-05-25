@@ -5,6 +5,7 @@ namespace App\Actions\Fortify;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\UpdatesUserPasswords;
 
@@ -33,9 +34,9 @@ class UpdateUserPassword implements UpdatesUserPasswords
         ])->save();
 
         // 再ログイン
-        session()->invalidate();
-        session()->regenerateToken();
+        Session::invalidate();
+        Session::regenerateToken();
         Auth::login($user);
-        session()->regenerate();
+        Session::regenerate();
     }
 }

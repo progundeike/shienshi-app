@@ -175,7 +175,7 @@ export const LoginPage: FC = memo(() => {
                     </FormControl>
                     <SubmitButton>ログイン</SubmitButton>
 
-                    <Divider my="10px" />
+                    <Divider my={2} />
 
                     <Text textAlign="center">
                         アカウントをお持ちでない方はこちら

@@ -93,9 +93,9 @@ export const QuestionAndAnswerInput: FC<Props> = memo((props) => {
     return (
         <>
             {!user && (
-                <Box textAlign="center" m="10px">
+                <Box textAlign="center" m={2}>
                     <Text color="red" fontWeight="bold">
-                        答え合わせをするためにはログインが必要です
+                        添削にはログインが必要です
                     </Text>
                 </Box>
             )}
@@ -109,16 +109,16 @@ export const QuestionAndAnswerInput: FC<Props> = memo((props) => {
                                 {question.subQuestionNumber == 1 &&
                                     question.smallQuestionNumber < 2 && (
                                         <Box>
-                                            <Divider my="10px" />
+                                            <Divider my={2} />
                                             <Text>
                                                 設問{question.questionNumber}
                                             </Text>
                                         </Box>
                                     )}
 
-                                <Box mb="5px">
+                                <Box mb={1}>
                                     {/* 質問文 */}
-                                    <Text fontSize="md" whiteSpace="pre-line">
+                                    <Text whiteSpace="pre-line">
                                         {question.text}
                                     </Text>
 
@@ -158,12 +158,12 @@ export const QuestionAndAnswerInput: FC<Props> = memo((props) => {
                             </Fragment>
                         ))}
 
-                    <Box textAlign="center" mt="20px">
+                    <Box textAlign="center" mt={5}>
                         {user ? (
                             <Button
                                 type="submit"
                                 backgroundColor="green.200"
-                                borderRadius="100px"
+                                borderRadius="full"
                                 w="80%"
                                 isLoading={isCorrecting}
                                 isDisabled={isCorrecting}

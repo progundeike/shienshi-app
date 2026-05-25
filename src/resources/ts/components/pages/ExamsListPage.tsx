@@ -37,7 +37,7 @@ const CustomTd = chakra(Td, {
 export const ExamsListPage: FC = memo(() => {
     return (
         <Box w={{ base: "100%", md: "80%" }} m="auto" textAlign="center">
-            <Box m="20px">
+            <Box m={5}>
                 <Heading>過去問一覧</Heading>
             </Box>
             <Box display={{ base: "none", md: "block" }}>

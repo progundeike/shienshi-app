@@ -66,6 +66,7 @@ export const AnswerAndCorrectionForm: FC<Props> = memo((props) => {
 
             return data;
         },
+        enabled: Boolean(user),
     });
 
     const checkProcessingStatus = useCallback(async (): Promise<boolean> => {
