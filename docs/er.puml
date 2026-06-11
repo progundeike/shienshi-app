@@ -1,0 +1,130 @@
+@startuml er
+title 支援士対策室 ER図
+hide circle
+skinparam linetype ortho
+skinparam shadowing false
+
+legend right
+  == 凡例 ==
+  実線: 外部キー制約あり
+  点線: 論理参照(DB制約なし)
+  <<FK>> DB上の外部キー
+  <<logical ref>> アプリ上の参照キー
+endlegend
+
+entity "users" as users {
+  id : bigint
+  --
+  is_admin : boolean
+  username : varchar
+  email : varchar
+  email_verified_at : timestamp
+  password : varchar
+  deleted_at : timestamp
+  remember_token : varchar
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "exam_sentences" as exam_sentences {
+  exam_code : varchar
+  --
+  sentence : text
+  purpose : text
+  review_comment : text
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "questions" as questions {
+  exam_code : varchar <<logical ref>>
+  question_code : varchar
+  --
+  text : text
+  type : enum
+  options : json
+  max_length : int
+  text_for_ai : longtext
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "model_answers" as model_answers {
+  exam_code : varchar <<logical ref>>
+  question_code : varchar <<logical ref>>
+  --
+  text : text
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "user_answers" as user_answers {
+  user_id : bigint <<FK>>
+  exam_code : varchar <<logical ref>>
+  question_code : varchar <<logical ref>>
+  --
+  user_text : text
+  ai_rating : text
+  ai_text : text
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "user_ai_dialogues" as user_ai_dialogues {
+  id : bigint
+  --
+  user_id : bigint <<FK>>
+  exam_code : varchar <<logical ref>>
+  question_code : varchar <<logical ref>>
+  user_question : text
+  ai_answer : text
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "submitted_exams" as submitted_exams {
+  id : bigint
+  --
+  user_id : bigint <<FK>>
+  exam_code : varchar <<logical ref>>
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "inquiries" as inquiries {
+  id : bigint
+  --
+  user_id : bigint <<FK>>
+  name : varchar
+  email : varchar
+  message : text
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "news_items" as news_items {
+  id : bigint
+  --
+  title : varchar
+  content : text
+  published_at : timestamp
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+users ||--o{ user_answers
+users ||--o{ user_ai_dialogues
+users ||--o{ submitted_exams
+users |o--o{ inquiries
+
+exam_sentences ||..o{ questions
+exam_sentences ||..o{ submitted_exams
+exam_sentences ||..down..o{ model_answers
+exam_sentences ||..right..o{ user_answers
+exam_sentences ||..right..o{ user_ai_dialogues
+
+questions ||..right..o| model_answers
+questions ||..down..o{ user_answers
+questions ||..down..o{ user_ai_dialogues
+
+@enduml

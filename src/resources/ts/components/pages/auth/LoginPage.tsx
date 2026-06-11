@@ -35,6 +35,8 @@ export const LoginPage: FC = memo(() => {
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () =>
         setShowPassword((current) => !current);
+    const passwordIcon = showPassword ? HiOutlineEyeOff : HiOutlineEye;
+
     const {
         register,
         handleSubmit,
@@ -121,13 +123,6 @@ export const LoginPage: FC = memo(() => {
                             >
                                 パスワード
                             </FormLabel>
-                            <ChakraLink
-                                as={RouterLink}
-                                to="/forgot-password"
-                                fontSize={{ base: "xs", md: "sm" }}
-                            >
-                                パスワードをお忘れですか？
-                            </ChakraLink>
                         </Flex>
                         <InputGroup>
                             <Input
@@ -145,23 +140,13 @@ export const LoginPage: FC = memo(() => {
                                             : "パスワードを表示"
                                     }
                                     icon={
-                                        showPassword ? (
-                                            <Icon
-                                                as={HiOutlineEyeOff}
-                                                boxSize={{
-                                                    base: 4,
-                                                    md: 6,
-                                                }}
-                                            />
-                                        ) : (
-                                            <Icon
-                                                as={HiOutlineEye}
-                                                boxSize={{
-                                                    base: 4,
-                                                    md: 6,
-                                                }}
-                                            />
-                                        )
+                                        <Icon
+                                            as={passwordIcon}
+                                            boxSize={{
+                                                base: 4,
+                                                md: 6,
+                                            }}
+                                        />
                                     }
                                     size="sm"
                                     variant="ghost"

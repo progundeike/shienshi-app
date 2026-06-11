@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\SubmittedExam;
 use App\Services\ExamDataService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
@@ -39,7 +38,7 @@ class ExamController extends Controller
     // 提出済みの試験一覧を取得する
     public function fetchSubmittedExams()
     {
-        $userId = Auth::id();
+        $userId = $this->currentUserId();
         $fetchedSubmittedAnswers = SubmittedExam::where('user_id', $userId)
             ->orderBy('exam_code', 'desc')
             ->get();

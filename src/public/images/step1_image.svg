@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-labelledby="title desc">
+  <title id="title">Checklist clipboard and pencil illustration</title>
+  <desc id="desc">A clean vector illustration of a blue clipboard with check marks and a pencil.</desc>
+  <defs>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#1f2937" flood-opacity="0.14"/>
+    </filter>
+    <linearGradient id="boardBlue" x1="35" y1="28" x2="105" y2="145" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1f6ea6"/>
+      <stop offset="1" stop-color="#0d4c78"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="45" y1="28" x2="112" y2="138" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f5f8fb"/>
+    </linearGradient>
+    <linearGradient id="pencilBlue" x1="133" y1="47" x2="112" y2="140" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1e6fa8"/>
+      <stop offset="1" stop-color="#0e4f7c"/>
+    </linearGradient>
+  </defs>
+
+  <!-- clipboard -->
+  <g filter="url(#softShadow)">
+    <path d="M23.5 30.8 111.8 21.8a4.2 4.2 0 0 1 4.6 3.7l12.3 120.8a4.2 4.2 0 0 1-3.7 4.6l-88.3 9a4.2 4.2 0 0 1-4.6-3.7L19.8 35.4a4.2 4.2 0 0 1 3.7-4.6Z" fill="url(#boardBlue)"/>
+    <path d="M32.1 40.5 106.6 33a2.8 2.8 0 0 1 3.1 2.5l10.4 102.7a2.8 2.8 0 0 1-2.5 3.1l-74.5 7.6a2.8 2.8 0 0 1-3.1-2.5L29.6 43.6a2.8 2.8 0 0 1 2.5-3.1Z" fill="url(#paper)"/>
+    <path d="M55.6 18.6 62 18l-.3-2.9a9.1 9.1 0 0 1 18.1-1.8l.3 2.9 6.4-.7a5.2 5.2 0 0 1 5.7 4.6l1 9.5-36.4 3.7-1-9.5a5.2 5.2 0 0 1 4.6-5.7Z" fill="url(#boardBlue)"/>
+    <circle cx="70.7" cy="15.1" r="3.7" fill="#f7fbff" opacity="0.9"/>
+  </g>
+
+  <!-- checklist rows -->
+  <g transform="rotate(-5.8 75 91)">
+    <g stroke-linecap="round" stroke-linejoin="round">
+      <g>
+        <rect x="45.5" y="55.7" width="9.7" height="9.7" rx="1.7" fill="#fff" stroke="#b9c5cf" stroke-width="1.6"/>
+        <path d="M47.1 60.6 50.1 63.5 56.9 56.5" fill="none" stroke="#c3783a" stroke-width="2.2"/>
+        <path d="M66.2 57.4h33.5M66.2 64h50.1" stroke="#b9c5cf" stroke-width="3"/>
+      </g>
+      <g transform="translate(0 24)">
+        <rect x="45.5" y="55.7" width="9.7" height="9.7" rx="1.7" fill="#fff" stroke="#b9c5cf" stroke-width="1.6"/>
+        <path d="M47.1 60.6 50.1 63.5 56.9 56.5" fill="none" stroke="#c3783a" stroke-width="2.2"/>
+        <path d="M66.2 57.4h37.5M66.2 64h45.3" stroke="#b9c5cf" stroke-width="3"/>
+      </g>
+      <g transform="translate(0 48)">
+        <rect x="45.5" y="55.7" width="9.7" height="9.7" rx="1.7" fill="#fff" stroke="#b9c5cf" stroke-width="1.6"/>
+        <path d="M47.1 60.6 50.1 63.5 56.9 56.5" fill="none" stroke="#c3783a" stroke-width="2.2"/>
+        <path d="M66.2 57.4h29.2M66.2 64h46.5" stroke="#b9c5cf" stroke-width="3"/>
+      </g>
+      <g transform="translate(0 72)">
+        <rect x="45.5" y="55.7" width="9.7" height="9.7" rx="1.7" fill="#fff" stroke="#b9c5cf" stroke-width="1.6"/>
+        <path d="M47.1 60.6 50.1 63.5 56.9 56.5" fill="none" stroke="#c3783a" stroke-width="2.2"/>
+        <path d="M66.2 57.4h34.2M66.2 64h43" stroke="#b9c5cf" stroke-width="3"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- pencil -->
+  <g filter="url(#softShadow)" transform="rotate(14 126 94)">
+    <path d="M128.9 42.8h13.1v86.8h-13.1z" fill="url(#pencilBlue)"/>
+    <path d="M128.9 42.8h13.1v8.3h-13.1z" fill="#0b3554"/>
+    <path d="M129.1 129.6h12.7l-6.4 20.7z" fill="#e1b26e"/>
+    <path d="M133.2 143.6h4.5l-2.3 6.7z" fill="#263238"/>
+    <path d="M128.9 51.1h13.1v4.8h-13.1z" fill="#f1c65b"/>
+    <path d="M141.9 42.8h2.9v86.8h-2.9z" fill="#0a3f66" opacity="0.42"/>
+  </g>
+</svg>

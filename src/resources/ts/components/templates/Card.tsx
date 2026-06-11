@@ -18,7 +18,7 @@ export const Card: FC<Props> = memo(({ children, maxW }) => {
             boxShadow="lg"
             p={5}
             spacing={6}
-            borderRadius="md"
+            borderRadius="xl"
         >
             {children}
         </Stack>

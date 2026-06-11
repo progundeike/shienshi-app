@@ -124,6 +124,7 @@ export const PdfHighlighter = forwardRef<
         <Box
             ref={rootRef}
             position="relative"
+            cursor="crosshair"
             onMouseDown={onMouseDown}
             onMouseMove={onMouseMove}
             onMouseUp={onMouseUp}

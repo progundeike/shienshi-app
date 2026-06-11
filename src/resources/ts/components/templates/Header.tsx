@@ -35,7 +35,7 @@ const HeaderLink: FC<{ children: React.ReactNode; to: string }> = memo(
                 as={RouterLink}
                 to={to}
                 fontWeight="bold"
-                fontSize={{ base: "md", md: "lg" }}
+                fontSize="lg"
                 _hover={{ textDecoration: "underline" }}
                 textUnderlineOffset="5px"
             >
@@ -59,10 +59,10 @@ export const Header: FC = memo(() => {
             top="0"
             zIndex="sticky"
         >
-            <Box m="auto" py="5px" px={{ base: 0, md: 6 }}>
+            <Box m="auto" px={{ base: 1, md: 6 }}>
                 <Flex
                     justifyContent="space-between"
-                    wrap="wrap"
+                    wrap="nowrap"
                     alignItems="center"
                 >
                     {/* 左バナー */}
@@ -71,13 +71,13 @@ export const Header: FC = memo(() => {
                             <Image
                                 src="/images/top_icon.png"
                                 alt="支援士対策室ロゴ"
-                                h={{ base: "50px", md: "60px" }}
+                                h={{ base: "36px", md: "60px" }}
                             />
                             <Box>
                                 <Heading
                                     as="h1"
                                     size="md"
-                                    fontSize={{ base: "18px", md: "36px" }}
+                                    fontSize={{ base: "18px", md: "30px" }}
                                     fontWeight="700"
                                     letterSpacing="0.02em"
                                 >
@@ -89,11 +89,12 @@ export const Header: FC = memo(() => {
 
                     {/* PC右メニュー */}
                     <Flex
-                        gap="30px"
+                        gap={7}
                         alignItems="center"
                         display={{ base: "none", md: "flex" }}
                     >
                         <HeaderLink to="/">ホーム</HeaderLink>
+                        <HeaderLink to="/info">試験概要</HeaderLink>
                         <HeaderLink to="/exams">過去問一覧</HeaderLink>
 
                         {user ? (
@@ -107,7 +108,8 @@ export const Header: FC = memo(() => {
                                     color="accentTextColor"
                                     _hover={{ bg: "#4F94F7" }}
                                     borderRadius="full"
-                                    p="20px"
+                                    h="40px"
+                                    px={5}
                                     textShadow="0 1px 2px rgba(0, 0, 0, 0.3)"
                                 >
                                     無料で始める
@@ -118,7 +120,8 @@ export const Header: FC = memo(() => {
                                     backgroundColor="white"
                                     color="baseColor"
                                     borderRadius="full"
-                                    p="20px"
+                                    h="40px"
+                                    px={5}
                                 >
                                     ログイン
                                 </Button>
@@ -129,7 +132,7 @@ export const Header: FC = memo(() => {
                     {/* スマホ右メニュー */}
                     <Flex
                         display={{ base: "flex", md: "none" }}
-                        gap="8px"
+                        gap={2}
                         alignItems="center"
                     >
                         {!user && (
@@ -141,7 +144,8 @@ export const Header: FC = memo(() => {
                                 _hover={{ bg: "#4F94F7" }}
                                 borderRadius="full"
                                 fontSize="sm"
-                                p="10px"
+                                h="30px"
+                                px={3}
                                 textShadow="0 1px 2px rgba(0, 0, 0, 0.3)"
                             >
                                 無料で始める
@@ -161,6 +165,7 @@ export const Header: FC = memo(() => {
                             />
                             <MenuList bg="white" color="gray.800">
                                 <MobileMenuItem text="ホーム" to="/" />
+                                <MobileMenuItem text="試験概要" to="/info" />
                                 <MobileMenuItem text="過去問一覧" to="/exams" />
 
                                 {user ? (

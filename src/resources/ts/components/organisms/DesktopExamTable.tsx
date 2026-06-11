@@ -11,6 +11,7 @@ import {
     Tr,
     Text,
     Heading,
+    Flex,
 } from "@chakra-ui/react";
 import { ExamLinkButton } from "../atoms/ExamLinkButton";
 import { PreReleaseExamLinkButton } from "../atoms/PreReleaseExamLinkButton";
@@ -33,145 +34,74 @@ const CustomTd = chakra(Td, {
     },
 });
 
+const ExamListCard: FC<{
+    children: ReactNode;
+    title: string;
+    subTitle?: string;
+}> = ({ children, title, subTitle }) => {
+    return (
+        <Flex
+            boxShadow="md"
+            p={3}
+            w="100%"
+            borderRadius="xl"
+            border="1px solid"
+            borderColor="gray.200"
+            justifyContent="space-between"
+            alignItems="center"
+        >
+            <Box w="30%">
+                <Text fontSize="xl" fontWeight="bold">
+                    {title}
+                </Text>
+                <Text color="gray.700">{subTitle}</Text>
+            </Box>
+            <Flex gap={4} w="60%">
+                {children}
+            </Flex>
+        </Flex>
+    );
+};
+
 export const DesktopExamTable: FC = memo(() => {
     return (
-        <TableContainer>
-            <Table variant="simple" size="sm">
-                <Tbody>
-                    <Tr>
-                        <CustomTh>2025年(令和7年) 秋期</CustomTh>
-                        <CustomTd>
-                            <PreReleaseExamLinkButton
-                                url="2025/aki/1"
-                                title="問1"
-                            />
-                        </CustomTd>
-                        <CustomTd>
-                            <PreReleaseExamLinkButton
-                                url="2025/aki/2"
-                                title="問2"
-                            />
-                        </CustomTd>
-                        <CustomTd>
-                            <PreReleaseExamLinkButton
-                                url="2025/aki/3"
-                                title="問3"
-                            />
-                        </CustomTd>
-                        <CustomTd>
-                            <PreReleaseExamLinkButton
-                                url="2025/aki/4"
-                                title="問4"
-                            />
-                        </CustomTd>
-                    </Tr>
-                    <Tr>
-                        <CustomTh>2025年(令和7年) 春期</CustomTh>
-                        <CustomTd>
-                            <ExamLinkButton url="2025/haru/1" title="問1" />
-                        </CustomTd>
-                        <CustomTd>
-                            <ExamLinkButton url="2025/haru/2" title="問2" />
-                        </CustomTd>
-                        <CustomTd>
-                            <ExamLinkButton url="2025/haru/3" title="問3" />
-                        </CustomTd>
-                        <CustomTd>
-                            <ExamLinkButton url="2025/haru/4" title="問4" />
-                        </CustomTd>
-                    </Tr>
-                    <Tr>
-                        <CustomTh>2024年(令和6年) 秋期</CustomTh>
-                        <CustomTd>
-                            <ExamLinkButton url="2024/aki/1" title="問1" />
-                        </CustomTd>
-                        <CustomTd>
-                            <ExamLinkButton url="2024/aki/2" title="問2" />
-                        </CustomTd>
-                        <CustomTd>
-                            <ExamLinkButton url="2024/aki/3" title="問3" />
-                        </CustomTd>
-                        <CustomTd>
-                            <ExamLinkButton url="2024/aki/4" title="問4" />
-                        </CustomTd>
-                    </Tr>
+        <Box>
+            <Flex direction="column" gap={5}>
+                <ExamListCard title="2025年(令和7年) 秋期" subTitle="編集中">
+                    <PreReleaseExamLinkButton url="2025/aki/1" title="問1" />
+                    <PreReleaseExamLinkButton url="2025/aki/2" title="問2" />
+                    <PreReleaseExamLinkButton url="2025/aki/3" title="問3" />
+                    <PreReleaseExamLinkButton url="2025/aki/4" title="問4" />
+                </ExamListCard>
 
-                    <Tr>
-                        <CustomTh>2024年(令和6年) 春期</CustomTh>
-                        <CustomTd>
-                            <ExamLinkButton url="2024/haru/1" title="問1" />
-                        </CustomTd>
-                        <CustomTd>
-                            <ExamLinkButton url="2024/haru/2" title="問2" />
-                        </CustomTd>
-                        <CustomTd>
-                            <ExamLinkButton url="2024/haru/3" title="問3" />
-                        </CustomTd>
-                        <CustomTd>
-                            <ExamLinkButton url="2024/haru/4" title="問4" />
-                        </CustomTd>
-                    </Tr>
-                    <Tr>
-                        <CustomTh>2023年(令和5年) 秋期</CustomTh>
-                        <CustomTd>
-                            <ExamLinkButton url="2023/aki/1" title="問1" />
-                        </CustomTd>
-                        <CustomTd>
-                            <ExamLinkButton url="2023/aki/2" title="問2" />
-                        </CustomTd>
-                        <CustomTd>
-                            <ExamLinkButton url="2023/aki/3" title="問3" />
-                        </CustomTd>
-                        <CustomTd>
-                            <ExamLinkButton url="2023/aki/4" title="問4" />
-                        </CustomTd>
-                    </Tr>
+                <ExamListCard title="2025年(令和7年) 春期">
+                    <ExamLinkButton url="2025/haru/1" title="問1" />
+                    <ExamLinkButton url="2025/haru/2" title="問2" />
+                    <ExamLinkButton url="2025/haru/3" title="問3" />
+                    <ExamLinkButton url="2025/haru/4" title="問4" />
+                </ExamListCard>
 
-                    {/* 以下は午前、午後で計5問あった年 */}
-                    <Tr>
-                        <CustomTd></CustomTd>
-                        <CustomTd colSpan={3} fontSize="md" textAlign="center">
-                            午後1
-                        </CustomTd>
-                        <CustomTd colSpan={2} fontSize="md" textAlign="center">
-                            午後2
-                        </CustomTd>
-                    </Tr>
-                    <Tr>
-                        <CustomTh>2023年(令和5年) 春期</CustomTh>
-                        <CustomTd>
-                            <PreReleaseExamLinkButton
-                                url="2023/haru/1"
-                                title="問1"
-                            />
-                        </CustomTd>
-                        <CustomTd>
-                            <PreReleaseExamLinkButton
-                                url="2023/haru/2"
-                                title="問2"
-                            />
-                        </CustomTd>
-                        <CustomTd borderRight={"1px solid black"}>
-                            <PreReleaseExamLinkButton
-                                url="2023/haru/3"
-                                title="問3"
-                            />
-                        </CustomTd>
-                        <CustomTd>
-                            <PreReleaseExamLinkButton
-                                url="2023/haru/4"
-                                title="問1"
-                            />
-                        </CustomTd>
-                        <CustomTd>
-                            <PreReleaseExamLinkButton
-                                url="2023/haru/5"
-                                title="問2"
-                            />
-                        </CustomTd>
-                    </Tr>
-                </Tbody>
-            </Table>
-        </TableContainer>
+                <ExamListCard title="2024年(令和6年) 秋期">
+                    <ExamLinkButton url="2024/aki/1" title="問1" />
+                    <ExamLinkButton url="2024/aki/2" title="問2" />
+                    <ExamLinkButton url="2024/aki/3" title="問3" />
+                    <ExamLinkButton url="2024/aki/4" title="問4" />
+                </ExamListCard>
+
+                <ExamListCard title="2024年(令和6年) 春期">
+                    <ExamLinkButton url="2024/haru/1" title="問1" />
+                    <ExamLinkButton url="2024/haru/2" title="問2" />
+                    <ExamLinkButton url="2024/haru/3" title="問3" />
+                    <ExamLinkButton url="2024/haru/4" title="問4" />
+                </ExamListCard>
+
+                <ExamListCard title="2023年(令和5年) 秋期">
+                    <ExamLinkButton url="2024/aki/1" title="問1" />
+                    <ExamLinkButton url="2024/aki/2" title="問2" />
+                    <ExamLinkButton url="2024/aki/3" title="問3" />
+                    <ExamLinkButton url="2024/aki/4" title="問4" />
+                </ExamListCard>
+            </Flex>
+        </Box>
     );
 });

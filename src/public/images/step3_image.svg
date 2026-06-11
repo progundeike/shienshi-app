@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-labelledby="title desc">
+  <title id="title">Chat question illustration</title>
+  <desc id="desc">Two blue speech bubbles with a question mark and message lines.</desc>
+  <defs>
+    <linearGradient id="bubbleGradient" x1="26" y1="36" x2="190" y2="150" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#68A2F0"/>
+      <stop offset="1" stop-color="#2E69C9"/>
+    </linearGradient>
+    <linearGradient id="bubbleGradient2" x1="120" y1="5" x2="221" y2="95" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7AB1F3"/>
+      <stop offset="1" stop-color="#3674D2"/>
+    </linearGradient>
+    <filter id="softShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#1b3b6f" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- left message bubble -->
+  <path
+    d="M26 50
+       Q26 40 36 40
+       H144
+       Q156 40 156 52
+       V118
+       Q156 130 144 130
+       H49
+       L26 154
+       V50Z"
+    fill="url(#bubbleGradient)"
+    filter="url(#softShadow)"/>
+
+  <!-- right question bubble -->
+  <path
+    d="M132 10
+       H216
+       Q228 10 228 22
+       V78
+       Q228 90 216 90
+       H197
+       L197 112
+       L175 90
+       H132
+       Q120 90 120 78
+       V22
+       Q120 10 132 10Z"
+    fill="url(#bubbleGradient2)"
+    filter="url(#softShadow)"/>
+
+  <!-- message lines -->
+  <rect x="43" y="77" width="64" height="6" rx="3" fill="#FFFFFF" opacity="0.96"/>
+  <rect x="43" y="103" width="100" height="6" rx="3" fill="#FFFFFF" opacity="0.96"/>
+
+  <!-- question mark -->
+  <text x="174" y="62"
+        text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="58"
+        font-weight="500"
+        fill="#FFFFFF">?</text>
+</svg>

@@ -51,18 +51,21 @@ export const ExamPage: FC = memo(() => {
 
     if (isMobile) {
         return (
-            <Box minH="100vh" p={4} fontSize="sm">
+            <Box>
                 <ExamHeader
                     year={parsedYear}
                     season={season}
                     section={parsedSection}
                 />
-
-                <AnswerAndCorrectionForm
-                    year={parsedYear}
-                    season={season}
-                    section={parsedSection}
-                />
+                <Box minH="100vh" fontSize="sm" w="90%" mx="auto">
+                    <Box p={2}>
+                        <AnswerAndCorrectionForm
+                            year={parsedYear}
+                            season={season}
+                            section={parsedSection}
+                        />
+                    </Box>
+                </Box>
             </Box>
         );
     }
@@ -83,7 +86,6 @@ export const ExamPage: FC = memo(() => {
                     flexDirection="column"
                     h="100%"
                     minH={0}
-                    backgroundColor="gray.300"
                     overflow="auto"
                 >
                     <Box flex="1" overflow="auto" minH={0}>

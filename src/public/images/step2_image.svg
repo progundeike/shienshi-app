@@ -1,0 +1,48 @@
+<svg width="640" height="420" viewBox="0 0 640 420" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Document and chat illustration</title>
+  <desc id="desc">A clean blue line illustration of a document with text lines and a chat bubble.</desc>
+  <defs>
+    <filter id="softShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#183768" flood-opacity="0.10"/>
+    </filter>
+    <linearGradient id="paperFill" x1="78" y1="48" x2="492" y2="352" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#F8FBFF"/>
+    </linearGradient>
+    <linearGradient id="bubbleFill" x1="446" y1="100" x2="612" y2="224" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#F4F9FF"/>
+    </linearGradient>
+  </defs>
+
+  <g filter="url(#softShadow)">
+    <rect x="70" y="48" width="426" height="304" rx="7" fill="url(#paperFill)" stroke="#183768" stroke-width="15" stroke-linejoin="round"/>
+  </g>
+
+  <g stroke="#8A9AAD" stroke-width="11" stroke-linecap="round">
+    <path d="M132 102H438"/>
+    <path d="M132 144H438"/>
+    <path d="M132 186H256"/>
+    <path d="M132 228H405"/>
+    <path d="M132 270H330"/>
+    <path d="M132 312H415"/>
+  </g>
+
+  <g stroke="#C9D2DE" stroke-width="7" stroke-linecap="round">
+    <path d="M132 123H384"/>
+    <path d="M132 165H312"/>
+    <path d="M132 207H350"/>
+    <path d="M132 249H292"/>
+    <path d="M132 291H368"/>
+  </g>
+
+  <g filter="url(#softShadow)">
+    <path d="M450 88H592C610 88 624 102 624 120V205C624 223 610 237 592 237H513L482 268C477 273 468 269 468 262V237H450C432 237 418 223 418 205V120C418 102 432 88 450 88Z" fill="url(#bubbleFill)" stroke="#183768" stroke-width="10" stroke-linejoin="round"/>
+  </g>
+
+  <g stroke="#4F6F9B" stroke-width="10" stroke-linecap="round">
+    <path d="M468 133H572"/>
+    <path d="M468 164H583"/>
+    <path d="M468 195H548"/>
+  </g>
+</svg>

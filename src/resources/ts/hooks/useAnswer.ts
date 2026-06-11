@@ -18,7 +18,7 @@ export const useAnswer = () => {
         year: number,
         season: string,
         section: number,
-    ): Promise<Correction[] | null> => {
+    ): Promise<void> => {
         setIsLoading(true);
 
         try {
@@ -31,26 +31,12 @@ export const useAnswer = () => {
                 section,
             });
 
-            // 成功
-            if (
-                response.data &&
-                Array.isArray(response.data) &&
-                response.data[0].questionNumber
-            ) {
-                return response.data as Correction[];
-            }
-
-            return null;
+            return;
         } catch (error) {
             console.log(error);
 
             // axiosのエラー処理
             if (axios.isAxiosError(error)) {
-                // 401 Unauthorized（認証切れ
-                if (error.response?.status === 401) {
-                    return null;
-                }
-
                 // 429 Too Many Requests（多重送信）エラーのときは特別なトーストを表示
                 if (error.response?.status === 429) {
                     toast({
@@ -64,13 +50,13 @@ export const useAnswer = () => {
                     });
                 }
 
-                return null;
+                return;
             }
 
             showServerErrorToast("答案提出に失敗しました");
 
             console.error(error);
-            return null;
+            return;
         } finally {
             setIsLoading(false);
         }

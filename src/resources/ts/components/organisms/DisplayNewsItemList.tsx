@@ -14,10 +14,6 @@ import { useNewsItem } from "../../hooks/useNewsItem";
 export const DisplayNewsItemList: FC = memo(() => {
     const { newsItemList } = useNewsItem();
     const newsItems = newsItemList.data ?? [];
-    const accordionDefaultIndex = useBreakpointValue({
-        base: undefined,
-        md: 0,
-    });
 
     return (
         <Box backgroundColor="white">
@@ -25,8 +21,6 @@ export const DisplayNewsItemList: FC = memo(() => {
                 maxH="300px"
                 overflowY="auto"
                 mt={2}
-                border="1px solid"
-                borderColor="#CCCCCC"
                 sx={{ scrollbarGutter: "stable" }}
             >
                 {newsItems.map((item: any) => (
@@ -50,7 +44,7 @@ export const DisplayNewsItemList: FC = memo(() => {
                                 {item.content ? (
                                     <Accordion
                                         allowToggle
-                                        defaultIndex={accordionDefaultIndex}
+                                        defaultIndex={undefined}
                                     >
                                         <AccordionItem
                                             border="none"

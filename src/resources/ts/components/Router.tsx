@@ -26,6 +26,7 @@ import { userAtom } from "../states/userAtom";
 import { ContactPage } from "./pages/ContactPage";
 import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 import { useChakraToast } from "../utils/toastUtils";
+import { ExamInfoPage } from "./pages/ExamInfoPage";
 
 export const Router = () => {
     const { getUser } = useAuth();
@@ -69,6 +70,7 @@ export const Router = () => {
         <Layout>
             <Routes>
                 <Route path="/" element={<TopPage />} />
+                <Route path="/info" element={<ExamInfoPage />} />
 
                 <Route
                     path="/exams/:year/:season/:section"

@@ -26,6 +26,13 @@ const ExamListCard: FC<{
 export const MobileExamsList: FC = memo(() => {
     return (
         <Box textAlign="center" mx="auto">
+            <Box w="90%" mx="auto">
+                <Text>
+                    スマートフォンでは、見やすさを優先して解答入力フォームのみを表示しています。
+                    <br />
+                    問題文はPDFをダウンロードして確認できます。印刷してご利用ください。
+                </Text>
+            </Box>
             <Flex direction="column">
                 <ExamListCard title="2025年(令和7年) 秋期">
                     <PreReleaseExamLinkButton url="2025/aki/1" title="問1" />
@@ -62,7 +69,7 @@ export const MobileExamsList: FC = memo(() => {
                     <ExamLinkButton url="2023/aki/4" title="問4" />
                 </ExamListCard>
 
-                <ExamListCard title="2023年(令和5年) 春期">
+                {/* <ExamListCard title="2023年(令和5年) 春期">
                     <Grid
                         templateColumns="auto repeat(3, 1fr)"
                         w="100%"
@@ -78,7 +85,7 @@ export const MobileExamsList: FC = memo(() => {
                         <ExamLinkButton url="2023/haru/4" title="問1" />
                         <ExamLinkButton url="2023/haru/5" title="問2" />
                     </Grid>
-                </ExamListCard>
+                </ExamListCard> */}
             </Flex>
         </Box>
     );

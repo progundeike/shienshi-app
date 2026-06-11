@@ -4,7 +4,6 @@ import {
     ModalOverlay,
     ModalContent,
     ModalHeader,
-    ModalCloseButton,
     ModalBody,
     Text,
     useDisclosure,
@@ -37,64 +36,63 @@ export const AccountDeleteModal: FC = memo(() => {
 
     return (
         <Box>
-            <Box textAlign="right">
-                <Button
+            <Box textAlign="center" mt={10} mb={5}>
+                <Text
+                    fontSize={{ base: "sm", md: "md" }}
+                    cursor="pointer"
                     onClick={onOpen}
-                    borderRadius="full"
-                    w="30%"
-                    border="1px solid black"
+                    display="inline-block"
+                    _hover={{ textDecoration: "underline" }}
                 >
-                    アカウントを削除
-                </Button>
+                    アカウントの削除はこちら
+                </Text>
             </Box>
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent
+                    w={{ base: "90%", md: "400px" }}
+                    textAlign="center"
+                    borderRadius="xl"
+                >
                     <ModalHeader m="auto">アカウントを削除</ModalHeader>
-                    <ModalBody mb="20px">
-                        <Center mb="20px">
+                    <ModalBody>
+                        <Center mb={5}>
                             <Icon as={GoAlert} color="red.500" boxSize="30%" />
                         </Center>
-                        <Text>アカウントを削除しますか？</Text>
-                        <Flex align="center" gap="5px">
-                            <Icon
-                                as={FaRegCheckCircle}
-                                color="red.500"
-                                boxSize={5}
-                            />
+                        <Box textAlign={{ base: "left", md: "left" }} mb={5}>
                             <Text>
                                 削除したアカウントの内容は復元できません
                             </Text>
-                        </Flex>
-                    </ModalBody>
-
-                    <Box w="80%" mx="auto" my="10px">
-                        <Flex direction="column" gap="10px">
-                            <Button
-                                backgroundColor="red.500"
-                                color="white"
-                                onClick={onDelete}
-                                borderRadius="full"
-                                w="100%"
-                                shadow="md"
-                            >
-                                アカウントを削除する
-                            </Button>
-                            <Button
-                                variant="ghost"
-                                onClick={onClose}
-                                borderRadius="full"
-                            >
-                                もどる
-                            </Button>
-                        </Flex>
-                    </Box>
-
-                    {isLoading && (
-                        <Box>
-                            <Spinner />
                         </Box>
-                    )}
+
+                        <Box w="80%" mx="auto" my={2}>
+                            <Flex direction="column" gap={3}>
+                                <Button
+                                    backgroundColor="red.500"
+                                    color="white"
+                                    onClick={onDelete}
+                                    borderRadius="full"
+                                    w="100%"
+                                    shadow="md"
+                                >
+                                    アカウントを削除する
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    onClick={onClose}
+                                    borderRadius="full"
+                                >
+                                    もどる
+                                </Button>
+                            </Flex>
+                        </Box>
+
+                        {isLoading && (
+                            <Box>
+                                <Spinner />
+                            </Box>
+                        )}
+                    </ModalBody>
                 </ModalContent>
             </Modal>
         </Box>

@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Exceptions\AiResponseException;
 use App\Models\User;
 use App\Services\AiClientService;
+use App\Services\AiExecutionLockService;
+use Illuminate\Contracts\Cache\LockProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -104,8 +106,14 @@ class AnswerControllerTest extends TestCase
         $this->actingAs($user);
 
         $examCode = '9999_haru_1';
-        $processingKey = "answer_processing:{$user->id}:{$examCode}";
+        $processingKey = app(AiExecutionLockService::class)->keyForAnswer($user->id, $examCode);
 
+        $store = Cache::store('redis')->getStore();
+        if (! $store instanceof LockProvider) {
+            throw new \RuntimeException("The cache store 'redis' does not support locking.");
+        }
+        $lock = $store->lock($processingKey, 60);
+        $this->assertTrue($lock->get());
         Cache::store('redis')->put($processingKey, true, 60);
 
         $payLoad = [
@@ -117,8 +125,12 @@ class AnswerControllerTest extends TestCase
             ],
         ];
 
-        $response = $this->postJson('/api/answer', $payLoad, ['Accept' => 'application/json']);
-        $response->assertStatus(429);
+        try {
+            $response = $this->postJson('/api/answer', $payLoad, ['Accept' => 'application/json']);
+            $response->assertStatus(429);
+        } finally {
+            $lock->release();
+        }
     }
 
     #[Test]
@@ -141,7 +153,7 @@ class AnswerControllerTest extends TestCase
 
         // ロックを解除しておく
         $examCode = $payLoad['year'].'_'.$payLoad['season'].'_'.$payLoad['section'];
-        $processingKey = "answer_processing:{$user->id}:{$examCode}";
+        $processingKey = app(AiExecutionLockService::class)->keyForAnswer($user->id, $examCode);
         Cache::store('redis')->forget($processingKey);
 
         $this->mock(AiClientService::class, function (MockInterface $mock) {

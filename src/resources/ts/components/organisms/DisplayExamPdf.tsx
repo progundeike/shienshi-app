@@ -1,8 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { FC, memo, useEffect, useRef, useState } from "react";
 import { pdfjs, Document, Page } from "react-pdf";
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import "react-pdf/dist/Page/TextLayer.css";
 import { useParams } from "react-router-dom";
 
 import { PdfHighlighter, PdfHighlighterHandle } from "./PdfHighlighter";
@@ -68,7 +66,11 @@ export const DisplayExamPdf: FC = memo(() => {
                 <Document file={url} onLoadSuccess={onDocumentLoadSuccess}>
                     {Array.from(new Array(numPages), (el, index) => (
                         <Box key={`page_${index + 1}`} position="relative">
-                            <Page pageNumber={index + 1} width={width} />
+                            <Page
+                                pageNumber={index + 1}
+                                width={width}
+                                renderTextLayer={false}
+                            />
                             <PdfHighlightsOverlay
                                 highlights={highlights}
                                 page={index + 1}
