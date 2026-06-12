@@ -11,7 +11,9 @@ class AiExecutionLockService
 {
     private const TTL_SECONDS = 180;
 
-    public function __construct(private readonly string $store = 'redis') {}
+    public function __construct(private readonly string $store = 'redis')
+    {
+    }
 
     public function run(string $key, Closure $callback): mixed
     {
