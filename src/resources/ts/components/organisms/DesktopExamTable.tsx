@@ -1,38 +1,7 @@
-import React, { FC, memo, ReactNode } from "react";
-import {
-    Box,
-    chakra,
-    Table,
-    TableCaption,
-    TableContainer,
-    Tbody,
-    Td,
-    Th,
-    Tr,
-    Text,
-    Heading,
-    Flex,
-} from "@chakra-ui/react";
+import { FC, memo, ReactNode } from "react";
+import { Box, Text, Flex } from "@chakra-ui/react";
 import { ExamLinkButton } from "../atoms/ExamLinkButton";
 import { PreReleaseExamLinkButton } from "../atoms/PreReleaseExamLinkButton";
-
-const CustomTh = chakra(Th, {
-    baseStyle: {
-        textAlign: "center",
-        fontSize: { base: "sm", md: "lg" },
-        px: { base: 1, md: 4 },
-        py: { base: 2, md: 3 },
-        // whiteSpace: "nowrap",
-    },
-});
-
-const CustomTd = chakra(Td, {
-    baseStyle: {
-        textAlign: "center",
-        px: { base: 0, md: 4 },
-        py: { base: 2, md: 3 },
-    },
-});
 
 const ExamListCard: FC<{
     children: ReactNode;

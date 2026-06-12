@@ -14,7 +14,6 @@ import { MyPage } from "./pages/MyPage";
 import { useAuth } from "../hooks/useAuth";
 import { PreAuthRoutes } from "./templates/PreAuthRoutes";
 import { UpdatePasswordPage } from "./pages/auth/UpdatePasswordPage";
-import { AdminRoutes } from "./templates/AdminRoutes";
 
 import { userAtom } from "../states/userAtom";
 import { ContactPage } from "./pages/ContactPage";
@@ -29,29 +28,9 @@ const ExamPage = lazy(() =>
         default: module.ExamPage,
     })),
 );
-const AdminPage = lazy(() =>
-    import("./pages/admin/AdminPage").then((module) => ({
-        default: module.AdminPage,
-    })),
-);
-const EditExamPage = lazy(() =>
-    import("./pages/admin/EditExamPage").then((module) => ({
-        default: module.EditExamPage,
-    })),
-);
-const NewsItemPage = lazy(() =>
-    import("./pages/admin/NewsItemPage").then((module) => ({
-        default: module.NewsItemPage,
-    })),
-);
-const InquiryPage = lazy(() =>
-    import("./pages/admin/InquiryPage").then((module) => ({
-        default: module.InquiryPage,
-    })),
-);
-const EditExamListPage = lazy(() =>
-    import("./pages/admin/EditExamListPage").then((module) => ({
-        default: module.EditExamListPage,
+const AdminRouteGroup = lazy(() =>
+    import("./AdminRouteGroup").then((module) => ({
+        default: module.AdminRouteGroup,
     })),
 );
 
@@ -119,10 +98,6 @@ export const Router = () => {
                     {/* ログイン後 */}
                     <Route element={<PrivateRoutes />}>
                         <Route path="/my-page" element={<MyPage />} />
-                        {/* <Route
-                        path="/delete-account"
-                        element={<DeleteAccountPage />}
-                    /> */}
                         <Route
                             path="/update-password"
                             element={<UpdatePasswordPage />}
@@ -130,25 +105,7 @@ export const Router = () => {
                     </Route>
 
                     {/* 管理者ページ */}
-                    <Route element={<AdminRoutes />}>
-                        <Route path="/admin" element={<AdminPage />} />
-                        <Route
-                            path="/admin/news-item"
-                            element={<NewsItemPage />}
-                        />
-                        <Route
-                            path="/admin/inquiry"
-                            element={<InquiryPage />}
-                        />
-                        <Route
-                            path="/admin/exams"
-                            element={<EditExamListPage />}
-                        />
-                        <Route
-                            path="/admin/edit/:year/:season/:section"
-                            element={<EditExamPage />}
-                        />
-                    </Route>
+                    <Route path="/admin/*" element={<AdminRouteGroup />} />
 
                     {/* 404 */}
                     <Route path="/not-found" element={<Page404 />} />

@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import { FC, memo, ReactNode } from "react";
+import { FC, memo } from "react";
 import { Link } from "react-router-dom";
 
 type Props = {

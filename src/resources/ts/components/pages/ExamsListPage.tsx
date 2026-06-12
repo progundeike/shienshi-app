@@ -1,13 +1,5 @@
-import React, { FC, memo } from "react";
-import {
-    Box,
-    chakra,
-    Image,
-    Text,
-    Heading,
-    Flex,
-    Center,
-} from "@chakra-ui/react";
+import { FC, memo } from "react";
+import { Box, Image, Text, Heading, Flex } from "@chakra-ui/react";
 import { DesktopExamTable } from "../organisms/DesktopExamTable";
 import { MobileExamsList } from "../organisms/MobileExamsList";
 

@@ -7,15 +7,15 @@ export default defineConfig({
     build: {
         target: "es2022",
         manifest: 'manifest.json',
-        rollupOptions: {
-            input: 'resources/ts/main.tsx'
-        }
     },
     esbuild: {
         target: "es2022"
     },
     plugins: [
-        laravel('resources/ts/App.tsx'),
+        laravel({
+            input: "resources/ts/main.tsx",
+            refresh: true,
+        }),
         react(),
         tsconfigPaths(),
     ],
@@ -23,7 +23,6 @@ export default defineConfig({
         host: true,
         hmr: {
             host: '127.0.0.4',
-            // host: 'localhost',
         },
         mimeTypes: {
             'application/javascript': ['mjs'],

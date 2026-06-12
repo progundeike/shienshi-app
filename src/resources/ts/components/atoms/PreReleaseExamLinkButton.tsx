@@ -1,6 +1,5 @@
 import { Button, Tooltip } from "@chakra-ui/react";
-import { FC, memo, ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { FC, memo } from "react";
 
 type Props = {
     url: string;
