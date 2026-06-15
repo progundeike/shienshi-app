@@ -103,6 +103,9 @@ export const QuestionEditorPanel: FC<{ examCode: string }> = memo((props) => {
                                             </Text>
                                         </Box>
                                     )}
+                                <Box fontWeight="bold">
+                                    {question.questionCode}
+                                </Box>
 
                                 <Box mb="5px">
                                     {/* 質問文 */}

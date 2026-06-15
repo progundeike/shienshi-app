@@ -2,68 +2,26 @@
 
 namespace Tests\Feature;
 
-use App\Models\ExamSentence;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\Feature\Support\FeatureTestCase;
 
-class AdminControllerTest extends TestCase
+class AdminControllerTest extends FeatureTestCase
 {
-    use RefreshDatabase;
-
-    protected User $adminUser;
-
-    protected User $normalUser;
-
-    // protected $baseUrl = 'http://127.0.0.4';
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        // 初期データをシード
-        $this->seed();
-
-        // テスト用管理者ユーザーを作成
-        $this->adminUser = User::factory()->create([
-            'username' => 'TestAdminUser',
-            'password' => Hash::make('password'),
-            'is_admin' => true,
-        ]);
-
-        // テスト用一般ユーザーを作成
-        $this->normalUser = User::factory()->create([
-            'username' => 'NewTestUser',
-            'password' => Hash::make('password'),
-            'is_admin' => false,
-        ]);
-
-        // テスト用データベースをシード
-        ExamSentence::factory()->create([
-            'exam_code' => '2099_haru_1',
-            'sentence' => 'This is a sample exam sentence for testing purposes.',
-            'purpose' => 'This is a sample purpose for testing.',
-            'review_comment' => 'This is a sample review comment for testing.',
-        ]);
-    }
-
     #[Test]
     public function 管理者がexamSentenceを取得できる(): void
     {
-        $response = $this->actingAs($this->adminUser)->get('/api/admin/sentence/2099-haru-1');
+        $response = $this->actingAs($this->adminUser)->get('/api/admin/sentence/9999-haru-1');
 
         $response->assertStatus(200);
-        $this->assertEquals('This is a sample exam sentence for testing purposes.', $response['sentence']);
-        $this->assertEquals('This is a sample purpose for testing.', $response['purpose']);
-        $this->assertEquals('This is a sample review comment for testing.', $response['reviewComment']);
+        $this->assertEquals('テスト用の問題文です', $response['sentence']);
+        $this->assertEquals('テスト用の出題趣旨です', $response['purpose']);
+        $this->assertEquals('テスト用の採点講評です', $response['reviewComment']);
     }
 
     #[Test]
     public function 一般ユーザーがexamSentenceを取得できない(): void
     {
-        $response = $this->actingAs($this->normalUser)->get('/api/admin/sentence/2099-haru-1');
+        $response = $this->actingAs($this->normalUser)->get('/api/admin/sentence/9999-haru-1');
 
         $response->assertStatus(403);
     }
@@ -72,9 +30,9 @@ class AdminControllerTest extends TestCase
     public function 管理者がexamSentenceを更新できる(): void
     {
         $data = [
-            'year' => 2099,
-            'season' => 'haru',
-            'section' => 1,
+            'year' => 9999,
+            'season' => $this->testExamSeason,
+            'section' => $this->testExamSection,
             'sentence' => 'Updated exam sentence.',
         ];
 
@@ -82,7 +40,7 @@ class AdminControllerTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('exam_sentences', [
-            'exam_code' => '2099_haru_1',
+            'exam_code' => $this->testExamCode,
             'sentence' => 'Updated exam sentence.',
         ]);
     }
@@ -91,18 +49,18 @@ class AdminControllerTest extends TestCase
     public function 一般ユーザーがexamSentenceを更新できない(): void
     {
         $data = [
-            'year' => 2099,
-            'season' => 'haru',
-            'section' => 1,
-            'sentence' => 'Updated exam sentence.',
+            'year' => 9999,
+            'season' => $this->testExamSeason,
+            'section' => $this->testExamSection,
+            'sentence' => '一般ユーザーの修正案',
         ];
 
         $response = $this->actingAs($this->normalUser)->put('/api/admin/sentence', $data, ['Accept' => 'application/json']);
 
         $response->assertStatus(403);
         $this->assertDatabaseHas('exam_sentences', [
-            'exam_code' => '2099_haru_1',
-            'sentence' => 'This is a sample exam sentence for testing purposes.',
+            'exam_code' => $this->testExamCode,
+            'sentence' => 'テスト用の問題文です',
         ]);
     }
 
@@ -110,18 +68,18 @@ class AdminControllerTest extends TestCase
     public function 管理者がpurposeを更新できる(): void
     {
         $data = [
-            'year' => 2099,
-            'season' => 'haru',
-            'section' => 1,
-            'purpose' => 'Updated purpose for testing.',
+            'year' => 9999,
+            'season' => $this->testExamSeason,
+            'section' => $this->testExamSection,
+            'purpose' => '管理者が修正した新しい出題趣旨',
         ];
 
         $response = $this->actingAs($this->adminUser)->put('/api/admin/sentence', $data, ['Accept' => 'application/json']);
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('exam_sentences', [
-            'exam_code' => '2099_haru_1',
-            'purpose' => 'Updated purpose for testing.',
+            'exam_code' => $this->testExamCode,
+            'purpose' => '管理者が修正した新しい出題趣旨',
         ]);
     }
 
@@ -129,18 +87,18 @@ class AdminControllerTest extends TestCase
     public function 一般ユーザーがpurposeを更新できない(): void
     {
         $data = [
-            'year' => 2099,
-            'season' => 'haru',
-            'section' => 1,
-            'purpose' => 'Updated purpose for testing.',
+            'year' => 9999,
+            'season' => $this->testExamSeason,
+            'section' => $this->testExamSection,
+            'purpose' => '一般ユーザーが修正した新しい出題趣旨',
         ];
 
         $response = $this->actingAs($this->normalUser)->put('/api/admin/sentence', $data, ['Accept' => 'application/json']);
 
         $response->assertStatus(403);
         $this->assertDatabaseHas('exam_sentences', [
-            'exam_code' => '2099_haru_1',
-            'purpose' => 'This is a sample purpose for testing.',
+            'exam_code' => $this->testExamCode,
+            'purpose' => 'テスト用の出題趣旨です',
         ]);
     }
 
@@ -148,18 +106,18 @@ class AdminControllerTest extends TestCase
     public function 管理者がreviewCommentを更新できる(): void
     {
         $data = [
-            'year' => 2099,
-            'season' => 'haru',
-            'section' => 1,
-            'reviewComment' => 'Updated review comment for testing.',
+            'year' => 9999,
+            'season' => $this->testExamSeason,
+            'section' => $this->testExamSection,
+            'reviewComment' => '管理者が修正した新しい採点講評',
         ];
 
         $response = $this->actingAs($this->adminUser)->put('/api/admin/sentence', $data, ['Accept' => 'application/json']);
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('exam_sentences', [
-            'exam_code' => '2099_haru_1',
-            'review_comment' => 'Updated review comment for testing.',
+            'exam_code' => $this->testExamCode,
+            'review_comment' => '管理者が修正した新しい採点講評',
         ]);
     }
 
@@ -167,18 +125,18 @@ class AdminControllerTest extends TestCase
     public function 一般ユーザーがreviewCommentを更新できない(): void
     {
         $data = [
-            'year' => 2099,
-            'season' => 'haru',
-            'section' => 1,
-            'reviewComment' => 'Updated review comment for testing.',
+            'year' => 9999,
+            'season' => $this->testExamSeason,
+            'section' => $this->testExamSection,
+            'reviewComment' => '一般ユーザーが修正した新しい採点講評',
         ];
 
         $response = $this->actingAs($this->normalUser)->put('/api/admin/sentence', $data, ['Accept' => 'application/json']);
 
         $response->assertStatus(403);
         $this->assertDatabaseHas('exam_sentences', [
-            'exam_code' => '2099_haru_1',
-            'review_comment' => 'This is a sample review comment for testing.',
+            'exam_code' => $this->testExamCode,
+            'review_comment' => 'テスト用の採点講評です',
         ]);
     }
 
@@ -186,11 +144,11 @@ class AdminControllerTest extends TestCase
     public function 管理者が問題を編集できる(): void
     {
         $data = [
-            'examCode' => '2099_haru_1',
+            'examCode' => $this->testExamCode,
             'questionNumber' => 1,
-            'subQuestionNumber' => 1,
+            'subQuestionNumber' => 3,
             'smallQuestionNumber' => 0,
-            'text' => 'This is a sample question text for testing',
+            'text' => '追加の問題',
             'textForAi' => 'This is a message for AI',
             'type' => 'input',
             'options' => null,
@@ -200,9 +158,9 @@ class AdminControllerTest extends TestCase
         $response = $this->actingAs($this->adminUser)->post('/api/admin/question', $data, ['Accept' => 'application/json']);
         $response->assertStatus(201);
         $this->assertDatabaseHas('questions', [
-            'exam_code' => '2099_haru_1',
-            'question_code' => '1_1_0',
-            'text' => 'This is a sample question text for testing',
+            'exam_code' => $this->testExamCode,
+            'question_code' => '1_3_0',
+            'text' => '追加の問題',
             'text_for_ai' => 'This is a message for AI',
             'type' => 'input',
             'options' => null,

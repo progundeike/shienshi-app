@@ -21,6 +21,7 @@ import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 import { useChakraToast } from "../utils/toastUtils";
 import { ExamInfoPage } from "./pages/ExamInfoPage";
 import { LoadingPage } from "./pages/LoadingPage";
+import { AdminRoutes } from "./templates/AdminRoutes";
 
 // lazy import
 const ExamPage = lazy(() =>
@@ -105,7 +106,9 @@ export const Router = () => {
                     </Route>
 
                     {/* 管理者ページ */}
-                    <Route path="/admin/*" element={<AdminRouteGroup />} />
+                    <Route element={<AdminRoutes />}>
+                        <Route path="/admin/*" element={<AdminRouteGroup />} />
+                    </Route>
 
                     {/* 404 */}
                     <Route path="/not-found" element={<Page404 />} />

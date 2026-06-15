@@ -7,106 +7,32 @@ use App\Models\User;
 use App\Services\AiClientService;
 use App\Services\AiExecutionLockService;
 use Illuminate\Contracts\Cache\LockProvider;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\Feature\Support\FeatureTestCase;
 
-class AnswerControllerTest extends TestCase
+class AnswerControllerTest extends FeatureTestCase
 {
-    use RefreshDatabase;
-
-    protected User $normalUser;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        // 初期データをシード
-        $this->seed();
-
-        // テスト用一般ユーザーを作成
-        $this->normalUser = User::factory()->create([
-            'username' => 'NewTestUser',
-            'password' => Hash::make('password'),
-            'is_admin' => false,
-        ]);
-
-        // テスト用のexamSentenceを作成
-        DB::table('exam_sentences')->insert([
-            [
-                'exam_code' => '9999_haru_1',
-                'sentence' => 'テスト用の文脈です',
-                'purpose' => 'sample_purpose',
-                'review_comment' => 'sample_review_comment',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
-
-        // テスト用のquestionを作成
-        DB::table('questions')->insert([
-            [
-                'exam_code' => '9999_haru_1',
-                'question_code' => '1_1_1',
-                'text' => 'テスト用の設問1',
-                'type' => 'input',
-                'options' => null,
-                'max_length' => null,
-                'text_for_ai' => 'テスト用の設問1のAI向けテキスト',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
-
-        // テスト用のユーザー解答を作成
-        DB::table('user_answers')->insert([
-            [
-                'user_id' => $this->normalUser->id,
-                'exam_code' => '9999_haru_1',
-                'question_code' => '1_1_1',
-                'user_text' => 'ア',
-                'ai_rating' => '×',
-                'ai_text' => 'これはAIの添削結果のサンプルです',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
-
-        // テスト用の模範解答を作成
-        DB::table('model_answers')->insert([
-            [
-                'exam_code' => '9999_haru_1',
-                'question_code' => '1_1_1',
-                'text' => 'エ',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
-    }
-
     #[Test]
     public function ユーザーの回答とAIの添削を取得できる(): void
     {
-        $response = $this->actingAs($this->normalUser)->getJson('/api/corrections/9999_haru_1', ['Accept' => 'application/json']);
+        $response = $this->actingAs($this->normalUser)->getJson("/api/corrections/{$this->testExamCode}", ['Accept' => 'application/json']);
 
         $response->assertStatus(200);
-        $this->assertCount(1, $response->json());
+        $this->assertCount(3, $response->json());
     }
 
     #[Test]
     public function 多重実行時は429を返す(): void
     {
+        Log::spy();
         /** @var User $user */
         $user = User::factory()->createOne();
         $this->actingAs($user);
 
-        $examCode = '9999_haru_1';
-        $processingKey = app(AiExecutionLockService::class)->keyForAnswer($user->id, $examCode);
+        $processingKey = app(AiExecutionLockService::class)->keyForAnswer($user->id, $this->testExamCode);
 
         $store = Cache::store('redis')->getStore();
         if (! $store instanceof LockProvider) {
@@ -117,11 +43,11 @@ class AnswerControllerTest extends TestCase
         Cache::store('redis')->put($processingKey, true, 60);
 
         $payLoad = [
-            'year' => '9999',
-            'season' => 'haru',
-            'section' => '1',
+            'year' => $this->testExamYear,
+            'season' => $this->testExamSeason,
+            'section' => $this->testExamSection,
             'answers' => [
-                ['questionCode' => '1_1_1', 'user_text' => 'test'],
+                ['questionCode' => '1_1_0', 'user_text' => 'test'],
             ],
         ];
 
@@ -143,11 +69,11 @@ class AnswerControllerTest extends TestCase
         $this->actingAs($user);
 
         $payLoad = [
-            'year' => '9999',
-            'season' => 'haru',
-            'section' => '1',
+            'year' => $this->testExamYear,
+            'season' => $this->testExamSeason,
+            'section' => $this->testExamSection,
             'answers' => [
-                ['questionCode' => '1_1_1', 'user_text' => 'test'],
+                ['questionCode' => '1_1_0', 'user_text' => 'test'],
             ],
         ];
 

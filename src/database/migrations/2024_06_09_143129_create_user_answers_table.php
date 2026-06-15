@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_ai_dialogues', function (Blueprint $table) {
-            $table->id();
+        Schema::create('user_answers', function (Blueprint $table) {
             $table->string('exam_code');
             $table->string('question_code');
-            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->text('user_question');
-            $table->text('ai_answer');
+            $table->text('user_text')->nullable();
+            $table->text('ai_rating')->nullable();
+            $table->text('ai_text')->nullable();
             $table->timestamps();
 
+            $table->primary(['user_id', 'exam_code', 'question_code']);
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign(['exam_code', 'question_code'])
                 ->references(['exam_code', 'question_code'])
                 ->on('questions')
@@ -33,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_ai_dialogues');
+        Schema::dropIfExists('user_answers');
     }
 };

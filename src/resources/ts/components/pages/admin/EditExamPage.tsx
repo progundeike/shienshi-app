@@ -40,6 +40,7 @@ export const EditExamPage: FC = memo(() => {
     // examSentenceを取得
 
     useEffect(() => {
+        console.log("useEffect");
         // PDFの存在確認
         const checkPdf = async () => {
             try {

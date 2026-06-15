@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_answers', function (Blueprint $table) {
-            // $table->id();
-            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+        Schema::create('model_answers', function (Blueprint $table) {
             $table->string('exam_code');
             $table->string('question_code');
-            $table->text('user_text')->nullable();
-            $table->text('ai_rating')->nullable();
-            $table->text('ai_text')->nullable();
+            $table->text('text')->nullable();
             $table->timestamps();
-            $table->unique(['user_id', 'exam_code', 'question_code'], 'ua_index');
+
+            $table->primary(['exam_code', 'question_code']);
+            $table->foreign(['exam_code', 'question_code'])
+                ->references(['exam_code', 'question_code'])
+                ->on('questions')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
         });
     }
 
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_answers');
+        Schema::dropIfExists('model_answers');
     }
 };

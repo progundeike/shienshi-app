@@ -3,62 +3,36 @@
 namespace Tests\Feature;
 
 use App\Models\Inquiry;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\Feature\Support\FeatureTestCase;
 
-class InquiryControllerTest extends TestCase
+class InquiryControllerTest extends FeatureTestCase
 {
-    use RefreshDatabase;
-
-    protected User $adminUser;
-
-    protected User $normalUser;
-
     public function setUp(): void
     {
         parent::setUp();
         Notification::fake(); // 通知をモックして実際の通知が送信されないようにする
         $this->withoutExceptionHandling();
 
-        // 初期データをシード
-        $this->seed();
+        $this->createTestInquiry();
+    }
 
-        // テスト用管理者ユーザーを作成
-        $this->adminUser = User::factory()->create([
-            'username' => 'TestAdminUser',
-            'password' => Hash::make('password'),
-            'is_admin' => true,
-        ]);
-
-        // テスト用一般ユーザーを作成
-        $this->normalUser = User::factory()->create([
-            'username' => 'NewTestUser',
-            'password' => Hash::make('password'),
-            'is_admin' => false,
-        ]);
-
+    private function createTestInquiry(): void
+    {
         // テスト用の問い合わせを作成
-        DB::table('inquiries')->insert([
+        Inquiry::insert([
             [
                 'user_id' => null,
                 'name' => 'テストユーザー1',
                 'email' => null,
-                'message' => 'テスト用のお問い合わせです。',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'message' => 'テスト用のお問い合わせ1です。',
             ],
             [
                 'user_id' => $this->normalUser->id,
                 'name' => 'テストユーザー2',
                 'email' => 'email@test.com',
-                'message' => 'テスト用のお問い合わせです。2',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'message' => 'テスト用のお問い合わせ2です。',
             ],
         ]);
     }
@@ -73,7 +47,7 @@ class InquiryControllerTest extends TestCase
         $inquiry = [
             'name' => 'テストユーザー1',
             'email' => null,
-            'message' => 'テスト用のお問い合わせです。',
+            'message' => 'テスト用のお問い合わせ1です。',
             'opened_at' => time() - 10, // honeypot用のフィールド
             'company' => '', // honeypot用のフィールド
         ];
@@ -85,7 +59,7 @@ class InquiryControllerTest extends TestCase
             'user_id' => $userId,
             'name' => 'テストユーザー1',
             'email' => null,
-            'message' => 'テスト用のお問い合わせです。',
+            'message' => 'テスト用のお問い合わせ1です。',
         ]);
         $response->assertJson(['message' => 'ok']);
     }
@@ -97,7 +71,7 @@ class InquiryControllerTest extends TestCase
         $inquiry = [
             'name' => 'ゲストユーザー',
             'email' => 'test@email.com',
-            'message' => 'テスト用のお問い合わせです。',
+            'message' => 'テスト用のお問い合わせ1です。',
             'opened_at' => time() - 10, // honeypot用のフィールド
             'company' => '', // honeypot用のフィールド
         ];
@@ -109,7 +83,7 @@ class InquiryControllerTest extends TestCase
             'user_id' => null,
             'name' => 'ゲストユーザー',
             'email' => 'test@email.com',
-            'message' => 'テスト用のお問い合わせです。',
+            'message' => 'テスト用のお問い合わせ1です。',
         ]);
         $response->assertJson(['message' => 'ok']);
     }

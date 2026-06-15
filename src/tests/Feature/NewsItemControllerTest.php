@@ -3,39 +3,22 @@
 namespace Tests\Feature;
 
 use App\Models\NewsItem;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\Feature\Support\FeatureTestCase;
 
-class NewsItemControllerTest extends TestCase
+class NewsItemControllerTest extends FeatureTestCase
 {
-    use RefreshDatabase;
-
-    protected User $adminUser;
-
-    protected User $normalUser;
-
     public function setUp(): void
     {
         parent::setUp();
 
-        // テスト用管理者ユーザーを作成
-        $this->adminUser = User::factory()->create([
-            'username' => 'TestAdminUser',
-            'password' => Hash::make('password'),
-            'is_admin' => true,
-        ]);
+        $this->createTestNewsItems();
+    }
 
-        // テスト用一般ユーザーを作成
-        $this->normalUser = User::factory()->create([
-            'username' => 'NewTestUser',
-            'password' => Hash::make('password'),
-            'is_admin' => false,
-        ]);
+    private function createTestNewsItems()
+    {
+        NewsItem::query()->delete();
 
-        // テスト用のお知らせを挿入
         NewsItem::insert([
             [
                 'title' => 'おしらせ1',

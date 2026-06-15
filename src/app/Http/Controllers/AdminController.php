@@ -50,19 +50,28 @@ class AdminController extends Controller
 
         // 試験問題の更新処理を実行
         try {
-            Question::updateOrCreate(
+            Question::upsert(
                 [
-                    'exam_code' => $validated['examCode'],
-                    'question_code' => $questionCode,
+                    [
+                        'exam_code' => $validated['examCode'],
+                        'question_code' => $questionCode,
+                        'type' => $validated['type'],
+                        'text' => $validated['text'] ? $validated['text'] : '',
+                        'text_for_ai' => $validated['textForAi'] ? $validated['textForAi'] : '',
+                        'options' => empty($validated['options']) ? null : $validated['options'],
+                        'max_length' => $validated['maxLength'] ?? null,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ],
                 ],
+                ['exam_code', 'question_code'],
                 [
-                    'exam_code' => $validated['examCode'],
-                    'question_code' => $questionCode,
-                    'type' => $validated['type'],
-                    'text' => $validated['text'] ? $validated['text'] : '',
-                    'text_for_ai' => $validated['textForAi'] ? $validated['textForAi'] : '',
-                    'options' => empty($validated['options']) ? null : $validated['options'],
-                    'max_length' => $validated['maxLength'] ?? null,
+                    'type',
+                    'text',
+                    'text_for_ai',
+                    'options',
+                    'max_length',
+                    'updated_at',
                 ]
             );
 
@@ -235,15 +244,22 @@ class AdminController extends Controller
 
         // 模範解答をアップデート
         try {
+            $rows = [];
             foreach ($modelAnswers as $questionCode => $text) {
-                ModelAnswer::updateOrCreate(
-                    [
-                        'exam_code' => $examCode,
-                        'question_code' => $questionCode,
-                    ],
-                    ['text' => $text]
-                );
+                $rows[] = [
+                    'exam_code' => $examCode,
+                    'question_code' => $questionCode,
+                    'text' => $text,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
             }
+
+            ModelAnswer::upsert(
+                $rows,
+                ['exam_code', 'question_code'],
+                ['text', 'updated_at']
+            );
 
             return response()->json(['message' => 'Model answers updated successfully'], 200);
         } catch (\Exception $e) {

@@ -9,8 +9,10 @@ class ModelAnswer extends Model
 {
     use HasFactory;
 
-    // 自動増分idではないことを明示
-    protected $keyType = 'string';
+    // 複合主キーの設定
+    protected $primaryKey = "複合主キー['exam_code', 'question_code']";
+
+    public $incrementing = false;
 
     /**
      * The attributes that are mass assignable.

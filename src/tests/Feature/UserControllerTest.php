@@ -4,11 +4,10 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Attributes\Test;
-use Tests\TestCase;
+use Tests\Feature\Support\FeatureTestCase;
 
-class UserControllerTest extends TestCase
+class UserControllerTest extends FeatureTestCase
 {
     use RefreshDatabase;
 
@@ -18,40 +17,12 @@ class UserControllerTest extends TestCase
 
     protected string $xsrfToken = '';
 
-    // protected $baseUrl = 'http://127.0.0.4';
-
-    /**
-     * テストのセットアップ
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        // 初期データをシード
-        $this->seed();
-
-        // テスト用管理者ユーザーを作成
-        $this->adminUser = User::factory()->create([
-            // 'username' => 'test_admin_user',
-            'username' => 'test_admin_user',
-            'password' => Hash::make('password'),
-            'is_admin' => true,
-        ]);
-
-        // テスト用一般ユーザーを作成
-        $this->normalUser = User::factory()->create([
-            'username' => 'new_test_user',
-            'password' => Hash::make('password'),
-            'is_admin' => false,
-        ]);
-    }
-
     #[Test]
     public function 管理者がログインできる(): void
     {
         $response = $this->postJson('/api/login', [
             'username' => 'test_admin_user',
-            'password' => 'password',
+            'password' => 'adminPassword',
         ]);
 
         $response->assertStatus(200);
@@ -64,12 +35,12 @@ class UserControllerTest extends TestCase
     public function 一般ユーザーがログインできる(): void
     {
         $response = $this->postJson('/api/login', [
-            'username' => 'new_test_user',
-            'password' => 'password',
+            'username' => 'test_normal_user',
+            'password' => 'normalPassword',
         ]);
         $response->assertStatus(200);
         $responseData = $response->json();
-        $this->assertEquals('new_test_user', $responseData['username']);
+        $this->assertEquals('test_normal_user', $responseData['username']);
         $this->assertEquals(false, $responseData['isAdmin']);
     }
 
@@ -79,7 +50,7 @@ class UserControllerTest extends TestCase
         $response = $this->actingAs($this->normalUser)->get('/api/user');
         $response->assertStatus(200);
         $responseData = $response->json();
-        $this->assertEquals('new_test_user', $responseData['username']);
+        $this->assertEquals('test_normal_user', $responseData['username']);
         $this->assertEquals(false, $responseData['isAdmin']);
     }
 

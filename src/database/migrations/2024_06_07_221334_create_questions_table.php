@@ -20,7 +20,13 @@ return new class extends Migration
             $table->integer('max_length')->nullable();
             $table->longText('text_for_ai')->nullable();
             $table->timestamps();
+
             $table->primary(['exam_code', 'question_code']);
+            $table->foreign('exam_code')
+                ->references('exam_code')
+                ->on('exam_sentences')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
         });
     }
 

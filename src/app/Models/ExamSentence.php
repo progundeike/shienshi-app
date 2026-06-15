@@ -9,6 +9,12 @@ class ExamSentence extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'exam_code';
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -20,10 +26,4 @@ class ExamSentence extends Model
         'purpose',
         'review_comment',
     ];
-
-    protected $primaryKey = 'exam_code';
-
-    public $incrementing = false;
-
-    protected $keyType = 'string';
 }

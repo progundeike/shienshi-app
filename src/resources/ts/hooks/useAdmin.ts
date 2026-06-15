@@ -192,7 +192,7 @@ export const useAdmin = () => {
             });
         },
         onSuccess: () => {
-            showServerErrorToast("模範解答を更新しました");
+            showSuccessToast("模範解答を更新しました");
         },
         onError: () => showServerErrorToast("模範解答の更新に失敗しました"),
     });
