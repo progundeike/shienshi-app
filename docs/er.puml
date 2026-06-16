@@ -27,7 +27,7 @@ entity "users" as users {
 }
 
 entity "exam_sentences" as exam_sentences {
-  exam_code : varchar
+  exam_code : varchar <<FK>>
   --
   sentence : text
   purpose : text
@@ -37,8 +37,8 @@ entity "exam_sentences" as exam_sentences {
 }
 
 entity "questions" as questions {
-  exam_code : varchar <<logical ref>>
-  question_code : varchar
+  exam_code : varchar <<FK>>
+  question_code : varchar <<FK>>
   --
   text : text
   type : enum
@@ -50,8 +50,8 @@ entity "questions" as questions {
 }
 
 entity "model_answers" as model_answers {
-  exam_code : varchar <<logical ref>>
-  question_code : varchar <<logical ref>>
+  exam_code : varchar <<FK>
+  question_code : varchar <<FK>>
   --
   text : text
   created_at : timestamp
@@ -60,8 +60,8 @@ entity "model_answers" as model_answers {
 
 entity "user_answers" as user_answers {
   user_id : bigint <<FK>>
-  exam_code : varchar <<logical ref>>
-  question_code : varchar <<logical ref>>
+  exam_code : varchar <<FK>
+  question_code : varchar <<FK>>
   --
   user_text : text
   ai_rating : text
@@ -74,8 +74,8 @@ entity "user_ai_dialogues" as user_ai_dialogues {
   id : bigint
   --
   user_id : bigint <<FK>>
-  exam_code : varchar <<logical ref>>
-  question_code : varchar <<logical ref>>
+  exam_code : varchar <<FK>>
+  question_code : varchar <<FK>>
   user_question : text
   ai_answer : text
   created_at : timestamp
@@ -86,7 +86,7 @@ entity "submitted_exams" as submitted_exams {
   id : bigint
   --
   user_id : bigint <<FK>>
-  exam_code : varchar <<logical ref>>
+  exam_code : varchar <<FK>>
   created_at : timestamp
   updated_at : timestamp
 }
@@ -117,14 +117,11 @@ users ||--o{ user_ai_dialogues
 users ||--o{ submitted_exams
 users |o--o{ inquiries
 
-exam_sentences ||..o{ questions
-exam_sentences ||..o{ submitted_exams
-exam_sentences ||..down..o{ model_answers
-exam_sentences ||..right..o{ user_answers
-exam_sentences ||..right..o{ user_ai_dialogues
+exam_sentences ||--o{ questions
+exam_sentences ||--o{ submitted_exams
 
-questions ||..right..o| model_answers
-questions ||..down..o{ user_answers
-questions ||..down..o{ user_ai_dialogues
+questions ||--right--o| model_answers
+questions ||--down--o{ user_answers
+questions ||--down--o{ user_ai_dialogues
 
 @enduml
