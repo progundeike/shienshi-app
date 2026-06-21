@@ -3,7 +3,7 @@ services:
     image: ghcr.io/progundeike/spa-exams:latest
     restart: unless-stopped
     volumes:
-      - ./src/.env:/var/www/html/.env:ro
+      - ./src/.env.production:/var/www/html/.env:ro
       - /srv/spa-exam/src/storage/app/public:/var/www/html/storage/app/public/
     environment:
       - DB_CONNECTION=mysql
