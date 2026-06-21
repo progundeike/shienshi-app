@@ -4,14 +4,6 @@ hide circle
 skinparam linetype ortho
 skinparam shadowing false
 
-legend right
-  == 凡例 ==
-  実線: 外部キー制約あり
-  点線: 論理参照(DB制約なし)
-  <<FK>> DB上の外部キー
-  <<logical ref>> アプリ上の参照キー
-endlegend
-
 entity "users" as users {
   id : bigint
   --
@@ -27,7 +19,7 @@ entity "users" as users {
 }
 
 entity "exam_sentences" as exam_sentences {
-  exam_code : varchar <<FK>>
+  exam_code : varchar
   --
   sentence : text
   purpose : text
@@ -38,7 +30,7 @@ entity "exam_sentences" as exam_sentences {
 
 entity "questions" as questions {
   exam_code : varchar <<FK>>
-  question_code : varchar <<FK>>
+  question_code : varchar <<PK>>
   --
   text : text
   type : enum
@@ -60,7 +52,7 @@ entity "model_answers" as model_answers {
 
 entity "user_answers" as user_answers {
   user_id : bigint <<FK>>
-  exam_code : varchar <<FK>
+  exam_code : varchar <<FK>>
   question_code : varchar <<FK>>
   --
   user_text : text
@@ -94,7 +86,7 @@ entity "submitted_exams" as submitted_exams {
 entity "inquiries" as inquiries {
   id : bigint
   --
-  user_id : bigint <<FK>>
+  user_id : bigint <<FK nullable>>
   name : varchar
   email : varchar
   message : text
@@ -120,8 +112,8 @@ users |o--o{ inquiries
 exam_sentences ||--o{ questions
 exam_sentences ||--o{ submitted_exams
 
-questions ||--right--o| model_answers
-questions ||--down--o{ user_answers
-questions ||--down--o{ user_ai_dialogues
+questions ||--o| model_answers
+questions ||--o{ user_answers
+questions ||--o{ user_ai_dialogues
 
 @enduml

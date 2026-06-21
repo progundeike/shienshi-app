@@ -78,7 +78,7 @@ export const Router = () => {
             <Suspense fallback={<LoadingPage />}>
                 <Routes>
                     <Route path="/" element={<TopPage />} />
-                    <Route path="/info" element={<ExamInfoPage />} />
+                    {/* <Route path="/info" element={<ExamInfoPage />} /> */}
 
                     <Route
                         path="/exams/:year/:season/:section"

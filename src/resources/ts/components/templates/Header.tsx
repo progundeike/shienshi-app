@@ -94,7 +94,7 @@ export const Header: FC = memo(() => {
                         display={{ base: "none", md: "flex" }}
                     >
                         <HeaderLink to="/">ホーム</HeaderLink>
-                        <HeaderLink to="/info">試験概要</HeaderLink>
+                        {/* <HeaderLink to="/info">試験概要</HeaderLink> */}
                         <HeaderLink to="/exams">過去問一覧</HeaderLink>
 
                         {user ? (
@@ -165,7 +165,7 @@ export const Header: FC = memo(() => {
                             />
                             <MenuList bg="white" color="gray.800">
                                 <MobileMenuItem text="ホーム" to="/" />
-                                <MobileMenuItem text="試験概要" to="/info" />
+                                {/* <MobileMenuItem text="試験概要" to="/info" /> */}
                                 <MobileMenuItem text="過去問一覧" to="/exams" />
 
                                 {user ? (

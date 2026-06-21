@@ -104,7 +104,9 @@ export const ExamHeader: FC<Props> = memo((props) => {
                             fontWeight="medium"
                         >
                             <Icon as={FiPlus} boxSize={4} color="gray.600" />
-                            <Text>PDF上をドラッグしてハイライトできます</Text>
+                            <Text>
+                                PDF上をドラッグしてハイライトできます。PDFは見やすいように余白を調整しています
+                            </Text>
                         </Box>
                     </VStack>
 

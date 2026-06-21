@@ -1,34 +1,34 @@
-import { Box, Link, useBreakpointValue } from "@chakra-ui/react";
+import { Box, useBreakpointValue } from "@chakra-ui/react";
 import { FC, memo, useEffect, useState } from "react";
 import Split from "react-split";
 
 import { ExamHeader } from "../molecules/ExamHeader";
 import { useNavigate, useParams } from "react-router-dom";
 import { Page404 } from "./Page404";
+import { LoadingPage } from "./LoadingPage";
 import { DisplayExamPdf } from "../organisms/DisplayExamPdf";
 import { AnswerAndCorrectionForm } from "../organisms/AnswerAndCorrectionForm";
 import { useExam } from "../../hooks/useExam";
 
 export const ExamPage: FC = memo(() => {
-    const [, setLoading] = useState(true);
-    const [, setIsPdfExists] = useState<boolean | null>(null);
+    const [isPdfExists, setIsPdfExists] = useState<boolean | null>(null);
     const { year, season, section } = useParams();
     const isMobile = useBreakpointValue({ base: true, md: false });
 
     // year, sectionを10進数でcastする
     const parsedYear = parseInt(year ?? "", 10);
     const parsedSection = parseInt(section ?? "", 10);
-    const examCode = `${parsedYear}_${season}_${parsedSection}`;
-    const pdfUrl = `/storage/pdf/${parsedYear}/$${examCode}.pdf`;
 
     const { checkPdfExists } = useExam();
     const navigate = useNavigate();
 
-    if (isNaN(parsedYear) || !season || isNaN(parsedSection)) {
-        return <Page404 />;
-    }
+    const isInvalidParams =
+        Number.isNaN(parsedYear) || !season || Number.isNaN(parsedSection);
 
     useEffect(() => {
+        if (isInvalidParams) {
+            return;
+        }
         // PDFの存在確認
         const checkPdf = async () => {
             try {
@@ -38,16 +38,30 @@ export const ExamPage: FC = memo(() => {
                     parsedSection,
                 );
                 setIsPdfExists(exists);
-                setLoading(false);
                 if (!exists) {
                     navigate("/not-found");
                 }
             } catch (error) {
-                navigate("/not-found");
+                console.error(error);
             }
         };
         checkPdf();
-    }, []);
+    }, [
+        checkPdfExists,
+        navigate,
+        parsedYear,
+        season,
+        parsedSection,
+        isInvalidParams,
+    ]);
+
+    if (isInvalidParams) {
+        return <Page404 />;
+    }
+
+    if (isPdfExists !== true) {
+        return <LoadingPage />;
+    }
 
     if (isMobile) {
         return (

@@ -51,7 +51,6 @@
 ## ER図
 
 ![ER図](docs/er.svg)
-ER図のPlantUMLソースは [`docs/er.puml`](docs/er.puml) にあります。
 
 ## 工夫した点
 

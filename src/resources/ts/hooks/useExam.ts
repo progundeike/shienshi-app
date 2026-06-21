@@ -61,27 +61,23 @@ export const useExam = () => {
         season: string,
         section: number,
     ) => {
-        return await axiosInstance
-            .get(`/api/exam/${year}-${season}-${section}`)
-            .then((response) => {
-                if (response.status === 200) {
-                    return true;
-                }
+        try {
+            await axiosInstance.get(`/api/exam/${year}-${season}-${section}`);
+            return true;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const status = error.response?.status;
 
-                return null;
-            })
-            .catch((error) => {
-                if (
-                    axios.isAxiosError(error) &&
-                    error.response?.status === 404
-                ) {
+                if (status === 404 || status === 422) {
                     return false;
                 }
+            }
 
-                showServerErrorToast("PDFの確認に失敗しました");
-                console.error(error);
-                return null;
-            });
+            showServerErrorToast(
+                "PDFの取得に失敗しました。時間を置いて再度お試しください",
+            );
+            throw error;
+        }
     };
 
     const fetchPurposeAndReviewComment = async (
@@ -94,8 +90,6 @@ export const useExam = () => {
             const response = await axiosInstance.get(
                 `/api/exam/${year}_${season}_${section}/review`,
             );
-
-            console.log(response.data);
 
             return response.data;
         } catch (error: unknown) {

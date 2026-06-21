@@ -1,7 +1,5 @@
-import { Box, Button, Flex, Heading, Textarea } from "@chakra-ui/react";
-import { FC, memo, useEffect, useState, useRef, useCallback } from "react";
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import "react-pdf/dist/Page/TextLayer.css";
+import { Box } from "@chakra-ui/react";
+import { FC, memo, useEffect, useState } from "react";
 import Split from "react-split";
 
 import { ExamHeader } from "../../molecules/ExamHeader";
@@ -40,7 +38,6 @@ export const EditExamPage: FC = memo(() => {
     // examSentenceを取得
 
     useEffect(() => {
-        console.log("useEffect");
         // PDFの存在確認
         const checkPdf = async () => {
             try {
