@@ -14,8 +14,8 @@ type NewAreaHighlight = {
     rect: NormRect;
 };
 
-// PDF.js WorkerをCDNから読み込む
-pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+// PDF.js Workerを読み込む
+pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.min.mjs`;
 
 export const DisplayExamPdf: FC = memo(() => {
     const [numPages, setNumPages] = useState(0);
