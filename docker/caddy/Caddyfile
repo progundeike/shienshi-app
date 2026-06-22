@@ -6,15 +6,27 @@ shienshi.com {
 	root * /var/www/html/public
 	encode zstd gzip
 
-	@vite_build {
-		path /build/*
+	# 誤配置された機密ファイルへのアクセスを拒否
+	@forbidden {
+		path /.env /.env.* /.git/* /.svn/* /.hg/*
+		path /composer.json /composer.lock /package.json /package-lock.json
+		path /Dockerfile /docker-compose.yml /docker-compose.*.yml
 	}
-	header @vite_build Cache-Control "public, max-age=31536000, immutable"
+	respond @forbidden 404
 
-	route {
-		try_files {path} {path}/ /index.php?{query} /index.html
-		header /index.html Cache-Control "no-store"
+	# セキュリティヘッダー
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains" # HTTPS接続を強制
+		X-Content-Type-Options nosniff # MIME typeの推測をさせない
+		Referrer-Policy "strict-origin-when-cross-origin" # パスやクエリを別ドメインには伝えない
+		X-Frame-Options "DENY" # iframeへの埋め込みを禁止
+		Permissions-Policy "camera=(), microphone=(), geolocation=()" # カメラ・マイク・位置情報の使用を禁止
+		-Server # Webサーバーの種類を表示しない
 	}
+
+	# Viteのハッシュ付きファイル
+	@vite_build path /build/*
+	header @vite_build Cache-Control "public, max-age=31536000, immutable"
 
 	# Laravelへ
 	php_fastcgi app:9000
