@@ -22,9 +22,9 @@ class QuestionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'examCode' => 'required|string',
+            'examCode' => 'required|string|regex:/^20\d{2}_(haru|aki)_[1-5]$/',
             'questionCode' => 'required|string|regex:/^\d+_\d+_\d+$/',
-            'message' => 'required|string',
+            'message' => 'required|string|max:1000',
         ];
     }
 }

@@ -22,12 +22,12 @@ class AnswerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'year' => 'required|integer',
+            'year' => 'required|integer|between:2010,2099',
             'season' => 'required|in:haru,aki',
-            'section' => 'required|integer',
+            'section' => 'required|integer|between:1,5',
             'answers' => 'required|array',
             'answers.*.questionCode' => 'required|string',
-            'answers.*.user_text' => 'string|nullable',
+            'answers.*.user_text' => 'string|nullable|300',
         ];
     }
 
