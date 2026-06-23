@@ -52,20 +52,23 @@ class ExamDataService
 
     public function fetchExamQuestionsForAi(string $examCode, ?string $questionCode = null): array
     {
-        $query = Question::where('exam_code', $examCode);
+        $result = Question::where('exam_code', $examCode)
+            ->get();
 
         // questionCodeが指定されている場合はその大問を取得する
         if ($questionCode !== null) {
-            $q = (int) explode('_', $questionCode)[0];
-            $query->where('question_number', $q);
+            $questionNumber = explode('_', $questionCode)[0];
+            $result = $result->filter(
+                fn (Question $question): bool => explode('_', $question->question_code)[0] === $questionNumber
+            )->values();
         }
-
-        $result = $query->get();
 
         if ($result->isEmpty()) {
             if ($questionCode !== null) {
-                $q = explode('_', $questionCode)[0];
-                throw new ModelNotFoundException("Questions not found for examCode: {$examCode} and questionNumber: {$q}");
+                $questionNumber = explode('_', $questionCode)[0];
+                throw new ModelNotFoundException(
+                    "Questions not found for examCode: {$examCode} and questionNumber: {$questionNumber}"
+                );
             }
             throw new ModelNotFoundException("Questions not found for examCode: {$examCode}");
         }
@@ -110,16 +113,16 @@ class ExamDataService
     // 模範解答を取得する
     public function fetchModelAnswers(string $examCode, ?string $questionCode = null): array
     {
-        $query = ModelAnswer::where('exam_code', $examCode);
+        $result = ModelAnswer::where('exam_code', $examCode)->get();
 
-        if ($questionCode) {
-            [$q, $sub, $small] = explode('_', $questionCode);
-            $query->where('question_code', 'like', $q.'\_%');
+        if ($questionCode !== null) {
+            $questionNumber = explode('_', $questionCode)[0];
+            $result = $result->filter(
+                fn (ModelAnswer $modelAnswer): bool => explode('_', $modelAnswer->question_code)[0] === $questionNumber
+            )->values();
         }
 
-        $result = $query->get();
-
-        $modelAnswer = $result->map(function ($answer) {
+        $modelAnswer = $result->map(function (ModelAnswer $answer) {
             return [
                 'questionCode' => $answer->question_code,
                 'text' => $answer->text,
