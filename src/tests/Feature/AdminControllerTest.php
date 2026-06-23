@@ -10,7 +10,7 @@ class AdminControllerTest extends FeatureTestCase
     #[Test]
     public function 管理者がexamSentenceを取得できる(): void
     {
-        $response = $this->actingAs($this->adminUser)->get('/api/admin/sentence/9999-haru-1');
+        $response = $this->actingAs($this->adminUser)->get('/api/admin/sentence/2099-haru-1');
 
         $response->assertStatus(200);
         $this->assertEquals('テスト用の問題文です', $response['sentence']);
@@ -21,7 +21,7 @@ class AdminControllerTest extends FeatureTestCase
     #[Test]
     public function 一般ユーザーがexamSentenceを取得できない(): void
     {
-        $response = $this->actingAs($this->normalUser)->get('/api/admin/sentence/9999-haru-1');
+        $response = $this->actingAs($this->normalUser)->get('/api/admin/sentence/2099-haru-1');
 
         $response->assertStatus(403);
     }
@@ -30,7 +30,7 @@ class AdminControllerTest extends FeatureTestCase
     public function 管理者がexamSentenceを更新できる(): void
     {
         $data = [
-            'year' => 9999,
+            'year' => 2099,
             'season' => $this->testExamSeason,
             'section' => $this->testExamSection,
             'sentence' => 'Updated exam sentence.',
@@ -49,7 +49,7 @@ class AdminControllerTest extends FeatureTestCase
     public function 一般ユーザーがexamSentenceを更新できない(): void
     {
         $data = [
-            'year' => 9999,
+            'year' => 2099,
             'season' => $this->testExamSeason,
             'section' => $this->testExamSection,
             'sentence' => '一般ユーザーの修正案',
@@ -68,7 +68,7 @@ class AdminControllerTest extends FeatureTestCase
     public function 管理者がpurposeを更新できる(): void
     {
         $data = [
-            'year' => 9999,
+            'year' => 2099,
             'season' => $this->testExamSeason,
             'section' => $this->testExamSection,
             'purpose' => '管理者が修正した新しい出題趣旨',
@@ -87,7 +87,7 @@ class AdminControllerTest extends FeatureTestCase
     public function 一般ユーザーがpurposeを更新できない(): void
     {
         $data = [
-            'year' => 9999,
+            'year' => 2099,
             'season' => $this->testExamSeason,
             'section' => $this->testExamSection,
             'purpose' => '一般ユーザーが修正した新しい出題趣旨',
@@ -106,7 +106,7 @@ class AdminControllerTest extends FeatureTestCase
     public function 管理者がreviewCommentを更新できる(): void
     {
         $data = [
-            'year' => 9999,
+            'year' => 2099,
             'season' => $this->testExamSeason,
             'section' => $this->testExamSection,
             'reviewComment' => '管理者が修正した新しい採点講評',
@@ -125,7 +125,7 @@ class AdminControllerTest extends FeatureTestCase
     public function 一般ユーザーがreviewCommentを更新できない(): void
     {
         $data = [
-            'year' => 9999,
+            'year' => 2099,
             'season' => $this->testExamSeason,
             'section' => $this->testExamSection,
             'reviewComment' => '一般ユーザーが修正した新しい採点講評',
