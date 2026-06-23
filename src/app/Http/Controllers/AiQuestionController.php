@@ -107,13 +107,15 @@ class AiQuestionController extends Controller
                 }
 
                 // ユーザーの質問とAIの回答をDBに保存
-                UserAiDialogue::create([
-                    'user_id' => $userId,
+                $dialogue = new UserAiDialogue([
                     'exam_code' => $examCode,
                     'question_code' => $questionCode,
                     'user_question' => $userMessage,
                     'ai_answer' => $aiMessage,
                 ]);
+
+                $dialogue->user_id = $userId;
+                $dialogue->save();
 
                 // AIの回答を返す
                 return response()->json($aiMessage, 200);
