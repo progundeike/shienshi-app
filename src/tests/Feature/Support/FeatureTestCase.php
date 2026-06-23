@@ -20,9 +20,9 @@ abstract class FeatureTestCase extends TestCase
 
     protected User $normalUser;
 
-    protected string $testExamCode = '9999_haru_1';
+    protected string $testExamCode = '2099_haru_1';
 
-    protected int $testExamYear = 9999;
+    protected int $testExamYear = 2099;
 
     protected string $testExamSeason = 'haru';
 
@@ -204,13 +204,13 @@ abstract class FeatureTestCase extends TestCase
     {
         $dialogues = [
             [
-                'exam_code' => '9999_haru_1',
+                'exam_code' => '2099_haru_1',
                 'question_code' => '1_1_0',
                 'user_question' => 'これはユーザーが投稿したAIへの質問のサンプル1です。',
                 'ai_answer' => 'これはAIからのダミーの回答1です。',
             ],
             [
-                'exam_code' => '9999_haru_1',
+                'exam_code' => '2099_haru_1',
                 'question_code' => '1_1_0',
                 'user_question' => 'これはユーザーが投稿したAIへの質問のサンプル2です。',
                 'ai_answer' => 'これはAIからのダミーの回答2です。',
