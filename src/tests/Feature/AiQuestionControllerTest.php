@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\UserAiDialogue;
+use App\Services\AiClientService;
+use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\Support\FeatureTestCase;
 
@@ -33,5 +35,53 @@ class AiQuestionControllerTest extends FeatureTestCase
         $response = $this->actingAs($this->normalUser)->delete("/api/dialogues/{$this->testExamCode}/1_1_0");
         $response->assertStatus(204);
         $this->assertDatabaseMissing('user_ai_dialogues', ['id' => $target->id]);
+    }
+
+    #[Test]
+    public function ユーザーがAIに質問できる(): void
+    {
+        $userMessage = 'これはユーザーからのダミーの質問です。';
+        $aiMessage = 'これはAIからのダミーの解答です。';
+
+        $this->mock(
+            AiClientService::class,
+            function (MockInterface $mock) use ($aiMessage, $userMessage): void {
+                $mock->expects('chat')
+                    ->withArgs(function (array $prompt) use ($userMessage): bool {
+                        $lastMessage = $prompt[array_key_last($prompt)];
+
+                        return $lastMessage === [
+                            'role' => 'user',
+                            'content' => $userMessage,
+                        ];
+                    })
+                    ->andReturn([
+                        'choices' => [
+                            [
+                                'message' => [
+                                    'content' => $aiMessage,
+                                ],
+                            ],
+                        ],
+                    ]);
+            }
+        );
+
+        $response = $this->actingAs($this->normalUser)->postJson('/api/chat', [
+            'examCode' => $this->testExamCode,
+            'questionCode' => '1_1_0',
+            'message' => $userMessage,
+        ]);
+
+        $response->assertOk();
+        $this->assertSame($aiMessage, $response->json());
+
+        $this->assertDatabaseHas('user_ai_dialogues', [
+            'user_id' => $this->normalUser->id,
+            'exam_code' => $this->testExamCode,
+            'question_code' => '1_1_0',
+            'user_question' => $userMessage,
+            'ai_answer' => $aiMessage,
+        ]);
     }
 }
