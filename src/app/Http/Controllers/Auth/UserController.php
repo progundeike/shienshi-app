@@ -29,8 +29,8 @@ class UserController extends Controller
             'password' => [
                 'required',
                 'string',
-                'current_password:web'
-            ]
+                'current_password:web',
+            ],
         ]);
 
         // ログアウト

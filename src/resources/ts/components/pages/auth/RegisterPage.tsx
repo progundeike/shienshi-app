@@ -17,28 +17,25 @@ import { memo, FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
-import { useAtomValue } from "jotai";
+import axios from "axios";
 
 import { useAuth } from "../../../hooks/useAuth";
-import { RegisterFormInput } from "../../../types/form";
-import { loadingAtom } from "../../../states/loadingAtom";
 import { Card } from "../../templates/Card";
 import { SubmitButton } from "../../atoms/SubmitButton";
-import { LoadingPage } from "../LoadingPage";
+import type { ErrorResponse, RegisterFormInput } from "../../../types/form";
 
 const MAX_USERNAME_LENGTH = 50;
 
 const PASSWORD_MIN_LENGTH = 8;
 
 export const RegisterPage: FC = memo(() => {
-    const [isLoading, setIsLoading] = useState(false);
     const { registerUser } = useAuth();
     const {
         register,
         handleSubmit,
         setError,
         watch,
-        formState: { errors },
+        formState: { errors, isSubmitting },
     } = useForm<RegisterFormInput>();
     const usernameLength = watch("username")?.length || 0;
 
@@ -48,33 +45,33 @@ export const RegisterPage: FC = memo(() => {
     const passwordIcon = showPassword ? HiOutlineEyeOff : HiOutlineEye;
 
     const onSubmit = handleSubmit(async (data) => {
-        setIsLoading(true);
         try {
-            const errorResponse = await registerUser(data);
-            if (!errorResponse) return;
-            if ("errors" in errorResponse) {
+            await registerUser(data);
+        } catch (error: unknown) {
+            if (!axios.isAxiosError<ErrorResponse>(error)) {
+                return;
+            }
+            const responseData = error.response?.data;
+
+            if (responseData?.errors) {
                 // エラーレスポンスを処理する
                 for (const [field, message] of Object.entries(
-                    errorResponse.errors,
+                    responseData.errors,
                 )) {
                     if (["username", "password"].includes(field)) {
                         // バリデーションエラー
                         setError(field as keyof RegisterFormInput, {
-                            type: "manual",
+                            type: "server",
                             message: message[0] as string,
                         });
                     } else {
                         // バリデーション以外のエラー
-                        console.error(errorResponse);
+                        console.error(responseData);
                     }
                 }
             }
-        } finally {
-            setIsLoading(false);
         }
     });
-
-    if (isLoading) return <LoadingPage />;
 
     return (
         <>
@@ -251,7 +248,7 @@ export const RegisterPage: FC = memo(() => {
 
                         <VStack>
                             <Link to="/terms">利用規約はこちら</Link>
-                            <SubmitButton isLoading={isLoading}>
+                            <SubmitButton isLoading={isSubmitting}>
                                 登録
                             </SubmitButton>
                         </VStack>
