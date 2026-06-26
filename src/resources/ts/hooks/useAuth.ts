@@ -2,12 +2,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 
-import { ErrorResponse, RegisterFormInput } from "../types/form";
-import { User } from "../types/user";
 import { axiosInstance } from "./axiosInstance";
 import { loadingAtom } from "../states/loadingAtom";
 import { userAtom } from "../states/userAtom";
 import { useChakraToast } from "../utils/toastUtils";
+import type { RegisterFormInput } from "../types/form";
+import type { User } from "../types/user";
 
 export const useAuth = () => {
     const [, setIsLoading] = useAtom(loadingAtom);
@@ -16,11 +16,8 @@ export const useAuth = () => {
 
     const navigate = useNavigate();
 
-    const login = async (
-        username: string,
-        password: string,
-    ): Promise<ErrorResponse | null> => {
-        setIsLoading(true);
+    // グローバルのisLoadingを使うと、バリデーションエラーが表示できない
+    const login = async (username: string, password: string): Promise<void> => {
         try {
             const response = await axiosInstance.post<User>(
                 "/api/login",
@@ -34,36 +31,24 @@ export const useAuth = () => {
             );
 
             setUser(response.data);
-            return null;
         } catch (error: unknown) {
             // axiosのエラー
             if (axios.isAxiosError(error)) {
                 const status = error.response?.status;
 
-                if (status === 401) {
-                    return null;
+                if (status === 401 || status === 422) {
+                    throw error;
                 }
-
-                // バリデーション、認証失敗
-                if (status === 422) {
-                    return (error.response?.data as ErrorResponse) ?? null;
-                }
-
-                // その他HTTPエラー
-                showServerErrorToast("ログインエラー");
-                return null;
             }
 
-            // Axios以外の予期しないエラー
-            showServerErrorToast("ログインエラー");
-            return null;
-        } finally {
-            setIsLoading(false);
+            showServerErrorToast(
+                "ログインに失敗しました。しばらく時間をおいてお試しください。",
+            );
+            throw error;
         }
     };
 
-    const logout = async () => {
-        setIsLoading(true);
+    const logout = async (): Promise<void> => {
         try {
             await axiosInstance.post<User>(
                 "/api/logout",
@@ -73,7 +58,7 @@ export const useAuth = () => {
                 },
             );
             setUser(null);
-            navigate("/");
+            navigate("/", { replace: true });
         } catch (error: unknown) {
             console.error(error);
             if (axios.isAxiosError(error)) {
@@ -82,23 +67,20 @@ export const useAuth = () => {
                 // セッション切れはログアウト済みとみなす
                 if (status === 401 || status === 419) {
                     setUser(null);
-                    navigate("/");
+                    navigate("/", { replace: true });
                     return;
                 }
-
-                // その他HTTPエラー
-                showServerErrorToast("ログアウトに失敗しました");
             }
-        } finally {
-            setIsLoading(false);
+
+            //  予期しないエラー
+            showServerErrorToast("ログアウトに失敗しました");
+            throw error;
         }
     };
 
-    const registerUser = async (
-        props: RegisterFormInput,
-    ): Promise<ErrorResponse | null> => {
+    // グローバルのisLoadingを使うと、バリデーションエラーが表示できない
+    const registerUser = async (props: RegisterFormInput): Promise<void> => {
         const { username, password, password_confirmation } = props;
-        setIsLoading(true);
         try {
             const response = await axiosInstance.post<User>("/api/register", {
                 username: username,
@@ -107,28 +89,21 @@ export const useAuth = () => {
             });
             setUser(response.data);
             navigate("/my-page");
-            return null;
         } catch (error: unknown) {
             // axiosのエラー
             if (axios.isAxiosError(error)) {
                 const status = error.response?.status;
 
-                // TODO: 想定外の401エラーのハンドリング
-                if (status === 401) return null;
-
-                // バリデーションエラー
-                if (status === 422) {
-                    return (error.response?.data as ErrorResponse) ?? null;
+                if (status === 401 || status === 422) {
+                    throw error;
                 }
-                // その他HTTPエラー
-                showServerErrorToast("ユーザー登録エラー");
-                return null;
             }
-            // Axios以外の予期しないエラー
-            showServerErrorToast("ユーザー登録エラー");
-            return null;
-        } finally {
-            setIsLoading(false);
+
+            // 予期しないエラー
+            showServerErrorToast(
+                "ユーザー登録に失敗しました。しばらく時間をおいてお試しください。",
+            );
+            throw error;
         }
     };
 
@@ -155,17 +130,22 @@ export const useAuth = () => {
         }
     };
 
-    const deleteUser = async () => {
-        setIsLoading(true);
+    const deleteUser = async (password: string) => {
         try {
-            await axiosInstance.delete("/api/user");
+            await axiosInstance.delete("/api/user", {
+                data: { password },
+            });
             setUser(null);
             navigate("/");
             showSuccessToast("アカウントを削除しました。");
         } catch (error: unknown) {
-            showServerErrorToast("アカウントの削除に失敗しました");
-        } finally {
-            setIsLoading(false);
+            if (axios.isAxiosError(error) && error.response?.status === 422) {
+                throw error;
+            }
+            showServerErrorToast(
+                "アカウントの削除に失敗しました。しばらく時間を置いてお試しください。",
+            );
+            throw error;
         }
     };
 
@@ -173,8 +153,7 @@ export const useAuth = () => {
         current_password: string,
         new_password: string,
         new_password_confirmation: string,
-    ): Promise<ErrorResponse | null> => {
-        setIsLoading(true);
+    ): Promise<void> => {
         try {
             await axiosInstance.put("/api/user/password", {
                 current_password,
@@ -183,22 +162,14 @@ export const useAuth = () => {
             });
             showSuccessToast("パスワードを変更しました。");
             navigate("/my-page");
-            return null;
         } catch (error: unknown) {
-            if (axios.isAxiosError(error)) {
-                const status = error.response?.status;
-                // バリデーションエラー
-                if (status === 422) {
-                    return (error.response?.data as ErrorResponse) ?? null;
-                }
+            if (axios.isAxiosError(error) && error.response?.status === 422) {
+                throw error;
             }
-
-            // その他のエラー
-            showServerErrorToast("パスワードの変更に失敗しました");
-
-            return null;
-        } finally {
-            setIsLoading(false);
+            showServerErrorToast(
+                "パスワードの変更に失敗しました。しばらく時間を置いてお試しください。",
+            );
+            throw error;
         }
     };
 

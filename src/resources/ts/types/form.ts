@@ -35,9 +35,7 @@ export type Inquiry = {
 
 export type ErrorResponse = {
     message: string;
-    errors: {
-        [key: string]: string[];
-    };
+    errors?: Record<string, string[]>;
 };
 
 export type Dialogue = {
@@ -74,4 +72,8 @@ export type NewsItem = {
     title: string;
     content: string | null;
     published_at: string;
+};
+
+export type AccountDeleteFormInput = {
+    password: string;
 };

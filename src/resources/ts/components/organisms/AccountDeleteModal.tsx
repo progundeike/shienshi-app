@@ -12,26 +12,49 @@ import {
     Spinner,
     Icon,
     Center,
+    Input,
+    FormControl,
+    FormLabel,
+    FormErrorMessage,
 } from "@chakra-ui/react";
-import { FC, memo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAtom } from "jotai";
-import { IoAlertCircle } from "react-icons/io5";
+import { FC, memo } from "react";
+import { useAtomValue } from "jotai";
 import { GoAlert } from "react-icons/go";
-import { FaRegCheckCircle } from "react-icons/fa";
 
 import { useAuth } from "../../hooks/useAuth";
 import { loadingAtom } from "../../states/loadingAtom";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import { AccountDeleteFormInput } from "../../types/form";
 
 export const AccountDeleteModal: FC = memo(() => {
     const { deleteUser } = useAuth();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useAtom(loadingAtom);
+    const {
+        register,
+        handleSubmit,
+        setError,
+        formState: { errors, isValid, isSubmitting },
+    } = useForm<AccountDeleteFormInput>({
+        mode: "onChange",
+        defaultValues: {
+            password: "",
+        },
+    });
 
-    const onDelete = async () => {
-        console.log("start delete user");
-        await deleteUser();
+    const onDelete = async (data: AccountDeleteFormInput) => {
+        try {
+            await deleteUser(data.password);
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response?.status === 422) {
+                setError("password", {
+                    type: "server",
+                    message:
+                        error.response.data.errors?.password?.[0] ??
+                        "パスワードが正しくありません",
+                });
+            }
+        }
     };
 
     return (
@@ -59,39 +82,57 @@ export const AccountDeleteModal: FC = memo(() => {
                         <Center mb={5}>
                             <Icon as={GoAlert} color="red.500" boxSize="30%" />
                         </Center>
-                        <Box textAlign={{ base: "left", md: "left" }} mb={5}>
+                        <Box textAlign="center" mb={5}>
                             <Text>
                                 削除したアカウントの内容は復元できません
                             </Text>
                         </Box>
 
                         <Box w="80%" mx="auto" my={2}>
-                            <Flex direction="column" gap={3}>
-                                <Button
-                                    backgroundColor="red.500"
-                                    color="white"
-                                    onClick={onDelete}
-                                    borderRadius="full"
-                                    w="100%"
-                                    shadow="md"
-                                >
-                                    アカウントを削除する
-                                </Button>
-                                <Button
-                                    variant="ghost"
-                                    onClick={onClose}
-                                    borderRadius="full"
-                                >
-                                    もどる
-                                </Button>
-                            </Flex>
-                        </Box>
+                            <form onSubmit={handleSubmit(onDelete)}>
+                                <Flex direction="column" gap={3}>
+                                    <FormControl
+                                        isRequired
+                                        isInvalid={!!errors.password}
+                                    >
+                                        <FormLabel>
+                                            パスワードを入力してください
+                                        </FormLabel>
+                                        <Input
+                                            type="password"
+                                            autoComplete="current-password"
+                                            {...register("password", {
+                                                required:
+                                                    "パスワードを入力してください。",
+                                            })}
+                                        />
+                                        <FormErrorMessage>
+                                            {errors.password?.message}
+                                        </FormErrorMessage>
+                                    </FormControl>
 
-                        {isLoading && (
-                            <Box>
-                                <Spinner />
-                            </Box>
-                        )}
+                                    <Button
+                                        type="submit"
+                                        isLoading={isSubmitting}
+                                        isDisabled={!isValid || isSubmitting}
+                                        backgroundColor="red.500"
+                                        color="white"
+                                        borderRadius="full"
+                                        w="100%"
+                                        shadow="md"
+                                    >
+                                        アカウントを削除する
+                                    </Button>
+                                    <Button
+                                        variant="ghost"
+                                        onClick={onClose}
+                                        borderRadius="full"
+                                    >
+                                        もどる
+                                    </Button>
+                                </Flex>
+                            </form>
+                        </Box>
                     </ModalBody>
                 </ModalContent>
             </Modal>

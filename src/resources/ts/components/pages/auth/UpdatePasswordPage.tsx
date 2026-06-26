@@ -15,11 +15,10 @@ import { FC, memo, useState } from "react";
 import { Card } from "../../templates/Card";
 import { HiOutlineEyeOff, HiOutlineEye } from "react-icons/hi";
 import { SubmitButton } from "../../atoms/SubmitButton";
-import { useAtomValue } from "jotai";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../../hooks/useAuth";
-import { loadingAtom } from "../../../states/loadingAtom";
-import { LoadingPage } from "../LoadingPage";
+import axios from "axios";
+import { ErrorResponse } from "../../../types/form";
 
 type UpdatePasswordFormInput = {
     current_password: string;
@@ -29,7 +28,6 @@ type UpdatePasswordFormInput = {
 
 export const UpdatePasswordPage: FC = memo(() => {
     const { updatePassword } = useAuth();
-    const isLoading = useAtomValue(loadingAtom);
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showNewPasswordConfirmation, setShowNewPasswordConfirmation] =
@@ -47,37 +45,42 @@ export const UpdatePasswordPage: FC = memo(() => {
         handleSubmit,
         setError,
         watch,
-        formState: { errors },
+        formState: { errors, isSubmitting },
     } = useForm<UpdatePasswordFormInput>();
 
     const onSubmit = handleSubmit(async (data) => {
-        const errorResponse = await updatePassword(
-            data.current_password,
-            data.new_password,
-            data.new_password_confirmation,
-        );
-        if (!errorResponse) return;
-        if ("errors" in errorResponse) {
-            console.log(errorResponse);
-            // エラーレスポンスを処理する
-            for (const [field, message] of Object.entries(
-                errorResponse.errors,
-            )) {
-                if (["current_password", "new_password"].includes(field)) {
-                    // バリデーションエラー
-                    setError(field as keyof UpdatePasswordFormInput, {
-                        type: "manual",
-                        message: (message as string[])[0],
-                    });
-                } else {
-                    // バリデーション以外のエラー
-                    console.log(errorResponse);
+        try {
+            await updatePassword(
+                data.current_password,
+                data.new_password,
+                data.new_password_confirmation,
+            );
+        } catch (error: unknown) {
+            if (!axios.isAxiosError<ErrorResponse>(error)) {
+                return;
+            }
+
+            const responseData = error.response?.data;
+
+            if (responseData?.errors) {
+                // エラーレスポンスを処理する
+                for (const [field, message] of Object.entries(
+                    responseData.errors,
+                )) {
+                    if (["username", "password"].includes(field)) {
+                        // バリデーションエラー
+                        setError(field as keyof UpdatePasswordFormInput, {
+                            type: "server",
+                            message: message[0] as string,
+                        });
+                    } else {
+                        // バリデーション以外のエラー
+                        console.error(responseData);
+                    }
                 }
             }
         }
     });
-
-    if (isLoading) return <LoadingPage />;
 
     return (
         <Box p={2} m={1} fontSize={{ base: "sm", md: "md" }}>
@@ -272,7 +275,9 @@ export const UpdatePasswordPage: FC = memo(() => {
                     </FormControl>
 
                     <Box mt={5}>
-                        <SubmitButton>パスワードの変更</SubmitButton>
+                        <SubmitButton isLoading={isSubmitting}>
+                            パスワードの変更
+                        </SubmitButton>
                     </Box>
                 </form>
             </Card>

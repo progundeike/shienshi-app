@@ -31,6 +31,7 @@ const MAX_USERNAME_LENGTH = 50;
 const PASSWORD_MIN_LENGTH = 8;
 
 export const RegisterPage: FC = memo(() => {
+    const [isLoading, setIsLoading] = useState(false);
     const { registerUser } = useAuth();
     const {
         register,
@@ -39,7 +40,6 @@ export const RegisterPage: FC = memo(() => {
         watch,
         formState: { errors },
     } = useForm<RegisterFormInput>();
-    const isLoading = useAtomValue(loadingAtom);
     const usernameLength = watch("username")?.length || 0;
 
     const [showPassword, setShowPassword] = useState(false);
@@ -48,24 +48,29 @@ export const RegisterPage: FC = memo(() => {
     const passwordIcon = showPassword ? HiOutlineEyeOff : HiOutlineEye;
 
     const onSubmit = handleSubmit(async (data) => {
-        const errorResponse = await registerUser(data);
-        if (!errorResponse) return;
-        if ("errors" in errorResponse) {
-            // エラーレスポンスを処理する
-            for (const [field, message] of Object.entries(
-                errorResponse.errors,
-            )) {
-                if (["username", "password"].includes(field)) {
-                    // バリデーションエラー
-                    setError(field as keyof RegisterFormInput, {
-                        type: "manual",
-                        message: message[0] as string,
-                    });
-                } else {
-                    // バリデーション以外のエラー
-                    console.error(errorResponse);
+        setIsLoading(true);
+        try {
+            const errorResponse = await registerUser(data);
+            if (!errorResponse) return;
+            if ("errors" in errorResponse) {
+                // エラーレスポンスを処理する
+                for (const [field, message] of Object.entries(
+                    errorResponse.errors,
+                )) {
+                    if (["username", "password"].includes(field)) {
+                        // バリデーションエラー
+                        setError(field as keyof RegisterFormInput, {
+                            type: "manual",
+                            message: message[0] as string,
+                        });
+                    } else {
+                        // バリデーション以外のエラー
+                        console.error(errorResponse);
+                    }
                 }
             }
+        } finally {
+            setIsLoading(false);
         }
     });
 
@@ -246,7 +251,9 @@ export const RegisterPage: FC = memo(() => {
 
                         <VStack>
                             <Link to="/terms">利用規約はこちら</Link>
-                            <SubmitButton>登録</SubmitButton>
+                            <SubmitButton isLoading={isLoading}>
+                                登録
+                            </SubmitButton>
                         </VStack>
                     </form>
                 </Card>

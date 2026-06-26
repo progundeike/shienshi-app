@@ -24,6 +24,15 @@ class UserController extends Controller
             return response()->json(['message' => 'User not authenticated'], 401);
         }
 
+        // パスワード検証
+        $request->validate([
+            'password' => [
+                'required',
+                'string',
+                'current_password:web'
+            ]
+        ]);
+
         // ログアウト
         Auth::guard('web')->logout();
 
