@@ -4,10 +4,10 @@ namespace Tests\Feature;
 
 use App\Models\UserAiDialogue;
 use App\Services\AiClientService;
+use Illuminate\Support\Facades\RateLimiter;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\Support\FeatureTestCase;
-use Illuminate\Support\Facades\RateLimiter;
 
 class AiQuestionControllerTest extends FeatureTestCase
 {
@@ -95,16 +95,18 @@ class AiQuestionControllerTest extends FeatureTestCase
         $this->mock(
             AiClientService::class,
             function (MockInterface $mock): void {
-                $mock->shouldReceive('chat')
-                    ->times(5) // 6回目はコントローラーに到達していないことをテスト
+                /** @var \Mockery\Expectation $expectation */
+                $expectation = $mock->shouldReceive('chat');
+                $expectation
+                    ->times(5)
                     ->andReturn([
                         'choices' => [
                             [
                                 'message' => [
-                                    'content' => 'AIのダミー回答です。'
-                                ]
-                            ]
-                        ]
+                                    'content' => 'AIのダミー回答です。',
+                                ],
+                            ],
+                        ],
                     ]);
             }
         );
@@ -112,7 +114,7 @@ class AiQuestionControllerTest extends FeatureTestCase
         $requestData = [
             'examCode' => $this->testExamCode,
             'questionCode' => '1_1_0',
-            'message' => 'ユーザーからの質問です。'
+            'message' => 'ユーザーからの質問です。',
         ];
 
         // 5回までは成功

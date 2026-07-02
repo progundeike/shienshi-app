@@ -28,7 +28,8 @@ class AnswerController extends Controller
         private readonly AiClientService $aiClientService,
         private readonly PromptService $promptService,
         private readonly AiExecutionLockService $aiExecutionLockService,
-    ) {}
+    ) {
+    }
 
     public function answerSubmit(AnswerRequest $request): JsonResponse
     {
@@ -38,7 +39,7 @@ class AnswerController extends Controller
 
         try {
             $validated = $request->validated();
-            $examCode = $validated['year'] . '_' . $validated['season'] . '_' . $validated['section'];
+            $examCode = $validated['year'].'_'.$validated['season'].'_'.$validated['section'];
             $processingKey = $this->aiExecutionLockService->keyForAnswer($userId, $examCode);
 
             return $this->aiExecutionLockService->run($processingKey, function () use (
@@ -68,11 +69,11 @@ class AnswerController extends Controller
                 $prompt = [
                     [
                         'role' => 'system',
-                        'content' => $this->promptService->answerSystemPrompt() . PHP_EOL . $questionPrompt,
+                        'content' => $this->promptService->answerSystemPrompt().PHP_EOL.$questionPrompt,
                     ],
                     [
                         'role' => 'user',
-                        'content' => '<UserAnswer>' . $userAnswerText . '</UserAnswer>',
+                        'content' => '<UserAnswer>'.$userAnswerText.'</UserAnswer>',
                     ],
                 ];
 
@@ -247,12 +248,12 @@ class AnswerController extends Controller
             $aiText = $aiResponseMap[$answer['questionCode']]['ai_text'] ?? '';
 
             if (trim($aiText) === '') {
-                $aiText = '模範解答: ' . ($modelMap[$answer['questionCode']] ?? '');
+                $aiText = '模範解答: '.($modelMap[$answer['questionCode']] ?? '');
             }
 
             if ($userText === '') {
                 $aiRating = '×';
-                $aiText = '模範解答: ' . ($modelMap[$answer['questionCode']] ?? '');
+                $aiText = '模範解答: '.($modelMap[$answer['questionCode']] ?? '');
             }
 
             $rows[] = [
@@ -312,7 +313,7 @@ class AnswerController extends Controller
         $year = (int) $validated['year'];
         $season = (string) $validated['season'];
         $section = (int) $validated['section'];
-        $examCode = $year . '_' . $season . '_' . $section;
+        $examCode = $year.'_'.$season.'_'.$section;
 
         try {
             $results = UserAnswer::where('user_id', $userId)

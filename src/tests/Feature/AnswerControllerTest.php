@@ -9,10 +9,10 @@ use App\Services\AiExecutionLockService;
 use Illuminate\Contracts\Cache\LockProvider;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\Support\FeatureTestCase;
-use Illuminate\Support\Facades\RateLimiter;
 
 class AnswerControllerTest extends FeatureTestCase
 {
@@ -79,7 +79,7 @@ class AnswerControllerTest extends FeatureTestCase
         ];
 
         // ロックを解除しておく
-        $examCode = $payLoad['year'] . '_' . $payLoad['season'] . '_' . $payLoad['section'];
+        $examCode = $payLoad['year'].'_'.$payLoad['season'].'_'.$payLoad['section'];
         $processingKey = app(AiExecutionLockService::class)->keyForAnswer($user->id, $examCode);
         Cache::store('redis')->forget($processingKey);
 
@@ -105,7 +105,10 @@ class AnswerControllerTest extends FeatureTestCase
         $this->mock(
             AiClientService::class,
             function (MockInterface $mock): void {
-                $mock->shouldReceive('useFunctionCall')
+                /** @var \Mockery\Expectation $expectation */
+                $expectation = $mock->shouldReceive('useFunctionCall');
+
+                $expectation
                     ->once()
                     ->andReturn([
                         'choices' => [
@@ -123,7 +126,7 @@ class AnswerControllerTest extends FeatureTestCase
                                             ],
                                         ], JSON_UNESCAPED_UNICODE),
                                     ],
-                                ]
+                                ],
                             ],
                         ],
                     ]);
@@ -170,7 +173,9 @@ class AnswerControllerTest extends FeatureTestCase
         $this->mock(
             AiClientService::class,
             function (MockInterface $mock): void {
-                $mock->shouldReceive('useFunctionCall')
+                /** @var \Mockery\Expectation $expectation */
+                $expectation = $mock->shouldReceive('useFunctionCall');
+                $expectation
                     ->times(3) // 4回目はコントローラーに到達していないことをテスト
                     ->andReturn([
                         'choices' => [
@@ -188,7 +193,7 @@ class AnswerControllerTest extends FeatureTestCase
                                             ],
                                         ], JSON_UNESCAPED_UNICODE),
                                     ],
-                                ]
+                                ],
                             ],
                         ],
                     ]);
