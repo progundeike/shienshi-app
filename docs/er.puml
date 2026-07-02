@@ -9,8 +9,6 @@ entity "users" as users {
   --
   is_admin : boolean
   username : varchar
-  email : varchar
-  email_verified_at : timestamp
   password : varchar
   deleted_at : timestamp
   remember_token : varchar
