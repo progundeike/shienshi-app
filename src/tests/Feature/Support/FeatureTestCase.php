@@ -49,7 +49,7 @@ abstract class FeatureTestCase extends TestCase
         $this->createTestExamSentence();
         $this->createTestQuestions();
         $this->createTestModelAnswers();
-        $this->createTestUserAnswers();
+        $this->createTestUserAnswers($this->normalUser);
         $this->createTestUserAiDialogue();
     }
 
@@ -152,11 +152,11 @@ abstract class FeatureTestCase extends TestCase
         }
     }
 
-    protected function createTestUserAnswers(): void
+    protected function createTestUserAnswers(User $user): void
     {
         $userAnswers = [
             [
-                'user_id' => $this->normalUser->id,
+                'user_id' => $user->id,
                 'exam_code' => $this->testExamCode,
                 'question_code' => '1_1_0',
                 'user_text' => 'ユーザー解答1',
@@ -164,7 +164,7 @@ abstract class FeatureTestCase extends TestCase
                 'ai_text' => 'これはAIの添削結果のサンプル1です',
             ],
             [
-                'user_id' => $this->normalUser->id,
+                'user_id' => $user->id,
                 'exam_code' => $this->testExamCode,
                 'question_code' => '1_2_1',
                 'user_text' => 'ユーザー解答2',
@@ -172,7 +172,7 @@ abstract class FeatureTestCase extends TestCase
                 'ai_text' => 'これはAIの添削結果のサンプル2です',
             ],
             [
-                'user_id' => $this->normalUser->id,
+                'user_id' => $user->id,
                 'exam_code' => $this->testExamCode,
                 'question_code' => '1_2_2',
                 'user_text' => '1,2',
@@ -195,7 +195,7 @@ abstract class FeatureTestCase extends TestCase
                 'ai_text' => $userAnswer['ai_text'],
             ]);
 
-            $answer->user_id = $this->normalUser->id;
+            $answer->user_id = $userAnswer['user_id'];
             $answer->save();
         }
     }

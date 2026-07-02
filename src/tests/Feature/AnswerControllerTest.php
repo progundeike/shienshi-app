@@ -167,8 +167,12 @@ class AnswerControllerTest extends FeatureTestCase
     #[Test]
     public function レート制限が機能する(): void
     {
-        RateLimiter::clear("ai-answer:10-minutes:{$this->normalUser->id}");
-        RateLimiter::clear("ai-answer:daily:{$this->normalUser->id}");
+        RateLimiter::clear(
+            md5('ai-answer'."ai-answer:10-minutes:{$this->normalUser->id}")
+        );
+        RateLimiter::clear(
+            md5('ai-answer'."ai-answer:daily:{$this->normalUser->id}")
+        );
 
         $this->mock(
             AiClientService::class,
