@@ -7,6 +7,7 @@ use App\Services\AiClientService;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\Support\FeatureTestCase;
+use Illuminate\Support\Facades\RateLimiter;
 
 class AiQuestionControllerTest extends FeatureTestCase
 {
@@ -83,5 +84,47 @@ class AiQuestionControllerTest extends FeatureTestCase
             'user_question' => $userMessage,
             'ai_answer' => $aiMessage,
         ]);
+    }
+
+    #[Test]
+    public function AIチャットのレート制限が機能する(): void
+    {
+        RateLimiter::clear("ai-chat:10-minutes:{$this->normalUser->id}");
+        RateLimiter::clear("ai-chat:daily:{$this->normalUser->id}");
+
+        $this->mock(
+            AiClientService::class,
+            function (MockInterface $mock): void {
+                $mock->shouldReceive('chat')
+                    ->times(5) // 6回目はコントローラーに到達していないことをテスト
+                    ->andReturn([
+                        'choices' => [
+                            [
+                                'message' => [
+                                    'content' => 'AIのダミー回答です。'
+                                ]
+                            ]
+                        ]
+                    ]);
+            }
+        );
+
+        $requestData = [
+            'examCode' => $this->testExamCode,
+            'questionCode' => '1_1_0',
+            'message' => 'ユーザーからの質問です。'
+        ];
+
+        // 5回までは成功
+        for ($i = 0; $i < 5; $i++) {
+            $this->actingAs($this->normalUser)
+                ->postJson('/api/chat', $requestData)
+                ->assertOk();
+        }
+
+        // 6回目はレート制限
+        $this->actingAs($this->normalUser)
+            ->postJson('/api/chat', $requestData)
+            ->assertStatus(429);
     }
 }

@@ -27,7 +27,7 @@ class AnswerRequest extends FormRequest
             'section' => 'required|integer|between:1,5',
             'answers' => 'required|array',
             'answers.*.questionCode' => 'required|string',
-            'answers.*.user_text' => 'string|nullable|300',
+            'answers.*.user_text' => 'string|nullable|max:300',
         ];
     }
 

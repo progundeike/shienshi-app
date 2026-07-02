@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/questions/{examCode}', [ExamController::class, 'getExamQuestionsJson']);
 Route::get('/exam/{year}-{season}-{section}', [ExamController::class, 'checkFileExists']);
 Route::get('/news', [NewsItemController::class, 'index']);
-Route::post('/inquiry', [InquiryController::class, 'store'])->middleware('throttle:10,30'); // 30分間で10回まで
+Route::post('/inquiry', [InquiryController::class, 'store'])->middleware('throttle:inquiry');
 
 Route::middleware('auth:sanctum')->group(function () {
     // ユーザー情報
@@ -21,9 +21,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/user', [UserController::class, 'deleteUser']);
 
     // 解答
-    Route::post('/answer', [AnswerController::class, 'answerSubmit']);
+    Route::post('/answer', [AnswerController::class, 'answerSubmit'])->middleware('throttle:ai-answer');
     Route::delete('answer/{year}-{season}-{section}', [AnswerController::class, 'deleteSubmittedAnswer']);
-    Route::post('/chat', [AiQuestionController::class, 'run']);
+    Route::post('/chat', [AiQuestionController::class, 'run'])->middleware('throttle:ai-chat');
     Route::get('/dialogues/{examCode}/{questionCode}', [AiQuestionController::class, 'getDialogues']);
     Route::delete('/dialogues/{examCode}/{questionCode}', [AiQuestionController::class, 'deleteDialogues']);
     Route::get('/corrections/{examCode}', [AnswerController::class, 'fetchCorrection']);
