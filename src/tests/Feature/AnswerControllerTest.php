@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\Support\FeatureTestCase;
+use Illuminate\Support\Facades\RateLimiter;
 
 class AnswerControllerTest extends FeatureTestCase
 {
@@ -78,7 +79,7 @@ class AnswerControllerTest extends FeatureTestCase
         ];
 
         // ロックを解除しておく
-        $examCode = $payLoad['year'].'_'.$payLoad['season'].'_'.$payLoad['section'];
+        $examCode = $payLoad['year'] . '_' . $payLoad['season'] . '_' . $payLoad['section'];
         $processingKey = app(AiExecutionLockService::class)->keyForAnswer($user->id, $examCode);
         Cache::store('redis')->forget($processingKey);
 
@@ -94,5 +95,128 @@ class AnswerControllerTest extends FeatureTestCase
         $response = $this->postJson('/api/answer', $payLoad, ['Accept' => 'application/json']);
         $response->assertStatus(502);
         $response->assertJson(['message' => 'AIとの接続に不具合が生じております。しばらく経ってから再度お試しください。']);
+    }
+
+    #[Test]
+    public function ユーザーが答案を提出してAIの添削を保存できる(): void
+    {
+        $this->actingAs($this->normalUser);
+
+        $this->mock(
+            AiClientService::class,
+            function (MockInterface $mock): void {
+                $mock->shouldReceive('useFunctionCall')
+                    ->once()
+                    ->andReturn([
+                        'choices' => [
+                            [
+                                'message' => [
+                                    'functionCall' => [
+                                        'name' => 'reviewUserAnswer',
+                                        'arguments' => json_encode([
+                                            'evaluations' => [
+                                                [
+                                                    'questionCode' => '1_1_0',
+                                                    'rating' => '◯',
+                                                    'comment' => 'ダミーの添削です。',
+                                                ],
+                                            ],
+                                        ], JSON_UNESCAPED_UNICODE),
+                                    ],
+                                ]
+                            ],
+                        ],
+                    ]);
+            }
+        );
+
+        $payload = [
+            'year' => $this->testExamYear,
+            'season' => $this->testExamSeason,
+            'section' => $this->testExamSection,
+            'answers' => [
+                [
+                    'questionCode' => '1_1_0',
+                    'content' => 'test',
+                ],
+            ],
+        ];
+
+        $response = $this->postJson('/api/answer', $payload);
+        $response->assertCreated();
+
+        $this->assertDatabaseHas('user_answers', [
+            'user_id' => $this->normalUser->id,
+            'exam_code' => $this->testExamCode,
+            'question_code' => '1_1_0',
+            'user_text' => 'test',
+            'ai_rating' => '◯',
+            'ai_text' => 'ダミーの添削です。',
+
+        ]);
+
+        $this->assertDatabaseHas('submitted_exams', [
+            'user_id' => $this->normalUser->id,
+            'exam_code' => $this->testExamCode,
+        ]);
+    }
+
+    #[Test]
+    public function レート制限が機能する(): void
+    {
+        RateLimiter::clear("ai-answer:10-minutes:{$this->normalUser->id}");
+        RateLimiter::clear("ai-answer:daily:{$this->normalUser->id}");
+
+        $this->mock(
+            AiClientService::class,
+            function (MockInterface $mock): void {
+                $mock->shouldReceive('useFunctionCall')
+                    ->times(3) // 4回目はコントローラーに到達していないことをテスト
+                    ->andReturn([
+                        'choices' => [
+                            [
+                                'message' => [
+                                    'functionCall' => [
+                                        'name' => 'reviewUserAnswer',
+                                        'arguments' => json_encode([
+                                            'evaluations' => [
+                                                [
+                                                    'questionCode' => '1_1_0',
+                                                    'rating' => '◯',
+                                                    'comment' => 'ダミーの添削です。',
+                                                ],
+                                            ],
+                                        ], JSON_UNESCAPED_UNICODE),
+                                    ],
+                                ]
+                            ],
+                        ],
+                    ]);
+            }
+        );
+
+        $payload = [
+            'year' => $this->testExamYear,
+            'season' => $this->testExamSeason,
+            'section' => $this->testExamSection,
+            'answers' => [
+                [
+                    'questionCode' => '1_1_0',
+                    'content' => 'test',
+                ],
+            ],
+        ];
+
+        // 3回までは成功
+        for ($i = 0; $i < 3; $i++) {
+            $this->actingAs($this->normalUser)
+                ->postJson('/api/answer', $payload)
+                ->assertCreated();
+        }
+
+        // 4回目はレート制限
+        $this->actingAs($this->normalUser)
+            ->postJson('/api/answer', $payload)
+            ->assertStatus(429);
     }
 }
