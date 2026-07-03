@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\Support\FeatureTestCase;
 
@@ -79,5 +80,56 @@ class UserControllerTest extends FeatureTestCase
         ]);
 
         $response->assertStatus(422);
+    }
+
+    #[Test]
+    public function ユーザー削除ができる(): void
+    {
+        $response = $this->actingAs($this->normalUser)->deleteJson('/api/user', [
+            'password' => 'normalPassword',
+        ]);
+        $response->assertStatus(200);
+    }
+
+    #[Test]
+    public function パブリックユーザーは削除できない(): void
+    {
+        /** @var User $publicUser */
+        $publicUser = User::where('username', 'public_user')->first();
+
+        $response = $this->actingAs($publicUser)->deleteJson('/api/user', [
+            'password' => 'password',
+        ]);
+        $response->assertStatus(403);
+    }
+
+    #[Test]
+    public function パブリックユーザーはパスワード変更できない(): void
+    {
+        /** @var User $publicUser */
+        $publicUser = User::where('username', 'public_user')->first();
+
+        $response = $this->actingAs($publicUser)->putJson('/api/user/password', [
+            'current_password' => 'password',
+            'new_password' => 'newPassword',
+            'new_password_confirmation' => 'newPassword',
+        ]);
+        $response->assertStatus(403);
+    }
+
+    #[Test]
+    public function パスワード変更ができる(): void
+    {
+        $response = $this->actingAs($this->normalUser)->putJson('/api/user/password', [
+            'current_password' => 'normalPassword',
+            'new_password' => 'newPassword',
+            'new_password_confirmation' => 'newPassword',
+
+        ]);
+        $response->assertStatus(200);
+
+        $this->normalUser->refresh();
+
+        $this->assertTrue(Hash::check('newPassword', $this->normalUser->password));
     }
 }

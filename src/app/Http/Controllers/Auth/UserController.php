@@ -13,7 +13,8 @@ class UserController extends Controller
 {
     public function __construct(
         private readonly PublicUserService $publicUserService,
-    ) {}
+    ) {
+    }
 
     public function getUserInfo(Request $request)
     {
@@ -50,8 +51,10 @@ class UserController extends Controller
         $user->delete();
 
         // セッションの無効化
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        if ($request->hasSession()) {
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
 
         return response()->json(['message' => 'User deleted'], 200);
     }

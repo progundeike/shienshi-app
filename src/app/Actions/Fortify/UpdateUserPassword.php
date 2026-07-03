@@ -3,12 +3,12 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use App\Services\PublicUserService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\UpdatesUserPasswords;
-use App\Services\PublicUserService;
 
 class UpdateUserPassword implements UpdatesUserPasswords
 {
@@ -16,7 +16,8 @@ class UpdateUserPassword implements UpdatesUserPasswords
 
     public function __construct(
         private readonly PublicUserService $publicUserService,
-    ) {}
+    ) {
+    }
 
     /**
      * Validate and update the user's password.
