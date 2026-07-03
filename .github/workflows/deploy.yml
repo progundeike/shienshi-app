@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   # workflow_dispatch:
 
 jobs:
@@ -32,10 +32,14 @@ jobs:
         with:
           php-version: "8.3"
           tools: composer
-      
+
       - name: PHP dependencies
         working-directory: src
         run: composer install --no-interaction --prefer-dist
+
+      - name: Composer audit
+        working-directory: src
+        run: composer audit --no-interaction
 
       - name: Pint(check)
         working-directory: src
@@ -44,7 +48,7 @@ jobs:
       - name: PHPStan
         working-directory: src
         run: vendor/bin/phpstan analyse --no-progress
-      
+
       - name: PHPUnit
         working-directory: src
         env:
@@ -56,7 +60,7 @@ jobs:
           SESSION_DRIVER: array
           QUEUE_CONNECTION: sync
         run: cp .env.example .env && php artisan key:generate && php artisan test
-      
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -67,6 +71,10 @@ jobs:
       - name: Frontend dependencies
         working-directory: src
         run: npm ci
+
+      - name: NPM audit
+        working-directory: src
+        run: npm audit --audit-level=high
 
       - name: Typecheck
         working-directory: src
