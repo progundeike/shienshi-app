@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 
@@ -12,9 +12,23 @@ import type { User } from "../types/user";
 export const useAuth = () => {
     const [, setIsLoading] = useAtom(loadingAtom);
     const [, setUser] = useAtom(userAtom);
-    const { showServerErrorToast, showSuccessToast } = useChakraToast();
+    const { showServerErrorToast, showSuccessToast, showPublicUserErrorToast } =
+        useChakraToast();
 
     const navigate = useNavigate();
+
+    type ApiErrorResponse = {
+        message?: string;
+        code?: string;
+    };
+
+    const isPublicUserOperationError = (error: unknown): boolean => {
+        return (
+            axios.isAxiosError<ApiErrorResponse>(error) &&
+            error.response?.status === 403 &&
+            error.response.data.code === "PUBLIC_USER_OPERATION_FORBIDDEN"
+        );
+    };
 
     // グローバルのisLoadingを使うと、バリデーションエラーが表示できない
     const login = async (username: string, password: string): Promise<void> => {
@@ -142,6 +156,13 @@ export const useAuth = () => {
             if (axios.isAxiosError(error) && error.response?.status === 422) {
                 throw error;
             }
+
+            if (isPublicUserOperationError(error)) {
+                showPublicUserErrorToast(
+                    "パブリックユーザーはアカウントを削除できません。",
+                );
+                return;
+            }
             showServerErrorToast(
                 "アカウントの削除に失敗しました。しばらく時間を置いてお試しください。",
             );
@@ -166,6 +187,14 @@ export const useAuth = () => {
             if (axios.isAxiosError(error) && error.response?.status === 422) {
                 throw error;
             }
+
+            if (isPublicUserOperationError(error)) {
+                showPublicUserErrorToast(
+                    "パブリックユーザーではパスワードを変更できません。",
+                );
+                return;
+            }
+
             showServerErrorToast(
                 "パスワードの変更に失敗しました。しばらく時間を置いてお試しください。",
             );

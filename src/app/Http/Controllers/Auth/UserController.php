@@ -5,11 +5,16 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\PublicUserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function __construct(
+        private readonly PublicUserService $publicUserService,
+    ) {}
+
     public function getUserInfo(Request $request)
     {
         return response()->json(new UserResource($request->user()));
@@ -22,6 +27,11 @@ class UserController extends Controller
 
         if (! $user) {
             return response()->json(['message' => 'User not authenticated'], 401);
+        }
+
+        // パブリックユーザーは削除不可
+        if ($this->publicUserService->isPublicUser($user)) {
+            throw new \App\Exceptions\PublicUserOperationException();
         }
 
         // パスワード検証

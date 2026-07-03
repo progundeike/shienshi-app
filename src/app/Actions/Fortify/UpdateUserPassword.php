@@ -8,10 +8,15 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\UpdatesUserPasswords;
+use App\Services\PublicUserService;
 
 class UpdateUserPassword implements UpdatesUserPasswords
 {
     use PasswordValidationRules;
+
+    public function __construct(
+        private readonly PublicUserService $publicUserService,
+    ) {}
 
     /**
      * Validate and update the user's password.
@@ -20,8 +25,12 @@ class UpdateUserPassword implements UpdatesUserPasswords
      */
     public function update(User $user, array $input): void
     {
-        // new_passwordとnew_password_confirmationが一致しているかチェック
+        // パブリックユーザーはパスワード変更不可
+        if ($this->publicUserService->isPublicUser($user)) {
+            throw new \App\Exceptions\PublicUserOperationException();
+        }
 
+        // new_passwordとnew_password_confirmationが一致しているかチェック
         Validator::make($input, [
             'current_password' => ['required', 'string', 'current_password:web'],
             'new_password' => $this->passwordRules(),

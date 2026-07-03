@@ -24,6 +24,16 @@ export const useChakraToast = () => {
         });
     };
 
+    const showPublicUserErrorToast = (title: string) => {
+        showToastOnce({
+            title: title,
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+            position: "bottom-right",
+        });
+    };
+
     const showSuccessToast = (title: string) => {
         showToastOnce({
             title: title,
@@ -44,5 +54,10 @@ export const useChakraToast = () => {
         });
     };
 
-    return { showServerErrorToast, showSuccessToast, showWarningToast };
+    return {
+        showServerErrorToast,
+        showSuccessToast,
+        showWarningToast,
+        showPublicUserErrorToast,
+    };
 };
