@@ -1,6 +1,7 @@
 <?php
 
 use Laravel\Fortify\Features;
+use App\Http\Middleware\ThrottleRegistrations;
 
 return [
 
@@ -101,7 +102,10 @@ return [
     |
     */
 
-    'middleware' => ['web'],
+    'middleware' => [
+        'web',
+        ThrottleRegistrations::class, // 登録リクエストのレート制限を追加
+    ],
 
     /*
     |--------------------------------------------------------------------------
