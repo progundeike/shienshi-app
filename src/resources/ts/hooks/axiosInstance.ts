@@ -15,7 +15,6 @@ async function refreshToken() {
         await axios.get("/sanctum/csrf-cookie");
         return;
     } catch (error) {
-        console.log("Failed to refresh CSRF token:", error);
         throw error;
     }
 }

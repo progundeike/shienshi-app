@@ -20,8 +20,6 @@ export const useQuestion = () => {
                 message,
             });
 
-            console.log(response);
-
             // 成功
             if (response.status === 200 && typeof response.data === "string") {
                 return response.data;
@@ -29,7 +27,6 @@ export const useQuestion = () => {
             // 失敗
             return "";
         } catch (error) {
-            console.log(error);
             // 予期しないサーバーエラー
             showServerErrorToast("質問の送信に失敗しました");
             return "";
@@ -50,7 +47,6 @@ export const useQuestion = () => {
             // 失敗
             return "";
         } catch (error) {
-            console.log(error);
             showServerErrorToast("質問履歴の取得に失敗しました");
             return [];
         }
@@ -62,7 +58,6 @@ export const useQuestion = () => {
                 `/api/dialogues/${examCode}/${questionCode}`,
             );
         } catch (error) {
-            console.log(error);
             showServerErrorToast("質問履歴の削除に失敗しました");
         }
     };

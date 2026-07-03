@@ -51,13 +51,10 @@ class InquiryController extends Controller
         try {
             Notification::route('slack', config('services.slack.webhook_url'))
                 ->notify(new SlackNotification(
-                    "新しいお問い合わせです。 \n
-                    お名前: {$inquiry->name}\n
-                    email:{$inquiry->email}\n
-                    内容:{$inquiry->message}"
+                    "新しいお問い合わせがありました。 \n管理画面で内容を確認してください。"
                 ));
         } catch (\Exception $e) {
-            Log::error('Error occurred while sending Slack notification: '.$e->getMessage());
+            Log::error('Error occurred while sending Slack notification: ' . $e->getMessage());
         }
 
         return response()->json(['message' => 'ok'], 201);

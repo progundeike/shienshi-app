@@ -81,7 +81,6 @@ export const useAdmin = () => {
             .post<ErrorResponse | string | null>("/api/admin/question", data)
             .then((response) => {
                 if (response.status !== 201) {
-                    console.log(response.status);
                     showServerErrorToast("問題の更新に失敗しました");
                     return null;
                 }
@@ -156,7 +155,6 @@ export const useAdmin = () => {
                 if (response.status === 200) {
                     return response.data;
                 }
-                console.log(response);
                 return null;
             })
             .catch((error) => {

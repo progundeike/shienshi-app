@@ -10,8 +10,6 @@ use Tests\Feature\Support\FeatureTestCase;
 
 class UserControllerTest extends FeatureTestCase
 {
-    use RefreshDatabase;
-
     protected User $adminUser;
 
     protected User $normalUser;

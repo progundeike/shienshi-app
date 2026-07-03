@@ -25,8 +25,7 @@ class AiQuestionController extends Controller
         private readonly AiClientService $aiClientService,
         private readonly AiExecutionLockService $aiExecutionLockService,
         private readonly PromptService $promptService,
-    ) {
-    }
+    ) {}
 
     // リクエストの例
     // [
@@ -86,11 +85,11 @@ class AiQuestionController extends Controller
                 $prompt = [
                     [
                         'role' => 'system',
-                        'content' => $this->promptService->aiQuestionSystemPrompt().PHP_EOL.$questionPrompt,
+                        'content' => $this->promptService->aiQuestionSystemPrompt() . PHP_EOL . $questionPrompt,
                     ],
                     [
                         'role' => 'user',
-                        'content' => '<ユーザーの解答>'.$userAnswerContent.'</ユーザーの解答>',
+                        'content' => '<ユーザーの解答>' . $userAnswerContent . '</ユーザーの解答>',
                     ],
                 ];
 
@@ -139,7 +138,7 @@ class AiQuestionController extends Controller
             return response()->json(['message' => 'Failed to process AI Question'], 500);
         } finally {
             $elapsedSec = round(microtime(true) - $start, 3);
-            Log::debug('AI question run elapsed', ['sec' => $elapsedSec]);
+            Log::info('AI question run elapsed', ['sec' => $elapsedSec]);
         }
     }
 

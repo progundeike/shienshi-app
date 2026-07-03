@@ -71,7 +71,7 @@ class AiClientService
             throw new AiResponseException('OpenAI request failed', 0, $lastException);
         }
 
-        throw new AiResponseException('Unexpected finishReason: '.$lastFinishReason);
+        throw new AiResponseException('Unexpected finishReason: ' . $lastFinishReason);
     }
 
     public function useFunctionCall(array $prompt, array $functionParameter)
@@ -104,7 +104,7 @@ class AiClientService
         }
 
         if ($finishReason !== 'function_call') {
-            throw new AiResponseException('Unexpected finishReason: '.$finishReason);
+            throw new AiResponseException('Unexpected finishReason: ' . $finishReason);
         }
 
         return $result;
@@ -113,12 +113,12 @@ class AiClientService
     private function debugTokenCosts(object $result): void
     {
         if (! isset($result->usage)) {
-            Log::debug('No usage data available for token cost calculation');
+            Log::info('No usage data available for token cost calculation');
 
             return;
         }
 
-        Log::debug('run debugTokenCosts');
+        Log::info('run debugTokenCosts');
         $usage = (array) $result->usage;
 
         if (! isset(self::PRICES[$this->model])) {
@@ -143,6 +143,6 @@ class AiClientService
         $costUsd = (($nonCached * $price['in']) + ($cachedTokens * $price['cached_in']) + ($outputTokens * $price['out'])) / 1_000_000;
         $costJpy = $costUsd * self::USD_TO_JPY;
 
-        Log::debug('openai_cost', ['jpy' => $costJpy]);
+        Log::info('openai_cost', ['jpy' => $costJpy]);
     }
 }

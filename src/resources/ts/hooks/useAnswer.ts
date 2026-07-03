@@ -33,8 +33,6 @@ export const useAnswer = () => {
 
             return;
         } catch (error) {
-            console.log(error);
-
             // axiosのエラー処理
             if (axios.isAxiosError(error)) {
                 // 429 Too Many Requests（多重送信）エラーのときは特別なトーストを表示

@@ -56,7 +56,6 @@ export const ContactPage = () => {
                 return;
             }
             Object.entries(errors).forEach(([field, messages]) => {
-                console.log(field, messages);
                 setError(field as keyof InquiryInput, {
                     type: "server",
                     message:
