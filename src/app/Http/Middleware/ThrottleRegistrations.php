@@ -4,12 +4,13 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\RateLimiter;
+use Symfony\Component\HttpFoundation\Response;
 
 class ThrottleRegistrations
 {
     private const MAX_ATTEMPTS = 5;
+
     private const DECAY_SECONDS = 3600; // 1時間
 
     /**
@@ -28,6 +29,7 @@ class ThrottleRegistrations
 
         if (RateLimiter::tooManyAttempts($key, self::MAX_ATTEMPTS)) {
             $retryAfter = RateLimiter::availableIn($key);
+
             return response()->json([
                 'message' => '登録回数の上限に達しました。時間をおいて再度お試しください。',
                 'retry_after' => $retryAfter,
@@ -35,7 +37,7 @@ class ThrottleRegistrations
                 [
                     'Retry-After' => $retryAfter,
                     'X-RateLimit-Limit' => (string) self::MAX_ATTEMPTS,
-                    'X-RateLimit-Remaining' => (string) RateLimiter::remaining($key, self::MAX_ATTEMPTS)
+                    'X-RateLimit-Remaining' => (string) RateLimiter::remaining($key, self::MAX_ATTEMPTS),
                 ]
             );
         }
@@ -45,9 +47,15 @@ class ThrottleRegistrations
 
         $response = $next($request);
 
-        return $response->withHeaders([
-            'X-RateLimit-Limit' => (string) self::MAX_ATTEMPTS,
-            'X-RateLimit-Remaining' => (string) RateLimiter::remaining($key, self::MAX_ATTEMPTS),
-        ]);
+        $response->headers->set(
+            'X-RateLimit-Limit',
+            (string) self::MAX_ATTEMPTS
+        );
+        $response->headers->set(
+            'X-RateLimit-Remaining',
+            (string) RateLimiter::remaining($key, self::MAX_ATTEMPTS)
+        );
+
+        return $response;
     }
 }

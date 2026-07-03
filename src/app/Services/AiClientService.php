@@ -71,7 +71,7 @@ class AiClientService
             throw new AiResponseException('OpenAI request failed', 0, $lastException);
         }
 
-        throw new AiResponseException('Unexpected finishReason: ' . $lastFinishReason);
+        throw new AiResponseException('Unexpected finishReason: '.$lastFinishReason);
     }
 
     public function useFunctionCall(array $prompt, array $functionParameter)
@@ -104,7 +104,7 @@ class AiClientService
         }
 
         if ($finishReason !== 'function_call') {
-            throw new AiResponseException('Unexpected finishReason: ' . $finishReason);
+            throw new AiResponseException('Unexpected finishReason: '.$finishReason);
         }
 
         return $result;

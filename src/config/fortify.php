@@ -1,7 +1,7 @@
 <?php
 
-use Laravel\Fortify\Features;
 use App\Http\Middleware\ThrottleRegistrations;
+use Laravel\Fortify\Features;
 
 return [
 
