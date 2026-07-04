@@ -17,6 +17,22 @@ use Tests\Feature\Support\FeatureTestCase;
 
 class AnswerControllerTest extends FeatureTestCase
 {
+    protected function tearDown(): void
+    {
+        $this->clearAiAnswerRateLimits();
+        parent::tearDown();
+    }
+
+    private function clearAiAnswerRateLimits(): void
+    {
+        RateLimiter::clear(
+            md5('ai-answer'."ai-answer:10-minutes:{$this->normalUser->id}")
+        );
+        RateLimiter::clear(
+            md5('ai-answer'."ai-answer:daily:{$this->normalUser->id}")
+        );
+    }
+
     #[Test]
     public function ユーザーの回答とaiの添削を取得できる(): void
     {
@@ -168,12 +184,7 @@ class AnswerControllerTest extends FeatureTestCase
     #[Test]
     public function レート制限が機能する(): void
     {
-        RateLimiter::clear(
-            md5('ai-answer'."ai-answer:10-minutes:{$this->normalUser->id}")
-        );
-        RateLimiter::clear(
-            md5('ai-answer'."ai-answer:daily:{$this->normalUser->id}")
-        );
+        $this->clearAiAnswerRateLimits();
 
         $this->mock(
             AiClientService::class,

@@ -12,6 +12,22 @@ use Tests\Feature\Support\FeatureTestCase;
 
 class AiQuestionControllerTest extends FeatureTestCase
 {
+    protected function tearDown(): void
+    {
+        $this->clearAiChatRateLimits();
+        parent::tearDown();
+    }
+
+    private function clearAiChatRateLimits(): void
+    {
+        RateLimiter::clear(
+            md5('ai-chat'."ai-chat:10-minutes:{$this->normalUser->id}")
+        );
+        RateLimiter::clear(
+            md5('ai-chat'."ai-chat:daily:{$this->normalUser->id}")
+        );
+    }
+
     #[Test]
     public function ユーザーがaiチャットの対話履歴を取得できる(): void
     {
@@ -90,12 +106,7 @@ class AiQuestionControllerTest extends FeatureTestCase
     #[Test]
     public function aiチャットのレート制限が機能する(): void
     {
-        RateLimiter::clear(
-            md5('ai-chat'."ai-chat:10-minutes:{$this->normalUser->id}")
-        );
-        RateLimiter::clear(
-            md5('ai-chat'."ai-chat:daily:{$this->normalUser->id}")
-        );
+        $this->clearAiChatRateLimits();
 
         $this->mock(
             AiClientService::class,
