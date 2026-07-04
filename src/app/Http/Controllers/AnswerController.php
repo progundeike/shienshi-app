@@ -38,7 +38,7 @@ class AnswerController extends Controller
 
         try {
             $validated = $request->validated();
-            $examCode = $validated['year'].'_'.$validated['season'].'_'.$validated['section'];
+            $examCode = $validated['year'] . '_' . $validated['season'] . '_' . $validated['section'];
             $processingKey = $this->aiExecutionLockService->keyForAnswer($userId, $examCode);
 
             return $this->aiExecutionLockService->run($processingKey, function () use (
@@ -68,11 +68,11 @@ class AnswerController extends Controller
                 $prompt = [
                     [
                         'role' => 'system',
-                        'content' => $this->promptService->answerSystemPrompt().PHP_EOL.$questionPrompt,
+                        'content' => $this->promptService->answerSystemPrompt() . PHP_EOL . $questionPrompt,
                     ],
                     [
                         'role' => 'user',
-                        'content' => '<UserAnswer>'.$userAnswerText.'</UserAnswer>',
+                        'content' => '<UserAnswer>' . $userAnswerText . '</UserAnswer>',
                     ],
                 ];
 
@@ -247,12 +247,12 @@ class AnswerController extends Controller
             $aiText = $aiResponseMap[$answer['questionCode']]['ai_text'] ?? '';
 
             if (trim($aiText) === '') {
-                $aiText = '模範解答: '.($modelMap[$answer['questionCode']] ?? '');
+                $aiText = '模範解答: ' . ($modelMap[$answer['questionCode']] ?? '');
             }
 
             if ($userText === '') {
                 $aiRating = '×';
-                $aiText = '模範解答: '.($modelMap[$answer['questionCode']] ?? '');
+                $aiText = '模範解答: ' . ($modelMap[$answer['questionCode']] ?? '');
             }
 
             $rows[] = [
@@ -299,20 +299,13 @@ class AnswerController extends Controller
         return response()->json($answers, 200);
     }
 
-    public function deleteSubmittedAnswer(Request $request): JsonResponse
+    public function deleteSubmittedAnswer(string $year, string $season, string $section): JsonResponse
     {
         $userId = $this->currentUserId();
 
-        $validated = $request->validate([
-            'year' => 'required|integer',
-            'season' => 'required|string|in:haru,aki',
-            'section' => 'required|integer',
-        ]);
-
-        $year = (int) $validated['year'];
-        $season = (string) $validated['season'];
-        $section = (int) $validated['section'];
-        $examCode = $year.'_'.$season.'_'.$section;
+        $year = (int) $year;
+        $section = (int) $section;
+        $examCode = $year . '_' . $season . '_' . $section;
 
         try {
             $results = UserAnswer::where('user_id', $userId)
