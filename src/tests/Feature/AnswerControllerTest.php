@@ -80,7 +80,7 @@ class AnswerControllerTest extends FeatureTestCase
         ];
 
         // ロックを解除しておく
-        $examCode = $payLoad['year'] . '_' . $payLoad['season'] . '_' . $payLoad['section'];
+        $examCode = $payLoad['year'].'_'.$payLoad['season'].'_'.$payLoad['section'];
         $processingKey = app(AiExecutionLockService::class)->keyForAnswer($user->id, $examCode);
         Cache::store('redis')->forget($processingKey);
 
@@ -169,10 +169,10 @@ class AnswerControllerTest extends FeatureTestCase
     public function レート制限が機能する(): void
     {
         RateLimiter::clear(
-            md5('ai-answer' . "ai-answer:10-minutes:{$this->normalUser->id}")
+            md5('ai-answer'."ai-answer:10-minutes:{$this->normalUser->id}")
         );
         RateLimiter::clear(
-            md5('ai-answer' . "ai-answer:daily:{$this->normalUser->id}")
+            md5('ai-answer'."ai-answer:daily:{$this->normalUser->id}")
         );
 
         $this->mock(

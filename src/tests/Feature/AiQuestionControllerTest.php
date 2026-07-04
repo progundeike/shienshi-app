@@ -91,10 +91,10 @@ class AiQuestionControllerTest extends FeatureTestCase
     public function aiチャットのレート制限が機能する(): void
     {
         RateLimiter::clear(
-            md5('ai-chat' . "ai-chat:10-minutes:{$this->normalUser->id}")
+            md5('ai-chat'."ai-chat:10-minutes:{$this->normalUser->id}")
         );
         RateLimiter::clear(
-            md5('ai-chat' . "ai-chat:daily:{$this->normalUser->id}")
+            md5('ai-chat'."ai-chat:daily:{$this->normalUser->id}")
         );
 
         $this->mock(
