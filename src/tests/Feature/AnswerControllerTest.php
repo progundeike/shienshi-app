@@ -10,6 +10,7 @@ use Illuminate\Contracts\Cache\LockProvider;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
+use Mockery\Expectation;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\Support\FeatureTestCase;
@@ -17,7 +18,7 @@ use Tests\Feature\Support\FeatureTestCase;
 class AnswerControllerTest extends FeatureTestCase
 {
     #[Test]
-    public function ユーザーの回答とAIの添削を取得できる(): void
+    public function ユーザーの回答とaiの添削を取得できる(): void
     {
         $response = $this->actingAs($this->normalUser)->getJson("/api/corrections/{$this->testExamCode}", ['Accept' => 'application/json']);
 
@@ -61,7 +62,7 @@ class AnswerControllerTest extends FeatureTestCase
     }
 
     #[Test]
-    public function openAIのAPIエラー時は502を返す(): void
+    public function openaiのapiエラー時は502を返す(): void
     {
         Log::spy();
 
@@ -79,12 +80,12 @@ class AnswerControllerTest extends FeatureTestCase
         ];
 
         // ロックを解除しておく
-        $examCode = $payLoad['year'].'_'.$payLoad['season'].'_'.$payLoad['section'];
+        $examCode = $payLoad['year'] . '_' . $payLoad['season'] . '_' . $payLoad['section'];
         $processingKey = app(AiExecutionLockService::class)->keyForAnswer($user->id, $examCode);
         Cache::store('redis')->forget($processingKey);
 
         $this->mock(AiClientService::class, function (MockInterface $mock) {
-            /** @var \Mockery\Expectation $exception */
+            /** @var Expectation $exception */
             $exception = $mock->shouldReceive('useFunctionCall');
 
             $exception
@@ -98,14 +99,14 @@ class AnswerControllerTest extends FeatureTestCase
     }
 
     #[Test]
-    public function ユーザーが答案を提出してAIの添削を保存できる(): void
+    public function ユーザーが答案を提出してaiの添削を保存できる(): void
     {
         $this->actingAs($this->normalUser);
 
         $this->mock(
             AiClientService::class,
             function (MockInterface $mock): void {
-                /** @var \Mockery\Expectation $expectation */
+                /** @var Expectation $expectation */
                 $expectation = $mock->shouldReceive('useFunctionCall');
 
                 $expectation
@@ -168,16 +169,16 @@ class AnswerControllerTest extends FeatureTestCase
     public function レート制限が機能する(): void
     {
         RateLimiter::clear(
-            md5('ai-answer'."ai-answer:10-minutes:{$this->normalUser->id}")
+            md5('ai-answer' . "ai-answer:10-minutes:{$this->normalUser->id}")
         );
         RateLimiter::clear(
-            md5('ai-answer'."ai-answer:daily:{$this->normalUser->id}")
+            md5('ai-answer' . "ai-answer:daily:{$this->normalUser->id}")
         );
 
         $this->mock(
             AiClientService::class,
             function (MockInterface $mock): void {
-                /** @var \Mockery\Expectation $expectation */
+                /** @var Expectation $expectation */
                 $expectation = $mock->shouldReceive('useFunctionCall');
                 $expectation
                     ->times(3) // 4回目はコントローラーに到達していないことをテスト

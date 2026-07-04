@@ -3,12 +3,13 @@
 namespace Tests\Feature;
 
 use App\Models\NewsItem;
+use Carbon\Carbon;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\Support\FeatureTestCase;
 
 class NewsItemControllerTest extends FeatureTestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -68,7 +69,7 @@ class NewsItemControllerTest extends FeatureTestCase
             'id' => $target->id,
             'title' => '変更したタイトル',
             'content' => '変更した本文',
-            'published_at' => \Carbon\Carbon::parse($target->published_at)->format('Y-m-d H:i:s'),
+            'published_at' => Carbon::parse($target->published_at)->format('Y-m-d H:i:s'),
         ];
 
         $response = $this->actingAs($this->adminUser)->postJson('/api/admin/news', $editTarget);
@@ -77,7 +78,7 @@ class NewsItemControllerTest extends FeatureTestCase
             'id' => $target->id,
             'title' => '変更したタイトル',
             'content' => '変更した本文',
-            'published_at' => \Carbon\Carbon::parse($target->published_at)->format('Y-m-d H:i:s'),
+            'published_at' => Carbon::parse($target->published_at)->format('Y-m-d H:i:s'),
         ]);
     }
 
@@ -105,14 +106,14 @@ class NewsItemControllerTest extends FeatureTestCase
             'id' => $target->id,
             'title' => $target->title,
             'content' => $target->content,
-            'published_at' => \Carbon\Carbon::parse($target->published_at)->format('Y-m-d H:i:s'),
+            'published_at' => Carbon::parse($target->published_at)->format('Y-m-d H:i:s'),
         ];
 
         $editTarget = [
             'id' => $target->id,
             'title' => '変更したタイトル',
             'content' => '変更した本文',
-            'published_at' => \Carbon\Carbon::parse($target->published_at)->format('Y-m-d H:i:s'),
+            'published_at' => Carbon::parse($target->published_at)->format('Y-m-d H:i:s'),
         ];
 
         $response = $this->actingAs($this->normalUser)->postJson('/api/admin/news', $editTarget);

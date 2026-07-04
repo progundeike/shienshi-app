@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\UserAiDialogue;
 use App\Services\AiClientService;
 use Illuminate\Support\Facades\RateLimiter;
+use Mockery\Expectation;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\Support\FeatureTestCase;
@@ -12,7 +13,7 @@ use Tests\Feature\Support\FeatureTestCase;
 class AiQuestionControllerTest extends FeatureTestCase
 {
     #[Test]
-    public function ユーザーがAIチャットの対話履歴を取得できる(): void
+    public function ユーザーがaiチャットの対話履歴を取得できる(): void
     {
         $response = $this->actingAs($this->normalUser)->get("/api/dialogues/{$this->testExamCode}/1_1_0");
 
@@ -25,7 +26,7 @@ class AiQuestionControllerTest extends FeatureTestCase
     }
 
     #[Test]
-    public function ユーザーがAIチャットの対話履歴を削除できる(): void
+    public function ユーザーがaiチャットの対話履歴を削除できる(): void
     {
         // ターゲットを取得
         $target = UserAiDialogue::where('user_id', $this->normalUser->id)
@@ -39,7 +40,7 @@ class AiQuestionControllerTest extends FeatureTestCase
     }
 
     #[Test]
-    public function ユーザーがAIに質問できる(): void
+    public function ユーザーがaiに質問できる(): void
     {
         $userMessage = 'これはユーザーからのダミーの質問です。';
         $aiMessage = 'これはAIからのダミーの解答です。';
@@ -87,19 +88,19 @@ class AiQuestionControllerTest extends FeatureTestCase
     }
 
     #[Test]
-    public function AIチャットのレート制限が機能する(): void
+    public function aiチャットのレート制限が機能する(): void
     {
         RateLimiter::clear(
-            md5('ai-chat'."ai-chat:10-minutes:{$this->normalUser->id}")
+            md5('ai-chat' . "ai-chat:10-minutes:{$this->normalUser->id}")
         );
         RateLimiter::clear(
-            md5('ai-chat'."ai-chat:daily:{$this->normalUser->id}")
+            md5('ai-chat' . "ai-chat:daily:{$this->normalUser->id}")
         );
 
         $this->mock(
             AiClientService::class,
             function (MockInterface $mock): void {
-                /** @var \Mockery\Expectation $expectation */
+                /** @var Expectation $expectation */
                 $expectation = $mock->shouldReceive('chat');
                 $expectation
                     ->times(5)

@@ -28,8 +28,7 @@ class AnswerController extends Controller
         private readonly AiClientService $aiClientService,
         private readonly PromptService $promptService,
         private readonly AiExecutionLockService $aiExecutionLockService,
-    ) {
-    }
+    ) {}
 
     public function answerSubmit(AnswerRequest $request): JsonResponse
     {

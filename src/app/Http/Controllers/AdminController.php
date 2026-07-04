@@ -9,14 +9,14 @@ use App\Services\ExamDataService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
     public function __construct(
         private readonly ExamDataService $examDataService,
-    ) {
-    }
+    ) {}
 
     public function updateExamQuestion(Request $request): JsonResponse
     {
@@ -167,7 +167,7 @@ class AdminController extends Controller
         $examCode = $year.'_'.$season.'_'.$section;
 
         $relativePath = 'pdf/'.$year.'/'.$examCode.'.pdf';
-        $deleted = \Illuminate\Support\Facades\Storage::disk('public')->delete($relativePath);
+        $deleted = Storage::disk('public')->delete($relativePath);
 
         if (! $deleted) {
             return response()->json(['error' => 'Failed to delete file'], 500);

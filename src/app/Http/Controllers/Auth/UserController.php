@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Exceptions\PublicUserOperationException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -13,8 +14,7 @@ class UserController extends Controller
 {
     public function __construct(
         private readonly PublicUserService $publicUserService,
-    ) {
-    }
+    ) {}
 
     public function getUserInfo(Request $request)
     {
@@ -32,7 +32,7 @@ class UserController extends Controller
 
         // パブリックユーザーは削除不可
         if ($this->publicUserService->isPublicUser($user)) {
-            throw new \App\Exceptions\PublicUserOperationException();
+            throw new PublicUserOperationException;
         }
 
         // パスワード検証

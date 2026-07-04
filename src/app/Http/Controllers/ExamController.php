@@ -11,9 +11,7 @@ use Illuminate\Support\Facades\Validator;
 // 試験問題に関する情報を提供するコントローラ
 class ExamController extends Controller
 {
-    public function __construct(private readonly ExamDataService $examDataService)
-    {
-    }
+    public function __construct(private readonly ExamDataService $examDataService) {}
 
     // 設問をjson形式で取得して、httpレスポンスを返す
     // ログイン済みで、答案提出済みの場合は、添削画面を表示する

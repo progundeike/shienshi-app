@@ -9,7 +9,7 @@ use Tests\Feature\Support\FeatureTestCase;
 
 class InquiryControllerTest extends FeatureTestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         Notification::fake(); // 通知をモックして実際の通知が送信されないようにする

@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Exceptions\PublicUserOperationException;
 use App\Models\User;
 use App\Services\PublicUserService;
 use Illuminate\Support\Facades\Auth;
@@ -16,8 +17,7 @@ class UpdateUserPassword implements UpdatesUserPasswords
 
     public function __construct(
         private readonly PublicUserService $publicUserService,
-    ) {
-    }
+    ) {}
 
     /**
      * Validate and update the user's password.
@@ -28,7 +28,7 @@ class UpdateUserPassword implements UpdatesUserPasswords
     {
         // パブリックユーザーはパスワード変更不可
         if ($this->publicUserService->isPublicUser($user)) {
-            throw new \App\Exceptions\PublicUserOperationException();
+            throw new PublicUserOperationException;
         }
 
         // new_passwordとnew_password_confirmationが一致しているかチェック

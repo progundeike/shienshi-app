@@ -8,7 +8,7 @@ use Tests\Feature\Support\FeatureTestCase;
 class AdminControllerTest extends FeatureTestCase
 {
     #[Test]
-    public function 管理者がexamSentenceを取得できる(): void
+    public function 管理者が試験本文を取得できる(): void
     {
         $response = $this->actingAs($this->adminUser)->get('/api/admin/sentence/2099-haru-1');
 
@@ -19,7 +19,7 @@ class AdminControllerTest extends FeatureTestCase
     }
 
     #[Test]
-    public function 一般ユーザーがexamSentenceを取得できない(): void
+    public function 一般ユーザーが試験本文を取得できない(): void
     {
         $response = $this->actingAs($this->normalUser)->get('/api/admin/sentence/2099-haru-1');
 
@@ -27,7 +27,7 @@ class AdminControllerTest extends FeatureTestCase
     }
 
     #[Test]
-    public function 管理者がexamSentenceを更新できる(): void
+    public function 管理者が試験本文を更新できる(): void
     {
         $data = [
             'year' => 2099,
@@ -46,7 +46,7 @@ class AdminControllerTest extends FeatureTestCase
     }
 
     #[Test]
-    public function 一般ユーザーがexamSentenceを更新できない(): void
+    public function 一般ユーザーが試験本文を更新できない(): void
     {
         $data = [
             'year' => 2099,
@@ -65,7 +65,7 @@ class AdminControllerTest extends FeatureTestCase
     }
 
     #[Test]
-    public function 管理者がpurposeを更新できる(): void
+    public function 管理者が出題趣旨を更新できる(): void
     {
         $data = [
             'year' => 2099,
@@ -84,7 +84,7 @@ class AdminControllerTest extends FeatureTestCase
     }
 
     #[Test]
-    public function 一般ユーザーがpurposeを更新できない(): void
+    public function 一般ユーザーが出題趣旨を更新できない(): void
     {
         $data = [
             'year' => 2099,
@@ -103,7 +103,7 @@ class AdminControllerTest extends FeatureTestCase
     }
 
     #[Test]
-    public function 管理者がreviewCommentを更新できる(): void
+    public function 管理者が採点講評を更新できる(): void
     {
         $data = [
             'year' => 2099,
@@ -122,7 +122,7 @@ class AdminControllerTest extends FeatureTestCase
     }
 
     #[Test]
-    public function 一般ユーザーがreviewCommentを更新できない(): void
+    public function 一般ユーザーが採点講評を更新できない(): void
     {
         $data = [
             'year' => 2099,

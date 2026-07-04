@@ -1,5 +1,7 @@
 <?php
 
+use App\Exceptions\PublicUserOperationException;
+use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -18,7 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // 管理者権限用のミドルウェアを追加
         $middleware->alias([
-            'admin' => App\Http\Middleware\EnsureUserIsAdmin::class,
+            'admin' => EnsureUserIsAdmin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
@@ -34,7 +36,7 @@ return Application::configure(basePath: dirname(__DIR__))
             return null;
         });
 
-        $exceptions->render(function (\App\Exceptions\PublicUserOperationException $exception, Request $request) {
+        $exceptions->render(function (PublicUserOperationException $exception, Request $request) {
             if ($request->expectsJson()) {
                 return response()->json([
                     'message' => $exception->getMessage(),

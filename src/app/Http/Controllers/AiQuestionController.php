@@ -25,8 +25,7 @@ class AiQuestionController extends Controller
         private readonly AiClientService $aiClientService,
         private readonly AiExecutionLockService $aiExecutionLockService,
         private readonly PromptService $promptService,
-    ) {
-    }
+    ) {}
 
     // リクエストの例
     // [
