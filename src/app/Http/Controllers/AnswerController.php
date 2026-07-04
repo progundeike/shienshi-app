@@ -15,7 +15,6 @@ use App\Services\ExamDataService;
 use App\Services\PromptService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -38,7 +37,7 @@ class AnswerController extends Controller
 
         try {
             $validated = $request->validated();
-            $examCode = $validated['year'] . '_' . $validated['season'] . '_' . $validated['section'];
+            $examCode = $validated['year'].'_'.$validated['season'].'_'.$validated['section'];
             $processingKey = $this->aiExecutionLockService->keyForAnswer($userId, $examCode);
 
             return $this->aiExecutionLockService->run($processingKey, function () use (
@@ -68,11 +67,11 @@ class AnswerController extends Controller
                 $prompt = [
                     [
                         'role' => 'system',
-                        'content' => $this->promptService->answerSystemPrompt() . PHP_EOL . $questionPrompt,
+                        'content' => $this->promptService->answerSystemPrompt().PHP_EOL.$questionPrompt,
                     ],
                     [
                         'role' => 'user',
-                        'content' => '<UserAnswer>' . $userAnswerText . '</UserAnswer>',
+                        'content' => '<UserAnswer>'.$userAnswerText.'</UserAnswer>',
                     ],
                 ];
 
@@ -247,12 +246,12 @@ class AnswerController extends Controller
             $aiText = $aiResponseMap[$answer['questionCode']]['ai_text'] ?? '';
 
             if (trim($aiText) === '') {
-                $aiText = '模範解答: ' . ($modelMap[$answer['questionCode']] ?? '');
+                $aiText = '模範解答: '.($modelMap[$answer['questionCode']] ?? '');
             }
 
             if ($userText === '') {
                 $aiRating = '×';
-                $aiText = '模範解答: ' . ($modelMap[$answer['questionCode']] ?? '');
+                $aiText = '模範解答: '.($modelMap[$answer['questionCode']] ?? '');
             }
 
             $rows[] = [
@@ -305,7 +304,7 @@ class AnswerController extends Controller
 
         $year = (int) $year;
         $section = (int) $section;
-        $examCode = $year . '_' . $season . '_' . $section;
+        $examCode = $year.'_'.$season.'_'.$section;
 
         try {
             $results = UserAnswer::where('user_id', $userId)

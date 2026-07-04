@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
+use App\Models\SubmittedExam;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use App\Models\UserAiDialogue;
 use App\Models\UserAnswer;
-use App\Models\SubmittedExam;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class ResetPublicUserData extends Command
 {
@@ -29,8 +29,9 @@ class ResetPublicUserData extends Command
     {
         $user = User::where('username', 'public_user')->first();
 
-        if (!$user) {
+        if (! $user) {
             $this->warn('Public user not found.');
+
             return self::SUCCESS;
         }
 
@@ -41,6 +42,7 @@ class ResetPublicUserData extends Command
         });
 
         $this->info('public_user data reset');
+
         return self::SUCCESS;
     }
 }
