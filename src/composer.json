@@ -11,11 +11,11 @@
         "php": "^8.2",
         "guzzlehttp/guzzle": "^7.8",
         "laravel/fortify": "^1.21",
-        "laravel/framework": "^11.0",
+        "laravel/framework": "^12.61.1",
         "laravel/sanctum": "^4.0",
         "laravel/slack-notification-channel": "^3.8",
         "laravel/tinker": "^2.9",
-        "openai-php/laravel": "^0.9.1"
+        "openai-php/laravel": "^0.20"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

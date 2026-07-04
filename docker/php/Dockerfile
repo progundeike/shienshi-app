@@ -4,7 +4,7 @@
 FROM php:8.3-fpm AS base
 
 # Composer を取り込み
-COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.10 /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update && \
     # --no-install-recommendで不要なパッケージのインストールを防止
