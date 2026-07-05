@@ -7,6 +7,7 @@ use App\Exceptions\AiResponseException;
 use App\Exceptions\ExamDataException;
 use App\Http\Requests\AnswerRequest;
 use App\Models\SubmittedExam;
+use App\Models\UserAiDialogue;
 use App\Models\UserAnswer;
 use App\Services\AiClientService;
 use App\Services\AiExecutionLockService;
@@ -307,11 +308,20 @@ class AnswerController extends Controller
         $examCode = $year.'_'.$season.'_'.$section;
 
         try {
-            $results = UserAnswer::where('user_id', $userId)
-                ->where('exam_code', $examCode)
-                ->delete();
+            $deletedAnswers =
+                DB::transaction(function () use ($userId, $examCode) {
+                    $deletedAnswers = UserAnswer::where('user_id', $userId)
+                        ->where('exam_code', $examCode)
+                        ->delete();
 
-            if ($results === 0) {
+                    UserAiDialogue::where('user_id', $userId)
+                        ->where('exam_code', $examCode)
+                        ->delete();
+
+                    return $deletedAnswers;
+                });
+
+            if ($deletedAnswers === 0) {
                 return response()->json(['message' => 'No records found to delete'], 404);
             } else {
                 return response()->json(['message' => 'Deleted'], 200);
