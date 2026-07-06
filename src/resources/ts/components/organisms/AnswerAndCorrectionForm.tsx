@@ -70,56 +70,27 @@ export const AnswerAndCorrectionForm: FC<Props> = memo((props) => {
     });
 
     const checkProcessingStatus = useCallback(async (): Promise<boolean> => {
-        try {
-            const status = await checkAnswerProcessingStatus(
-                year,
-                season,
-                section,
-            );
+        const status = await checkAnswerProcessingStatus(year, season, section);
 
-            if (status === "processing") {
-                setIsCorrecting(true);
-                return true;
-            }
-
-            setIsCorrecting(false);
-            return false;
-        } catch (error) {
-            console.error(error);
-            setIsCorrecting(false);
-            return false;
-        }
+        return status === "processing";
     }, [checkAnswerProcessingStatus, year, season, section]);
 
     const handleSubmitAnswer = useCallback(
         async (answers: Answer[]) => {
-            if (!user) {
-                return;
-            }
+            if (!user) return;
 
             setIsCorrecting(true);
 
             try {
                 await submitAnswer(answers, year, season, section);
-                const stillProcessing = await checkProcessingStatus();
-
-                if (!stillProcessing) {
-                    await refetchCorrections();
-                }
+                await refetchCorrections();
             } catch (error) {
                 console.error(error);
+            } finally {
                 setIsCorrecting(false);
             }
         },
-        [
-            user,
-            submitAnswer,
-            year,
-            season,
-            section,
-            checkProcessingStatus,
-            refetchCorrections,
-        ],
+        [user, submitAnswer, year, season, section, refetchCorrections],
     );
 
     useEffect(() => {
@@ -137,12 +108,15 @@ export const AnswerAndCorrectionForm: FC<Props> = memo((props) => {
                 return;
             }
 
+            setIsCorrecting(true);
+
             intervalId = window.setInterval(async () => {
                 const stillProcessing = await checkProcessingStatus();
 
                 if (!stillProcessing && intervalId) {
                     window.clearInterval(intervalId);
                     intervalId = null;
+                    setIsCorrecting(false);
                     refetchCorrections();
                 }
             }, 5000);

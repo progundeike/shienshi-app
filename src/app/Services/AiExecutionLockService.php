@@ -43,7 +43,21 @@ class AiExecutionLockService
 
     public function isProcessing(string $key): bool
     {
-        return Cache::store($this->store)->has($key);
+        $store = Cache::store($this->store)->getStore();
+
+        if (! $store instanceof LockProvider) {
+            throw new \RuntimeException("The cache store '{$this->store}' does not support locking.");
+        }
+
+        $lock = $store->lock($key, self::TTL_SECONDS);
+
+        if ($lock->get()) {
+            $lock->release();
+
+            return false;
+        }
+
+        return true;
     }
 
     public function keyForAiQuestion(int $userId, string $examCode, string $questionCode): string
