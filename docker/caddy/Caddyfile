@@ -21,6 +21,7 @@ shienshi.com {
 		Referrer-Policy "strict-origin-when-cross-origin" # パスやクエリを別ドメインには伝えない
 		X-Frame-Options "DENY" # iframeへの埋め込みを禁止
 		Permissions-Policy "camera=(), microphone=(), geolocation=()" # カメラ・マイク・位置情報の使用を禁止
+		Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; frame-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" // CSP設定
 		-Server # Webサーバーの種類を表示しない
 	}
 
