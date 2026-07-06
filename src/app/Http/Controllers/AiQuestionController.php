@@ -85,11 +85,11 @@ class AiQuestionController extends Controller
                 $prompt = [
                     [
                         'role' => 'system',
-                        'content' => $this->promptService->aiQuestionSystemPrompt() . PHP_EOL . $questionPrompt,
+                        'content' => $this->promptService->aiQuestionSystemPrompt().PHP_EOL.$questionPrompt,
                     ],
                     [
                         'role' => 'user',
-                        'content' => '<ユーザーの解答>' . $userAnswerContent . '</ユーザーの解答>',
+                        'content' => '<ユーザーの解答>'.$userAnswerContent.'</ユーザーの解答>',
                     ],
                 ];
 
