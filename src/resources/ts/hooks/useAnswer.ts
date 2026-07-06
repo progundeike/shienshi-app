@@ -7,6 +7,7 @@ import { axiosInstance } from "./axiosInstance";
 import { loadingAtom } from "../states/loadingAtom";
 import { useChakraToast } from "../utils/toastUtils";
 import { Correction } from "../components/organisms/QuestionAndAnswerInput";
+import { useCallback } from "react";
 
 export const useAnswer = () => {
     const [, setIsLoading] = useAtom(loadingAtom);
@@ -19,17 +20,16 @@ export const useAnswer = () => {
         season: string,
         section: number,
     ): Promise<void> => {
-        setIsLoading(true);
-
         try {
-            const response = await axiosInstance.post<
-                ErrorResponse | Correction[] | null
-            >("/api/answer", {
-                answers,
-                year,
-                season,
-                section,
-            });
+            await axiosInstance.post<ErrorResponse | Correction[] | null>(
+                "/api/answer",
+                {
+                    answers,
+                    year,
+                    season,
+                    section,
+                },
+            );
 
             return;
         } catch (error) {
@@ -46,17 +46,16 @@ export const useAnswer = () => {
                         isClosable: true,
                         position: "bottom-right",
                     });
+                } else {
+                    showServerErrorToast("答案提出に失敗しました");
                 }
 
-                return;
+                throw error;
             }
 
             showServerErrorToast("答案提出に失敗しました");
 
-            console.error(error);
-            return;
-        } finally {
-            setIsLoading(false);
+            throw error;
         }
     };
 
@@ -66,8 +65,6 @@ export const useAnswer = () => {
         season: string,
         section: number,
     ): Promise<Correction[] | null> => {
-        setIsLoading(true);
-
         try {
             const response = await axiosInstance.get<
                 ErrorResponse | Correction[]
@@ -96,8 +93,6 @@ export const useAnswer = () => {
             showServerErrorToast("添削結果の取得に失敗しました");
             console.error(error);
             return null;
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -121,27 +116,33 @@ export const useAnswer = () => {
         }
     };
 
-    const checkAnswerProcessingStatus = async (
-        year: number,
-        season: string,
-        section: number,
-    ): Promise<"processing" | "idle" | null> => {
-        try {
-            const response = await axiosInstance.get<{
-                status: "processing" | "idle";
-            }>(`/api/answer-processing-status/${year}_${season}_${section}`);
-            return response.data.status;
-        } catch (error) {
-            // 401認証切れのときはRouterのイベントリスナーで捕捉するため、ここではトーストを表示せずnullを返す
-            if (axios.isAxiosError(error) && error.response?.status === 401) {
-                return null;
+    const checkAnswerProcessingStatus = useCallback(
+        async (
+            year: number,
+            season: string,
+            section: number,
+        ): Promise<"processing" | "idle" | null> => {
+            try {
+                const response = await axiosInstance.get<{
+                    status: "processing" | "idle";
+                }>(
+                    `/api/answer-processing-status/${year}_${season}_${section}`,
+                );
+                return response.data.status;
+            } catch (error) {
+                // 401認証切れのときはRouterのイベントリスナーで捕捉するため、ここではトーストを表示せずnullを返す
+                if (
+                    axios.isAxiosError(error) &&
+                    error.response?.status === 401
+                ) {
+                    return null;
+                }
+                console.error(error);
+                return "idle";
             }
-
-            showServerErrorToast("処理状況の取得に失敗しました");
-            console.error(error);
-            return "idle";
-        }
-    };
+        },
+        [],
+    );
 
     return {
         submitAnswer,
