@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react";
+import pdfWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import { memo, useEffect, useRef, useState, type FC } from "react";
 import { pdfjs, Document, Page } from "react-pdf";
 import { useParams } from "react-router-dom";
@@ -15,7 +16,7 @@ type NewAreaHighlight = {
 };
 
 // PDF.js Workerを読み込む
-pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.min.mjs`;
+pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 
 export const DisplayExamPdf: FC = memo(() => {
     const [numPages, setNumPages] = useState(0);

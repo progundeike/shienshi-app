@@ -35,7 +35,7 @@ RUN composer install --no-dev --prefer-dist --no-interaction --no-progress --opt
 # =========================================
 # フロント資産ビルド（Vite）
 # =========================================
-FROM node:20.5 AS assets
+FROM node:24 AS assets
 WORKDIR /app
 COPY src/package*.json ./
 RUN npm ci
@@ -78,8 +78,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Node 取り込み（ホットリロード等）
-COPY --from=node:20.5 /usr/local/bin /usr/local/bin
-COPY --from=node:20.5 /usr/local/lib /usr/local/lib
+COPY --from=node:24 /usr/local/bin /usr/local/bin
+COPY --from=node:24 /usr/local/lib /usr/local/lib
 RUN npm install -g npm@10.8.0
 
 # dev用のphp.iniをコピー（本番用を上書き）
