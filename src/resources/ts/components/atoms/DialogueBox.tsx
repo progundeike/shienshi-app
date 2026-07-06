@@ -16,7 +16,14 @@ export const DialogueBox: FC<Props> = memo((props) => {
             : "10px auto 10px 10px";
 
     return (
-        <Box bg={bgColor} borderRadius="10px" p="10px" m={margin} maxW="90%">
+        <Box
+            bg={bgColor}
+            borderRadius="10px"
+            p="10px"
+            m={margin}
+            maxW="90%"
+            whiteSpace="pre-wrap"
+        >
             {dialogue.content}
         </Box>
     );

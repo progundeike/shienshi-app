@@ -85,11 +85,11 @@ class AiQuestionController extends Controller
                 $prompt = [
                     [
                         'role' => 'system',
-                        'content' => $this->promptService->aiQuestionSystemPrompt().PHP_EOL.$questionPrompt,
+                        'content' => $this->promptService->aiQuestionSystemPrompt() . PHP_EOL . $questionPrompt,
                     ],
                     [
                         'role' => 'user',
-                        'content' => '<ユーザーの解答>'.$userAnswerContent.'</ユーザーの解答>',
+                        'content' => '<ユーザーの解答>' . $userAnswerContent . '</ユーザーの解答>',
                     ],
                 ];
 
@@ -100,6 +100,8 @@ class AiQuestionController extends Controller
                 $result = $this->aiClientService->chat($prompt);
 
                 $aiMessage = data_get($result, 'choices.0.message.content');
+
+                Log::debug('AI response', ['aiMessage' => $aiMessage]);
 
                 if (! is_string($aiMessage) || trim($aiMessage) === '') {
                     throw new AiResponseException('AI response is missing content');
