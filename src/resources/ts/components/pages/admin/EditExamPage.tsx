@@ -73,7 +73,7 @@ export const EditExamPage: FC = memo(() => {
     }, []);
 
     return (
-        <Box minH="100vh">
+        <Box minH="100vh" p={4}>
             <Split
                 sizes={[50, 50]}
                 minSize={100}
