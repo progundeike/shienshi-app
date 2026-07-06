@@ -39,7 +39,7 @@ class AiClientService
                 ]);
 
                 // トークンコストを一時的にデバッグ
-                $this->debugTokenCosts($result);
+                $this->debugTokenCostsForChatApi($result);
 
                 $finishReason = $result->choices[0]->finishReason ?? 'unknown';
                 $lastFinishReason = $finishReason;
@@ -74,8 +74,13 @@ class AiClientService
         throw new AiResponseException('Unexpected finishReason: '.$lastFinishReason);
     }
 
-    public function useFunctionCall(array $prompt, array $functionParameter)
+    public function useFunctionCall(array $prompt, array $functionParameter): string
     {
+        // if (config('services.openai.simulate_error')) {
+        //     sleep(20);
+        //     throw new AiResponseException('Simulated OpenAI error');
+        // }
+
         $retryCount = 0;
         $maxRetries = 3;
         $result = null;
@@ -90,6 +95,8 @@ class AiClientService
                     ],
                     'function_call' => ['name' => $functionParameter['name']],
                 ]);
+
+                $this->debugTokenCostsForChatApi($result);
 
                 $retryCount++;
             } while ($result->choices[0]->finishReason !== 'function_call' && $retryCount < $maxRetries);
@@ -107,42 +114,45 @@ class AiClientService
             throw new AiResponseException('Unexpected finishReason: '.$finishReason);
         }
 
-        return $result;
+        $arguments = $result->choices[0]->message->functionCall?->arguments;
+
+        if (! is_string($arguments) || $arguments === '') {
+            throw new AiResponseException('AI function call arguments are missing');
+        }
+
+        return $arguments;
     }
 
-    private function debugTokenCosts(object $result): void
+    private function debugTokenCostsForChatApi(object $result): void
     {
-        if (! isset($result->usage)) {
-            Log::info('No usage data available for token cost calculation');
+        try {
 
-            return;
+            if (! isset($result->usage)) {
+                Log::info('No usage data available for token cost calculation');
+
+                return;
+            }
+
+            if (! isset(self::PRICES[$this->model])) {
+                throw new InvalidArgumentException("Unknown model pricing: {$this->model}");
+            }
+
+            $usage = $result->usage;
+            $price = self::PRICES[$this->model];
+
+            $inputTokens = (int) ($usage->promptTokens ?? 0);
+            $outputTokens = (int) ($usage->completionTokens ?? 0);
+            $cachedTokens = (int) ($usage->promptTokensDetails->cachedTokens ?? 0);
+
+            $nonCached = max(0, $inputTokens - $cachedTokens);
+
+            // 単価は100万トークン当たりなので、最後に100万で割ってドルにする
+            $costUsd = (($nonCached * $price['in']) + ($cachedTokens * $price['cached_in']) + ($outputTokens * $price['out'])) / 1_000_000;
+            $costJpy = $costUsd * self::USD_TO_JPY;
+
+            Log::info('openai_cost', ['jpy' => $costJpy]);
+        } catch (Throwable $e) {
+            Log::error('Failed to log token costs', ['exception' => $e]);
         }
-
-        Log::info('run debugTokenCosts');
-        $usage = (array) $result->usage;
-
-        if (! isset(self::PRICES[$this->model])) {
-            throw new InvalidArgumentException("Unknown model pricing: {$this->model}");
-        }
-
-        $price = self::PRICES[$this->model];
-
-        $inputTokens = (int) ($usage['inputTokens'] ?? $usage['promptTokens'] ?? 0);
-        $outputTokens = (int) ($usage['outputTokens'] ?? $usage['completionTokens'] ?? 0);
-
-        $cachedTokens = 0;
-        if (isset($usage['inputTokensDetails']['cachedTokens'])) {
-            $cachedTokens = (int) $usage['inputTokensDetails']['cachedTokens'];
-        } elseif (isset($usage['promptTokensDetails']['cachedTokens'])) {
-            $cachedTokens = (int) $usage['promptTokensDetails']['cachedTokens'];
-        }
-
-        $nonCached = max(0, $inputTokens - $cachedTokens);
-
-        // 単価は100万トークン当たりなので、最後に100万で割ってドルにする
-        $costUsd = (($nonCached * $price['in']) + ($cachedTokens * $price['cached_in']) + ($outputTokens * $price['out'])) / 1_000_000;
-        $costJpy = $costUsd * self::USD_TO_JPY;
-
-        Log::info('openai_cost', ['jpy' => $costJpy]);
     }
 }

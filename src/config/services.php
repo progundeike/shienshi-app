@@ -34,4 +34,8 @@ return [
         'sender_name' => env('SLACK_SENDER_NAME', 'Laravel Notification'),
     ],
 
+    'openai' => [
+        'simulate_error' => env('OPENAI_SIMULATE_ERROR', false),
+    ],
+
 ];

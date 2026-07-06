@@ -127,26 +127,17 @@ class AnswerControllerTest extends FeatureTestCase
 
                 $expectation
                     ->once()
-                    ->andReturn([
-                        'choices' => [
-                            [
-                                'message' => [
-                                    'functionCall' => [
-                                        'name' => 'reviewUserAnswer',
-                                        'arguments' => json_encode([
-                                            'evaluations' => [
-                                                [
-                                                    'questionCode' => '1_1_0',
-                                                    'rating' => '◯',
-                                                    'comment' => 'ダミーの添削です。',
-                                                ],
-                                            ],
-                                        ], JSON_UNESCAPED_UNICODE),
-                                    ],
+                    ->andReturn(
+                        json_encode([
+                            'evaluations' => [
+                                [
+                                    'questionCode' => '1_1_0',
+                                    'rating' => '◯',
+                                    'comment' => 'ダミーの添削です。',
                                 ],
                             ],
-                        ],
-                    ]);
+                        ], JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE)
+                    );
             }
         );
 
@@ -193,26 +184,17 @@ class AnswerControllerTest extends FeatureTestCase
                 $expectation = $mock->shouldReceive('useFunctionCall');
                 $expectation
                     ->times(3) // 4回目はコントローラーに到達していないことをテスト
-                    ->andReturn([
-                        'choices' => [
-                            [
-                                'message' => [
-                                    'functionCall' => [
-                                        'name' => 'reviewUserAnswer',
-                                        'arguments' => json_encode([
-                                            'evaluations' => [
-                                                [
-                                                    'questionCode' => '1_1_0',
-                                                    'rating' => '◯',
-                                                    'comment' => 'ダミーの添削です。',
-                                                ],
-                                            ],
-                                        ], JSON_UNESCAPED_UNICODE),
-                                    ],
+                    ->andReturn(
+                        json_encode([
+                            'evaluations' => [
+                                [
+                                    'questionCode' => '1_1_0',
+                                    'rating' => '◯',
+                                    'comment' => 'ダミーの添削です。',
                                 ],
                             ],
-                        ],
-                    ]);
+                        ], JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE),
+                    );
             }
         );
 

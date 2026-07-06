@@ -76,24 +76,14 @@ class AnswerController extends Controller
                     ],
                 ];
 
-                // Log::debug('AI grading prompt', ['prompt' => $prompt]);
-                // sleep(20);
-                // return response()->json(['message' => 'dummy response'], 201);
-
                 // AIに投げる
-                $openAiResponse = $this->aiClientService->useFunctionCall($prompt, $this->promptService->answerFunctionParameter());
-                if (! $openAiResponse) {
-                    throw new AiResponseException('AI function call failed');
+                $argumentsJson = $this->aiClientService->useFunctionCall($prompt, $this->promptService->answerFunctionParameter());
+
+                try {
+                    $arguments = json_decode($argumentsJson, true, 512, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new AiResponseException('Failed to decode AI function call arguments', 0, $e);
                 }
-
-                // レスポンスを整形
-                $argumentsJson = data_get($openAiResponse, 'choices.0.message.functionCall.arguments');
-
-                if (! is_string($argumentsJson) || $argumentsJson === '') {
-                    throw new AiResponseException('AI function call arguments are missing');
-                }
-
-                $arguments = json_decode($argumentsJson, true);
 
                 if (! is_array($arguments) || ! isset($arguments['evaluations']) || ! is_array($arguments['evaluations'])) {
                     throw new AiResponseException('AI function call arguments are not in expected format');
