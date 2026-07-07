@@ -17,14 +17,27 @@ class AiClientService
     private const RETRY_SLEEP_SECONDS = 1;
 
     private const PRICES = [
-        'gpt-5-nano' => ['in' => 0.05, 'cached_in' => 0.01, 'out' => 0.40],
-        'gpt-5-mini' => ['in' => 0.25, 'cached_in' => 0.03, 'out' => 2.00],
-        'gpt-4o-mini' => ['in' => 1.1, 'cached_in' => 0.28, 'out' => 4.40],
+        'gpt-5-nano' => ['in' => 0.05, 'cached_in' => 0.005, 'out' => 0.40],
+        'gpt-5-mini' => ['in' => 0.25, 'cached_in' => 0.025, 'out' => 2.00],
+        'gpt-4o-mini' => ['in' => 0.15, 'cached_in' => 0.075, 'out' => 0.60],
+        'gpt-5.4-nano' => ['in' => 0.20, 'cached_in' => 0.02, 'out' => 1.25],
+        'gpt-5.4-mini' => ['in' => 0.75, 'cached_in' => 0.075, 'out' => 4.50],
+        'gpt-5.4' => ['in' => 2.50, 'cached_in' => 0.25, 'out' => 15.00],
+        'gpt-5.5' => ['in' => 5.00, 'cached_in' => 0.50, 'out' => 30.00],
     ];
 
-    protected $model = 'gpt-5-nano';
-    // protected $model = 'gpt-5-mini';
-    // protected string $model = 'gpt-4o-mini';
+    protected string $model;
+
+    public function __construct()
+    {
+        $model = config('openai.model', 'gpt-5-nano');
+
+        if (! is_string($model) || ! isset(self::PRICES[$model])) {
+            throw new InvalidArgumentException('Unsupported OpenAI model: '.var_export($model, true));
+        }
+
+        $this->model = $model;
+    }
 
     public function chat(array $prompt)
     {
@@ -76,11 +89,6 @@ class AiClientService
 
     public function useFunctionCall(array $prompt, array $functionParameter): string
     {
-        // if (config('services.openai.simulate_error')) {
-        //     sleep(20);
-        //     throw new AiResponseException('Simulated OpenAI error');
-        // }
-
         $retryCount = 0;
         $maxRetries = 3;
         $result = null;
