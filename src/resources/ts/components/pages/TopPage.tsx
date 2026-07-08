@@ -354,8 +354,6 @@ export const TopPage: FC = memo(() => {
                         </Flex>
                     </Flex>
 
-                    {/* 試験の再編について */}
-
                     {/* お知らせ */}
                     <NewsItemSection />
                 </Flex>
