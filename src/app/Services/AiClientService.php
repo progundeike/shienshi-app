@@ -19,11 +19,9 @@ class AiClientService
     private const PRICES = [
         'gpt-5-nano' => ['in' => 0.05, 'cached_in' => 0.005, 'out' => 0.40],
         'gpt-5-mini' => ['in' => 0.25, 'cached_in' => 0.025, 'out' => 2.00],
-        'gpt-4o-mini' => ['in' => 0.15, 'cached_in' => 0.075, 'out' => 0.60],
         'gpt-5.4-nano' => ['in' => 0.20, 'cached_in' => 0.02, 'out' => 1.25],
         'gpt-5.4-mini' => ['in' => 0.75, 'cached_in' => 0.075, 'out' => 4.50],
-        'gpt-5.4' => ['in' => 2.50, 'cached_in' => 0.25, 'out' => 15.00],
-        'gpt-5.5' => ['in' => 5.00, 'cached_in' => 0.50, 'out' => 30.00],
+        // 'gpt-5.4' => ['in' => 2.50, 'cached_in' => 0.25, 'out' => 15.00],
     ];
 
     protected string $model;
