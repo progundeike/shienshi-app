@@ -100,7 +100,7 @@ export const TopPage: FC = memo(() => {
                                 color="baseColor"
                                 mb={5}
                             >
-                                情報処理安全確保支援士試験突破のための3つのステップ
+                                情報処理安全確保支援士試験の学習を、3ステップでサポート
                             </Heading>
                             <Flex
                                 direction={{ base: "column", md: "row" }}
