@@ -40,7 +40,7 @@ entity "questions" as questions {
 }
 
 entity "model_answers" as model_answers {
-  exam_code : varchar <<FK>
+  exam_code : varchar <<FK>>
   question_code : varchar <<FK>>
   --
   text : text

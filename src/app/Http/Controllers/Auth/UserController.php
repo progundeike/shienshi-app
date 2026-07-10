@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\PublicUserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -48,7 +49,12 @@ class UserController extends Controller
         Auth::guard('web')->logout();
 
         // ユーザー削除
-        $user->delete();
+        DB::transaction(function () use ($user): void {
+            $user->userAnswers()->delete();
+            $user->submittedExams()->delete();
+            $user->userAiDialogues()->delete();
+            $user->delete();
+        });
 
         // セッションの無効化
         if ($request->hasSession()) {

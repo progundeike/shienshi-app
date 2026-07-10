@@ -25,7 +25,6 @@ class UserSeeder extends Seeder
             ['username' => $username],
             [
                 'password' => Hash::make($password),
-                // 'email_verified_at' => null,
                 'is_admin' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -37,7 +36,6 @@ class UserSeeder extends Seeder
             ['username' => 'public_user'],
             [
                 'password' => Hash::make('password'),
-                // 'email_verified_at' => null,
                 'is_admin' => false,
                 'created_at' => now(),
                 'updated_at' => now(),
