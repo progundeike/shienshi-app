@@ -50,7 +50,9 @@ export const PrivacyPolicyPage: FC = memo(() => {
                         当サービスは、以下の情報を取得することがあります。
                     </BodyText>
                     <List spacing={2} pl={4} mt={2} styleType="disc">
-                        <ListItem>ログインに必要な認証情報</ListItem>
+                        <ListItem>
+                            ログインに使用するユーザーIDおよびパスワード
+                        </ListItem>
                         <ListItem>
                             お問い合わせフォームに入力された情報
                         </ListItem>
@@ -96,9 +98,9 @@ export const PrivacyPolicyPage: FC = memo(() => {
                 <Box>
                     <SectionTitle>4. 外部サービスの利用</SectionTitle>
                     <BodyText>
-                        当サービスでは、サービス提供、運営、保守および品質向上のために、外部事業者の提供するクラウドサービス、サーバー、AI関連サービス等を利用する場合があります。
+                        当サービスでは、サービス提供、運営および保守のために、外部事業者の提供するクラウドサービス、サーバー、AI関連サービス等を利用しています。
                         <br />
-                        AI機能の提供にあたり、ユーザーが入力した質問、回答その他の内容の一部または全部が、必要な範囲で外部AI事業者に送信されることがあります。
+                        AI機能の提供にあたり、ユーザーが入力した質問および回答が外部AI事業者に送信されます。当サービスでは、外部AI事業者に送信した内容がAIモデルの学習に利用されない設定で外部AIサービスを利用します。
                     </BodyText>
                 </Box>
 
@@ -163,7 +165,7 @@ export const PrivacyPolicyPage: FC = memo(() => {
                 </Box>
 
                 <Box pt={4}>
-                    <Text color="gray.600">制定日：2026年4月1日</Text>
+                    <Text color="gray.600">制定日：2026年7月1日</Text>
                     {/* <Text color="gray.600">最終改定日：2026年◯月◯日</Text> */}
                 </Box>
             </VStack>
