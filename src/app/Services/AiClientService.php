@@ -21,7 +21,7 @@ class AiClientService
         'gpt-5-mini' => ['in' => 0.25, 'cached_in' => 0.025, 'out' => 2.00],
         'gpt-5.4-nano' => ['in' => 0.20, 'cached_in' => 0.02, 'out' => 1.25],
         'gpt-5.4-mini' => ['in' => 0.75, 'cached_in' => 0.075, 'out' => 4.50],
-        // 'gpt-5.4' => ['in' => 2.50, 'cached_in' => 0.25, 'out' => 15.00],
+        'gpt-5.6-luna' => ['in' => 1.00, 'cached_in' => 0.10, 'out' => 6.00],
     ];
 
     protected string $model;
@@ -31,7 +31,7 @@ class AiClientService
         $model = config('openai.model', 'gpt-5-nano');
 
         if (! is_string($model) || ! isset(self::PRICES[$model])) {
-            throw new InvalidArgumentException('Unsupported OpenAI model: '.var_export($model, true));
+            throw new InvalidArgumentException('Unsupported OpenAI model: ' . var_export($model, true));
         }
 
         $this->model = $model;
@@ -47,6 +47,12 @@ class AiClientService
                 $result = OpenAI::chat()->create([
                     'model' => $this->model,
                     'messages' => $prompt,
+                ]);
+
+                // モデル比較用に一時的にデバッグ
+                Log::debug("chat result", [
+                    'model' => $this->model,
+                    'result' => $result
                 ]);
 
                 // トークンコストを一時的にデバッグ
@@ -82,7 +88,7 @@ class AiClientService
             throw new AiResponseException('OpenAI request failed', 0, $lastException);
         }
 
-        throw new AiResponseException('Unexpected finishReason: '.$lastFinishReason);
+        throw new AiResponseException('Unexpected finishReason: ' . $lastFinishReason);
     }
 
     public function useFunctionCall(array $prompt, array $functionParameter): string
@@ -102,6 +108,15 @@ class AiClientService
                     'function_call' => ['name' => $functionParameter['name']],
                 ]);
 
+                // モデル比較用に一時的にデバッグ
+                Log::debug(
+                    "function call result",
+                    [
+                        'model' => $this->model,
+                        'result' => $result
+                    ]
+                );
+
                 $this->debugTokenCostsForChatApi($result);
 
                 $retryCount++;
@@ -117,7 +132,7 @@ class AiClientService
         }
 
         if ($finishReason !== 'function_call') {
-            throw new AiResponseException('Unexpected finishReason: '.$finishReason);
+            throw new AiResponseException('Unexpected finishReason: ' . $finishReason);
         }
 
         $arguments = $result->choices[0]->message->functionCall?->arguments;
