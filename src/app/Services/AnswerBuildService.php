@@ -7,17 +7,19 @@ class AnswerBuildService
     public function buildQuestionPrompt(array $examSentence, array $examQuestions, array $modelAnswers): string
     {
         $sentence = $examSentence['sentence']; // 問題文
+        $purpose = $examSentence['purpose']; // 出題趣旨
+        $reviewComment = $examSentence['review_comment']; // 採点講評
         $modelMap = array_column($modelAnswers, 'text', 'questionCode');
 
         $questionAndAnswerText = '';
         for ($i = 0; $i < count($examQuestions); $i++) {
             if ($examQuestions[$i]['subQuestionNumber'] === 1 && $examQuestions[$i]['smallQuestionNumber'] < 2) {
-                $questionAndAnswerText .= '設問'.$examQuestions[$i]['questionNumber'].' ';
+                $questionAndAnswerText .= '設問' . $examQuestions[$i]['questionNumber'] . ' ';
             }
 
             // text_for_aiも渡す
             if ($examQuestions[$i]['textForAi']) {
-                $questionAndAnswerText .= '[AI添削用の設問への補足:'.$examQuestions[$i]['textForAi'].']';
+                $questionAndAnswerText .= '[AI添削用の設問への補足:' . $examQuestions[$i]['textForAi'] . ']';
             }
 
             $modelText = $modelMap[$examQuestions[$i]['questionCode']] ?? '(模範解答なし)';
@@ -29,17 +31,16 @@ class AnswerBuildService
                 $questionAndAnswerText .= $examQuestions[$i]['options'][0]['label'];
             }
 
-            $questionAndAnswerText .= '[模範解答:'.$modelText.']'.PHP_EOL;
+            $questionAndAnswerText .= '[模範解答:' . $modelText . ']' . PHP_EOL;
         }
 
-        // 参考情報
-        // $purpose = $examData['purpose']; // 出題趣旨
-        // $reviewComment = $examData['review_comment']; // 採点講評
 
         return <<<EOF
                 <Question>
                 <問題文>{$sentence}</問題文>
                 <設問と解答>{$questionAndAnswerText}</設問と解答>
+                <出題趣旨>{$purpose}</出題趣旨>
+                <採点講評>{$reviewComment}</採点講評>
                 </Question>
                 EOF;
     }
@@ -55,10 +56,10 @@ class AnswerBuildService
 
             $choices = '';
             foreach ($options as $option) {
-                $choices .= '('.$option['value'].') '.$option['label'].', ';
+                $choices .= '(' . $option['value'] . ') ' . $option['label'] . ', ';
             }
 
-            $text .= '[解答群:'.$choices.']';
+            $text .= '[解答群:' . $choices . ']';
         }
 
         return $text;
