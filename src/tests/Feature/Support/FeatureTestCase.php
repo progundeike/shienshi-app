@@ -32,8 +32,6 @@ abstract class FeatureTestCase extends TestCase
     {
         parent::setUp();
 
-        $this->seed();
-
         $this->adminUser = User::factory()->create([
             'username' => 'test_admin_user',
             'password' => Hash::make('adminPassword'),
@@ -45,6 +43,17 @@ abstract class FeatureTestCase extends TestCase
             'password' => Hash::make('normalPassword'),
             'is_admin' => false,
         ]);
+
+        // publicユーザーを作成
+        User::updateOrCreate(
+            ['username' => 'public_user'],
+            [
+                'password' => Hash::make('password'),
+                'is_admin' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
 
         $this->createTestExamSentence();
         $this->createTestQuestions();
