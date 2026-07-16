@@ -1,6 +1,6 @@
 services:
   app:
-    image: ghcr.io/progundeike/spa-exams:latest
+    image: ghcr.io/progundeike/shienshi-app:latest
     restart: unless-stopped
     volumes:
       - ./src/.env:/var/www/html/.env:ro
@@ -18,7 +18,7 @@ services:
       - redis
 
   web:
-    image: ghcr.io/progundeike/spa-exams-web:latest
+    image: ghcr.io/progundeike/shienshi-app-web:latest
     restart: unless-stopped
     ports:
       - 80:80
