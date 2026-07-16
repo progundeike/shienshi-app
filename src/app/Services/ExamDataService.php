@@ -59,7 +59,7 @@ class ExamDataService
         if ($questionCode !== null) {
             $questionNumber = explode('_', $questionCode)[0];
             $result = $result->filter(
-                fn(Question $question): bool => explode('_', $question->question_code)[0] === $questionNumber
+                fn (Question $question): bool => explode('_', $question->question_code)[0] === $questionNumber
             )->values();
         }
 
@@ -118,7 +118,7 @@ class ExamDataService
         if ($questionCode !== null) {
             $questionNumber = explode('_', $questionCode)[0];
             $result = $result->filter(
-                fn(ModelAnswer $modelAnswer): bool => explode('_', $modelAnswer->question_code)[0] === $questionNumber
+                fn (ModelAnswer $modelAnswer): bool => explode('_', $modelAnswer->question_code)[0] === $questionNumber
             )->values();
         }
 
@@ -154,11 +154,11 @@ class ExamDataService
 
         $userAnswerText = '';
         for ($i = 0; $i < $length; $i++) {
-            $userAnswerText .= '[questionCode:' . $userAnswers[$i]['questionCode'] . ']';
+            $userAnswerText .= '[questionCode:'.$userAnswers[$i]['questionCode'].']';
             [$q, $sub, $small] = array_map('intval', explode('_', $userAnswers[$i]['questionCode']));
-            $userAnswerText .= '設問' . $q . ' ';
+            $userAnswerText .= '設問'.$q.' ';
             if ($sub !== 0) {
-                $userAnswerText .= '(' . $sub . ') ';
+                $userAnswerText .= '('.$sub.') ';
             }
 
             $questionCode = $userAnswers[$i]['questionCode'] ?? '';
@@ -173,9 +173,9 @@ class ExamDataService
             }
 
             if ($userAnswers[$i]['userText']) {
-                $userAnswerText .= $userAnswers[$i]['userText'] . PHP_EOL;
+                $userAnswerText .= $userAnswers[$i]['userText'].PHP_EOL;
             } else {
-                $userAnswerText .= '未回答' . PHP_EOL;
+                $userAnswerText .= '未回答'.PHP_EOL;
             }
         }
 

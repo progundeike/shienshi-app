@@ -14,12 +14,12 @@ class AnswerBuildService
         $questionAndAnswerText = '';
         for ($i = 0; $i < count($examQuestions); $i++) {
             if ($examQuestions[$i]['subQuestionNumber'] === 1 && $examQuestions[$i]['smallQuestionNumber'] < 2) {
-                $questionAndAnswerText .= '設問' . $examQuestions[$i]['questionNumber'] . ' ';
+                $questionAndAnswerText .= '設問'.$examQuestions[$i]['questionNumber'].' ';
             }
 
             // text_for_aiも渡す
             if ($examQuestions[$i]['textForAi']) {
-                $questionAndAnswerText .= '[AI添削用の設問への補足:' . $examQuestions[$i]['textForAi'] . ']';
+                $questionAndAnswerText .= '[AI添削用の設問への補足:'.$examQuestions[$i]['textForAi'].']';
             }
 
             $modelText = $modelMap[$examQuestions[$i]['questionCode']] ?? '(模範解答なし)';
@@ -31,9 +31,8 @@ class AnswerBuildService
                 $questionAndAnswerText .= $examQuestions[$i]['options'][0]['label'];
             }
 
-            $questionAndAnswerText .= '[模範解答:' . $modelText . ']' . PHP_EOL;
+            $questionAndAnswerText .= '[模範解答:'.$modelText.']'.PHP_EOL;
         }
-
 
         return <<<EOF
                 <Question>
@@ -56,10 +55,10 @@ class AnswerBuildService
 
             $choices = '';
             foreach ($options as $option) {
-                $choices .= '(' . $option['value'] . ') ' . $option['label'] . ', ';
+                $choices .= '('.$option['value'].') '.$option['label'].', ';
             }
 
-            $text .= '[解答群:' . $choices . ']';
+            $text .= '[解答群:'.$choices.']';
         }
 
         return $text;

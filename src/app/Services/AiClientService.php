@@ -31,7 +31,7 @@ class AiClientService
         $model = config('openai.model', 'gpt-5-nano');
 
         if (! is_string($model) || ! isset(self::PRICES[$model])) {
-            throw new InvalidArgumentException('Unsupported OpenAI model: ' . var_export($model, true));
+            throw new InvalidArgumentException('Unsupported OpenAI model: '.var_export($model, true));
         }
 
         $this->model = $model;
@@ -50,9 +50,9 @@ class AiClientService
                 ]);
 
                 // モデル比較用に一時的にデバッグ
-                Log::debug("chat result", [
+                Log::debug('chat result', [
                     'model' => $this->model,
-                    'result' => $result
+                    'result' => $result,
                 ]);
 
                 // トークンコストを一時的にデバッグ
@@ -88,7 +88,7 @@ class AiClientService
             throw new AiResponseException('OpenAI request failed', 0, $lastException);
         }
 
-        throw new AiResponseException('Unexpected finishReason: ' . $lastFinishReason);
+        throw new AiResponseException('Unexpected finishReason: '.$lastFinishReason);
     }
 
     public function useFunctionCall(array $prompt, array $functionParameter): string
@@ -110,10 +110,10 @@ class AiClientService
 
                 // モデル比較用に一時的にデバッグ
                 Log::debug(
-                    "function call result",
+                    'function call result',
                     [
                         'model' => $this->model,
-                        'result' => $result
+                        'result' => $result,
                     ]
                 );
 
@@ -132,7 +132,7 @@ class AiClientService
         }
 
         if ($finishReason !== 'function_call') {
-            throw new AiResponseException('Unexpected finishReason: ' . $finishReason);
+            throw new AiResponseException('Unexpected finishReason: '.$finishReason);
         }
 
         $arguments = $result->choices[0]->message->functionCall?->arguments;
