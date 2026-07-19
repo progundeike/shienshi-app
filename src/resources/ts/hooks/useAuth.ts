@@ -22,6 +22,16 @@ export const useAuth = () => {
         code?: string;
     };
 
+    type TwoFactorLoginResponse = { two_factor: true };
+
+    type LoginResponse = User | TwoFactorLoginResponse;
+
+    const isTwoFactorLoginResponse = (
+        data: LoginResponse,
+    ): data is TwoFactorLoginResponse => {
+        return "two_factor" in data && data.two_factor === true;
+    };
+
     const isPublicUserOperationError = (error: unknown): boolean => {
         return (
             axios.isAxiosError<ApiErrorResponse>(error) &&
@@ -33,7 +43,7 @@ export const useAuth = () => {
     // グローバルのisLoadingを使うと、バリデーションエラーが表示できない
     const login = async (username: string, password: string): Promise<void> => {
         try {
-            const response = await axiosInstance.post<User>(
+            const response = await axiosInstance.post<LoginResponse>(
                 "/api/login",
                 {
                     username,
@@ -43,6 +53,14 @@ export const useAuth = () => {
                     meta: { silent401: true }, // 401エラーでイベントを発火させない
                 },
             );
+
+            // 管理者用の2要素認証
+            if (isTwoFactorLoginResponse(response.data)) {
+                navigate("/two-factor-challenge", {
+                    replace: true,
+                });
+                return;
+            }
 
             setUser(response.data);
         } catch (error: unknown) {

@@ -17,6 +17,7 @@ class UserResource extends JsonResource
         return [
             'username' => $this->resource->username,
             'isAdmin' => $this->resource->is_admin,
+            'hasTwoFactorEnabled' => ! is_null($this->resource->two_factor_confirmed_at),
         ];
     }
 }

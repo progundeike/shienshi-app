@@ -22,6 +22,8 @@ import { useChakraToast } from "../utils/toastUtils";
 import { ExamInfoPage } from "./pages/ExamInfoPage";
 import { LoadingPage } from "./pages/LoadingPage";
 import { AdminRoutes } from "./templates/AdminRoutes";
+import { AdminTwoFactorSetupPage } from "./pages/admin/AdminTwoFactorSetupPage";
+import { TwoFactorChallengePage } from "./pages/admin/TwoFactorChallengePage";
 
 // lazy import
 const ExamPage = lazy(() =>
@@ -94,6 +96,10 @@ export const Router = () => {
                     <Route element={<PreAuthRoutes />}>
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path="/login" element={<LoginPage />} />
+                        <Route
+                            path="/two-factor-challenge"
+                            element={<TwoFactorChallengePage />}
+                        />
                     </Route>
 
                     {/* ログイン後 */}
@@ -102,6 +108,10 @@ export const Router = () => {
                         <Route
                             path="/update-password"
                             element={<UpdatePasswordPage />}
+                        />
+                        <Route
+                            path="/admin/two-factor-setup"
+                            element={<AdminTwoFactorSetupPage />}
                         />
                     </Route>
 

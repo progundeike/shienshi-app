@@ -1,6 +1,7 @@
 <?php
 
 use App\Exceptions\PublicUserOperationException;
+use App\Http\Middleware\EnsureAdminHasTwoFactorEnabled;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
@@ -29,6 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // 管理者権限用のミドルウェアを追加
         $middleware->alias([
             'admin' => EnsureUserIsAdmin::class,
+            'admin.2fa' => EnsureAdminHasTwoFactorEnabled::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

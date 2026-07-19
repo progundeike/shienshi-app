@@ -35,7 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 // 管理者用のルート
-Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth:sanctum', 'admin', 'admin.2fa'])->prefix('admin')->group(function () {
     Route::get('/sentence/{year}-{season}-{section}', [AdminController::class, 'fetchExamSentence']);
     Route::put('/sentence', [AdminController::class, 'updateExamSentence']);
     Route::post('/upload-pdf', [AdminController::class, 'uploadExamPdf']);

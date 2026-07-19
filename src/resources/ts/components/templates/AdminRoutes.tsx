@@ -19,6 +19,10 @@ export const AdminRoutes = () => {
         return <Navigate to="/login" state={{ from: location }} />;
     }
 
+    if (user.isAdmin && !user.hasTwoFactorEnabled) {
+        return <Navigate to="/admin/two-factor-setup" replace />;
+    }
+
     if (user.isAdmin) {
         return <Outlet />;
     } else {

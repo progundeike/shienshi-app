@@ -36,6 +36,7 @@ abstract class FeatureTestCase extends TestCase
             'username' => 'test_admin_user',
             'password' => Hash::make('adminPassword'),
             'is_admin' => true,
+            'two_factor_confirmed_at' => now(),
         ]);
 
         $this->normalUser = User::factory()->create([
