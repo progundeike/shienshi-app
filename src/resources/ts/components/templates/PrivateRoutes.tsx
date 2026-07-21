@@ -16,6 +16,6 @@ export const PrivateRoutes = () => {
     return user ? (
         <Outlet />
     ) : (
-        <Navigate to="/login" state={location.pathname} />
+        <Navigate to="/login" state={{ from: location.pathname }} replace />
     );
 };

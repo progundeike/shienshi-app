@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from "react";
+import { useEffect, lazy, Suspense, useRef } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 
@@ -14,16 +14,15 @@ import { MyPage } from "./pages/MyPage";
 import { useAuth } from "../hooks/useAuth";
 import { PreAuthRoutes } from "./templates/PreAuthRoutes";
 import { UpdatePasswordPage } from "./pages/auth/UpdatePasswordPage";
-
 import { userAtom } from "../states/userAtom";
 import { ContactPage } from "./pages/ContactPage";
 import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 import { useChakraToast } from "../utils/toastUtils";
-import { ExamInfoPage } from "./pages/ExamInfoPage";
 import { LoadingPage } from "./pages/LoadingPage";
 import { AdminRoutes } from "./templates/AdminRoutes";
 import { AdminTwoFactorSetupPage } from "./pages/admin/AdminTwoFactorSetupPage";
 import { TwoFactorChallengePage } from "./pages/admin/TwoFactorChallengePage";
+// import { ExamInfoPage } from "./pages/ExamInfoPage";
 
 // lazy import
 const ExamPage = lazy(() =>
@@ -39,10 +38,11 @@ const AdminRouteGroup = lazy(() =>
 
 export const Router = () => {
     const { getUser } = useAuth();
-    const [, setUser] = useAtom(userAtom);
+    const [user, setUser] = useAtom(userAtom);
     const navigate = useNavigate();
     const location = useLocation();
     const { showWarningToast } = useChakraToast();
+    const isHandlingAuthExpired = useRef(false);
 
     useEffect(() => {
         getUser();
@@ -50,11 +50,29 @@ export const Router = () => {
 
     useEffect(() => {
         const onExpired = () => {
+            // 同時に２回呼ばれても処理は1回だけでよい
+            if (isHandlingAuthExpired.current) {
+                return;
+            }
+
+            const authPaths = ["/login", "/register", "/two-factor-challenge"];
+            if (authPaths.includes(location.pathname)) {
+                return;
+            }
+
+            isHandlingAuthExpired.current = true;
+
             setUser(null);
 
             showWarningToast(
                 "認証の有効期限が切れました。再度ログインしてください。",
             );
+
+            console.log("セッション切れ時のlocation", {
+                pathname: location.pathname,
+                search: location.search,
+                hash: location.hash,
+            });
 
             navigate("/login", {
                 replace: true,
@@ -67,13 +85,26 @@ export const Router = () => {
             onExpired as EventListener,
         );
 
+        window.addEventListener("auth:Expired", onExpired as EventListener);
+
         return () => {
             window.removeEventListener(
                 "auth:Unauthenticated",
                 onExpired as EventListener,
             );
+            window.removeEventListener(
+                "auth:Expired",
+                onExpired as EventListener,
+            );
         };
     }, [navigate, location.pathname, showWarningToast, setUser]);
+
+    // ログイン後にフラグを戻す
+    useEffect(() => {
+        if (user) {
+            isHandlingAuthExpired.current = false;
+        }
+    }, [user]);
 
     return (
         <Layout>

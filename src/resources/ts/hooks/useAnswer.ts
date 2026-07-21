@@ -1,16 +1,13 @@
 import { useToast } from "@chakra-ui/react";
-import { useAtom } from "jotai";
 import axios from "axios";
-
-import { Answer, ErrorResponse } from "../types/form";
-import { axiosInstance } from "./axiosInstance";
-import { loadingAtom } from "../states/loadingAtom";
-import { useChakraToast } from "../utils/toastUtils";
-import { Correction } from "../components/organisms/QuestionAndAnswerInput";
 import { useCallback } from "react";
 
+import { axiosInstance } from "./axiosInstance";
+import { useChakraToast } from "../utils/toastUtils";
+import { Correction } from "../components/organisms/QuestionAndAnswerInput";
+import type { Answer, ErrorResponse } from "../types/form";
+
 export const useAnswer = () => {
-    const [, setIsLoading] = useAtom(loadingAtom);
     const { showServerErrorToast } = useChakraToast();
     const toast = useToast();
 
@@ -35,8 +32,14 @@ export const useAnswer = () => {
         } catch (error) {
             // axiosのエラー処理
             if (axios.isAxiosError(error)) {
+                const status = error.response?.status;
+                // 401認証切れ
+                if (status === 401) {
+                    return;
+                }
+
                 // 429 Too Many Requests（多重送信）エラーのときは特別なトーストを表示
-                if (error.response?.status === 429) {
+                if (status === 429) {
                     toast({
                         title: "他の処理が進行中です",
                         description:
@@ -47,6 +50,7 @@ export const useAnswer = () => {
                         position: "bottom-right",
                     });
                 } else {
+                    console.log(error);
                     showServerErrorToast("答案提出に失敗しました");
                 }
 

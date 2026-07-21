@@ -16,7 +16,9 @@ export const AdminRoutes = () => {
     }
 
     if (user === null) {
-        return <Navigate to="/login" state={{ from: location }} />;
+        return (
+            <Navigate to="/login" state={{ from: location.pathname }} replace />
+        );
     }
 
     if (user.isAdmin && !user.hasTwoFactorEnabled) {

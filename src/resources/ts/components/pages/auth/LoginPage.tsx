@@ -19,7 +19,7 @@ import {
 import { memo, FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 
 import { useAuth } from "../../../hooks/useAuth";
 import { LoginFormInput } from "../../../types/form";
