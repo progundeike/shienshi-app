@@ -50,7 +50,6 @@ export const useAnswer = () => {
                         position: "bottom-right",
                     });
                 } else {
-                    console.log(error);
                     showServerErrorToast("答案提出に失敗しました");
                 }
 

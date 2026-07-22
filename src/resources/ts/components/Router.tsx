@@ -68,12 +68,6 @@ export const Router = () => {
                 "認証の有効期限が切れました。再度ログインしてください。",
             );
 
-            console.log("セッション切れ時のlocation", {
-                pathname: location.pathname,
-                search: location.search,
-                hash: location.hash,
-            });
-
             navigate("/login", {
                 replace: true,
                 state: { from: location.pathname },
