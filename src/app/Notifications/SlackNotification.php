@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Messages\SlackMessage;
+use Illuminate\Notifications\Slack\SlackMessage;
 use Illuminate\Notifications\Notification;
 
 class SlackNotification extends Notification
@@ -38,7 +38,7 @@ class SlackNotification extends Notification
     public function toSlack($notifiable): SlackMessage
     {
         return (new SlackMessage)
-            ->content($this->message);
+            ->text($this->message);
     }
 
     /**
