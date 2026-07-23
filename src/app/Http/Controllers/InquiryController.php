@@ -53,7 +53,7 @@ class InquiryController extends Controller
                 ->notify(new SlackNotification(
                     "新しいお問い合わせがありました。 \n管理画面で内容を確認してください。"
                 ));
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error('Error occurred while sending Slack notification: '.$e->getMessage());
         }
 

@@ -69,7 +69,7 @@ export const MyPage: FC = memo(() => {
                 >
                     <Flex direction="column" gap={3}>
                         <Text fontSize="xl" fontWeight="bold">
-                            {user.username}さん、こんにちは!
+                            {user.username}さん、こんにちは！
                         </Text>
                         <Text>今日も一緒に学習を進めていきましょう</Text>
                     </Flex>
