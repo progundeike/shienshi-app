@@ -1,9 +1,23 @@
-import { FC, memo } from "react";
+import { FC, memo, useEffect, useState } from "react";
 import { Box, Image, Text, Heading, Flex } from "@chakra-ui/react";
 import { DesktopExamTable } from "../organisms/DesktopExamTable";
 import { MobileExamsList } from "../organisms/MobileExamsList";
+import { useExam } from "../../hooks/useExam";
+import type { SubmittedExam } from "../../types/exam";
 
 export const ExamsListPage: FC = memo(() => {
+    const { fetchSubmittedExams } = useExam();
+    const [submittedExams, setSubmittedExams] = useState<SubmittedExam[]>([]);
+
+    useEffect(() => {
+        const getSubmittedExams = async () => {
+            const submittedExams = await fetchSubmittedExams();
+            setSubmittedExams(submittedExams || []);
+        };
+
+        getSubmittedExams();
+    }, []);
+
     return (
         <Box>
             {/* ヘッダー */}
@@ -52,11 +66,11 @@ export const ExamsListPage: FC = memo(() => {
                         textAlign="center"
                     >
                         <Box display={{ base: "none", md: "block" }}>
-                            <DesktopExamTable />
+                            <DesktopExamTable submittedExams={submittedExams} />
                         </Box>
 
                         <Box display={{ base: "block", md: "none" }}>
-                            <MobileExamsList />
+                            <MobileExamsList submittedExams={submittedExams} />
                         </Box>
                     </Box>
                 </Box>
