@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendSlackNotification;
 use App\Models\Inquiry;
-use App\Notifications\SlackNotification;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
 
 class InquiryController extends Controller
 {
@@ -48,14 +46,7 @@ class InquiryController extends Controller
         $inquiry->user_id = $request->user()?->id;
         $inquiry->save();
 
-        try {
-            Notification::route('slack', config('services.slack.webhook_url'))
-                ->notify(new SlackNotification(
-                    "新しいお問い合わせがありました。 \n管理画面で内容を確認してください。"
-                ));
-        } catch (\Throwable $e) {
-            Log::error('Error occurred while sending Slack notification: '.$e->getMessage());
-        }
+        SendSlackNotification::dispatchAfterResponse('新しい問い合わせがありました。');
 
         return response()->json(['message' => 'ok'], 201);
     }

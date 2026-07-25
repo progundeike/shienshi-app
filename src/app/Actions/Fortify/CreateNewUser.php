@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Jobs\SendSlackNotification;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -37,6 +38,8 @@ class CreateNewUser implements CreatesNewUsers
             'username' => (string) Str::of($input['username'])->trim(),
             'password' => Hash::make($input['password']),
         ]);
+
+        SendSlackNotification::dispatchAfterResponse('新しいユーザー登録がありました。');
 
         return $user;
     }
