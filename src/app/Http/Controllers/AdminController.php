@@ -58,7 +58,9 @@ class AdminController extends Controller
                         'type' => $validated['type'],
                         'text' => $validated['text'] ? $validated['text'] : '',
                         'text_for_ai' => $validated['textForAi'] ? $validated['textForAi'] : '',
-                        'options' => empty($validated['options']) ? null : $validated['options'],
+                        'options' => empty($validated['options'])
+                            ? null
+                            : json_encode($validated['options'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
                         'max_length' => $validated['maxLength'] ?? null,
                         'created_at' => now(),
                         'updated_at' => now(),
