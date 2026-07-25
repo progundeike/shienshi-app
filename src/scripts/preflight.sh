@@ -7,6 +7,6 @@ composer audit --no-interaction
 echo "== Frontend checks =="
 npm ci
 npm run build
-npm audit --audit-level=high
+npm run audit
 
 echo "preflight passed"
