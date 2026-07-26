@@ -74,7 +74,7 @@ jobs:
 
       - name: NPM audit
         working-directory: src
-        run: npm audit --audit-level=high
+        run: npm run audit
 
       - name: Typecheck
         working-directory: src
