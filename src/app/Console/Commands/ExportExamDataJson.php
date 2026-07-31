@@ -14,7 +14,7 @@ class ExportExamDataJson extends Command
      *
      * @var string
      */
-    protected $signature = 'export:exam-data {--path=database/seeders/data}';
+    protected $signature = 'exam-data:export';
 
     /**
      * The console command description.
@@ -28,7 +28,7 @@ class ExportExamDataJson extends Command
      */
     public function handle()
     {
-        $path = base_path($this->option('path'));
+        $path = storage_path('app/exam-data');
         $questions = Question::orderBy('exam_code')->orderBy('question_code')->get();
         $examSentences = ExamSentence::orderBy('exam_code')->get();
         $modelAnswers = ModelAnswer::orderBy('exam_code')->orderBy('question_code')->get();

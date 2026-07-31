@@ -1,1 +1,3 @@
 *.sqlite*
+/seeders/data/*
+!/seeders/data/.gitkeep

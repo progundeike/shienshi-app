@@ -13,7 +13,7 @@ class ModelAnswerSeeder extends Seeder
      */
     public function run(): void
     {
-        $path = database_path('seeders/data/model_answers.json');
+        $path = storage_path('app/exam-data/model_answers.json');
         if (! file_exists($path)) {
             $this->command->error("File not found: {$path}");
         }

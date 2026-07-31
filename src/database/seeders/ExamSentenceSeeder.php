@@ -12,7 +12,7 @@ class ExamSentenceSeeder extends Seeder
      */
     public function run(): void
     {
-        $path = database_path('seeders/data/exam_sentences.json');
+        $path = storage_path('app/exam-data/exam_sentences.json');
         if (! file_exists($path)) {
             $this->command->error("File not found: {$path}");
         }

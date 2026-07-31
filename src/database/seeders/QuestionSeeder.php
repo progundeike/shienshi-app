@@ -12,7 +12,7 @@ class QuestionSeeder extends Seeder
      */
     public function run(): void
     {
-        $path = database_path('seeders/data/questions.json');
+        $path = storage_path('app/exam-data/questions.json');
         if (! file_exists($path)) {
             $this->command->error("File not found: {$path}");
         }

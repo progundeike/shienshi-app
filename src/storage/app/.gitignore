@@ -1,3 +1,5 @@
 *
 !public/
+!exam-data/
+!exam-data/.gitkeep
 !.gitignore
