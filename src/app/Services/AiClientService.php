@@ -21,7 +21,7 @@ class AiClientService
         'gpt-5-mini' => ['in' => 0.25, 'cached_in' => 0.025, 'out' => 2.00],
         'gpt-5.4-nano' => ['in' => 0.20, 'cached_in' => 0.02, 'out' => 1.25],
         'gpt-5.4-mini' => ['in' => 0.75, 'cached_in' => 0.075, 'out' => 4.50],
-        'gpt-5.6-luna' => ['in' => 1.00, 'cached_in' => 0.10, 'out' => 6.00],
+        'gpt-5.6-luna' => ['in' => 0.20, 'cached_in' => 0.02, 'out' => 1.20],
     ];
 
     protected string $model;
