@@ -39,7 +39,7 @@ export const useChakraToast = () => {
             title: title,
             status: "success",
             duration: 5000,
-            isClosable: true,
+            isClosable: false,
             position: "bottom-right",
         });
     };
