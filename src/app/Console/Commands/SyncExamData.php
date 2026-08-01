@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\ModelAnswer;
 use App\Models\Question;
 use Database\Seeders\ExamSentenceSeeder;
 use Database\Seeders\ModelAnswerSeeder;
@@ -109,7 +110,10 @@ class SyncExamData extends Command
             );
 
         foreach ($questionsToDelete as $question) {
-            $question->delete();
+            Question::query()
+                ->where('exam_code', $question->exam_code)
+                ->where('question_code', $question->question_code)
+                ->delete();
         }
 
         $this->info("Deleted {$questionsToDelete->count()} removed questions.");
@@ -128,7 +132,7 @@ class SyncExamData extends Command
             ->toArray();
 
         // DBには存在するが、JSONには存在しないデータを取得
-        $modelAnswersToDelete = DB::table('model_answers')
+        $modelAnswersToDelete = ModelAnswer::query()
             ->get(['exam_code', 'question_code'])
             ->filter(
                 function ($modelAnswer) use ($modelAnswerKeys): bool {
@@ -137,7 +141,7 @@ class SyncExamData extends Command
             );
 
         foreach ($modelAnswersToDelete as $modelAnswer) {
-            DB::table('model_answers')
+            ModelAnswer::query()
                 ->where('exam_code', $modelAnswer->exam_code)
                 ->where('question_code', $modelAnswer->question_code)
                 ->delete();
