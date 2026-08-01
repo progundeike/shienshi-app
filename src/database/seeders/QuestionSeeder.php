@@ -14,10 +14,10 @@ class QuestionSeeder extends Seeder
     {
         $path = storage_path('app/exam-data/questions.json');
         if (! file_exists($path)) {
-            $this->command->error("File not found: {$path}");
+            throw new \RuntimeException("File not found: {$path}");
         }
 
-        $questions = json_decode(file_get_contents($path), true);
+        $questions = json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
 
         $questions = array_map(function ($question) {
             // optionsはJSON文字列へ
@@ -34,6 +34,5 @@ class QuestionSeeder extends Seeder
 
         // データベースに挿入
         Question::upsert($questions, ['exam_code', 'question_code']);
-        $this->command->info('Inserted '.count($questions).' records into the database.');
     }
 }

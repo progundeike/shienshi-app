@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\ModelAnswer;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class ModelAnswerSeeder extends Seeder
 {
@@ -15,17 +14,12 @@ class ModelAnswerSeeder extends Seeder
     {
         $path = storage_path('app/exam-data/model_answers.json');
         if (! file_exists($path)) {
-            $this->command->error("File not found: {$path}");
+            throw new \RuntimeException("File not found: {$path}");
         }
 
-        $modelAnswers = json_decode(file_get_contents($path), true);
+        $modelAnswers = json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
 
         $modelAnswers = array_map(function ($modelAnswer) {
-            // optionsはJSON文字列へ
-            if (isset($modelAnswer['options'])) {
-                $modelAnswer['options'] = json_encode($modelAnswer['options'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-            }
-
             // idは自動増分なので除外
             unset($modelAnswer['id']);
 
@@ -36,29 +30,7 @@ class ModelAnswerSeeder extends Seeder
             return $modelAnswer;
         }, $modelAnswers);
 
-        // test
-        // $modelAnswerKeys = collect($modelAnswers)
-        //     ->map(fn($answer) => $answer['exam_code'] . '|' . $answer['question_code'])
-        //     ->unique()
-        //     ->sort()
-        //     ->values();
-
-        // $questionKeys = DB::table('questions')
-        //     ->select('exam_code', 'question_code')
-        //     ->get()
-        //     ->map(fn($question) => $question->exam_code . '|' . $question->question_code)
-        //     ->unique()
-        //     ->sort()
-        //     ->values();
-
-        // dd([
-        //     'missing_in_questions' => $modelAnswerKeys
-        //         ->diff($questionKeys)
-        //         ->values(),
-        // ]);
-
         // データベースに挿入
         ModelAnswer::upsert($modelAnswers, ['exam_code', 'question_code']);
-        $this->command->info('Inserted '.count($modelAnswers).' records into the database.');
     }
 }
