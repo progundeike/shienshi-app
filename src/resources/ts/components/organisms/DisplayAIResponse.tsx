@@ -39,7 +39,7 @@ export const DisplayAIResponse: FC<Props> = memo((Props) => {
             </Box>
             <Box backgroundColor="yellow.200" mb="10px" p="5px">
                 <Box>評価: {response.aiRating}</Box>
-                <Box>{response.aiText}</Box>
+                <Box whiteSpace="pre-wrap">{response.aiText}</Box>
             </Box>
         </Box>
     );
