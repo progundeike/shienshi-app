@@ -96,13 +96,11 @@ class AiQuestionController extends Controller
                 $prompt = array_merge($prompt, $dialogues);
 
                 // AIに投げる
-                $result = $this->aiClientService->chat($prompt);
-
-                $aiMessage = data_get($result, 'choices.0.message.content');
+                $aiMessage = $this->aiClientService->generateText($prompt);
 
                 Log::debug('AI response', ['aiMessage' => $aiMessage]);
 
-                if (! is_string($aiMessage) || trim($aiMessage) === '') {
+                if (trim($aiMessage) === '') {
                     throw new AiResponseException('AI response is missing content');
                 }
 

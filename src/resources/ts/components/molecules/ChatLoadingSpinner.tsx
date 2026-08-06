@@ -25,7 +25,7 @@ export const ChatLoadingSpinner: FC = () => {
                             AIがあなたの質問に回答しています。
                         </Text>
                         <Text fontSize="sm" color="gray.600" mt={4}>
-                            回答には通常40~60秒かかります。
+                            回答には通常10~30秒かかります。
                         </Text>
                     </VStack>
                 </Center>

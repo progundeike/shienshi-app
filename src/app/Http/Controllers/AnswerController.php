@@ -77,16 +77,16 @@ class AnswerController extends Controller
                 ];
 
                 // AIに投げる
-                $argumentsJson = $this->aiClientService->useFunctionCall($prompt, $this->promptService->answerFunctionParameter());
+                $argumentsJson = $this->aiClientService->generateStructuredOutput($prompt, $this->promptService->answerStructuredOutputSchema());
 
                 try {
                     $arguments = json_decode($argumentsJson, true, 512, JSON_THROW_ON_ERROR);
                 } catch (\JsonException $e) {
-                    throw new AiResponseException('Failed to decode AI function call arguments', 0, $e);
+                    throw new AiResponseException('Failed to decode AI structured output.', 0, $e);
                 }
 
                 if (! is_array($arguments) || ! isset($arguments['evaluations']) || ! is_array($arguments['evaluations'])) {
-                    throw new AiResponseException('AI function call arguments are not in expected format');
+                    throw new AiResponseException('AI structured output is not in expected format');
                 }
 
                 $evaluations = $arguments['evaluations'];

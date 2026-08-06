@@ -52,7 +52,7 @@ export const CorrectionLoadingSpinner: FC<Props> = (props) => {
                                 AIがあなたの答案を添削しています。
                             </Text>
                             <Text fontSize="sm" color="gray.600" mt={5}>
-                                添削には通常40~60秒かかります。
+                                添削には通常10~30秒かかります。
                             </Text>
                         </VStack>
                     </Center>

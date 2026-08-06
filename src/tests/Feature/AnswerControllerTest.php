@@ -102,7 +102,7 @@ class AnswerControllerTest extends FeatureTestCase
 
         $this->mock(AiClientService::class, function (MockInterface $mock) {
             /** @var Expectation $exception */
-            $exception = $mock->shouldReceive('useFunctionCall');
+            $exception = $mock->shouldReceive('generateStructuredOutput');
 
             $exception
                 ->once()
@@ -123,7 +123,7 @@ class AnswerControllerTest extends FeatureTestCase
             AiClientService::class,
             function (MockInterface $mock): void {
                 /** @var Expectation $expectation */
-                $expectation = $mock->shouldReceive('useFunctionCall');
+                $expectation = $mock->shouldReceive('generateStructuredOutput');
 
                 $expectation
                     ->once()
@@ -181,7 +181,7 @@ class AnswerControllerTest extends FeatureTestCase
             AiClientService::class,
             function (MockInterface $mock): void {
                 /** @var Expectation $expectation */
-                $expectation = $mock->shouldReceive('useFunctionCall');
+                $expectation = $mock->shouldReceive('generateStructuredOutput');
                 $expectation
                     ->times(3) // 4回目はコントローラーに到達していないことをテスト
                     ->andReturn(

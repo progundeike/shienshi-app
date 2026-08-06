@@ -15,6 +15,11 @@
     "esbenp.prettier-vscode",
     "jebbs.plantuml",
     "GitHub.copilot",
-    "open-southners."
+    "open-southners.",
+    "ryannaddy.laravel-artisan",
+    "onecentlin.laravel-blade",
+    "matthewpi.caddyfile-support",
+    "ms-azuretools.vscode-containers",
+    "ms-azuretools.vscode-docker"
   ]
 }

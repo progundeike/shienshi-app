@@ -64,7 +64,7 @@ class AiQuestionControllerTest extends FeatureTestCase
         $this->mock(
             AiClientService::class,
             function (MockInterface $mock) use ($aiMessage, $userMessage): void {
-                $mock->expects('chat')
+                $mock->expects('generateText')
                     ->withArgs(function (array $prompt) use ($userMessage): bool {
                         $lastMessage = $prompt[array_key_last($prompt)];
 
@@ -73,15 +73,7 @@ class AiQuestionControllerTest extends FeatureTestCase
                             'content' => $userMessage,
                         ];
                     })
-                    ->andReturn([
-                        'choices' => [
-                            [
-                                'message' => [
-                                    'content' => $aiMessage,
-                                ],
-                            ],
-                        ],
-                    ]);
+                    ->andReturn($aiMessage);
             }
         );
 
@@ -112,18 +104,10 @@ class AiQuestionControllerTest extends FeatureTestCase
             AiClientService::class,
             function (MockInterface $mock): void {
                 /** @var Expectation $expectation */
-                $expectation = $mock->shouldReceive('chat');
+                $expectation = $mock->shouldReceive('generateText');
                 $expectation
                     ->times(5)
-                    ->andReturn([
-                        'choices' => [
-                            [
-                                'message' => [
-                                    'content' => 'AIのダミー回答です。',
-                                ],
-                            ],
-                        ],
-                    ]);
+                    ->andReturn('AIのダミー回答です。');
             }
         );
 

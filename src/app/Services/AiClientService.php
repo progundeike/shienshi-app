@@ -16,12 +16,12 @@ class AiClientService
 
     private const RETRY_SLEEP_SECONDS = 1;
 
+    // lunaより高いモデルは検討外
     private const PRICES = [
         'gpt-5-nano' => ['in' => 0.05, 'cached_in' => 0.005, 'out' => 0.40],
         'gpt-5-mini' => ['in' => 0.25, 'cached_in' => 0.025, 'out' => 2.00],
         'gpt-5.4-nano' => ['in' => 0.20, 'cached_in' => 0.02, 'out' => 1.25],
-        'gpt-5.4-mini' => ['in' => 0.75, 'cached_in' => 0.075, 'out' => 4.50],
-        'gpt-5.6-luna' => ['in' => 0.20, 'cached_in' => 0.02, 'out' => 1.20],
+        'gpt-5.6-luna' => ['in' => 0.20, 'cached_in' => 0.02, 'out' => 1.20], // Response APIが必須
     ];
 
     protected string $model;
@@ -37,36 +37,30 @@ class AiClientService
         $this->model = $model;
     }
 
-    public function chat(array $prompt)
+    public function generateText(array $prompt): string
     {
-        $lastFinishReason = 'unknown';
+        $lastStatus = 'unknown';
         $lastException = null;
 
         for ($attempt = 1; $attempt <= self::MAX_RETRIES; $attempt++) {
+            $lastException = null;
+
             try {
-                $result = OpenAI::chat()->create([
+                $result = OpenAI::responses()->create([
                     'model' => $this->model,
-                    'messages' => $prompt,
+                    'input' => $prompt,
+                    'store' => false,
                 ]);
-
-                // モデル比較用に一時的にデバッグ
-                Log::debug('chat result', [
-                    'model' => $this->model,
-                    'result' => $result,
-                ]);
-
                 // トークンコストを一時的にデバッグ
-                $this->debugTokenCostsForChatApi($result);
+                $this->debugTokenCostsForResponseApi($result);
 
-                $finishReason = $result->choices[0]->finishReason ?? 'unknown';
-                $lastFinishReason = $finishReason;
-
-                if ($finishReason === 'stop') {
-                    return $result;
+                $lastStatus = $result->status;
+                if ($lastStatus === 'completed' && is_string($result->outputText) && trim($result->outputText) !== '') {
+                    return $result->outputText;
                 }
 
-                Log::warning('OpenAI returned unexpected finishReason', [
-                    'finish_reason' => $lastFinishReason,
+                Log::warning('OpenAI returned unexpected status', [
+                    'status' => $lastStatus,
                     'attempt' => $attempt,
                 ]);
             } catch (Throwable $e) {
@@ -74,7 +68,7 @@ class AiClientService
 
                 Log::warning('OpenAI request attempt failed', [
                     'attempt' => $attempt,
-                    'exception' => $e::class,
+                    'exception' => get_class($e),
                     'error' => $e->getMessage(),
                 ]);
             }
@@ -88,66 +82,75 @@ class AiClientService
             throw new AiResponseException('OpenAI request failed', 0, $lastException);
         }
 
-        throw new AiResponseException('Unexpected finishReason: '.$lastFinishReason);
+        throw new AiResponseException('Unexpected status: '.$lastStatus);
     }
 
-    public function useFunctionCall(array $prompt, array $functionParameter): string
+    public function generateStructuredOutput(array $prompt, array $schema): string
     {
-        $retryCount = 0;
-        $maxRetries = 3;
-        $result = null;
+        $lastStatus = 'unknown';
+        $lastException = null;
 
-        try {
-            do {
-                $result = OpenAI::chat()->create([
+        for ($attempt = 1; $attempt <= self::MAX_RETRIES; $attempt++) {
+            $lastException = null;
+            try {
+                $result = OpenAI::responses()->create([
                     'model' => $this->model,
-                    'messages' => $prompt,
-                    'functions' => [
-                        $functionParameter,
+                    'input' => $prompt,
+                    'store' => false,
+                    'text' => [
+                        'format' => [
+                            'type' => 'json_schema',
+                            'name' => 'answer_evaluations',
+                            'schema' => $schema,
+                            'strict' => true,
+                        ],
                     ],
-                    'function_call' => ['name' => $functionParameter['name']],
                 ]);
 
                 // モデル比較用に一時的にデバッグ
-                Log::debug(
-                    'function call result',
-                    [
-                        'model' => $this->model,
-                        'result' => $result,
-                    ]
-                );
+                Log::debug('structured output result', [
+                    'model' => $this->model,
+                    'result' => $result,
+                ]);
 
-                $this->debugTokenCostsForChatApi($result);
+                // トークンコストを一時的にデバッグ
+                $this->debugTokenCostsForResponseApi($result);
 
-                $retryCount++;
-            } while ($result->choices[0]->finishReason !== 'function_call' && $retryCount < $maxRetries);
-        } catch (Throwable $e) {
-            Log::error('OpenAI request failed', ['exception' => $e]);
-            throw new AiResponseException('OpenAI request failed', 0, $e);
+                $lastStatus = $result->status;
+                if ($lastStatus === 'completed' && is_string($result->outputText) && $result->outputText !== '') {
+                    return $result->outputText;
+                }
+
+                Log::warning('OpenAI returned unexpected status', [
+                    'status' => $lastStatus,
+                    'attempt' => $attempt,
+                ]);
+            } catch (Throwable $e) {
+                $lastException = $e;
+
+                Log::warning('OpenAI request attempt failed', [
+                    'attempt' => $attempt,
+                    'exception' => get_class($e),
+                    'error' => $e->getMessage(),
+                ]);
+
+            }
+
+            if ($attempt < self::MAX_RETRIES) {
+                sleep(self::RETRY_SLEEP_SECONDS); // 指定された秒数待ってリトライ
+            }
         }
 
-        $finishReason = 'unknown';
-        if (isset($result->choices[0]->finishReason)) {
-            $finishReason = $result->choices[0]->finishReason;
+        if ($lastException !== null) {
+            throw new AiResponseException('OpenAI request failed', 0, $lastException);
         }
 
-        if ($finishReason !== 'function_call') {
-            throw new AiResponseException('Unexpected finishReason: '.$finishReason);
-        }
-
-        $arguments = $result->choices[0]->message->functionCall?->arguments;
-
-        if (! is_string($arguments) || $arguments === '') {
-            throw new AiResponseException('AI function call arguments are missing');
-        }
-
-        return $arguments;
+        throw new AiResponseException('Unexpected status: '.$lastStatus);
     }
 
-    private function debugTokenCostsForChatApi(object $result): void
+    private function debugTokenCostsForResponseApi(object $result): void
     {
         try {
-
             if (! isset($result->usage)) {
                 Log::info('No usage data available for token cost calculation');
 
@@ -161,17 +164,23 @@ class AiClientService
             $usage = $result->usage;
             $price = self::PRICES[$this->model];
 
-            $inputTokens = (int) ($usage->promptTokens ?? 0);
-            $outputTokens = (int) ($usage->completionTokens ?? 0);
-            $cachedTokens = (int) ($usage->promptTokensDetails->cachedTokens ?? 0);
-
+            $inputTokens = (int) ($usage->inputTokens ?? 0);
+            $outputTokens = (int) ($usage->outputTokens ?? 0);
+            $cachedTokens = (int) ($usage->inputTokensDetails->cachedTokens ?? 0);
             $nonCached = max(0, $inputTokens - $cachedTokens);
 
             // 単価は100万トークン当たりなので、最後に100万で割ってドルにする
             $costUsd = (($nonCached * $price['in']) + ($cachedTokens * $price['cached_in']) + ($outputTokens * $price['out'])) / 1_000_000;
             $costJpy = $costUsd * self::USD_TO_JPY;
 
-            Log::info('openai_cost', ['jpy' => $costJpy]);
+            Log::info('openai_cost', [
+                'api' => 'responses',
+                'model' => $this->model,
+                'input_tokens' => $inputTokens,
+                'output_tokens' => $outputTokens,
+                'cached_tokens' => $cachedTokens,
+                'jpy' => $costJpy,
+            ]);
         } catch (Throwable $e) {
             Log::error('Failed to log token costs', ['exception' => $e]);
         }
