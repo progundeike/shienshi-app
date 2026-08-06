@@ -86,6 +86,7 @@ export const AnswerAndCorrectionForm: FC<Props> = memo((props) => {
                 await refetchCorrections();
             } catch (error) {
                 console.error(error);
+                throw error;
             } finally {
                 setIsCorrecting(false);
             }
