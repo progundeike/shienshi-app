@@ -8,6 +8,7 @@ use App\Models\UserAiDialogue;
 use App\Models\UserAnswer;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ResetPublicUserData extends Command
 {
@@ -41,7 +42,7 @@ class ResetPublicUserData extends Command
             SubmittedExam::where('user_id', $user->id)->delete();
         });
 
-        $this->info('public_user data reset');
+        Log::info('Public user data reset successfully.');
 
         return self::SUCCESS;
     }
