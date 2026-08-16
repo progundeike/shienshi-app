@@ -40,8 +40,9 @@ export const RegisterPage: FC = memo(() => {
     const usernameLength = watch("username")?.length || 0;
 
     const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = () => () =>
+    const handleClickShowPassword = () => {
         setShowPassword((current) => !current);
+    };
     const passwordIcon = showPassword ? HiOutlineEyeOff : HiOutlineEye;
 
     const onSubmit = handleSubmit(async (data) => {
