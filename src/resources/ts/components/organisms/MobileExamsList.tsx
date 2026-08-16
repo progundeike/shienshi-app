@@ -49,10 +49,26 @@ export const MobileExamsList: FC<Props> = memo(({ submittedExams }) => {
             </Box>
             <Flex direction="column">
                 <ExamListCard title="2025年(令和7年) 秋期">
-                    <PreReleaseExamLinkButton url="2025/aki/1" title="問1" />
-                    <PreReleaseExamLinkButton url="2025/aki/2" title="問2" />
-                    <PreReleaseExamLinkButton url="2025/aki/3" title="問3" />
-                    <PreReleaseExamLinkButton url="2025/aki/4" title="問4" />
+                    <ExamLinkButton
+                        url="2025/aki/1"
+                        title="問1"
+                        isSubmitted={isSubmitted(2025, "aki", 1)}
+                    />
+                    <ExamLinkButton
+                        url="2025/aki/2"
+                        title="問2"
+                        isSubmitted={isSubmitted(2025, "aki", 2)}
+                    />
+                    <ExamLinkButton
+                        url="2025/aki/3"
+                        title="問3"
+                        isSubmitted={isSubmitted(2025, "aki", 3)}
+                    />
+                    <ExamLinkButton
+                        url="2025/aki/4"
+                        title="問4"
+                        isSubmitted={isSubmitted(2025, "aki", 4)}
+                    />
                 </ExamListCard>
 
                 <ExamListCard title="2025年(令和7年) 春期">

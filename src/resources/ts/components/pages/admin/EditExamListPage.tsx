@@ -33,46 +33,10 @@ export const EditExamListPage = memo(() => {
                 <Table variant="simple">
                     <Tbody>
                         <Tr>
-                            {/* 編集が終わったページのボタンの色はredからgreenに変える */}
-                            <CustomTh>2099年(令和99年) 春季</CustomTh>
-                            <Td>
-                                <EditExamLinkButton
-                                    url="2099/haru/1"
-                                    color="red"
-                                >
-                                    問1
-                                </EditExamLinkButton>
-                            </Td>
-                            <Td>
-                                <EditExamLinkButton
-                                    color="red"
-                                    url="2099/haru/2"
-                                >
-                                    問2
-                                </EditExamLinkButton>
-                            </Td>
-                            <Td>
-                                <EditExamLinkButton
-                                    color="red"
-                                    url="2099/haru/3"
-                                >
-                                    問3
-                                </EditExamLinkButton>
-                            </Td>
-                            <Td>
-                                <EditExamLinkButton
-                                    color="red"
-                                    url="2099/haru/4"
-                                >
-                                    問4
-                                </EditExamLinkButton>
-                            </Td>
-                        </Tr>
-                        <Tr>
                             <CustomTh>2025年(令和7年) 秋期</CustomTh>
                             <Td>
                                 <EditExamLinkButton
-                                    color="red"
+                                    color="green"
                                     url="2025/aki/1"
                                 >
                                     問1
@@ -80,7 +44,7 @@ export const EditExamListPage = memo(() => {
                             </Td>
                             <Td>
                                 <EditExamLinkButton
-                                    color="red"
+                                    color="green"
                                     url="2025/aki/2"
                                 >
                                     問2
@@ -88,7 +52,7 @@ export const EditExamListPage = memo(() => {
                             </Td>
                             <Td>
                                 <EditExamLinkButton
-                                    color="red"
+                                    color="green"
                                     url="2025/aki/3"
                                 >
                                     問3
@@ -96,7 +60,7 @@ export const EditExamListPage = memo(() => {
                             </Td>
                             <Td>
                                 <EditExamLinkButton
-                                    color="red"
+                                    color="green"
                                     url="2025/aki/4"
                                 >
                                     問4
