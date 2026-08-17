@@ -87,8 +87,6 @@ export const TopPage: FC = memo(() => {
             >
                 <Flex gap={5} direction="column">
                     <Box my={10} textColor="black">
-                        {/* ヒーローセクション */}
-
                         {/* サービスの特徴 */}
                         <Box
                             mx="auto"
@@ -96,7 +94,7 @@ export const TopPage: FC = memo(() => {
                             textAlign="center"
                         >
                             <Heading
-                                size={{ base: "sm", md: "xl" }}
+                                size={{ base: "md", md: "xl" }}
                                 color="baseColor"
                                 mb={5}
                             >
@@ -128,11 +126,7 @@ export const TopPage: FC = memo(() => {
                                         display="block"
                                     />
                                     <Text>
-                                        試験対策には過去問を解いて、
-                                        <br />
-                                        実際の試験形式に慣れることが
-                                        <br />
-                                        重要です。
+                                        試験対策には過去問を解いて、実際の試験形式に慣れることが重要です。
                                     </Text>
                                 </LearningStepCard>
 
@@ -157,11 +151,7 @@ export const TopPage: FC = memo(() => {
                                         display="block"
                                     />
                                     <Text>
-                                        記述式の問題が多い科目B試験を
-                                        <br />
-                                        AIのフィードバックでサポート
-                                        <br />
-                                        します。
+                                        記述式の問題が多い科目B試験をAIのフィードバックでサポートします。
                                     </Text>
                                 </LearningStepCard>
 
@@ -196,7 +186,7 @@ export const TopPage: FC = memo(() => {
                     {/* 試験概要 */}
                     <Flex gap={{ base: 2, md: 5 }} direction="column" mb={10}>
                         <Heading
-                            size={{ base: "sm", md: "xl" }}
+                            size={{ base: "md", md: "xl" }}
                             color="baseColor"
                             textAlign="center"
                         >

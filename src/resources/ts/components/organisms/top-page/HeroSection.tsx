@@ -1,4 +1,4 @@
-import { Flex, Button, Text, Image, Box } from "@chakra-ui/react";
+import { Flex, Button, Text, Image, Box, Heading } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 export const HeroSection = () => {
@@ -69,7 +69,8 @@ export const HeroSection = () => {
                             >
                                 情報処理安全確保支援士 科目B対策
                             </Text>
-                            <Text
+                            <Heading
+                                as="h1"
                                 fontSize={{ base: "2xl", md: "6xl" }}
                                 fontWeight="bold"
                                 lineHeight="1.2"
@@ -77,7 +78,7 @@ export const HeroSection = () => {
                                 mb={2}
                             >
                                 解く→添削→質問
-                            </Text>
+                            </Heading>
                             <Text
                                 fontSize={{ base: "md", md: "lg" }}
                                 fontWeight="bold"

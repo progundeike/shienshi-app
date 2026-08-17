@@ -49,7 +49,6 @@ export const ExamInfoCard: FC<{
                     borderRadius="md"
                     px={4}
                     py={3}
-                    fontSize={{ base: "sm", md: "md" }}
                     color="baseColor"
                 >
                     <Flex align="center" gap={2}>
