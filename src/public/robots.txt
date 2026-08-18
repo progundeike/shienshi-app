@@ -6,10 +6,6 @@ Disallow: /register
 Disallow: /two-factor-challenge
 Disallow: /update-password
 Disallow: /my-page
-Disallow: /exams
-Disallow: /terms
-Disallow: /contact
-Disallow: /privacy
 Disallow: /not-found
 
 Sitemap: https://shienshi.com/sitemap.xml
