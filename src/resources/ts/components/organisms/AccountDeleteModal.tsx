@@ -18,11 +18,9 @@ import {
     FormErrorMessage,
 } from "@chakra-ui/react";
 import { FC, memo } from "react";
-import { useAtomValue } from "jotai";
 import { GoAlert } from "react-icons/go";
 
 import { useAuth } from "../../hooks/useAuth";
-import { loadingAtom } from "../../states/loadingAtom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { AccountDeleteFormInput } from "../../types/form";
