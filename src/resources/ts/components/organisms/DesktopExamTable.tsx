@@ -3,7 +3,6 @@ import { Box, Text, Flex } from "@chakra-ui/react";
 import { ExamLinkButton } from "../atoms/ExamLinkButton";
 import { PreReleaseExamLinkButton } from "../atoms/PreReleaseExamLinkButton";
 import { SubmittedExam } from "../../types/exam";
-import { HashRouter } from "react-router-dom";
 
 const ExamListCard: FC<{
     children: ReactNode;
@@ -163,6 +162,90 @@ export const DesktopExamTable: FC<Props> = memo(({ submittedExams }) => {
                         url="2023/aki/4"
                         title="問4"
                         isSubmitted={isSubmitted(2023, "aki", 4)}
+                    />
+                </ExamListCard>
+
+                <ExamListCard title="2023年(令和5年) 春期">
+                    <ExamLinkButton
+                        url="2023/haru/1"
+                        title="午後Ⅰ 問1"
+                        isSubmitted={isSubmitted(2023, "haru", 1)}
+                    />
+                    <ExamLinkButton
+                        url="2023/haru/2"
+                        title="午後Ⅰ 問2"
+                        isSubmitted={isSubmitted(2023, "haru", 2)}
+                    />
+                    <ExamLinkButton
+                        url="2023/haru/3"
+                        title="午後Ⅰ 問3"
+                        isSubmitted={isSubmitted(2023, "haru", 3)}
+                    />
+                    <ExamLinkButton
+                        url="2023/haru/4"
+                        title="午後Ⅱ 問1"
+                        isSubmitted={isSubmitted(2023, "haru", 4)}
+                    />
+                    <ExamLinkButton
+                        url="2023/haru/5"
+                        title="午後Ⅱ 問2"
+                        isSubmitted={isSubmitted(2023, "haru", 5)}
+                    />
+                </ExamListCard>
+
+                <ExamListCard title="2022年(令和4年) 秋期">
+                    <ExamLinkButton
+                        url="2022/aki/1"
+                        title="午後Ⅰ 問1"
+                        isSubmitted={isSubmitted(2022, "aki", 1)}
+                    />
+                    <ExamLinkButton
+                        url="2022/aki/2"
+                        title="午後Ⅰ 問2"
+                        isSubmitted={isSubmitted(2022, "aki", 2)}
+                    />
+                    <ExamLinkButton
+                        url="2022/aki/3"
+                        title="午後Ⅰ 問3"
+                        isSubmitted={isSubmitted(2022, "aki", 3)}
+                    />
+                    <ExamLinkButton
+                        url="2022/aki/4"
+                        title="午後Ⅱ 問1"
+                        isSubmitted={isSubmitted(2022, "aki", 4)}
+                    />
+                    <ExamLinkButton
+                        url="2022/aki/5"
+                        title="午後Ⅱ 問2"
+                        isSubmitted={isSubmitted(2022, "aki", 5)}
+                    />
+                </ExamListCard>
+
+                <ExamListCard title="2022年(令和4年) 春期">
+                    <ExamLinkButton
+                        url="2022/haru/1"
+                        title="午後Ⅰ 問1"
+                        isSubmitted={isSubmitted(2022, "haru", 1)}
+                    />
+                    <ExamLinkButton
+                        url="2022/haru/2"
+                        title="午後Ⅰ 問2"
+                        isSubmitted={isSubmitted(2022, "haru", 2)}
+                    />
+                    <ExamLinkButton
+                        url="2022/haru/3"
+                        title="午後Ⅰ 問3"
+                        isSubmitted={isSubmitted(2022, "haru", 3)}
+                    />
+                    <ExamLinkButton
+                        url="2022/haru/4"
+                        title="午後Ⅱ 問1"
+                        isSubmitted={isSubmitted(2022, "haru", 4)}
+                    />
+                    <ExamLinkButton
+                        url="2022/haru/5"
+                        title="午後Ⅱ 問2"
+                        isSubmitted={isSubmitted(2022, "haru", 5)}
                     />
                 </ExamListCard>
             </Flex>

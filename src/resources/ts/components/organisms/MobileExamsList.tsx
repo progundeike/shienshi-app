@@ -163,7 +163,7 @@ export const MobileExamsList: FC<Props> = memo(({ submittedExams }) => {
                     />
                 </ExamListCard>
 
-                {/* <ExamListCard title="2023年(令和5年) 春期">
+                <ExamListCard title="2023年(令和5年) 春期">
                     <Grid
                         templateColumns="auto repeat(3, 1fr)"
                         w="100%"
@@ -179,7 +179,43 @@ export const MobileExamsList: FC<Props> = memo(({ submittedExams }) => {
                         <ExamLinkButton url="2023/haru/4" title="問1" />
                         <ExamLinkButton url="2023/haru/5" title="問2" />
                     </Grid>
-                </ExamListCard> */}
+                </ExamListCard>
+
+                <ExamListCard title="2022年(令和4年) 秋期">
+                    <Grid
+                        templateColumns="auto repeat(3, 1fr)"
+                        w="100%"
+                        gap="10px"
+                        alignItems="center"
+                    >
+                        <Text whiteSpace="nowrap">午前</Text>
+                        <ExamLinkButton url="2022/aki/1" title="問1" />
+                        <ExamLinkButton url="2022/aki/2" title="問2" />
+                        <ExamLinkButton url="2022/aki/3" title="問3" />
+
+                        <Text whiteSpace="nowrap">午後</Text>
+                        <ExamLinkButton url="2022/aki/4" title="問1" />
+                        <ExamLinkButton url="2022/aki/5" title="問2" />
+                    </Grid>
+                </ExamListCard>
+
+                <ExamListCard title="2022年(令和4年) 春期">
+                    <Grid
+                        templateColumns="auto repeat(3, 1fr)"
+                        w="100%"
+                        gap="10px"
+                        alignItems="center"
+                    >
+                        <Text whiteSpace="nowrap">午前</Text>
+                        <ExamLinkButton url="2022/haru/1" title="問1" />
+                        <ExamLinkButton url="2022/haru/2" title="問2" />
+                        <ExamLinkButton url="2022/haru/3" title="問3" />
+
+                        <Text whiteSpace="nowrap">午後</Text>
+                        <ExamLinkButton url="2022/haru/4" title="問1" />
+                        <ExamLinkButton url="2022/haru/5" title="問2" />
+                    </Grid>
+                </ExamListCard>
             </Flex>
         </Box>
     );

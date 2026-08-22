@@ -221,7 +221,7 @@ export const EditExamListPage = memo(() => {
                             <CustomTh>2023年(令和5年) 春期</CustomTh>
                             <Td>
                                 <EditExamLinkButton
-                                    color="red"
+                                    color="green"
                                     url="2023/haru/1"
                                 >
                                     問1
@@ -229,7 +229,7 @@ export const EditExamListPage = memo(() => {
                             </Td>
                             <Td>
                                 <EditExamLinkButton
-                                    color="red"
+                                    color="green"
                                     url="2023/haru/2"
                                 >
                                     問2
@@ -237,7 +237,7 @@ export const EditExamListPage = memo(() => {
                             </Td>
                             <Td borderRight={"1px solid black"}>
                                 <EditExamLinkButton
-                                    color="red"
+                                    color="green"
                                     url="2023/haru/3"
                                 >
                                     問3
@@ -245,7 +245,7 @@ export const EditExamListPage = memo(() => {
                             </Td>
                             <Td>
                                 <EditExamLinkButton
-                                    color="red"
+                                    color="green"
                                     url="2023/haru/4"
                                 >
                                     問1
@@ -253,8 +253,95 @@ export const EditExamListPage = memo(() => {
                             </Td>
                             <Td>
                                 <EditExamLinkButton
-                                    color="red"
+                                    color="green"
                                     url="2023/haru/5"
+                                >
+                                    問2
+                                </EditExamLinkButton>
+                            </Td>
+                        </Tr>
+                        <Tr>
+                            <CustomTh>2022年(令和4年) 秋期</CustomTh>
+                            <Td>
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2022/aki/1"
+                                >
+                                    問1
+                                </EditExamLinkButton>
+                            </Td>
+                            <Td>
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2022/aki/2"
+                                >
+                                    問2
+                                </EditExamLinkButton>
+                            </Td>
+                            <Td borderRight={"1px solid black"}>
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2022/aki/3"
+                                >
+                                    問3
+                                </EditExamLinkButton>
+                            </Td>
+                            <Td>
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2022/aki/4"
+                                >
+                                    問1
+                                </EditExamLinkButton>
+                            </Td>
+                            <Td>
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2022/aki/5"
+                                >
+                                    問2
+                                </EditExamLinkButton>
+                            </Td>
+                        </Tr>
+
+                        <Tr>
+                            <CustomTh>2022年(令和4年) 春期</CustomTh>
+                            <Td>
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2022/haru/1"
+                                >
+                                    問1
+                                </EditExamLinkButton>
+                            </Td>
+                            <Td>
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2022/haru/2"
+                                >
+                                    問2
+                                </EditExamLinkButton>
+                            </Td>
+                            <Td borderRight={"1px solid black"}>
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2022/haru/3"
+                                >
+                                    問3
+                                </EditExamLinkButton>
+                            </Td>
+                            <Td>
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2022/haru/4"
+                                >
+                                    問1
+                                </EditExamLinkButton>
+                            </Td>
+                            <Td>
+                                <EditExamLinkButton
+                                    color="green"
+                                    url="2022/haru/5"
                                 >
                                     問2
                                 </EditExamLinkButton>
