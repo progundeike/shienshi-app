@@ -50,6 +50,11 @@ export const Router = () => {
 
     useEffect(() => {
         const onExpired = () => {
+            // 初期認証確認中または最初から未ログインならなにもしない
+            if (!user) {
+                return;
+            }
+
             // 同時に２回呼ばれても処理は1回だけでよい
             if (isHandlingAuthExpired.current) {
                 return;
@@ -91,7 +96,7 @@ export const Router = () => {
                 onExpired as EventListener,
             );
         };
-    }, [navigate, location.pathname, showWarningToast, setUser]);
+    }, [user, navigate, location.pathname, showWarningToast, setUser]);
 
     // ログイン後にフラグを戻す
     useEffect(() => {

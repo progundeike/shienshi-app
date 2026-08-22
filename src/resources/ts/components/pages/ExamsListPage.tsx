@@ -1,22 +1,31 @@
 import { FC, memo, useEffect, useState } from "react";
+import { useAtomValue } from "jotai";
 import { Box, Image, Text, Heading, Flex } from "@chakra-ui/react";
-import { DesktopExamTable } from "../organisms/DesktopExamTable";
+
 import { MobileExamsList } from "../organisms/MobileExamsList";
 import { useExam } from "../../hooks/useExam";
+import { DesktopExamTable } from "../organisms/DesktopExamTable";
+import { userAtom } from "../../states/userAtom";
 import type { SubmittedExam } from "../../types/exam";
 
 export const ExamsListPage: FC = memo(() => {
     const { fetchSubmittedExams } = useExam();
     const [submittedExams, setSubmittedExams] = useState<SubmittedExam[]>([]);
+    const user = useAtomValue(userAtom);
 
     useEffect(() => {
+        if (!user) {
+            setSubmittedExams([]);
+            return;
+        }
+
         const getSubmittedExams = async () => {
             const submittedExams = await fetchSubmittedExams();
             setSubmittedExams(submittedExams || []);
         };
 
         getSubmittedExams();
-    }, []);
+    }, [user]);
 
     return (
         <Box>
