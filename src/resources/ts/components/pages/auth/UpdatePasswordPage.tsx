@@ -67,7 +67,13 @@ export const UpdatePasswordPage: FC = memo(() => {
                 for (const [field, message] of Object.entries(
                     responseData.errors,
                 )) {
-                    if (["username", "password"].includes(field)) {
+                    if (
+                        [
+                            "current_password",
+                            "new_password",
+                            "new_password_confirmation",
+                        ].includes(field)
+                    ) {
                         // バリデーションエラー
                         setError(field as keyof UpdatePasswordFormInput, {
                             type: "server",
@@ -228,9 +234,9 @@ export const UpdatePasswordPage: FC = memo(() => {
                                 id="newPasswordConfirmation"
                                 {...register("new_password_confirmation", {
                                     required: "入力が必要です",
-                                    // validate: (value) =>
-                                    //     value === watch("newPassword") ||
-                                    //     "新しいパスワードが一致しません",
+                                    validate: (value) =>
+                                        value === watch("new_password") ||
+                                        "新しいパスワードが一致しません",
                                 })}
                             />
                             <InputRightElement width="3rem">

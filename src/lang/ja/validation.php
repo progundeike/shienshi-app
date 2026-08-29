@@ -271,5 +271,7 @@ return [
         'username' => 'ユーザー名',
         'value' => '価値',
         'year' => '年',
+        'new_password' => '新しいパスワード',
+        'new_password_confirmation' => '新しいパスワードの確認',
     ],
 ];
