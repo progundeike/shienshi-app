@@ -70,7 +70,7 @@ https://shienshi.com
 ### バックエンド
 
 - PHP 8.3
-- Laravel 11
+- Laravel 12
 - Laravel Sanctum
 - Laravel Fortify
 - OpenAI API
@@ -85,6 +85,7 @@ https://shienshi.com
 - Docker / Docker Compose
 - Caddy 2
 - Xserver VPS
+- Amazons S3
 - GitHub Actions
 - GitHub Container Registry
 
@@ -101,6 +102,7 @@ https://shienshi.com
 
 フロントエンドとバックエンドは、Dockerコンテナで構成した同一VPS上の環境で稼働しています。  
 GitHub Actionsで依存関係監査、静的解析、テスト、Dockerイメージのビルドを行い、GitHub Container Registryを経由してVPSへデプロイしています。
+また、MySQLデータベースは、深夜に定期実行する処理でダンプファイルを作成し、バックアップとしてAmazon S3に保存しています。
 
 <p align="center">
     <img src="docs/deployment.svg" alt="システム構成図" width="800">
