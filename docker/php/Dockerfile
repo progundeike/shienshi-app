@@ -30,17 +30,14 @@ FROM base AS vendor
 WORKDIR /var/www/html
 COPY src/composer.json src/composer.lock ./
 
-RUN composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader --no-scripts
-
-# =========================================
-# フロント資産ビルド（Vite）
-# =========================================
-FROM node:24 AS assets
-WORKDIR /app
-COPY src/package*.json ./
-RUN npm ci
-COPY src .
-RUN npm run build
+RUN for attempt in 1 2 3; do \
+    composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader --no-scripts && exit 0; \
+    if [ "$attempt" -eq 3 ]; then \
+    exit 1; \
+    fi; \
+    echo "Composer install failed. Retrying in 15 seconds..."; \
+    sleep 15; \
+    done
 
 # =========================================
 # 本番イメージ（最小構成）
@@ -48,12 +45,14 @@ RUN npm run build
 FROM base AS prod
 WORKDIR /var/www/html
 
-# アプリ本体
+# アプリ本体、GitHub Actionsで生成したvite成果物
 COPY src ./
 
-# vendorとビルド済みアセットだけを取り込み
+# フロントエンドのビルド漏れを検知
+RUN test -f public/build/manifest.json
+
+# Composer依存パッケージ
 COPY --from=vendor /var/www/html/vendor ./vendor
-COPY --from=assets /app/public/build ./public/build
 
 ENV APP_ENV=production \
     APP_DEBUG=0

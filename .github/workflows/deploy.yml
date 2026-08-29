@@ -76,9 +76,9 @@ jobs:
         working-directory: src
         run: npm run audit
 
-      - name: Typecheck
+      - name: Build frontend
         working-directory: src
-        run: npm run typecheck
+        run: npm run build
 
       - name: Set image tags
         id: vars

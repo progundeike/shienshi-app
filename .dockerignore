@@ -3,3 +3,5 @@ READEME.md
 *.git
 *.env
 docker-compose.dev.yml
+src/node_modules
+src/vendor
