@@ -18,6 +18,12 @@ type NewAreaHighlight = {
 // PDF.js Workerを読み込む
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 
+const pdfOptions = {
+    cMapUrl: "/build/cmaps/",
+    cMapPacked: true,
+    standardFontDataUrl: "/build/standard_fonts/",
+};
+
 export const DisplayExamPdf: FC = memo(() => {
     const [numPages, setNumPages] = useState(0);
     const { year, season, section } = useParams();
@@ -72,6 +78,7 @@ export const DisplayExamPdf: FC = memo(() => {
             {(ghost) => (
                 <Document
                     file={url}
+                    options={pdfOptions}
                     onLoadSuccess={onDocumentLoadSuccess}
                     loading={<Box p={4}>PDFを読み込んでいます...</Box>}
                     error={<Box>PDFを読み込めませんでした。</Box>}
