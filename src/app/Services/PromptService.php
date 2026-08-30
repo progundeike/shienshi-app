@@ -56,7 +56,7 @@ class PromptService
         - evaluationsはQuestionに含まれる設問すべてに対して作成する。
         - ratingは必ず[◯, △, ×]のいずれか。
         - commentは採点根拠を簡潔に記述する。
-        - 未回答の場合はratingを×とし,commentは模範解答を提示する。
+        - 未回答の場合はratingを×とし,commentは空文字とする。
 
         【採点ルール】
         - ◯：模範解答の要点を満たしている。

@@ -15,9 +15,11 @@ import { FetchedQuestion } from "../../types/exam";
 export type Correction = {
     questionNumber: number;
     subQuestionNumber: number;
+    smallQuestionNumber: number;
     aiRating: string;
-    aiText: string;
-    userText: string;
+    aiText: string | null;
+    userText: string | null;
+    modelAnswer: string | null;
 };
 
 type Props = {

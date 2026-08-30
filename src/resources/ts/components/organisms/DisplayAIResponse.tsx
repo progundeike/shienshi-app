@@ -19,7 +19,7 @@ export const DisplayAIResponse: FC<Props> = memo((Props) => {
     } = Props;
 
     const response = corrections.find(
-        (res: any) =>
+        (res) =>
             res.questionNumber === questionNumber &&
             res.subQuestionNumber === subQuestionNumber &&
             res.smallQuestionNumber === smallQuestionNumber,
@@ -35,9 +35,11 @@ export const DisplayAIResponse: FC<Props> = memo((Props) => {
                         response.userText ? response.userText : "提出なし"
                     }`}
                 </Text>
-                <Text></Text>
             </Box>
             <Box backgroundColor="yellow.200" mb="10px" p="5px">
+                <Text>
+                    模範解答: {response.modelAnswer || "取得できませんでした"}
+                </Text>
                 <Box>評価: {response.aiRating}</Box>
                 <Box whiteSpace="pre-wrap">{response.aiText}</Box>
             </Box>

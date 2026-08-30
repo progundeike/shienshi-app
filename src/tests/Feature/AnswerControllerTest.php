@@ -38,7 +38,16 @@ class AnswerControllerTest extends FeatureTestCase
     {
         $response = $this->actingAs($this->normalUser)->getJson("/api/corrections/{$this->testExamCode}", ['Accept' => 'application/json']);
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertJsonFragment([
+                'questionNumber' => 1,
+                'subQuestionNumber' => 1,
+                'smallQuestionNumber' => 0,
+                'userText' => 'ユーザー解答1',
+                'modelAnswer' => '模範解答1',
+                'aiRating' => '◯',
+                'aiText' => 'これはAIの添削結果のサンプル1です',
+            ]);
         $this->assertCount(3, $response->json());
     }
 
@@ -163,7 +172,6 @@ class AnswerControllerTest extends FeatureTestCase
             'user_text' => 'test',
             'ai_rating' => '◯',
             'ai_text' => 'ダミーの添削です。',
-
         ]);
 
         $this->assertDatabaseHas('submitted_exams', [
@@ -221,5 +229,56 @@ class AnswerControllerTest extends FeatureTestCase
         $this->actingAs($this->normalUser)
             ->postJson('/api/answer', $payload)
             ->assertStatus(429);
+    }
+
+    public function 無回答ではaiコメントを保存しない(): void
+    {
+        $this->actingAs($this->normalUser);
+
+        $this->mock(
+            AiClientService::class,
+            function (MockInterface $mock): void {
+                /** @var Expectation $expectation */
+                $expectation = $mock->shouldReceive('generateStructuredOutput');
+
+                $expectation
+                    ->once()
+                    ->andReturn(
+                        json_encode([
+                            'evaluations' => [
+                                [
+                                    'questionCode' => '1_1_0',
+                                    'rating' => '×',
+                                    'comment' => '',
+                                ],
+                            ],
+                        ], JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE)
+                    );
+            }
+        );
+
+        $payload = [
+            'year' => $this->testExamYear,
+            'season' => $this->testExamSeason,
+            'section' => $this->testExamSection,
+            'answers' => [
+                [
+                    'questionCode' => '1_1_0',
+                    'content' => '',
+                ],
+            ],
+        ];
+
+        $response = $this->postJson('/api/answer', $payload);
+        $response->assertCreated();
+
+        $this->assertDatabaseHas('user_answers', [
+            'user_id' => $this->normalUser->id,
+            'exam_code' => $this->testExamCode,
+            'question_code' => '1_1_0',
+            'user_text' => '',
+            'ai_rating' => '×',
+            'ai_text' => null,
+        ]);
     }
 }

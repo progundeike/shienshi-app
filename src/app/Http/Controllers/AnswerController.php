@@ -92,7 +92,7 @@ class AnswerController extends Controller
                 $evaluations = $arguments['evaluations'];
 
                 $aiResponseMap = $this->buildAiResponseMap($evaluations);
-                $rows = $this->buildUpsertRows($userAnswers, $aiResponseMap, $modelAnswers, $examCode, $userId);
+                $rows = $this->buildUpsertRows($userAnswers, $aiResponseMap, $examCode, $userId);
 
                 DB::transaction(function () use ($rows, $userId, $examCode) {
                     UserAnswer::upsert($rows, ['user_id', 'exam_code', 'question_code'], ['user_text', 'ai_rating', 'ai_text', 'updated_at']);
@@ -221,28 +221,25 @@ class AnswerController extends Controller
     private function buildUpsertRows(
         array $userAnswers,
         array $aiResponseMap,
-        array $modelAnswers,
         string $examCode,
         int $userId
     ): array {
-        $modelMap = array_column($modelAnswers, 'text', 'questionCode');
         $now = now();
         $rows = [];
 
         foreach ($userAnswers as $answer) {
-            // ユーザーが無回答の問題はai_textを模範解答で上書きする
-            // ai_textが取得できなかった場合も模範解答を返す
             $userText = trim((string) $answer['userText']);
             $aiRating = $aiResponseMap[$answer['questionCode']]['ai_rating'] ?? '-';
             $aiText = $aiResponseMap[$answer['questionCode']]['ai_text'] ?? '';
 
             if (trim($aiText) === '') {
-                $aiText = '模範解答: '.($modelMap[$answer['questionCode']] ?? '');
+                $aiRating = '-';
+                $aiText = null;
             }
 
             if ($userText === '') {
                 $aiRating = '×';
-                $aiText = '模範解答: '.($modelMap[$answer['questionCode']] ?? '');
+                $aiText = null;
             }
 
             $rows[] = [
@@ -273,7 +270,10 @@ class AnswerController extends Controller
             return response()->json([], 200);
         }
 
-        $answers = $userAnswers->map(function ($answer) {
+        $modelAnswers = $this->examDataService->fetchModelAnswers($examCode);
+        $modelAnswerMap = array_column($modelAnswers, 'text', 'questionCode');
+
+        $answers = $userAnswers->map(function ($answer) use ($modelAnswerMap) {
             [$q, $sub, $small] = array_map('intval', explode('_', $answer['question_code']));
 
             return [
@@ -283,6 +283,7 @@ class AnswerController extends Controller
                 'userText' => $answer->user_text,
                 'aiRating' => $answer->ai_rating,
                 'aiText' => $answer->ai_text,
+                'modelAnswer' => $modelAnswerMap[$answer['question_code']] ?? '',
             ];
         })->toArray();
 
