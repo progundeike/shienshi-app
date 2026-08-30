@@ -40,7 +40,7 @@ export const DisplayAIResponse: FC<Props> = memo((Props) => {
                 <Text>
                     模範解答: {response.modelAnswer || "取得できませんでした"}
                 </Text>
-                <Box>評価: {response.aiRating}</Box>
+                <Box my={2}>評価: {response.aiRating}</Box>
                 <Box whiteSpace="pre-wrap">{response.aiText}</Box>
             </Box>
         </Box>
