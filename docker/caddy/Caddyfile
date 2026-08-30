@@ -3,6 +3,7 @@ www.shienshi.com {
 }
 
 shienshi.com {
+	log
 	root * /var/www/html/public
 	encode zstd gzip
 
