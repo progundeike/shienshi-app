@@ -13,6 +13,9 @@ RUN rm -rf public/storage \
 # Caddyfileを同梱
 COPY docker/caddy/Caddyfile /etc/caddy/Caddyfile
 
+# メンテナンスモード
+COPY docker/caddy/maintenance/maintenance.html /srv/maintenance/maintenance.html
+
 EXPOSE 80
 EXPOSE 443
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

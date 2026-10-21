@@ -30,6 +30,7 @@ services:
       - caddy-data:/data
       - caddy-config:/config
       - /srv/spa-exam/src/storage/app/public:/var/www/html/storage/app/public/:ro
+      - /srv/spa-exam-maintenance:/srv/maintenance/state:ro
     depends_on:
       - app
 
