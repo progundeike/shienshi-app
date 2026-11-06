@@ -1,15 +1,16 @@
 name: Build
 
 on:
+  pull_request:
+    branches: ["main"]
   push:
     branches: ["main"]
 
 jobs:
-  build:
+  checks:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write
 
     services:
       redis:
@@ -24,6 +25,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: "npm"
+          cache-dependency-path: src/package-lock.json
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -59,6 +67,29 @@ jobs:
           QUEUE_CONNECTION: sync
         run: cp .env.example .env && php artisan key:generate && php artisan test
 
+      - name: Frontend dependencies
+        working-directory: src
+        run: npm ci
+
+      - name: NPM audit
+        working-directory: src
+        run: npm run audit
+
+      - name: Build frontend
+        working-directory: src
+        run: npm run build
+
+  build-images:
+    needs: checks
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
@@ -69,10 +100,6 @@ jobs:
       - name: Frontend dependencies
         working-directory: src
         run: npm ci
-
-      - name: NPM audit
-        working-directory: src
-        run: npm run audit
 
       - name: Build frontend
         working-directory: src
