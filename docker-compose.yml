@@ -1,6 +1,6 @@
 services:
   app:
-    image: ghcr.io/progundeike/shienshi-app:latest
+    image: ghcr.io/progundeike/shienshi-app:${RELEASE_SHA:?RELEASE_SHA is required}
     restart: unless-stopped
     volumes:
       - ./src/.env:/var/www/html/.env:ro
@@ -20,7 +20,7 @@ services:
       - redis
 
   web:
-    image: ghcr.io/progundeike/shienshi-app-web:latest
+    image: ghcr.io/progundeike/shienshi-app-web:${RELEASE_SHA:?RELEASE_SHA is required}
     restart: unless-stopped
     ports:
       - 80:80
