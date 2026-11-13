@@ -7,11 +7,13 @@ use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\NewsItemController;
+use App\Http\Controllers\SiteAnnouncementController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/questions/{examCode}', [ExamController::class, 'getExamQuestionsJson']);
 Route::get('/exam/{year}-{season}-{section}', [ExamController::class, 'checkFileExists']);
 Route::get('/news', [NewsItemController::class, 'index']);
+Route::get('/site-announcement', [SiteAnnouncementController::class, 'show']);
 Route::post('/inquiry', [InquiryController::class, 'store'])->middleware('throttle:inquiry');
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -50,6 +52,8 @@ Route::middleware(['auth:sanctum', 'admin', 'admin.2fa'])->prefix('admin')->grou
     // お知らせ管理
     Route::post('/news', [NewsItemController::class, 'createOrUpdate']);
     Route::delete('/news/{newsItem}', [NewsItemController::class, 'delete']);
+    Route::get('/site-announcement', [SiteAnnouncementController::class, 'edit']);
+    Route::put('/site-announcement', [SiteAnnouncementController::class, 'update']);
 
     // お問い合わせ
     Route::get('/inquiry', [InquiryController::class, 'index']);

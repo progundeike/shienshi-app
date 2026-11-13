@@ -12,7 +12,6 @@ import {
     FormLabel,
     Heading,
     Input,
-    list,
     Modal,
     ModalBody,
     ModalContent,
@@ -22,10 +21,9 @@ import {
     Textarea,
     useDisclosure,
 } from "@chakra-ui/react";
-import { FC, memo, useEffect, useState } from "react";
+import { FC, memo, useState } from "react";
 import { SubmitHandler, useForm, Controller, set } from "react-hook-form";
 
-import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { NewsItem } from "../../../types/form";
 import { useNewsItem } from "../../../hooks/useNewsItem";

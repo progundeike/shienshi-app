@@ -12,11 +12,13 @@ import {
     MenuList,
 } from "@chakra-ui/react";
 import React, { FC, memo } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useAtomValue } from "jotai";
 import { HamburgerIcon } from "@chakra-ui/icons";
 
 import { userAtom } from "../../states/userAtom";
+import { HeaderAnnouncement } from "../organisms/HeaderAnnouncement";
+import { useSiteAnnouncement } from "../../hooks/useSiteAnnouncement";
 
 const MobileMenuItem: FC<{ text: string; to: string }> = memo(
     ({ text, to }) => {
@@ -47,6 +49,8 @@ const HeaderLink: FC<{ children: React.ReactNode; to: string }> = memo(
 
 export const Header: FC = memo(() => {
     const user = useAtomValue(userAtom);
+    const { pathname } = useLocation();
+    const { data: announcement } = useSiteAnnouncement();
 
     return (
         <Box
@@ -184,6 +188,11 @@ export const Header: FC = memo(() => {
                     </Flex>
                 </Flex>
             </Box>
+            <HeaderAnnouncement
+                visible={
+                    pathname !== "/" && announcement?.header_visible === true
+                }
+            />
         </Box>
     );
 });

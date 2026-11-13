@@ -5,11 +5,16 @@ import { EditExamPage } from "./pages/admin/EditExamPage";
 import { InquiryPage } from "./pages/admin/InquiryPage";
 import { NewsItemPage } from "./pages/admin/NewsItemPage";
 import { Page404 } from "./pages/Page404";
+import { SiteAnnouncementPage } from "./pages/admin/SiteAnnouncementPage";
 
 export const AdminRouteGroup = () => {
     return (
         <Routes>
             <Route index element={<AdminPage />} />
+            <Route
+                path="site-announcement"
+                element={<SiteAnnouncementPage />}
+            />
             <Route path="news-item" element={<NewsItemPage />} />
             <Route path="inquiry" element={<InquiryPage />} />
             <Route path="exams" element={<EditExamListPage />} />
