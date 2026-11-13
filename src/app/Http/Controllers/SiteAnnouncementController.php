@@ -42,7 +42,7 @@ class SiteAnnouncementController extends Controller
             'is_active' => $announcement->is_active ?? false,
 
             // 管理画面の datetime-local 入力欄向けに、日本時間で返す
-            'maintenance_start_at' => $announcement->maintenance_start_at
+            'maintenance_start_at' => $announcement?->maintenance_start_at
                 ?->copy()
                 ->setTimezone('Asia/Tokyo')
                 ->format('Y-m-d\TH:i'),
