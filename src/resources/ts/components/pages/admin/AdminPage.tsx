@@ -9,6 +9,18 @@ export const AdminPage = memo(() => {
                 <Box>
                     <Button
                         as={Link}
+                        to="/admin/site-announcement"
+                        colorScheme="green"
+                        borderRadius="full"
+                        w="50%"
+                    >
+                        重要告知編集
+                    </Button>
+                </Box>
+
+                <Box>
+                    <Button
+                        as={Link}
                         to="/admin/news-item"
                         colorScheme="green"
                         borderRadius="full"

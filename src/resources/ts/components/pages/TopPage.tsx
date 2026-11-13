@@ -26,6 +26,7 @@ import { LearningStepCard } from "../atoms/LearningStepCard";
 import { NewsItemSection } from "../organisms/NewsItemSection";
 import { ExamSystemTransitionSection } from "../organisms/top-page/ExamSystemTransitionSection";
 import { HeroSection } from "../organisms/top-page/HeroSection";
+import { SiteAnnouncementSection } from "../organisms/top-page/SiteAnnouncementSection";
 
 const LearningStepArrowIcon = () => {
     return (
@@ -77,6 +78,7 @@ const LearningStepBadge = ({ step }: { step: number }) => {
 export const TopPage: FC = memo(() => {
     return (
         <Box>
+            <SiteAnnouncementSection />
             <HeroSection />
             <Box
                 maxW="1200px"
