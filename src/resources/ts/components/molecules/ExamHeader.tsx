@@ -14,49 +14,27 @@ import {
     Text,
     Icon,
 } from "@chakra-ui/react";
-import { FC, memo } from "react";
+import { FC, memo, type ReactNode } from "react";
 import { FiPlus } from "react-icons/fi";
 import { IoMdDownload } from "react-icons/io";
 import { IoInformationCircleOutline } from "react-icons/io5";
+import { getExamTitleParts } from "../../utils/examTitle";
 
 type Props = {
     year: number;
     season: string;
     section: number;
+    actions?: ReactNode;
 };
 
 export const ExamHeader: FC<Props> = memo((props) => {
-    const { year, season, section } = props;
+    const { year, season, section, actions } = props;
 
-    const yearToJapaneseCalender = (year: number) => {
-        if (year >= 2019) {
-            return "令和" + (year - 2018);
-        } else {
-            return "平成" + (year - 1988);
-        }
-    };
-
-    const seasonToJapanese = (season: string) => {
-        if (season == "haru") {
-            return "春期";
-        } else if (season == "aki") {
-            return "秋期";
-        } else {
-            return "未登録";
-        }
-    };
-
-    const sectionToTitle = (section: number, year: number) => {
-        if (year >= 2024 || (year == 2023 && season == "aki")) {
-            return "午後問" + section;
-        } else {
-            if (section < 4) {
-                return "午後I 問" + section;
-            } else {
-                return "午後II 問" + (section - 3);
-            }
-        }
-    };
+    const { yearLabel, japaneseYearLabel, sessionLabel } = getExamTitleParts(
+        year,
+        season,
+        section,
+    );
 
     return (
         <Box
@@ -65,7 +43,12 @@ export const ExamHeader: FC<Props> = memo((props) => {
             borderColor="gray.200"
         >
             <Box my="auto" w="100%" px={{ base: 1, md: 4 }} py={1} mx="auto">
-                <Flex justifyContent="space-between" align="center">
+                <Flex
+                    justifyContent="space-between"
+                    align="center"
+                    flexWrap="wrap"
+                    gap={2}
+                >
                     <VStack
                         textAlign="left"
                         align="flex-start"
@@ -82,42 +65,25 @@ export const ExamHeader: FC<Props> = memo((props) => {
                                 gap={{ base: 1, md: 2 }}
                                 direction={{ base: "column", md: "row" }}
                             >
-                                {`${year}年 (${yearToJapaneseCalender(year)}年)`}
-                                <Box>
-                                    {`${seasonToJapanese(season)} ${sectionToTitle(section, year)}`}
-                                </Box>
+                                {`${yearLabel} (${japaneseYearLabel})`}
+                                <Box>{sessionLabel}</Box>
                             </Flex>
                         </Heading>
-
-                        <Box
-                            display={{ base: "none", md: "flex" }}
-                            alignItems="center"
-                            gap={1.5}
-                            bg="white"
-                            color="blue.700"
-                            border="1px solid"
-                            borderColor="blue.100"
-                            borderRadius="full"
-                            px={3}
-                            py={1}
-                            fontSize="xs"
-                            fontWeight="medium"
-                        >
-                            <Icon as={FiPlus} boxSize={4} color="gray.600" />
-                            <Text>
-                                PDF上をドラッグしてハイライトできます。PDFは見やすいように余白を調整しています
-                            </Text>
-                        </Box>
                     </VStack>
 
-                    <Flex gap={0} align="center">
+                    <Flex gap={2} align="center" flexWrap="wrap">
+                        {actions}
                         <Box>
                             <Button
                                 as={Link}
                                 href={`/storage/pdf/${year}/${year}_${season}_${section}.pdf`}
                                 download
                                 borderRadius="full"
-                                size={{ base: "sm", md: "md" }}
+                                size="sm"
+                                h="32px"
+                                px={4}
+                                fontSize="sm"
+                                fontWeight="medium"
                                 variant="outline"
                                 colorScheme="blue"
                                 bg="white"
@@ -135,10 +101,6 @@ export const ExamHeader: FC<Props> = memo((props) => {
                         <Popover trigger="click">
                             <PopoverTrigger>
                                 <IconButton
-                                    display={{
-                                        base: "inline-flex",
-                                        md: "none",
-                                    }}
                                     aria-label="PDFの表示について"
                                     icon={
                                         <IoInformationCircleOutline fontSize="24px" />

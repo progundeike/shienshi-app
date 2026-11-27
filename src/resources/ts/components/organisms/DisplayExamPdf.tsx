@@ -1,19 +1,23 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import { memo, useEffect, useRef, useState, type FC } from "react";
 import { pdfjs, Document, Page } from "react-pdf";
 import { useParams } from "react-router-dom";
-import { PdfHighlighter, type PdfHighlighterHandle } from "./PdfHighlighter";
-import {
-    PdfHighlightsOverlay,
-    type AreaHighlight,
-    type NormRect,
-} from "./PdfHighlightsOverlay";
+// import { PdfHighlighter } from "./PdfHighlighter";
+// import {
+//     PdfHighlightsOverlay,
+//     type AreaHighlight,
+//     type NormRect,
+// } from "./PdfHighlightsOverlay";
+import { PdfToolbar } from "../molecules/PdfToolbar";
 
-type NewAreaHighlight = {
-    page: number;
-    rect: NormRect;
-};
+// type NewAreaHighlight = {
+//     page: number;
+//     rect: NormRect;
+// };
+
+import { PdfDrawingOverlay } from "./PdfDrawingOverlay";
+import type { MarkerTool } from "../../types/PdfMarker";
 
 // PDF.js Workerを読み込む
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
@@ -32,34 +36,39 @@ export const DisplayExamPdf: FC = memo(() => {
             ? `${window.location.origin}/storage/pdf/${year}/${year}_${season}_${section}.pdf`
             : null;
 
-    const [highlights, setHighlights] = useState<AreaHighlight[]>([]);
+    // const [highlights, setHighlights] = useState<AreaHighlight[]>([]);
 
     function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
         setNumPages(numPages);
     }
 
-    // Documentに渡すwidthを設定するためのstate
+    const [tool, setTool] = useState<MarkerTool>("pointer");
+    const [markerSize, setMarkerSize] = useState(1);
+    // 値を変えると、全ページの描画領域を作り直してクリアする
+    const [clearVersion, setClearVersion] = useState(0);
+
+    // PDF表示の領域の幅。100%時をの基準にする。
     const [width, setWidth] = useState(0);
-    const elementRef = useRef<PdfHighlighterHandle | null>(null);
+    const viewportRef = useRef<HTMLDivElement | null>(null);
+    // 拡大・縮小の倍率を管理するstate
+    const [zoom, setZoom] = useState(100);
 
-    const onAddHighlight = (h: NewAreaHighlight) => {
-        setHighlights((prev) => [...prev, { ...h, id: crypto.randomUUID() }]);
-    };
+    // PDFの描画に使う倍率。操作終了時だけ更新する。
+    const [appliedZoom, setAppliedZoom] = useState(100);
 
-    const onDeleteHighlight = (id: string) => {
-        setHighlights((prev) => prev.filter((h) => h.id !== id));
-    };
+    const pageWidth = Math.max(1, Math.round(width * (appliedZoom / 100)));
 
     useEffect(() => {
-        const root = elementRef.current?.getRootElement();
-        if (!root) return;
+        const viewport = viewportRef.current;
+        if (!viewport) return;
 
         const handleResize = () => {
-            setWidth(root.clientWidth);
+            // 非表示中は最後の幅を保持する。0にするとPageとマーカーが破棄される。
+            if (viewport.clientWidth > 0) setWidth(viewport.clientWidth);
         };
 
         const resizeObserver = new ResizeObserver(handleResize);
-        resizeObserver.observe(root);
+        resizeObserver.observe(viewport);
 
         // 初期値を設定
         handleResize();
@@ -74,9 +83,23 @@ export const DisplayExamPdf: FC = memo(() => {
     }
 
     return (
-        <PdfHighlighter ref={elementRef} onAddHighlight={onAddHighlight}>
-            {(ghost) => (
+        <Flex h="100%" flexDirection="column" minH={0}>
+            <Box flexShrink={0}>
+                <PdfToolbar
+                    zoom={zoom}
+                    onZoomChange={setZoom}
+                    onZoomChangeEnd={setAppliedZoom}
+                    tool={tool}
+                    onToolChange={setTool}
+                    markerSize={markerSize}
+                    onMarkerSizeChange={setMarkerSize}
+                    onClear={() => setClearVersion((value) => value + 1)}
+                />
+            </Box>
+
+            <Box ref={viewportRef} flex={1} minH={0} minW={0} overflow="auto">
                 <Document
+                    key={url}
                     file={url}
                     options={pdfOptions}
                     onLoadSuccess={onDocumentLoadSuccess}
@@ -85,23 +108,28 @@ export const DisplayExamPdf: FC = memo(() => {
                 >
                     {width > 0 &&
                         Array.from({ length: numPages }, (_, index) => (
-                            <Box key={`page_${index + 1}`} position="relative">
+                            <Box
+                                key={`page_${index + 1}`}
+                                position="relative"
+                                w={`${pageWidth}px`}
+                            >
                                 <Page
                                     pageNumber={index + 1}
-                                    width={width}
+                                    width={pageWidth}
                                     renderTextLayer={false}
                                     renderAnnotationLayer={false}
                                 />
-                                <PdfHighlightsOverlay
-                                    highlights={highlights}
-                                    page={index + 1}
-                                    ghost={ghost}
-                                    onDelete={onDeleteHighlight}
+
+                                <PdfDrawingOverlay
+                                    key={`${url}:${index + 1}:${clearVersion}`}
+                                    tool={tool}
+                                    markerSize={markerSize}
+                                    zoom={appliedZoom}
                                 />
                             </Box>
                         ))}
                 </Document>
-            )}
-        </PdfHighlighter>
+            </Box>
+        </Flex>
     );
 });

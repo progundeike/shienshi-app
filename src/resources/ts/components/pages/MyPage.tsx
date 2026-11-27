@@ -25,6 +25,7 @@ import {
     LuLockKeyhole,
 } from "react-icons/lu";
 import { HiOutlineLightBulb } from "react-icons/hi";
+import { formatExamTitle } from "../../utils/examTitle";
 
 const TOTAL_EXAMS_COUNT = 16;
 
@@ -329,7 +330,7 @@ export const MyPage: FC = memo(() => {
                                                 base: "md",
                                                 md: "lg",
                                             }}
-                                        >{`${exam.year}年 ${exam.season_japanese} ${exam.section_converted}`}</Text>
+                                        >{formatExamTitle(exam.year, exam.season, exam.section)}</Text>
                                     </Flex>
                                     <Button
                                         as={Link}
