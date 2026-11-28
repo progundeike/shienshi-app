@@ -20,3 +20,7 @@ yarn-error.log
 /.idea
 /.vscode
 .sqlite
+
+# Frontend test reports
+/coverage/
+/.vitest/

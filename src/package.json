@@ -5,19 +5,28 @@
         "dev": "vite --host",
         "build": "tsc --noEmit && vite build",
         "typecheck": "tsc --noEmit",
-        "audit": "audit-ci --config ./audit-ci.json"
+        "audit": "audit-ci --config ./audit-ci.json",
+        "test": "vitest",
+        "test:run": "vitest run",
+        "test:coverage": "vitest run --coverage"
     },
     "devDependencies": {
         "@chakra-ui/icons": "^2.1.1",
         "@chakra-ui/react": "^2.8.2",
         "@emotion/react": "^11.11.4",
         "@emotion/styled": "^11.11.5",
+        "@testing-library/dom": "^10.4.2",
+        "@testing-library/jest-dom": "^8.0.0",
+        "@testing-library/react": "^16.3.3",
+        "@testing-library/user-event": "^14.6.13",
         "@types/react": "^18.3.3",
         "@types/react-dom": "^18.3.0",
         "@vitejs/plugin-react": "^4.3.0",
+        "@vitest/coverage-v8": "^5.1.2",
         "audit-ci": "^7.1.0",
         "axios": "^1.20.0",
         "framer-motion": "^6.5.1",
+        "jsdom": "^31.0.1",
         "laravel-vite-plugin": "^1.0.4",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
@@ -27,7 +36,8 @@
         "vite": "^6.4.3",
         "vite-plugin-static-copy": "^4.1.1",
         "vite-react-jsx": "^1.1.2",
-        "vite-tsconfig-paths": "^4.3.2"
+        "vite-tsconfig-paths": "^4.3.2",
+        "vitest": "^5.1.2"
     },
     "dependencies": {
         "@tanstack/react-query": "^5.83.0",
@@ -46,5 +56,8 @@
         "tar": "^7.5.4",
         "nanoid": "3.3.18",
         "source-map-js": "1.2.2"
+    },
+    "allowScripts": {
+        "esbuild@0.25.12": true
     }
 }
