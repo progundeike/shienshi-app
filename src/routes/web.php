@@ -24,6 +24,14 @@ Route::view('/exams/{year}/{season}/{section}', 'index')
         'section' => '[1-5]',
     ]);
 
+// 問題PDFの別画面（直接アクセス・再読み込みにも対応）
+Route::view('/exams/{year}/{season}/{section}/pdf-window', 'index')
+    ->where([
+        'year' => '[0-9]{4}',
+        'season' => 'haru|aki',
+        'section' => '[1-5]',
+    ]);
+
 // 管理画面
 Route::view('/admin/{any?}', 'index')
     ->where('any', '.*');

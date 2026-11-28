@@ -30,6 +30,11 @@ const ExamPage = lazy(() =>
         default: module.ExamPage,
     })),
 );
+const ExamPdfWindowPage = lazy(() =>
+    import("./pages/ExamPdfWindowPage").then((module) => ({
+        default: module.ExamPdfWindowPage,
+    })),
+);
 const AdminRouteGroup = lazy(() =>
     import("./AdminRouteGroup").then((module) => ({
         default: module.AdminRouteGroup,
@@ -117,6 +122,10 @@ export const Router = () => {
                         element={<ExamPage />}
                     />
                     <Route path="/exams" element={<ExamsListPage />} />
+                    <Route
+                        path="/exams/:year/:season/:section/pdf-window"
+                        element={<ExamPdfWindowPage />}
+                    />
 
                     <Route path="/terms" element={<TermsPage />} />
                     <Route path="/contact" element={<ContactPage />} />

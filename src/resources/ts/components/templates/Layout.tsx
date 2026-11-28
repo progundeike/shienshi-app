@@ -2,7 +2,7 @@ import { Box, Divider, Flex } from "@chakra-ui/react";
 import { memo, FC } from "react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
-import { useLocation } from "react-router-dom";
+import { matchPath, useLocation } from "react-router-dom";
 import { TopPageFooter } from "./TopPageFooter";
 
 type Props = {
@@ -12,6 +12,10 @@ type Props = {
 export const Layout: FC<Props> = memo(({ children }) => {
     const location = useLocation();
     const isTopPage = location.pathname === "/";
+
+    if (matchPath("/exams/:year/:season/:section/pdf-window", location.pathname)) {
+        return <>{children}</>;
+    }
 
     return (
         <Flex direction="column" minH="100vh" overflow="hidden">
