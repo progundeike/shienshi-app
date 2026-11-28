@@ -77,9 +77,9 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Node 取り込み（ホットリロード等）
-COPY --from=node:24 /usr/local/bin /usr/local/bin
-COPY --from=node:24 /usr/local/lib /usr/local/lib
-RUN npm install -g npm@10.8.0
+COPY --from=node:24.21.0 /usr/local/bin /usr/local/bin
+COPY --from=node:24.21.0 /usr/local/lib /usr/local/lib
+RUN npm install -g npm@12.2.3
 
 # dev用のphp.iniをコピー（本番用を上書き）
 COPY ./docker/php/conf.d/90-dev.ini /usr/local/etc/php/conf.d/90-dev.ini
